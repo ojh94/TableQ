@@ -1,6 +1,5 @@
 package com.itschool;
 
-import com.itschool.tableq.dao.UserDao;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
@@ -9,8 +8,6 @@ import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 @SpringBootApplication
 public class SpringBootDeveloperApplication {
     public static void main(String[] args) {
-        UserDao userDao = new UserDao();
-        System.out.println(userDao.selectSample("SELECT * FROM project.users;"));
         SpringApplication.run(SpringBootDeveloperApplication.class, args);
     }
 }

@@ -1,3 +1,4 @@
+/*
 package com.itschool.tableq.dao;
 
 import com.itschool.tableq.domain.User;
@@ -67,3 +68,4 @@ public class UserDao {
     }
 
 }
+*/
