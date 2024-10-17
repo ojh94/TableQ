@@ -290,9 +290,8 @@ header {
   margin-bottom: 20px;
 }
 .section-list {
+  padding-top: 5%;
   color: black;
-  padding: 1rem;
-  
 }
 .category {
   display: flex;
