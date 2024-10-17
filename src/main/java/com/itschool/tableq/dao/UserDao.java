@@ -3,6 +3,7 @@ package com.itschool.tableq.dao;
 
 import com.itschool.tableq.domain.User;
 import com.zaxxer.hikari.HikariDataSource;
+import org.springframework.stereotype.Component;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -48,15 +49,17 @@ public class UserDao {
                 String password = rs.getString("password");
                 String nickName = rs.getString("nickname");
                 String phone_number = rs.getString("phone_number");
-                String created_at = rs.getString("created_at");
-                String last_login_at = rs.getString("last_login_at");
+                Timestamp created_at = rs.getTimestamp("created_at");
+                Timestamp last_login_at = rs.getTimestamp("last_login_at");
                 String address = rs.getString("address");
                 String name = rs.getString("name");
                 String social_type = rs.getString("social_type");
                 String social_id = rs.getString("social_id");
 
-                resultList.add(new User(Long.parseLong(id),email,password,nickName,phone_number,Timestamp.valueOf(created_at)
-                        ,Timestamp.valueOf(last_login_at),address,name,social_type,social_id));
+                resultList.add(new User(Long.parseLong(id),email,password,nickName,phone_number,created_at
+                        ,last_login_at,address,name,social_type,social_id));
+
+
             }
 
             return resultList;
