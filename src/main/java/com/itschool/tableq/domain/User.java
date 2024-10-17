@@ -67,14 +67,14 @@ public class User implements UserDetails {
         this.social_id = socialId;
     }
 
-    public User(String email, String password, String phone_Number, String name) {
+/*    public User(String email, String password, String phone_Number, String name) {
         this.password = password;
         this.email = email;
         this.phone_Number = phone_Number;
         this.name = name;
         this.created_at = new Timestamp(System.currentTimeMillis());
         this.last_login_at = new Timestamp(System.currentTimeMillis());
-    }
+    }*/
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -104,5 +104,22 @@ public class User implements UserDetails {
     @Override
     public boolean isEnabled() {
         return false;
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", password='" + password + '\'' +
+                ", nickName='" + nickName + '\'' +
+                ", phone_Number='" + phone_Number + '\'' +
+                ", created_at=" + created_at +
+                ", last_login_at=" + last_login_at +
+                ", address='" + address + '\'' +
+                ", name='" + name + '\'' +
+                ", social_type='" + social_type + '\'' +
+                ", social_id='" + social_id + '\'' +
+                ", email='" + email + '\'' +
+                '}';
     }
 }
