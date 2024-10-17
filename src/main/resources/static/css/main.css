@@ -1,0 +1,573 @@
+
+:root {
+  --color-orange-50: #fff7ed;
+  /* 주황 */
+  /* --color-orange-500: #ff7f50;
+  --color-orange-600: #ff5722; */
+  /* 보라 */
+  /* --color-orange-500: rgb(174, 78, 206);
+  --color-orange-600: rgb(95,0,128); */
+  /* 황토 */
+  /* --color-orange-500: rgb(240, 154, 97);
+  --color-orange-600: rgb(237,125,49);  */
+  /* 보라 */
+  /* --color-orange-500: rgb(224, 76, 165);
+  --color-orange-600: rgb(216,0,128);  */
+  /* 연주황 */
+  /* --color-orange-500: rgb(248, 119, 97);
+  --color-orange-600: rgb(255, 99, 71);  */
+  /* 빨강 */
+  /* --color-orange-500: rgb(248, 119, 97);
+  --color-orange-600: rgb(255, 99, 71);  */
+  /* 노랑 */
+  /* --color-orange-500: rgb(244, 170, 80);
+  --color-orange-600: rgb(244, 170, 80);  */
+  /* 연두 */
+  /* --color-orange-500: rgb(61, 211, 129);
+  --color-orange-600: rgb(0, 176, 80);  */
+  /* 연주황 */
+  --color-orange-500: rgb(247, 158, 99);
+  --color-orange-600: rgb(237, 125, 49); 
+
+
+  --color-gray-500: #6b7280;
+  --color-yellow-400: #facc15;
+  --color-yellow: #eab464;
+  --color-cabridge_blue: #73ab84;
+  --color-tiffany_blue: #79c7c5;
+  --color-Honolulu_blue: #007cbe;
+}
+
+body, html {
+  margin: 0;
+  padding: 0;
+  font-family: Arial, sans-serif;
+}
+
+.min-h-screen {
+  min-height: 100vh;
+}
+
+.bg-orange-50 {
+  background-color: var(--color-orange-50);
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 1rem;
+}
+
+header {
+  background-color: var(--color-orange-500);
+  padding: 1rem 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+header .container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.main-container{
+  
+  border-radius: 10px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  max-width: 1400px; /* 중앙 콘텐츠의 너비를 늘림 */
+  margin: 0 auto;
+
+  
+}
+
+.logo {
+  color: black;
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+
+.btn {
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 0.25rem;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.btn-ghost {
+  background-color: #BE78FF;
+  color: white;
+  
+}
+.btn-local {
+  cursor: pointer;
+}
+.btn-change {
+  background-color: var(--color-orange-500);
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+
+
+.btn-orange {
+  background-color: var(--color-orange-600);
+  color: white;
+}
+
+.search-section {
+  text-align: center;
+  margin: 2rem 0;
+}
+
+.search-section h2 {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+}
+
+#searchForm {
+  display: flex;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+#searchInput {
+  flex-grow: 1;
+  padding: 1rem;
+  width: 70%;
+  border: 1px solid #ccc;
+  border-radius: 0.25rem 0 0 0.25rem;
+}
+
+#searchForm .btn {
+  border-radius: 0 0.25rem 0.25rem 0;
+}
+
+.section-header {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.section-header h3 {
+  font-size: 1.5rem;
+}
+
+#sortSelect {
+  padding: 0.5rem;
+  border: 1px solid #ccc;
+  border-radius: 0.25rem;
+}
+
+.restaurant-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1rem;
+}
+
+.card {
+  background-color: white;
+  border-radius: 0.5rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+}
+
+.card-header {
+  padding: 1rem;
+  position: relative;
+}
+
+.card-title {
+  font-size: 1.25rem;
+  font-weight: bold;
+  margin: 0;
+}
+
+.card-description {
+  color: var(--color-gray-500);
+  margin: 0.5rem 0 0;
+}
+
+.favorite-btn {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+  background: none;
+  border: none;
+  color: var(--color-orange-500);
+  cursor: pointer;
+}
+
+.card-content {
+  padding: 1rem;
+}
+
+.card-image {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+  border-radius: 0.25rem;
+}
+
+.rating {
+  display: flex;
+  align-items: center;
+  margin-bottom: 0.5rem;
+}
+
+.rating-star {
+  color: var(--color-yellow-400);
+  margin-right: 0.25rem;
+}
+
+.rating-value {
+  font-weight: bold;
+  margin-right: 0.25rem;
+}
+
+.rating-count {
+  color: var(--color-gray-500);
+}
+
+.location {
+  display: flex;
+  align-items: center;
+  color: var(--color-gray-500);
+}
+
+.location-icon {
+  color: var(--color-orange-500);
+  margin-right: 0.25rem;
+}
+
+.card-footer {
+  padding: 1rem;
+}
+
+.book-btn {
+  width: 100%;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  background-color: white;
+  padding: 0.75rem;
+  border: none;
+  border-radius: 0.25rem;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.book-btn:hover {
+  background-color:  var(--color-orange-500);
+}
+
+@media (max-width: 768px) {
+  .restaurant-grid {
+      grid-template-columns: 1fr;
+  }
+}
+
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #f4f4f4; /* 전체 페이지에 밝은 회색 배경색 적용 */
+  padding-bottom: 60px; /* 툴바 공간 확보 */
+}
+
+header {
+  background: linear-gradient(135deg, var(--color-orange-500), var(--color-orange-600));
+  background-color:  var(--color-orange-500);
+  color: white;
+  text-align: center;
+  padding: 1rem;
+  font-size: 1.5rem;
+  margin-bottom: 20px;
+}
+.section-list {
+  color: black;
+  padding: 1rem;
+  
+}
+.category {
+  display: flex;
+  
+  flex-direction: column;
+  align-items: center; /* 가로 중앙 정렬 */
+}
+
+.sub-category {
+  background-color: white;
+  border-radius: 10px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  margin-bottom: 20px;
+  margin-inline: 20px;
+  padding: 15px;
+  width: 80%;
+  max-width: 800px;
+}
+
+.local-item h3 {
+  font-size: 1.5rem;
+  margin-top: 10px;
+}
+.local {
+  background-color: skyblue;
+  border-radius: 10px;
+  display: flex;
+  justify-content: center; /* 가로 중앙 정렬 */
+  align-items: center; /* 세로 중앙 정렬 */
+  text-align: center;
+  width: 150px;
+  height: 150px;
+  font-size: 1rem;
+}
+.local-title {
+  display: flex;
+  align-items: center;
+  justify-content: space-between; /* 양쪽 끝으로 배치 */
+  text-align: center; /* 텍스트 가운데 정렬 */
+  font-size: 1.3rem;
+}
+
+.local-title h3 {
+  flex-grow: 1; /* 가능한 공간을 모두 차지 */
+  text-align: center; /* 텍스트 가운데 정렬 */
+}
+
+.local-title h4 {
+  margin-left: 20px; /* h3과의 간격 */
+}
+
+.local-container {
+  margin-top: 5%;
+  display: flex; /* 텍스트와 이미지를 옆으로 배치 */
+  justify-content: center;
+  align-items: center;
+  gap: 10px; /* 텍스트와 이미지 사이의 간격 */
+}
+
+.resent-list {
+  background-color: white;
+  border-radius: 10px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  
+  margin-bottom: 20px;
+  padding: 15px;
+  width: 50%;
+}
+
+.resent-title {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  text-align: center; /* 텍스트 가운데 정렬 */
+  font-size: 1.3rem;
+  padding: 20px;
+}
+
+.resent-title h3 {
+  flex-grow: 1; /* 가능한 공간을 모두 차지 */
+  text-align: center; /* 텍스트 가운데 정렬 */
+}
+
+.resent-title h4 {
+  margin-left: 20px; /* h3과의 간격 */
+}
+
+.sub-category .restaurant-item {
+  background-color: white;
+  border-radius: 10px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  margin-bottom: 20px;
+  padding: 15px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 31%;
+}
+
+.restaurant-list {
+  margin-top: 5%;
+  background-color: gray;
+  border-radius: 10px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  margin-bottom: 20px;
+  padding: 15px;
+}
+.restaurant-title {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  text-align: center; /* 텍스트 가운데 정렬 */
+  font-size: 1.3rem;
+  padding: 20px;
+}
+.restaurant-title h3{
+  flex-grow: 1;
+}
+
+.local-map {
+  background-color: white;
+  width: 50%;
+  height: 50%;
+  display: flex;
+  align-items: center;
+  
+}
+
+.restaurant-item {
+  margin-top: 5%;
+  background-color: white;
+  border-radius: 10px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  margin-bottom: 20px;
+  padding: 15px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.restaurant-item img {
+  width: 80px;
+  height: 80px;
+  border-radius: 10px;
+}
+
+.restaurant-info {
+  flex: 1;
+  margin-left: 15px;
+}
+
+.restaurant-info h3 {
+  margin: 0;
+  font-size: 1.2rem;
+}
+
+.restaurant-info p {
+  margin: 5px 0;
+  color: gray;
+}
+
+.btn-reserve {
+  background-color:  var(--color-orange-500);
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.btn-reserve:hover {
+  background-color:  var(--color-orange-600);
+}
+
+.status {
+  color: green;
+  font-weight: bold;
+}
+
+@media (max-width: 600px) {
+  .restaurant-item {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .restaurant-info {
+    margin-left: 0;
+    margin-top: 10px;
+  }
+}
+
+.btn-reserve:focus {
+  outline: 2px solid  var(--color-orange-600);
+  outline-offset: 2px;
+}
+.toolbar-top {
+  
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  background-color:  var(--color-orange-600);
+  display: flex;
+  padding: 0.5rem 0;
+  box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1);
+}
+.toolbar {
+  
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  background-color: var(--color-orange-600);
+  display: flex;
+  justify-content: space-around;
+  padding: 0.5rem 0;
+  box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.toolbar-item {
+  
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-decoration: none;
+  color: white;
+  font-size: 0.75rem;
+}
+
+.toolbar-item i {
+  
+  margin-bottom: 0.25rem;
+  font-size: 1.5rem;
+}
+
+.toolbar-item:hover {
+  color: black; /* 툴바 아이템 호버 시 색상 변경 */
+}
+.auth-container {
+  background-color: white;
+  border-radius: 10px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  max-width: 400px;
+  margin: 0 auto;
+  margin-top: 50px;
+  text-align: center;
+}
+
+.auth-container h2 {
+  margin-bottom: 1rem;
+  font-size: 1.75rem;
+}
+
+.form-group {
+  margin-bottom: 1rem;
+  text-align: left;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 0.5rem;
+}
+
+.form-group input {
+  width: 100%;
+  padding: 0.5rem;
+  border: 1px solid #ccc;
+  border-radius: 0.25rem;
+}
+
+button[type="submit"] {
+  width: 20%;
+  padding: 0.75rem;
+  border: none;
+  border-radius: 0.25rem;
+  font-size: 1rem;
+}
