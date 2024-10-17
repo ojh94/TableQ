@@ -14,9 +14,7 @@ public class ViewController {
         return "login1";
     }
     @GetMapping("/login2")
-    public String login2() {
-        return "login2";
-    }
+    public String login2() { return "login2"; }
     @GetMapping("/signup")
     public String signup() {
         return "signup";
