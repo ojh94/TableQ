@@ -8,7 +8,7 @@ import java.security.Timestamp;
 @Getter
 @Setter
 public class AddUserRequest {
-    private String id;
+    private Long id;
     private String password;
     private String nickname;
     private String phone_number;
