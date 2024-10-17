@@ -1,4 +1,4 @@
-package com.itschool.tableq.controller;
+package com.itschool.tableq.controller.api;
 
 import com.itschool.tableq.network.request.AddUserRequest;
 import com.itschool.tableq.service.UserService;
