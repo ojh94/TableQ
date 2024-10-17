@@ -1,0 +1,19 @@
+# dev 환경
+spring:
+  profiles: dev
+  h2:
+    console:
+      enabled: true # /h2-console 설정
+  datasource:
+    url: jdbc:postgresql://192.168.1.168:5432/postgres
+    username: postgres
+    password: 1234
+  jpa:
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+        ddl-auto: create
+        #dialect: org.hibernate.dialect.H2Dialect # H2 Dialect 설정
+
+    defer-datasource-initialization: true
