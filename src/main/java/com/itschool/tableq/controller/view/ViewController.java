@@ -9,10 +9,12 @@ public class ViewController {
     public String index() {
         return "index";
     }
-    @GetMapping("/login")
-    public String login() {
-        return "login";
+    @GetMapping("/login1")
+    public String login1() {
+        return "login1";
     }
+    @GetMapping("/login2")
+    public String login2() { return "login2"; }
     @GetMapping("/signup")
     public String signup() {
         return "signup";

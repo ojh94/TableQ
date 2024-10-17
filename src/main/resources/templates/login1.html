@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>로그인</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css">
+    <style>
+        .gradient-custom {
+          background: linear-gradient(to right, rgba(237, 125, 49, 1), rgba(255, 255, 255, 1))
+        }
+
+        .text1-orange {
+            color: rgba(237, 125, 49, 1) !important;
+        }
+
+        .text2-orange {
+            color: rgba(237, 125, 49, 0.8) !important;
+        }
+    </style>
+</head>
+<body class="gradient-custom">
+<section class="d-flex vh-100">
+    <div class="container-fluid row justify-content-center align-content-center">
+        <div class="card bg-light" style="border-radius: 1rem;">
+            <div class="card-body p-5 text-center">
+                <h2 class="text-white text1-orange">SIGN UP</h2>
+                <p class="text-white-50 mt-2 mb-5 text2-orange">서비스 사용을 위한 로그인</p>
+                <div class= "mb-4">
+                    <button type="button" style="border: none; padding-right: 0px; padding-left: 0px;">
+                        <img src="/img/signin-assets/kakao/en/kakao_login_medium_narrow.png" alt="카카오로그인" onclick="">
+                    </button>
+                </div>
+                <div class= "mb-4">
+                    <button type="button" style="border: none; padding-right: 0px; padding-left: 0px;">
+                        <img src="/img/signin-assets/google/Web%20(mobile%20+%20desktop)/png@1x/neutral/web_neutral_rd_ctn@1x.png" alt="구글로그인" onclick="">
+                    </button>
+                </div>
+                <div class="mb-4">
+                    <a href="login2">이메일 로그인</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+</body>
+</html>
