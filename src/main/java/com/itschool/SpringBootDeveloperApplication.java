@@ -10,6 +10,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 public class SpringBootDeveloperApplication {
     public static void main(String[] args) {
         UserDao userDao = new UserDao();
+        System.out.println(userDao.selectSample("SELECT * FROM project.users;"));
         SpringApplication.run(SpringBootDeveloperApplication.class, args);
     }
 }
