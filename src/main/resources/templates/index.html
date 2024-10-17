@@ -16,11 +16,10 @@
       <img src="/img/favicon/favicon_io_reverse/android-chrome-192x192.png" style="height: 50px ;">
       
       <nav>
-        <button class="btn btn-ghost" onclick="location.href='html/login.html'">로그인</button>
-        <button class="btn btn-light" onclick="location.href='html/signup.html'">회원가입</button>
+        <button class="btn btn-ghost" onclick="location.href='/login1'">로그인</button>
+        <button class="btn btn-light" onclick="location.href='/signup'">회원가입</button>
       </nav>
     </header>
-  <div class="main-container">
     <div class="section-list">
       <div class="category">
         <div class="sub-category">
@@ -44,20 +43,21 @@
             </button>
           </div>
         </div>
-        
+
+
         <!-- <div class="sub-category"> -->
-        <div class="main-container">
+        <div class="container">
           <div class="min-h-screen bg-orange-50">
             <section class="restaurant-section">
               <div class="resent-title">
                 <h3>우리가 또간집</h3>
-              <button class="btn btn-change">전체보기</button>
+                <button class="btn btn-change">전체보기</button>
               </div>
               <div class="restaurant-grid" id="restaurantGrid2"></div>
-            </div>
+            </section>
           </div>
+        </div>
       </div>
-
     </div>
 
     <main class="container">
@@ -65,9 +65,9 @@
         <h2>맛있는 식사를 예약하세요</h2>
         <form id="searchForm">
           <input
-            type="text"
-            id="searchInput"
-            placeholder="레스토랑 또는 음식 검색"
+                  type="text"
+                  id="searchInput"
+                  placeholder="레스토랑 또는 음식 검색"
           />
           <button type="submit" class="btn btn-orange">
             <i data-lucide="search"></i> 검색
@@ -105,8 +105,6 @@
           <span>내정보</span>
         </a>
       </nav>
-  </div>
-  
     </main>
     <script src="js/main.js"></script>
     <!-- JavaScript 파일 링크 -->
