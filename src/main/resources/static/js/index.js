@@ -27,9 +27,10 @@ document.addEventListener('DOMContentLoaded', () => {
       { id: 2, name: '레스토랑 2',img:"./img/ramen.jpg", type: '일식', location: '서울시 마포구', rating: 4.2, reviews: 85 },
       { id: 3, name: '레스토랑 3',img:"./img/ramen.jpg", type: '양식', location: '서울시 종로구', rating: 4.7, reviews: 150 },
   ];
+  // 방문했던 레스토랑 데이터
   const restaurants2 = [
-    { id: 1, name: '레스토랑 1',img:"./img/라멘.jpg", type: '한식', location: '서울시 강남구', rating: 4.5, reviews: 120 },
-  
+    { id: 1, name: '레스토랑 1',img:"./img/ramen.jpg", type: '한식', location: '서울시 강남구', rating: 4.5, reviews: 120 },
+
 ];
 
   // 레스토랑 카드 생성 함수
@@ -69,10 +70,10 @@ document.addEventListener('DOMContentLoaded', () => {
   restaurants.forEach(restaurant => {
       restaurantGrid.appendChild(createRestaurantCard(restaurant));
   });
-  restaurants.forEach(restaurant => {
+  restaurants2.forEach(restaurant => {
     restaurantGrid2.appendChild(createRestaurantCard(restaurant));
 });
-  
+
 
   // 아이콘 다시 초기화 (동적으로 추가된 요소에 대해)
   lucide.createIcons();
@@ -87,7 +88,8 @@ function toggleFavorite(restaurantId) {
 // 예약 기능
 function bookRestaurant(restaurantId) {
   console.log('Booking restaurant:', restaurantId);
-  // 여기에 실제 예약 로직을 구현
+  const detailPageUrl = `/restaurant/${restaurantId}`; // 상세 페이지 URL
+    window.location.href = detailPageUrl;
 }
 
 
