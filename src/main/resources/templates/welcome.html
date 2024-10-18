@@ -1,31 +1,4 @@
-<!DOCTYPE html>
-<!-- Default Layout Import-->
-<html lang="ko"
-      xmlns:th="http://www.thymeleaf.org"
-      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorate="~{common/layouts/welcomeLayout}"
-      layout:fragment="Content"
->
-    <head>
-    </head>
-    <body>
-        <main>
-            <section style="width: 100%; height: 900px;
-                            background: linear-gradient(to right, rgba(237, 125, 49, 0.8) 0%, rgba(255, 255, 255, 0) 65%),
-                                        url('/img/table-q-character.png');
-                            background-size: contain;
-                            background-repeat: no-repeat;
-                            background-position: right top;
-                            color: black; /* 텍스트 색상 */
-                            padding: 20px; /* 텍스트 여백 */
-                            font-size: 3em; /* 폰트 크기 */
-                            display: flex; /* 중앙 정렬을 위해 flex 사용 */
-                            align-items: center; /* 수직 중앙 정렬 */
-                            justify-content: left;"> <!--linear-gradient(to right, rgba(237, 125, 49, 1), rgba(255, 255, 255, 1)),-->
-            &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp당신의 한끼를 책임질
-            <br>
-            &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp테이블 큐레이터
-            </section>
-        </main>
-    </body>
-</html>
+<main layout:decorate="~{common/layouts/welcomeLayout}"
+      layout:fragment="Content">
+    <section>당신의 한끼를 책임질<br>테이블 큐레이터</section>
+</main>
