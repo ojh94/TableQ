@@ -30,9 +30,6 @@ public class Store {
     @Column
     private String store_intro;
 
-    @Column
-    private String store_img;
-
     @Column(nullable = false)
     private String store_number;
 
