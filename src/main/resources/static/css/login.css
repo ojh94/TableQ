@@ -1,0 +1,124 @@
+body {
+    font-family: SBAggro;
+    font-size: 5rem;
+    font-weight: 500;
+    line-height: 1.3; /* 줄 간격 조정 */
+}
+
+.container {
+    width: 100vw; /* 전체 화면 너비 */
+    height: 100vh; /* 전체 화면 높이 */
+    margin: 0;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    background-color: white;
+    flex-direction: column; /* 수직으로 쌓이게 설정 */
+    justify-content: space-around;
+}
+
+.gradient-custom {
+    background: linear-gradient(to bottom, rgba(237, 125, 49, 1), rgba(237, 125, 49, 0.3))
+}
+
+.logo {
+  width: 150px;
+  height: 150px;
+}
+
+.logo a {
+  width: 100%;
+  height: 100%;
+  background: center / contain no-repeat url("/img/favicon/favicon_io_reverse/android-chrome-512x512.png");
+  display: block;
+  text-indent: -9999px; /* 대체 텍스트 */
+}
+
+.panel {
+    height: 70vh;
+    border-radius: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.panel-body {
+    height: 100%;
+    display: flex;
+    flex-direction: column; /* 수직으로 쌓이게 설정 */
+    align-items: center;
+    justify-content: space-around;
+    text-align: center; /* 텍스트도 중앙 정렬 */
+}
+
+.text1-orange {
+    font-size: 6rem;
+    color: rgba(237, 125, 49, 1) !important;
+}
+
+.text2-orange {
+    font-size: 3rem;
+    font-weight: 300;
+    color: rgba(237, 125, 49, 0.8) !important;
+}
+
+button {
+    border: none;
+    padding: 0;
+    height: 80px; /* 버튼의 높이를 고정 */
+    display: flex; /* 플렉스 박스 설정 */
+    align-items: center; /* 수직 중앙 정렬 */
+    justify-content: center; /* 수평 중앙 정렬 */
+    background: transparent; /* 배경을 투명으로 설정하여 원래 이미지를 그대로 보이게 함 */
+}
+
+img {
+    width: 350px;
+    height: 80px;
+}
+
+.email-login {
+    font-family: Arial, sans-serif;
+    font-weight: bold;
+    font-size: 2rem;
+}
+
+/* 반응형 스타일 */
+@media (min-width: 992px) {
+    .text1-orange {
+        font-size: 4rem;
+        color: rgba(237, 125, 49, 1) !important;
+    }
+
+    .text2-orange {
+        font-size: 2rem;
+        font-weight: 300;
+        color: rgba(237, 125, 49, 0.8) !important;
+    }
+}
+
+@media (min-width: 1200px) {
+    .panel {
+        width: 50vw;
+    }
+
+    .text1-orange {
+        font-size: 4rem;
+        color: rgba(237, 125, 49, 1) !important;
+    }
+
+    .text2-orange {
+        font-size: 2rem;
+        font-weight: 300;
+        color: rgba(237, 125, 49, 0.8) !important;
+    }
+
+    img {
+        width: 260px;
+        height: 60px;
+    }
+
+    .email-login {
+        font-size: 1rem;
+    }
+}

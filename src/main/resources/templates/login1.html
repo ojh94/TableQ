@@ -1,51 +1,47 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8">
-    <title>로그인</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css">
-    <style>
-        .gradient-custom {
-          background: linear-gradient(to right, rgba(237, 125, 49, 1), rgba(255, 255, 255, 1))
-        }
+    <head>
+        <meta charset="UTF-8">
+        <title>로그인 - TableQ</title>
+        <link rel="apple-touch-icon" sizes="180x180" href="/img/favicon/favicon_io/apple-touch-icon.png">
+        <link rel="icon" type="image/png" sizes="32x32" href="/img/favicon/favicon_io/favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="/img/favicon/favicon_io/favicon-16x16.png">
 
-        .text1-orange {
-            color: rgba(237, 125, 49, 1) !important;
-        }
+        <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/ungveloper/web-fonts/SBAggro/font-face.css" />
+        <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/ungveloper/web-fonts/SBAggro/font-family.css" />
 
-        .text2-orange {
-            color: rgba(237, 125, 49, 0.8) !important;
-        }
-    </style>
-</head>
-<body class="gradient-custom">
-<section class="d-flex vh-100">
-    <div class="container-fluid row justify-content-center align-content-center">
-        <div class="card bg-light" style="border-radius: 1rem;">
-            <div class="card-body p-5 text-center">
-                <div class= "mb-4">
-                    <button type="button" style="border: none; padding-right: 0px; padding-left: 0px; background-color: transparent;">
-                        <img width="45" height="45" src="/img/favicon/favicon_io/apple-touch-icon.png" alt="홈" onclick="location.href='/'">
-                    </button>
-                </div>
-                <h2 class="text-white text1-orange">SIGN UP</h2>
-                <p class="text-white-50 mt-2 mb-5 text2-orange">서비스 사용을 위한 로그인</p>
-                <div class= "mb-4">
-                    <button type="button" style="border: none; padding-right: 0px; padding-left: 0px;">
-                        <img src="/img/signin-assets/kakao/en/kakao_login_medium_narrow.png" alt="카카오" onclick="">
-                    </button>
-                </div>
-                <div class= "mb-4">
-                    <button type="button" style="border: none; padding-right: 0px; padding-left: 0px;">
-                        <img src="/img/signin-assets/google/Web%20(mobile%20+%20desktop)/png@1x/neutral/web_neutral_rd_ctn@1x.png" alt="구글" onclick="">
-                    </button>
-                </div>
-                <div class="mb-4">
-                    <a href="login2">이메일 로그인</a>
+        <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@3.4.1/dist/js/bootstrap.min.js" integrity="sha384-aJ21OjlMXNL5UyIl/XNwTMqvzeRMZH2w8c5cRVpzpU8Y5bApTppSuUkhZXN0VxHd" crossorigin="anonymous"></script>
+
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.4.1/dist/css/bootstrap.min.css" integrity="sha384-HSMxcRTRxnN+Bdg0JdbxYKrThecOKuH5zCYotlSAcp1+c8xmyTe9GYg1l9a69psu" crossorigin="anonymous">
+        <link rel="stylesheet" href="css/reset.css" />
+        <link rel="stylesheet" href="css/login.css" />
+    </head>
+    <body>
+        <div class="container gradient-custom col-xs-12">
+            <div class="logo">
+                <a href="/"></a>
+            </div>
+
+            <div class="panel panel-default col-xs-10 col-sm-10 col-md-8 col-lg-8">
+                <div class="panel-body">
+                    <h2 class="text1-orange">SIGN UP</h2>
+                    <p class="text2-orange mt-2 mb-5">서비스 사용을 위한 로그인</p>
+                    <div class="mb-4">
+                        <button type="button">
+                            <img src="/img/signin-assets/kakao/en/kakao_login_large_narrow.png" alt="카카오" onclick="">
+                        </button>
+                    </div>
+                    <div class="mb-4">
+                        <button type="button">
+                            <img src="/img/signin-assets/google/Web%20(mobile%20+%20desktop)/png@4x/neutral/web_neutral_sq_SI@4x.png" alt="구글" onclick="">
+                        </button>
+                    </div>
+                    <div class="mb-4">
+                        <a class="email-login" href="login2">이메일 로그인</a>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
-</section>
-</body>
+    </body>
 </html>
