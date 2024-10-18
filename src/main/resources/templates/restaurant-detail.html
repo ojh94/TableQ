@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <link rel="icon" href="/favicon.ico">
+    <meta charset="UTF-8" xmlns:th="http://www.thymeleaf.org">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>레스토랑 상세 정보</title>
+    <link rel="stylesheet" href="/css/index.css"> <!-- 필요시 스타일링을 위한 CSS 파일 -->
+    <style>
+        /* 간단한 페이지 스타일 */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f7f7f7;
+            padding: 20px;
+        }
+        header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        h1 {
+            color: #333;
+        }
+        section {
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        h2 {
+            margin-top: 0;
+        }
+        ul {
+            list-style: none;
+            padding: 0;
+        }
+        ul li {
+            background-color: #f0f0f0;
+            padding: 10px;
+            margin-bottom: 5px;
+            border-radius: 5px;
+        }
+        .restaurant-description {
+            font-size: 16px;
+            line-height: 1.5;
+            margin-bottom: 20px;
+        }
+        .restaurant-address, .restaurant-phone {
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>레스토랑 1</h1> <!-- 고정된 레스토랑 이름 -->
+</header>
+
+<main id="restaurantDetail">
+    <!-- 설명 -->
+    <section class="restaurant-description">
+        <h2>레스토랑 설명</h2>
+        <p>이 레스토랑은 최고의 한식 요리를 제공합니다. 신선한 재료와 정통적인 요리법을 고수하며, 편안한 분위기에서 식사를 즐기실 수 있습니다.</p>
+    </section>
+
+    <!-- 메뉴 -->
+    <section class="restaurant-menu">
+        <h2>메뉴</h2>
+        <ul>
+            <li>비빔밥 - 12,000원</li>
+            <li>된장찌개 - 8,000원</li>
+            <li>불고기 - 15,000원</li>
+        </ul>
+    </section>
+
+    <!-- 운영 시간 -->
+    <section class="restaurant-operating-hours">
+        <h2>운영 시간</h2>
+        <p>평일: 10:00 AM - 10:00 PM</p>
+        <p>주말: 11:00 AM - 9:00 PM</p>
+        <p>브레이크타임: 평일 3:00 PM - 5:00 PM, 주말 없음</p>
+        <p>휴무일: 일요일</p>
+    </section>
+
+    <!-- 편의시설 -->
+    <section class="restaurant-facilities">
+        <h2>편의시설</h2>
+        <ul>
+            <li>주차 가능</li>
+            <li>Wi-Fi 제공</li>
+            <li>화장실 있음</li>
+        </ul>
+    </section>
+
+    <!-- 해시태그 -->
+    <section class="restaurant-hashtags">
+        <h2>매장의 특징</h2>
+        <ul>
+            <li>#한식맛집</li>
+            <li>#데이트코스</li>
+            <li>#가족모임</li>
+        </ul>
+    </section>
+
+    <!-- 연락처 -->
+    <section class="restaurant-contact-info">
+        <h2>연락처</h2>
+        <p class="restaurant-address">서울시 강남구 테헤란로 123</p>
+        <p class="restaurant-phone">전화번호: 02-123-4567</p>
+    </section>
+</main>
+
+</body>
+</html>
+
