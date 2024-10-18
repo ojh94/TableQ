@@ -50,15 +50,14 @@ public class WebSecurityConfig {
                         ).permitAll()
                         .anyRequest().authenticated())
                 .formLogin(formLogin -> formLogin // 폼 기반 로그인 설정
-                        .loginPage("/login")
-                        .defaultSuccessUrl("/articles")
+                        .loginPage("/login1")
+                        .defaultSuccessUrl("/index")
                 )
                 .logout(logout -> logout // 로그아웃 설정
                         .logoutUrl("/logout")
-                        .logoutSuccessUrl("/login")
+                        .logoutSuccessUrl("/")
                         .invalidateHttpSession(true)
                         .deleteCookies("JSESSIONID")
-
                 )
                 .csrf((csrf) -> csrf.ignoringRequestMatchers(
                         new AntPathRequestMatcher("api/**"),
