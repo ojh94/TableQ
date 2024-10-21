@@ -9,8 +9,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 
 @RequiredArgsConstructor
 @Controller
@@ -20,7 +22,7 @@ public class UserApiController {
 
 
     @PostMapping("/user")
-    public String signup(AddUserRequest request) {
+    public String signup(@RequestBody AddUserRequest request, BindingResult bindingResult) {
         userService.getAllUsers();
         userService.save(request);
         return "redirect:/login";
