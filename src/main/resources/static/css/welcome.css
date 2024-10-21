@@ -141,12 +141,12 @@ footer .logo:hover svg {
       font-size: 2em; /* 태블릿 폰트 크기 */
       background: url('/img/table-q-character.png') no-repeat right bottom,
                     linear-gradient(to bottom, rgba(237, 125, 49, 0.8) 50%, rgba(255, 255, 255, 0) 100%);
-      background-position: center;
+      background-position: 65% 50%;
       background-size: contain;
-      padding: 15px;
+      padding: 15px 60% 15px 15px;
       display: flex;
       align-items: center;
-      justify-content: start;
+      justify-content: end;
       text-align: center;
     }
 }
