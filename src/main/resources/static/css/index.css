@@ -39,9 +39,17 @@
 }
 
 body, html {
+
   margin: 0;
   padding: 0;
   font-family: Arial, sans-serif;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  min-height: 100vh; /* 세로 중앙 정렬을 위해 추가 */
+  background-color: #f4f4f4; /* 배경색 유지 */
 }
 
 .min-h-screen {
@@ -53,9 +61,10 @@ body, html {
 }
 
 .container {
+
   max-width: 1200px;
   margin: 0 auto;
-  padding: 0 1rem;
+  padding: 0 15px;
 }
 
 header {
@@ -71,15 +80,23 @@ header .container {
   justify-content: space-between;
   align-items: center;
 }
+
+header, .toolbar-top, .toolbar {
+  max-width: 1200px;  /* 헤더와 툴바에도 동일한 고정된 너비 적용 */
+  margin: 0 auto;     /* 가로 중앙 정렬 */
+  width: 100%;
+  padding: 0 15px;    /* 좌우 패딩 추가 */
+}
+
 .main-container{
-  
+
   border-radius: 10px;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
   padding: 20px;
-  max-width: 1400px; /* 중앙 콘텐츠의 너비를 늘림 */
+  max-width: 20000px; /* 중앙 콘텐츠의 너비를 늘림 */
   margin: 0 auto;
 
-  
+
 }
 
 .logo {
@@ -99,7 +116,7 @@ header .container {
 .btn-ghost {
   background-color: #BE78FF;
   color: white;
-  
+
 }
 .btn-local {
   cursor: pointer;
@@ -267,17 +284,34 @@ header .container {
 }
 
 @media (max-width: 768px) {
+  .container, .main-container, header, .toolbar-top, .toolbar {
+    max-width: 2000px;  /* 고정된 최대 너비 */
+    margin: 0 auto;     /* 가로 중앙 정렬 */
+    padding: 0 15px;    /* 좌우 패딩 */
+    width: 150%;
+  }
+}
+
+@media (max-width: 768px) {
   .restaurant-grid {
       grid-template-columns: 1fr;
   }
 }
 
 body {
-  font-family: Arial, sans-serif;
   margin: 0;
   padding: 0;
-  background-color: #f4f4f4; /* 전체 페이지에 밝은 회색 배경색 적용 */
-  padding-bottom: 60px; /* 툴바 공간 확보 */
+  font-family: Arial, sans-serif;
+  background-color: #f4f4f4;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  max-width: 1200px; /* 툴바와 동일한 최대 너비 설정 */
+  margin: 0 auto; /* 가로 중앙 정렬 */
+  padding-bottom: 80px; /* 툴바 공간 확보 */
+  width: 100%;
 }
 
 header {
@@ -294,8 +328,8 @@ header {
   color: black;
 }
 .category {
+  margin-top: 3%;
   display: flex;
-  
   flex-direction: column;
   align-items: center; /* 가로 중앙 정렬 */
 }
@@ -307,7 +341,6 @@ header {
   margin-bottom: 20px;
   margin-inline: 20px;
   padding: 15px;
-  width: 80%;
   max-width: 800px;
 }
 
@@ -355,7 +388,7 @@ header {
   background-color: white;
   border-radius: 10px;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-  
+
   margin-bottom: 20px;
   padding: 15px;
   width: 50%;
@@ -417,7 +450,7 @@ header {
   height: 50%;
   display: flex;
   align-items: center;
-  
+
 }
 
 .restaurant-item {
@@ -488,11 +521,12 @@ header {
   outline-offset: 2px;
 }
 .toolbar-top {
-  
   position: fixed;
   top: 0;
   left: 0;
-  width: 100%;
+  left: 50%; /* 왼쪽에서부터 50% 위치 */
+  transform: translateX(-50%); /* 수평 중앙 정렬 */
+
   background-color:  var(--color-orange-600);
   display: flex;
   padding: 0.5rem 0;
@@ -500,11 +534,14 @@ header {
   z-index:1;
 }
 .toolbar {
-  
+
   position: fixed;
+  align-items: center;
   bottom: 0;
   left: 0;
-  width: 100%;
+  left: 50%; /* 왼쪽에서부터 50% 위치 */
+  transform: translateX(-50%); /* 수평 중앙 정렬 */
+
   background-color: var(--color-orange-600);
   display: flex;
   justify-content: space-around;
@@ -514,10 +551,10 @@ header {
 }
 
 .toolbar-item {
-  
+
   display: flex;
   flex-direction: column;
-  align-items: center;
+
   text-decoration: none;
   color: white;
   font-size: 0.75rem;
