@@ -50,7 +50,7 @@ public class WebSecurityConfig {
                         ).permitAll()
                         .anyRequest().authenticated())
                 .formLogin(formLogin -> formLogin // 폼 기반 로그인 설정
-                        .loginPage("/auth")
+                        .loginPage("/login")
                         .defaultSuccessUrl("/index")
                 )
                 .logout(logout -> logout // 로그아웃 설정
