@@ -1,202 +1,202 @@
 <!DOCTYPE html>
 <html lang="ko">
-    <head>
-        <meta charset="UTF-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link rel="icon" href="/img/favicon/favicon_io/favicon.ico">
-        <title>Email 회원가입</title>
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="/img/favicon/favicon_io/favicon.ico">
+    <title>Email 회원가입</title>
 
-        <!-- Bootstrap CSS -->
-        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
-              integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 
-        <style>
-            body {
-              min-height: 100vh;
-              background: linear-gradient(to right, rgba(237, 125, 49, 1), rgba(237, 125, 49, 0.3))
-            }
+    <style>
+        body {
+            min-height: 100vh;
+            background: linear-gradient(to right, rgba(237, 125, 49, 1), rgba(237, 125, 49, 0.3))
+        }
 
-            .input-form {
-              max-width: 680px;
+        .input-form {
+            max-width: 680px;
 
-              margin-top: 80px;
-              padding: 32px;
+            margin-top: 80px;
+            padding: 32px;
 
-              background: #fff;
-              -webkit-border-radius: 10px;
-              -moz-border-radius: 10px;
-              border-radius: 10px;
-              -webkit-box-shadow: 0 8px 20px 0 rgba(0, 0, 0, 0.15);
-              -moz-box-shadow: 0 8px 20px 0 rgba(0, 0, 0, 0.15);
-              box-shadow: 0 8px 20px 0 rgba(0, 0, 0, 0.15)
-            }
+            background: #fff;
+            -webkit-border-radius: 10px;
+            -moz-border-radius: 10px;
+            border-radius: 10px;
+            -webkit-box-shadow: 0 8px 20px 0 rgba(0, 0, 0, 0.15);
+            -moz-box-shadow: 0 8px 20px 0 rgba(0, 0, 0, 0.15);
+            box-shadow: 0 8px 20px 0 rgba(0, 0, 0, 0.15)
+        }
 
-            .btn-orange {
-                background-color: rgba(237, 125, 49, 1) !important;
-            }
+        .btn-orange {
+            background-color: rgba(237, 125, 49, 1) !important;
+        }
 
-            .text-orange {
-                color: rgba(237, 125, 49, 1) !important;
-            }
+        .text-orange {
+            color: rgba(237, 125, 49, 1) !important;
+        }
 
-            .child {
-              /* 상하좌우 정렬하기 */
-              transform: translate(0%, 2%);
-            }
+        .child {
+            /* 상하좌우 정렬하기 */
+            transform: translate(0%, 2%);
+        }
 
-            .certification {
-                position: relative;
-                display: flex; /* 얜 뭐지? */
-            }
+        .certification {
+            position: relative;
+            display: flex; /* 얜 뭐지? */
+        }
 
-            .certification button {
-                position: absolute;
-                top: 1px;
-                bottom: 1px;
-                right: 5px;
-                border-radius: 20px;
-            }
-        </style>
-    </head>
-    <body>
-        <div class="container">
-            <div class="child">
-                <div class="row">
-                    <div class="input-form col-md-12 mx-auto">
-                        <div class= "mb-4 text-center">
-                            <button type="button" style="border: none; padding-right: 0px; padding-left: 0px; background-color: transparent; outline: none;">
-                                <img class="rounded" width="45" height="45" src="/img/favicon/favicon_io/apple-touch-icon.png" alt="홈" onclick="location.href='/'">
-                            </button>
+        .certification button {
+            position: absolute;
+            top: 1px;
+            bottom: 1px;
+            right: 5px;
+            border-radius: 20px;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="child">
+        <div class="row">
+            <div class="input-form col-md-12 mx-auto">
+                <div class= "mb-4 text-center">
+                    <button type="button" style="border: none; padding-right: 0px; padding-left: 0px; background-color: transparent; outline: none;">
+                        <img class="rounded" width="45" height="45" src="/img/favicon/favicon_io/apple-touch-icon.png" alt="홈" onclick="location.href='/'">
+                    </button>
+                </div>
+                <h4 class="mb-4 text-orange text-center" style="font-weight:bold">Email 회원가입</h4>
+                <form class="validation-form" novalidate>
+                    <div class="mb-3">
+                        <label for="name">이름</label>
+                        <input type="text" class="form-control" id="name" placeholder="" required>
+                        <div class="invalid-feedback">
+                            이름을 입력해주세요.
                         </div>
-                        <h4 class="mb-4 text-orange text-center" style="font-weight:bold">Email 회원가입</h4>
-                        <form class="validation-form" action="/user" method="POST" novalidate>
-                            <div class="mb-3">
-                                <label for="name">이름</label>
-                                <input type="text" class="form-control" id="name" placeholder="" name="name" required>
-                                <div class="invalid-feedback">
-                                    이름을 입력해주세요.
-                                </div>
-                            </div>
-
-                            <div class="mb-3">
-                                <label for="email">이메일</label>
-                                <div class="certification">
-                                    <input type="email" class="form-control" id="email" placeholder="you@example.com" name="email" required>
-                                    <button>인증</button>
-                                </div>
-                                <div class="invalid-feedback">
-                                    이메일을 입력해주세요.
-                                </div>
-                            </div>
-
-                            <div class="mb-3">
-                                <label for="phone">전화번호</label>
-                                <div class="certification">
-                                    <input type="number" class="form-control" id="phone" placeholder="숫자만 입력해주세요." name="phone_Number" required>
-                                    <button>인증</button>
-                                </div>
-                                <div class="invalid-feedback">
-                                    전화번호를 입력해주세요.
-                                </div>
-                            </div>
-
-                            <div class="row">
-                                <div class="col-md-6 mb-3">
-                                    <label for="pass1">비밀번호</label>
-                                    <input type="password" class="form-control" id="pass1" placeholder="Password" name="password" required>
-                                    <div class="invalid-feedback">
-                                        비밀번호를 입력해주세요.
-                                    </div>
-                                </div>
-                                <div class="col-md-6 mb-3">
-                                    <label for="pass2">비밀번호 확인</label>
-                                    <input type="password" class="form-control" id="pass2" placeholder="Re-enter password" required>
-                                    <div class="invalid-feedback">
-                                        비밀번호를 재입력해주세요.
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!--
-                            <div class="row">
-                                <div class="col-md-8 mb-3">
-                                    <label for="root">가입 경로</label>
-                                    <select class="custom-select d-block w-100" id="root">
-                                        <option value=""></option>
-                                        <option>검색</option>
-                                        <option>카페</option>
-                                    </select>
-                                    <div class="invalid-feedback">
-                                        가입 경로를 선택해주세요.
-                                    </div>
-                                </div>
-                                <div class="col-md-4 mb-3">
-                                    <label for="code">추천인 코드</label>
-                                    <input type="text" class="form-control" id="code" placeholder="" required>
-                                    <div class="invalid-feedback">
-                                        추천인 코드를 입력해주세요.
-                                    </div>
-                                </div>
-                            </div>
-                            -->
-
-                            <hr class="mb-4">
-                            <div class="custom-control custom-checkbox">
-                                <input type="checkbox" class="custom-control-input" id="aggrement" required>
-                                <label class="custom-control-label" for="aggrement">&nbsp;[필수] 개인정보 수집 및 이용에 동의합니다. </label>
-                                <button style="border: none; background: none; outline:none;" data-bs-toggle="modal" data-bs-target="#particularModal">
-                                    <small style="color: #0099FF; text-decoration: underline;">상세보기</small>
-                                </button>
-                            </div>
-                            <div class="mb-4"></div>
-                            <button class="btn btn-orange btn-lg btn-block text-light" type="submit">가입 완료</button>
-                        </form>
                     </div>
-                </div>
-                <footer class="my-3 text-center text-small">
-                    <p class="mb-1">© 2024 Table Q.</p>
-                </footer>
+
+                    <div class="mb-3">
+                        <label for="email">이메일</label>
+                        <div class="certification">
+                            <input type="email" class="form-control" id="email" placeholder="you@example.com" required>
+                            <button>인증</button>
+                        </div>
+                        <div class="invalid-feedback">
+                            이메일을 입력해주세요.
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="phone">전화번호</label>
+                        <div class="certification">
+                            <input type="number" class="form-control" id="phone" placeholder="숫자만 입력해주세요." required>
+                            <button>인증</button>
+                        </div>
+                        <div class="invalid-feedback">
+                            전화번호를 입력해주세요.
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="pass1">비밀번호</label>
+                            <input type="password" class="form-control" id="pass1" placeholder="Password" required>
+                            <div class="invalid-feedback">
+                                비밀번호를 입력해주세요.
+                            </div>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="pass2">비밀번호 확인</label>
+                            <input type="password" class="form-control" id="pass2" placeholder="Re-enter password" required>
+                            <div class="invalid-feedback">
+                                비밀번호를 재입력해주세요.
+                            </div>
+                        </div>
+                    </div>
+
+                    <!--
+                    <div class="row">
+                        <div class="col-md-8 mb-3">
+                            <label for="root">가입 경로</label>
+                            <select class="custom-select d-block w-100" id="root">
+                                <option value=""></option>
+                                <option>검색</option>
+                                <option>카페</option>
+                            </select>
+                            <div class="invalid-feedback">
+                                가입 경로를 선택해주세요.
+                            </div>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <label for="code">추천인 코드</label>
+                            <input type="text" class="form-control" id="code" placeholder="" required>
+                            <div class="invalid-feedback">
+                                추천인 코드를 입력해주세요.
+                            </div>
+                        </div>
+                    </div>
+                    -->
+
+                    <hr class="mb-4">
+                    <div class="custom-control custom-checkbox">
+                        <input type="checkbox" class="custom-control-input" id="aggrement" required>
+                        <label class="custom-control-label" for="aggrement">&nbsp;[필수] 개인정보 수집 및 이용에 동의합니다. </label>
+                        <button style="border: none; background: none; outline:none;" data-bs-toggle="modal" data-bs-target="#particularModal">
+                            <small style="color: #0099FF; text-decoration: underline;">상세보기</small>
+                        </button>
+                    </div>
+                    <div class="mb-4"></div>
+                    <button class="btn btn-orange btn-lg btn-block text-light" type="submit">가입 완료</button>
+                </form>
             </div>
         </div>
+        <footer class="my-3 text-center text-small">
+            <p class="mb-1">© 2024 Table Q.</p>
+        </footer>
+    </div>
+</div>
 
-        <div class="modal fade" id="particularModal" tabindex="-1" aria-labelledby="particularModalLabel" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-scrollable">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h1 class="modal-title fs-5" id="particularModalLabel">개인정보 수집 및 이용 동의서</h1>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                        <p>Modal body text goes here.</p>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
-                        <button type="button" class="btn btn-primary btn-orange">문의하기</button>
-                    </div>
-                </div>
+<div class="modal fade" id="particularModal" tabindex="-1" aria-labelledby="particularModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="particularModalLabel">개인정보 수집 및 이용 동의서</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>Modal body text goes here.</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
+                <button type="button" class="btn btn-primary btn-orange">문의하기</button>
             </div>
         </div>
+    </div>
+</div>
 
-        <!-- Bootstrap JS -->
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
-                integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
-                crossorigin="anonymous">
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+        crossorigin="anonymous">
 
-            window.addEventListener('load', () => {
-              const forms = document.getElementsByClassName('validation-form');
+    window.addEventListener('load', () => {
+        const forms = document.getElementsByClassName('validation-form');
 
-              Array.prototype.filter.call(forms, (form) => {
-                form.addEventListener('submit', function (event) {
-                  if (form.checkValidity() === false) {
+        Array.prototype.filter.call(forms, (form) => {
+            form.addEventListener('submit', function (event) {
+                if (form.checkValidity() === false) {
                     event.preventDefault();
                     event.stopPropagation();
-                  }
+                }
 
-                  form.classList.add('was-validated');
-                }, false);
-              });
+                form.classList.add('was-validated');
             }, false);
-        </script>
-    </body>
+        });
+    }, false);
+</script>
+</body>
 </html>
