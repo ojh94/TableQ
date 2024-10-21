@@ -20,7 +20,7 @@ public class UserService {
     public Long save(AddUserRequest dto) {
         return userRepository.save(User.builder()
                 .email(dto.getEmail())
-                .password((dto.getPassword()))
+                .password(bCryptPasswordEncoder.encode(dto.getPassword()))
                 .name(dto.getName())
                 .phone_Number(dto.getPhoneNumber())
                 .created_at(LocalDateTime.now())
