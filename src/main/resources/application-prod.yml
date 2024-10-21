@@ -1,1 +1,5 @@
 # prod(운영) 환경
+spring:
+  config:
+    activate:
+      on-profile: prod  # prod 프로파일에서만 적용

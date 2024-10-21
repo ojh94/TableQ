@@ -4,11 +4,22 @@
         <meta charset="UTF-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Email 로그인</title>
+        <title>Email 로그인 - TableQ</title>
+        <link rel="apple-touch-icon" sizes="180x180" href="/img/favicon/favicon_io/apple-touch-icon.png">
+        <link rel="icon" type="image/png" sizes="32x32" href="/img/favicon/favicon_io/favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="/img/favicon/favicon_io/favicon-16x16.png">
+
+        <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/ungveloper/web-fonts/SBAggro/font-face.css" />
+        <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/ungveloper/web-fonts/SBAggro/font-family.css" />
 
         <!-- Bootstrap CSS -->
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
               integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+        <!--<script src="https://cdn.jsdelivr.net/npm/bootstrap@3.4.1/dist/js/bootstrap.min.js" integrity="sha384-aJ21OjlMXNL5UyIl/XNwTMqvzeRMZH2w8c5cRVpzpU8Y5bApTppSuUkhZXN0VxHd" crossorigin="anonymous"></script>
+
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.4.1/dist/css/bootstrap.min.css" integrity="sha384-HSMxcRTRxnN+Bdg0JdbxYKrThecOKuH5zCYotlSAcp1+c8xmyTe9GYg1l9a69psu" crossorigin="anonymous">-->
+        <!--<link rel="stylesheet" href="css/reset.css" />
+        <link rel="stylesheet" href="css/login.css" />-->
 
         <style>
             body {
@@ -38,48 +49,56 @@
             .text-orange {
                 color: rgba(237, 125, 49, 1) !important;
             }
+
+            .child {
+              /* 상하좌우 정렬하기 */
+              transform: translate(0%, 20%);
+            }
         </style>
     </head>
     <body>
         <div class="container">
-            <div class="row">
-                <div class="input-form col-md-12 mx-auto">
-                    <div class= "mb-4 text-center">
-                        <button type="button" style="border: none; padding-right: 0px; padding-left: 0px; background-color: transparent; outline: none;">
-                            <img class="rounded" width="45" height="45" src="/img/favicon/favicon_io/apple-touch-icon.png" alt="홈" onclick="location.href='/'">
-                        </button>
+            <div class="child">
+                <div class="row">
+                    <div class="input-form col-md-12 mx-auto">
+                        <div class= "mb-4 text-center">
+                            <button type="button" style="border: none; padding-right: 0px; padding-left: 0px; background-color: transparent; outline: none;">
+                                <img class="rounded" width="45" height="45" src="/img/favicon/favicon_io/apple-touch-icon.png" alt="홈" onclick="location.href='/'">
+                            </button>
+                        </div>
+                        <h4 class="mb-4 text-orange text-center" style="font-weight:bold">Email 로그인</h4>
+                        <form class="validation-form" novalidate>
+                            <div class="mb-3">
+                                <label for="email">이메일</label>
+                                <input type="email" class="form-control" id="email" placeholder="you@example.com" required>
+                                <div class="invalid-feedback">
+                                    이메일을 입력해주세요.
+                                </div>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="pass1">비밀번호</label>
+                                <input type="password" class="form-control" id="pass1" required>
+                                <div class="invalid-feedback">
+                                    비밀번호를 입력해주세요.
+                                </div>
+                            </div>
+
+                            <div class="mb-4"></div>
+                            <button class="btn btn-orange btn-lg btn-block text-light" type="submit">확인</button>
+
+                            <div class="mb-4"></div>
+                            <div style="justify-content: space-between; display: flex;">
+                                <a href="signup">이메일 회원가입</a>
+                                <a href="">비밀번호 찾기</a>
+                            </div>
+                        </form>
                     </div>
-                    <h4 class="mb-4 text-orange text-center" style="font-weight:bold">Email 로그인</h4>
-                    <form class="validation-form" novalidate>
-                        <div class="mb-3">
-                            <label for="email">이메일</label>
-                            <input type="email" class="form-control" id="email" placeholder="you@example.com" required>
-                            <div class="invalid-feedback">
-                                이메일을 입력해주세요.
-                            </div>
-                        </div>
-
-                        <div class="mb-3">
-                            <label for="pass1">비밀번호</label>
-                            <input type="password" class="form-control" id="pass1" required>
-                            <div class="invalid-feedback">
-                                비밀번호를 입력해주세요.
-                            </div>
-                        </div>
-
-                        <div class="mb-4"></div>
-                        <button class="btn btn-orange btn-lg btn-block text-light" type="submit">확인</button>
-
-                        <div class="mb-4"></div>
-                        <div style="text-align: center;">
-                            <a href="signup">이메일 회원가입</a>
-                        </div>
-                    </form>
                 </div>
+                <footer class="my-3 text-center text-small">
+                    <p class="mb-1">© 2024 Table Q.</p>
+                </footer>
             </div>
-            <footer class="my-3 text-center text-small">
-                <p class="mb-1">&copy; 2024 YD</p>
-            </footer>
         </div>
         <script>
             window.addEventListener('load', () => {
