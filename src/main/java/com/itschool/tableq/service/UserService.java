@@ -7,6 +7,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -19,6 +21,10 @@ public class UserService {
         return userRepository.save(User.builder()
                 .email(dto.getEmail())
                 .password((dto.getPassword()))
+                .name(dto.getName())
+                .phone_Number(dto.getPhone_number())
+                .created_at(Timestamp.valueOf(LocalDateTime.now()))
+                .last_login_at(Timestamp.valueOf(LocalDateTime.now()))
                 .build()).getId();
     }
 

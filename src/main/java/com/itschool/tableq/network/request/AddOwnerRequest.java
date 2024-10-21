@@ -12,7 +12,7 @@ public class AddOwnerRequest {
     private String username;
     private String password;
     private String name;
-    private String contact_number;
+    private String phone_number;
     private Timestamp created_at;
     private Timestamp last_modified_at;
 

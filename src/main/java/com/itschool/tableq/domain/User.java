@@ -34,7 +34,7 @@ public class User implements UserDetails {
     @Column(updatable = false)
     private Timestamp created_at;
 
-    @Column
+    @Column(nullable = false)
     private Timestamp last_login_at;
 
     @Column
@@ -53,29 +53,20 @@ public class User implements UserDetails {
     private String email;
 
     @Builder
-    public User(long id, String email, String password, String nickName, String phoneNumber, Timestamp timestamp, Timestamp timestamp1
+    public User(long id, String email, String password, String nickName, String phone_Number, Timestamp created_at, Timestamp last_login_at
             , String address, String name, String socialType, String socialId) {
         this.id = id;
         this.email = email;
         this.password = password;
         this.nickName = nickName;
-        this.phone_Number = phoneNumber;
-        this.created_at = timestamp;
-        this.last_login_at = timestamp1;
+        this.phone_Number = phone_Number;
+        this.created_at = created_at;
+        this.last_login_at = last_login_at;
         this.address = address;
         this.name = name;
         this.social_type = socialType;
         this.social_id = socialId;
     }
-
-/*    public User(String email, String password, String phone_Number, String name) {
-        this.password = password;
-        this.email = email;
-        this.phone_Number = phone_Number;
-        this.name = name;
-        this.created_at = new Timestamp(System.currentTimeMillis());
-        this.last_login_at = new Timestamp(System.currentTimeMillis());
-    }*/
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

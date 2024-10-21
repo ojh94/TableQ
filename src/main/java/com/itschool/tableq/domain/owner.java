@@ -24,14 +24,11 @@ public class owner {
     @Column(nullable = false)
     private String password;
 
-  /*  @Column(nullable = false, unique = true)
-    private String buisness_number;*/
-
     @Column(nullable = false)
     private String name;
 
     @Column(nullable = false)
-    private String contact_number;
+    private String phone_number;
 
     @Column(nullable = false)
     private Timestamp created_at;

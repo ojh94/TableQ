@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
+import java.security.Timestamp;
 
 @Table(name = "Store")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -19,20 +20,27 @@ public class Store {
     private Long id;
 
     @Column(nullable = false)
-    private Long owner_key;
+    private Long buisness_id;
 
     @Column(nullable = false)
-    private String store_name;
+    private String name;
 
     @Column(nullable = false)
-    private String store_address;
+    private String address;
 
     @Column
-    private String store_intro;
+    private String introduction;
 
     @Column(nullable = false)
-    private String store_number;
+    private String contact_number;
 
     @Column(nullable = false)
-    private BigDecimal store_status;
+    private boolean is_available;
+
+    @Column(nullable = false)
+    private Timestamp created_at;
+
+    @Column(nullable = false)
+    private Timestamp last_modified_at;
+
 }
