@@ -26,7 +26,7 @@ public class UserApiController {
     @PostMapping("/user")
     public String signup(@ModelAttribute AddUserRequest request, BindingResult bindingResult) {
         userService.save(request);
-        return "redirect:/login";
+        return "redirect:/login2";
     }
 
     @GetMapping("/logout")
