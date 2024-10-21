@@ -4,6 +4,7 @@ import com.itschool.tableq.network.request.AddUserRequest;
 import com.itschool.tableq.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -11,6 +12,7 @@ import org.springframework.security.web.authentication.logout.SecurityContextLog
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
@@ -22,8 +24,7 @@ public class UserApiController {
 
 
     @PostMapping("/user")
-    public String signup(@RequestBody AddUserRequest request, BindingResult bindingResult) {
-        userService.getAllUsers();
+    public String signup(@ModelAttribute AddUserRequest request, BindingResult bindingResult) {
         userService.save(request);
         return "redirect:/login";
     }

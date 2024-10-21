@@ -21,7 +21,7 @@ class UserRepositoryTest {
             User entity = User.builder()
                     .email("mykd2012@gmail.com")
                     .password("1234")
-                    .phoneNumber("010-6564-1047")
+                    .phone_Number("010-6564-1047")
                     .name("오재헌")
                     .nickName("nik")
                     .build();

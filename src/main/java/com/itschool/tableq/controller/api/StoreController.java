@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("")
+@RequestMapping("/api")
 public class StoreController {
     private final com.itschool.tableq.service.storeService storeService;
 

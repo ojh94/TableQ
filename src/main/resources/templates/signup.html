@@ -34,6 +34,12 @@
 
             .btn-orange {
                 background-color: rgba(237, 125, 49, 1) !important;
+                border-color: rgba(237, 125, 49, 1) !important;
+            }
+
+            input:focus, textarea:focus {
+              border-color: rgba(237, 125, 49, 0.8) !important; /* 원하는 테두리 색상 */
+              box-shadow: 0 0 0 3px rgba(237, 125, 49, 0.5) !important; /* 포커스 시 테두리 강조 효과 (옵션) */
             }
 
             .text-orange {
@@ -57,6 +63,34 @@
                 right: 5px;
                 border-radius: 20px;
             }
+
+            .btn-close {
+              box-sizing: content-box;
+              width: 1em;
+              height: 1em;
+              padding: 0.25em 0.25em;
+              color: #000; /* 닫기 아이콘 색상 (검정색) */
+              background: transparent; /* 배경 투명 */
+              border: none; /* 테두리 없음 */
+              appearance: none; /* 기본 스타일 제거 */
+              cursor: pointer; /* 마우스 커서를 포인터로 변경 */
+            }
+
+            .btn-close:hover {
+              color: #000; /* 호버 시 닫기 아이콘 색상 (필요 시 변경 가능) */
+              opacity: 0.75; /* 호버 시 약간 투명하게 */
+            }
+
+            .btn-close:focus {
+              outline: none; /* 포커스 시 외곽선 제거 */
+              box-shadow: none; /* 포커스 시 그림자 제거 */
+            }
+
+            .btn-close::before {
+              content: "×"; /* 닫기 아이콘 */
+              font-size: 1.5em; /* 아이콘 크기 */
+              display: block;
+            }
         </style>
     </head>
     <body>
@@ -70,10 +104,10 @@
                             </button>
                         </div>
                         <h4 class="mb-4 text-orange text-center" style="font-weight:bold">Email 회원가입</h4>
-                        <form class="validation-form" novalidate>
+                        <form class="validation-form" id="signupForm" method="post" action="/user" novalidate>
                             <div class="mb-3">
                                 <label for="name">이름</label>
-                                <input type="text" class="form-control" id="name" placeholder="" required>
+                                <input type="text" class="form-control" id="name" name="name" placeholder="" required>
                                 <div class="invalid-feedback">
                                     이름을 입력해주세요.
                                 </div>
@@ -82,7 +116,7 @@
                             <div class="mb-3">
                                 <label for="email">이메일</label>
                                 <div class="certification">
-                                    <input type="email" class="form-control" id="email" placeholder="you@example.com" required>
+                                    <input type="email" class="form-control" id="email" name="email" placeholder="you@example.com" required>
                                     <button>인증</button>
                                 </div>
                                 <div class="invalid-feedback">
@@ -93,7 +127,7 @@
                             <div class="mb-3">
                                 <label for="phone">전화번호</label>
                                 <div class="certification">
-                                    <input type="number" class="form-control" id="phone" placeholder="숫자만 입력해주세요." required>
+                                    <input type="number" class="form-control" id="phone" name="phoneNumber" placeholder="숫자만 입력해주세요." required>
                                     <button>인증</button>
                                 </div>
                                 <div class="invalid-feedback">
@@ -104,7 +138,7 @@
                             <div class="row">
                                 <div class="col-md-6 mb-3">
                                     <label for="pass1">비밀번호</label>
-                                    <input type="password" class="form-control" id="pass1" placeholder="Password" required>
+                                    <input type="password" class="form-control" id="pass1" name="password" placeholder="Password" required>
                                     <div class="invalid-feedback">
                                         비밀번호를 입력해주세요.
                                     </div>
@@ -150,7 +184,7 @@
                                 </button>
                             </div>
                             <div class="mb-4"></div>
-                            <button class="btn btn-orange btn-lg btn-block text-light" type="submit">가입 완료</button>
+                            <button class="btn btn-orange btn-lg btn-block text-light" type="submit" form="signupForm">가입 완료</button>
                         </form>
                     </div>
                 </div>
@@ -164,7 +198,7 @@
             <div class="modal-dialog modal-dialog-scrollable">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h1 class="modal-title fs-5" id="particularModalLabel">개인정보 수집 및 이용 동의서</h1>
+                        <h2 class="modal-title fs-5" id="particularModalLabel">개인정보 수집 및 이용 동의서</h2>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
@@ -172,7 +206,7 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
-                        <button type="button" class="btn btn-primary btn-orange">문의하기</button>
+                        <!--<button type="button" class="btn btn-primary btn-orange">문의하기</button>-->
                     </div>
                 </div>
             </div>
@@ -181,9 +215,10 @@
         <!-- Bootstrap JS -->
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
                 integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
-                crossorigin="anonymous">
+                crossorigin="anonymous"></script>
 
-            window.addEventListener('load', () => {
+        <script>
+            /*window.addEventListener('load', () => {
               const forms = document.getElementsByClassName('validation-form');
 
               Array.prototype.filter.call(forms, (form) => {
@@ -196,7 +231,7 @@
                   form.classList.add('was-validated');
                 }, false);
               });
-            }, false);
+            }, false);*/
         </script>
     </body>
 </html>

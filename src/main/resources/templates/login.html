@@ -67,10 +67,10 @@
                             </button>
                         </div>
                         <h4 class="mb-4 text-orange text-center" style="font-weight:bold">Email 로그인</h4>
-                        <form class="validation-form" novalidate>
+                        <form class="validation-form" id="loginForm" method="post" action="/login" novalidate>
                             <div class="mb-3">
                                 <label for="email">이메일</label>
-                                <input type="email" class="form-control" id="email" placeholder="you@example.com" required>
+                                <input type="email" class="form-control" id="email" name="email" placeholder="you@example.com" required>
                                 <div class="invalid-feedback">
                                     이메일을 입력해주세요.
                                 </div>
@@ -78,14 +78,14 @@
 
                             <div class="mb-3">
                                 <label for="pass1">비밀번호</label>
-                                <input type="password" class="form-control" id="pass1" required>
+                                <input type="password" class="form-control" id="pass1" name="password" required>
                                 <div class="invalid-feedback">
                                     비밀번호를 입력해주세요.
                                 </div>
                             </div>
 
                             <div class="mb-4"></div>
-                            <button class="btn btn-orange btn-lg btn-block text-light" type="submit">확인</button>
+                            <button class="btn btn-orange btn-lg btn-block text-light" type="submit" form="loginForm">확인</button>
 
                             <div class="mb-4"></div>
                             <div style="justify-content: space-between; display: flex;">

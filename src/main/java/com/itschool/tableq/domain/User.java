@@ -7,6 +7,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.List;
 
@@ -15,7 +16,6 @@ import java.util.List;
 @Getter
 @Entity
 public class User implements UserDetails {
-
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -26,16 +26,16 @@ public class User implements UserDetails {
     private String password;
 
     @Column(unique = true)
-    private String nickName;
+    private String nickname;
 
     @Column(nullable = false, unique = true)
-    private String phone_Number;
+    private String phoneNumber;
 
     @Column(updatable = false)
-    private Timestamp created_at;
+    private LocalDateTime createdAt;
 
-    @Column
-    private Timestamp last_login_at;
+    @Column(nullable = false)
+    private LocalDateTime lastLoginAt;
 
     @Column
     private String address;
@@ -44,38 +44,29 @@ public class User implements UserDetails {
     private String name;
 
     @Column
-    private String social_type;
+    private String socialType;
 
     @Column
-    private String social_id;
+    private String socialId;
 
     @Column(nullable = false, unique = true)
     private String email;
 
     @Builder
-    public User(long id, String email, String password, String nickName, String phoneNumber, Timestamp timestamp, Timestamp timestamp1
+    public User(long id, String email, String password, String nickName, String phone_Number, LocalDateTime created_at, LocalDateTime last_login_at
             , String address, String name, String socialType, String socialId) {
         this.id = id;
         this.email = email;
         this.password = password;
-        this.nickName = nickName;
-        this.phone_Number = phoneNumber;
-        this.created_at = timestamp;
-        this.last_login_at = timestamp1;
+        this.nickname = nickName;
+        this.phoneNumber = phone_Number;
+        this.createdAt = created_at;
+        this.lastLoginAt = last_login_at;
         this.address = address;
         this.name = name;
-        this.social_type = socialType;
-        this.social_id = socialId;
+        this.socialType = socialType;
+        this.socialId = socialId;
     }
-
-/*    public User(String email, String password, String phone_Number, String name) {
-        this.password = password;
-        this.email = email;
-        this.phone_Number = phone_Number;
-        this.name = name;
-        this.created_at = new Timestamp(System.currentTimeMillis());
-        this.last_login_at = new Timestamp(System.currentTimeMillis());
-    }*/
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -89,22 +80,22 @@ public class User implements UserDetails {
 
     @Override
     public boolean isAccountNonExpired() {
-        return false;
+        return true;
     }
 
     @Override
     public boolean isAccountNonLocked() {
-        return false;
+        return true;
     }
 
     @Override
     public boolean isCredentialsNonExpired() {
-        return false;
+        return true;
     }
 
     @Override
     public boolean isEnabled() {
-        return false;
+        return true;
     }
 
     @Override
@@ -112,14 +103,14 @@ public class User implements UserDetails {
         return "User{" +
                 "id=" + id +
                 ", password='" + password + '\'' +
-                ", nickName='" + nickName + '\'' +
-                ", phone_Number='" + phone_Number + '\'' +
-                ", created_at=" + created_at +
-                ", last_login_at=" + last_login_at +
+                ", nickName='" + nickname + '\'' +
+                ", phone_Number='" + phoneNumber + '\'' +
+                ", created_at=" + createdAt +
+                ", last_login_at=" + lastLoginAt +
                 ", address='" + address + '\'' +
                 ", name='" + name + '\'' +
-                ", social_type='" + social_type + '\'' +
-                ", social_id='" + social_id + '\'' +
+                ", social_type='" + socialType + '\'' +
+                ", social_id='" + socialId + '\'' +
                 ", email='" + email + '\'' +
                 '}';
     }

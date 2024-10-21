@@ -8,6 +8,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.security.Timestamp;
+import java.time.LocalDateTime;
 
 @Getter
 @Setter
@@ -25,9 +26,9 @@ public class AddUserRequest {
     @Pattern(regexp = "^\\+?\\d{10,15}$", message = "유효한 핸드폰 번호를 입력하세요.") // 핸드폰 번호 정규 표현식
     private String phoneNumber;
 
-    private Timestamp createdAt;
+    private LocalDateTime createdAt;
 
-    private Timestamp lastLoginAt;
+    private LocalDateTime lastLoginAt;
 
     private String address;
 

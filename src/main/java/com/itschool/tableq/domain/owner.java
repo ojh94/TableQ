@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
 @Table(name = "owner")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -24,19 +25,16 @@ public class owner {
     @Column(nullable = false)
     private String password;
 
-  /*  @Column(nullable = false, unique = true)
-    private String buisness_number;*/
-
     @Column(nullable = false)
     private String name;
 
     @Column(nullable = false)
-    private String contact_number;
+    private String phone_number;
 
     @Column(nullable = false)
-    private Timestamp created_at;
+    private LocalDateTime created_at;
 
     @Column(nullable = false)
-    private Timestamp last_modified_at;
+    private LocalDateTime last_modified_at;
 
 }
