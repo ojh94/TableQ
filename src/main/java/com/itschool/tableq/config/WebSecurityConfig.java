@@ -38,7 +38,7 @@ public class WebSecurityConfig {
                 .authorizeHttpRequests(auth -> auth // 인증, 인가 설정
                         .requestMatchers(
                                 new AntPathRequestMatcher("**"), //추후 반드시 수정
-                                new AntPathRequestMatcher("/login2"),
+                                new AntPathRequestMatcher("/login"),
                                 new AntPathRequestMatcher("/signup"),
                                 new AntPathRequestMatcher("/user"),
                                 new AntPathRequestMatcher("/api/**"),
@@ -50,7 +50,7 @@ public class WebSecurityConfig {
                         ).permitAll()
                         .anyRequest().authenticated())
                 .formLogin(formLogin -> formLogin // 폼 기반 로그인 설정
-                        .loginPage("/login1")
+                        .loginPage("/auth")
                         .defaultSuccessUrl("/index")
                 )
                 .logout(logout -> logout // 로그아웃 설정
