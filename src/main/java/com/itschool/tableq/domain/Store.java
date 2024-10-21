@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
 import java.security.Timestamp;
+import java.time.LocalDateTime;
 
 @Table(name = "Store")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -38,9 +39,9 @@ public class Store {
     private boolean is_available;
 
     @Column(nullable = false)
-    private Timestamp created_at;
+    private LocalDateTime created_at;
 
     @Column(nullable = false)
-    private Timestamp last_modified_at;
+    private LocalDateTime last_modified_at;
 
 }

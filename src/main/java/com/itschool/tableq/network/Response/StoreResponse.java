@@ -6,6 +6,7 @@ import lombok.Getter;
 
 import java.math.BigDecimal;
 import java.security.Timestamp;
+import java.time.LocalDateTime;
 
 @Getter
 public class StoreResponse {
@@ -16,10 +17,10 @@ public class StoreResponse {
     private String introduction;
     private String contact_number;
     private boolean is_available;
-    private Timestamp created_at;
-    private Timestamp last_modified_at;
+    private LocalDateTime created_at;
+    private LocalDateTime last_modified_at;
 
-    public StoreResponse(Long id, Long buisness_id, String name, String address, String introduction, String contact_number, boolean is_available, Timestamp created_at, Timestamp last_modified_at) {
+    public StoreResponse(Long id, Long buisness_id, String name, String address, String introduction, String contact_number, boolean is_available, LocalDateTime created_at, LocalDateTime last_modified_at) {
         this.id = id;
         this.buisness_id = buisness_id;
         this.name = name;

@@ -7,6 +7,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.List;
 
@@ -32,10 +33,10 @@ public class User implements UserDetails {
     private String phone_Number;
 
     @Column(updatable = false)
-    private Timestamp created_at;
+    private LocalDateTime created_at;
 
     @Column(nullable = false)
-    private Timestamp last_login_at;
+    private LocalDateTime last_login_at;
 
     @Column
     private String address;
@@ -53,7 +54,7 @@ public class User implements UserDetails {
     private String email;
 
     @Builder
-    public User(long id, String email, String password, String nickName, String phone_Number, Timestamp created_at, Timestamp last_login_at
+    public User(long id, String email, String password, String nickName, String phone_Number, LocalDateTime created_at, LocalDateTime last_login_at
             , String address, String name, String socialType, String socialId) {
         this.id = id;
         this.email = email;

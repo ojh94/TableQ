@@ -70,10 +70,10 @@
                             </button>
                         </div>
                         <h4 class="mb-4 text-orange text-center" style="font-weight:bold">Email 회원가입</h4>
-                        <form class="validation-form" novalidate>
+                        <form class="validation-form" action="/user" method="POST" novalidate>
                             <div class="mb-3">
                                 <label for="name">이름</label>
-                                <input type="text" class="form-control" id="name" placeholder="" required>
+                                <input type="text" class="form-control" id="name" placeholder="" name="name" required>
                                 <div class="invalid-feedback">
                                     이름을 입력해주세요.
                                 </div>
@@ -82,7 +82,7 @@
                             <div class="mb-3">
                                 <label for="email">이메일</label>
                                 <div class="certification">
-                                    <input type="email" class="form-control" id="email" placeholder="you@example.com" required>
+                                    <input type="email" class="form-control" id="email" placeholder="you@example.com" name="email" required>
                                     <button>인증</button>
                                 </div>
                                 <div class="invalid-feedback">
@@ -93,7 +93,7 @@
                             <div class="mb-3">
                                 <label for="phone">전화번호</label>
                                 <div class="certification">
-                                    <input type="number" class="form-control" id="phone" placeholder="숫자만 입력해주세요." required>
+                                    <input type="number" class="form-control" id="phone" placeholder="숫자만 입력해주세요." name="phone_Number" required>
                                     <button>인증</button>
                                 </div>
                                 <div class="invalid-feedback">
@@ -104,7 +104,7 @@
                             <div class="row">
                                 <div class="col-md-6 mb-3">
                                     <label for="pass1">비밀번호</label>
-                                    <input type="password" class="form-control" id="pass1" placeholder="Password" required>
+                                    <input type="password" class="form-control" id="pass1" placeholder="Password" name="password" required>
                                     <div class="invalid-feedback">
                                         비밀번호를 입력해주세요.
                                     </div>

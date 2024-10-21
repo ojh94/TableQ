@@ -22,9 +22,9 @@ public class UserService {
                 .email(dto.getEmail())
                 .password((dto.getPassword()))
                 .name(dto.getName())
-                .phone_Number(dto.getPhone_number())
-                .created_at(Timestamp.valueOf(LocalDateTime.now()))
-                .last_login_at(Timestamp.valueOf(LocalDateTime.now()))
+                .phone_Number(dto.getPhoneNumber())
+                .created_at(LocalDateTime.now())
+                .last_login_at(LocalDateTime.now())
                 .build()).getId();
     }
 
