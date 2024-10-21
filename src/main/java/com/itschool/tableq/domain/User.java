@@ -17,7 +17,6 @@ import java.util.List;
 @Entity
 public class User implements UserDetails {
 
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", updatable = false)
@@ -27,16 +26,16 @@ public class User implements UserDetails {
     private String password;
 
     @Column(unique = true)
-    private String nickName;
+    private String nickname;
 
     @Column(nullable = false, unique = true)
-    private String phone_Number;
+    private String phoneNumber;
 
     @Column(updatable = false)
-    private LocalDateTime created_at;
+    private LocalDateTime createdAt;
 
     @Column(nullable = false)
-    private LocalDateTime last_login_at;
+    private LocalDateTime lastLoginAt;
 
     @Column
     private String address;
@@ -45,10 +44,10 @@ public class User implements UserDetails {
     private String name;
 
     @Column
-    private String social_type;
+    private String socialType;
 
     @Column
-    private String social_id;
+    private String socialId;
 
     @Column(nullable = false, unique = true)
     private String email;
@@ -59,14 +58,14 @@ public class User implements UserDetails {
         this.id = id;
         this.email = email;
         this.password = password;
-        this.nickName = nickName;
-        this.phone_Number = phone_Number;
-        this.created_at = created_at;
-        this.last_login_at = last_login_at;
+        this.nickname = nickName;
+        this.phoneNumber = phone_Number;
+        this.createdAt = created_at;
+        this.lastLoginAt = last_login_at;
         this.address = address;
         this.name = name;
-        this.social_type = socialType;
-        this.social_id = socialId;
+        this.socialType = socialType;
+        this.socialId = socialId;
     }
 
     @Override
@@ -104,14 +103,14 @@ public class User implements UserDetails {
         return "User{" +
                 "id=" + id +
                 ", password='" + password + '\'' +
-                ", nickName='" + nickName + '\'' +
-                ", phone_Number='" + phone_Number + '\'' +
-                ", created_at=" + created_at +
-                ", last_login_at=" + last_login_at +
+                ", nickName='" + nickname + '\'' +
+                ", phone_Number='" + phoneNumber + '\'' +
+                ", created_at=" + createdAt +
+                ", last_login_at=" + lastLoginAt +
                 ", address='" + address + '\'' +
                 ", name='" + name + '\'' +
-                ", social_type='" + social_type + '\'' +
-                ", social_id='" + social_id + '\'' +
+                ", social_type='" + socialType + '\'' +
+                ", social_id='" + socialId + '\'' +
                 ", email='" + email + '\'' +
                 '}';
     }
