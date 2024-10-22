@@ -1,8 +1,10 @@
 package com.itschool.tableq.controller.view;
 
+import com.itschool.tableq.domain.User;
 import com.itschool.tableq.network.request.Restaurant;
 import com.itschool.tableq.repository.RestaurantRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.stereotype.Controller;
@@ -16,19 +18,23 @@ public class ViewController {
 
 
     @GetMapping("/")
-    public String main() {
-        return "welcome";
+    public String home(@AuthenticationPrincipal User user, Model model) {
+        if(user != null) { // 로그인 한 상태
+            model.addAttribute("nickname",
+                    (user.getNickname() != null)? user.getNickname() : user.getName());
+            return "index";
+        } else { // 로그인 안 한 상태
+            return "welcome";
+        }
     }
-    @GetMapping("/index")
-    public String index() {
-        return "index";
-    }
+
     @GetMapping("/auth")
     public String auth() {
         return "auth";
     }
     @GetMapping("/login")
     public String login() { return "login"; }
+
     @GetMapping("/signup")
     public String signup() {
         return "signup";
