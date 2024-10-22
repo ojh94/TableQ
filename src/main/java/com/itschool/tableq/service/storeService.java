@@ -12,7 +12,7 @@ import java.util.List;
 public class storeService {
     private final StoreRepository storeRepository;
 
-    public Store findById(String id) {
+    public Store findById(Long id) {
         return storeRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Store not found"));
     }
     public List<Store> findAll() {
@@ -22,12 +22,12 @@ public class storeService {
         Store newStore = storeRepository.save(store);
         return newStore;
     }
-    public void delete(String  id) {
+    public void delete(Long id) {
         Store store = findById(id);
         storeRepository.delete(store);
     }
 
-    public Store update(String id, String body) { // 어떤것을 업데이트 가능하게 할지?
+    public Store update(Long id, String body) { // 어떤것을 업데이트 가능하게 할지?
         return null;
     }
 }
