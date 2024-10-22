@@ -29,7 +29,7 @@ body {
 .logo a {
   width: 100%;
   height: 100%;
-  background: center / contain no-repeat url("/img/favicon/favicon_io_reverse/android-chrome-512x512.png");
+  background: center / contain no-repeat url("/img/favicon/favicon-io-reverse/android-chrome-512x512.png");
   display: block;
   text-indent: -9999px; /* 대체 텍스트 */
 }
