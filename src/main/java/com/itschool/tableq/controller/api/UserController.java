@@ -9,9 +9,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 
 @RequiredArgsConstructor
 @Controller
@@ -22,8 +20,18 @@ public class UserController {
 
     @PostMapping("/user")
     public String signup(@ModelAttribute UserRequest request, BindingResult bindingResult) {
-        /*userService.save(request);*/
+        userService.signup(request);
         return "redirect:/login";
+    }
+
+    @GetMapping("/ownerApply")
+    public String ownerApply() {
+        return "ownerApply";
+    }
+
+    @GetMapping("/ownerLogin")
+    public String ownerLogin() {
+        return "ownerLogin";
     }
 
     @GetMapping("/logout")
