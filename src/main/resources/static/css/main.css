@@ -101,6 +101,14 @@ header .home a {
   text-indent: -9999px; /* 대체 텍스트 */
 }
 
+.toolbar-top nav a:first-child {
+    font-size: 1rem;
+    color: white;
+    width: 0px;
+    height: 0px;
+    text-align: right;
+}
+
 header, .toolbar-top, .toolbar {
   max-width: 1200px;  /* 헤더와 툴바에도 동일한 고정된 너비 적용 */
   margin: 0 auto;     /* 가로 중앙 정렬 */
