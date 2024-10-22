@@ -18,7 +18,6 @@ public class ReservationService {
     }
     public Reservation save(AddReservationRequest request){
         return reservationRepository.save(Reservation.builder()
-                .contactNumber(request.getCustomerContactNumber())
                 .reservationNumber(request.getReservation_number())
                 .reservationNumber(count())
                 .reserveTime(LocalDateTime.now())
