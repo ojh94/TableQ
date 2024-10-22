@@ -17,8 +17,8 @@ public class Reservation {
     @Column(name = "id", updatable = false)
     private Long id;
 
-    @Column(nullable = false)
-    private String contactNumber;
+    /*@Column(nullable = false)
+    private String contactNumber;*/
 
     @Column(nullable = false)
     private Integer reservationNumber;
@@ -42,9 +42,8 @@ public class Reservation {
     private User user;
 
     @Builder
-    public Reservation(String contactNumber, Integer reservationNumber,
+    public Reservation(Integer reservationNumber,
                        LocalDateTime reserveTime, Integer people, Store store, User user){
-        this.contactNumber = contactNumber;
         this.reservationNumber = reservationNumber;
         this.reserveTime = reserveTime;
         this.people = people;
