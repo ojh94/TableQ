@@ -11,6 +11,9 @@
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
               integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 
+        <!-- jQuery -->
+        <script src="http://code.jquery.com/jquery-latest.min.js"></script>
+
         <style>
             body {
               min-height: 100vh;
@@ -91,6 +94,10 @@
               font-size: 1.5em; /* 아이콘 크기 */
               display: block;
             }
+
+            .submit-button:focus {
+                box-shadow: none;
+            }
         </style>
     </head>
     <body>
@@ -117,7 +124,7 @@
                                 <label for="email">이메일</label>
                                 <div class="certification">
                                     <input type="email" class="form-control" id="email" name="email" placeholder="you@example.com" required>
-                                    <button>인증</button>
+                                    <button type="button">인증</button>
                                 </div>
                                 <div class="invalid-feedback">
                                     이메일을 입력해주세요.
@@ -128,7 +135,7 @@
                                 <label for="phone">전화번호</label>
                                 <div class="certification">
                                     <input type="number" class="form-control" id="phone" name="phoneNumber" placeholder="숫자만 입력해주세요." required>
-                                    <button>인증</button>
+                                    <button type="button">인증</button>
                                 </div>
                                 <div class="invalid-feedback">
                                     전화번호를 입력해주세요.
@@ -138,18 +145,19 @@
                             <div class="row">
                                 <div class="col-md-6 mb-3">
                                     <label for="pass1">비밀번호</label>
-                                    <input type="password" class="form-control" id="pass1" name="password" placeholder="Password" required>
+                                    <input type="password" class="form-control" id="pass1" name="password" placeholder="Password" oninput="pwCheck()" required>
                                     <div class="invalid-feedback">
                                         비밀번호를 입력해주세요.
                                     </div>
                                 </div>
                                 <div class="col-md-6 mb-3">
-                                    <label for="pass2">비밀번호 확인</label>
-                                    <input type="password" class="form-control" id="pass2" placeholder="Re-enter password" required>
+                                    <label for="pass2" oninput="pwCheck()">비밀번호 확인</label>
+                                    <input type="password" class="form-control" id="pass2" placeholder="Re-enter password" oninput="pwCheck()" required>
                                     <div class="invalid-feedback">
                                         비밀번호를 재입력해주세요.
                                     </div>
                                 </div>
+                                <span id="pwConfirm" class="col-md-6" style="font-size: 90%;"></span>
                             </div>
 
                             <!--
@@ -179,12 +187,12 @@
                             <div class="custom-control custom-checkbox">
                                 <input type="checkbox" class="custom-control-input" id="aggrement" required>
                                 <label class="custom-control-label" for="aggrement">&nbsp;[필수] 개인정보 수집 및 이용에 동의합니다. </label>
-                                <button style="border: none; background: none; outline:none;" data-bs-toggle="modal" data-bs-target="#particularModal">
+                                <button type="button" style="border: none; background: none; outline:none;" data-bs-toggle="modal" data-bs-target="#particularModal">
                                     <small style="color: #0099FF; text-decoration: underline;">상세보기</small>
                                 </button>
                             </div>
                             <div class="mb-4"></div>
-                            <button class="btn btn-orange btn-lg btn-block text-light" type="submit" form="signupForm">가입 완료</button>
+                            <button class="btn btn-orange btn-lg btn-block text-light submit-button" type="submit" form="signupForm">가입 완료</button>
                         </form>
                     </div>
                 </div>
@@ -218,20 +226,38 @@
                 crossorigin="anonymous"></script>
 
         <script>
-            /*window.addEventListener('load', () => {
-              const forms = document.getElementsByClassName('validation-form');
+            window.addEventListener('load', () => {
+                const forms = document.getElementsByClassName('validation-form');
 
-              Array.prototype.filter.call(forms, (form) => {
-                form.addEventListener('submit', function (event) {
-                  if (form.checkValidity() === false) {
-                    event.preventDefault();
-                    event.stopPropagation();
-                  }
+                Array.prototype.filter.call(forms, (form) => {
+                    form.addEventListener('submit', function (event) {
+                        if (form.checkValidity() === false) {
+                            event.preventDefault();
+                            event.stopPropagation();
+                        }
 
-                  form.classList.add('was-validated');
-                }, false);
-              });
-            }, false);*/
+                        form.classList.add('was-validated');
+                    }, false);
+                });
+            }, false);
+
+            function pwCheck() {
+                const pass1 = $('#pass1').val();
+                const pass2 = $('#pass2').val();
+
+                // 입력값이 비어 있는 경우 초기 상태로 복원
+                if (pass1 === "" || pass2 === "") {
+                    $('#pwConfirm').text('')
+                }
+                // 비밀번호가 일치하는 경우
+                else if (pass1 === pass2) {
+                    $('#pwConfirm').text('비밀번호 일치').css('color', 'green');
+                }
+                // 비밀번호가 일치하지 않는 경우
+                else {
+                    $('#pwConfirm').text('비밀번호 불일치').css('color', 'red');
+                }
+            }
         </script>
     </body>
 </html>
