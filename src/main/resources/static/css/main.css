@@ -67,6 +67,10 @@ body, html {
   padding: 0 15px;
 }
 
+main {
+    padding-top: 100px;
+}
+
 header {
   background-color: var(--color-orange-500);
   padding: 1rem 0;
@@ -356,7 +360,6 @@ header {
   margin-bottom: 20px;
 }
 .section-list {
-  padding-top: 7%;
   color: black;
 }
 .category {

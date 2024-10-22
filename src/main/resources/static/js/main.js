@@ -99,3 +99,17 @@ document.querySelectorAll(".btn-reserve").forEach((button) => {
     alert("예약이 완료되었습니다!");
   });
 });
+
+// '검색' 버튼 클릭 시 이벤트 핸들러
+document.querySelector('.toolbar-item[href="#searchInput"]').addEventListener('click', function (e) {
+    e.preventDefault();
+
+    // 페이지를 맨 위로 스크롤
+    window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+    });
+
+    // 포커스를 검색 입력란에 맞춤
+    document.querySelector('#searchInput').focus();
+});
