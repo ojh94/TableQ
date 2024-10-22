@@ -22,9 +22,9 @@ public class UserService {
                 .email(dto.getEmail())
                 .password(bCryptPasswordEncoder.encode(dto.getPassword()))
                 .name(dto.getName())
-                .phone_Number(dto.getPhoneNumber())
-                .created_at(LocalDateTime.now())
-                .last_login_at(LocalDateTime.now())
+                .phoneNumber(dto.getPhoneNumber())
+                .createdAt(LocalDateTime.now())
+                .lastLoginAt(LocalDateTime.now())
                 .build()).getId();
     }
 

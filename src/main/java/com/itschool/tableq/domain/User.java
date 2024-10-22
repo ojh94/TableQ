@@ -6,7 +6,6 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.List;
@@ -14,12 +13,13 @@ import java.util.List;
 @Table(name = "users")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
+@ToString
 @Entity
 public class User implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id", updatable = false)
+    @Column(updatable = false)
     private Long id;
 
     @Column(nullable = false)
@@ -37,35 +37,32 @@ public class User implements UserDetails {
     @Column(nullable = false)
     private LocalDateTime lastLoginAt;
 
-    @Column
     private String address;
 
     @Column(nullable = false)
     private String name;
 
-    @Column
     private String socialType;
 
-    @Column
     private String socialId;
 
     @Column(nullable = false, unique = true)
     private String email;
 
     @Builder
-    public User(long id, String email, String password, String nickName, String phone_Number, LocalDateTime created_at, LocalDateTime last_login_at
-            , String address, String name, String socialType, String socialId) {
+    public User(Long id, String email, String password, String nickname, String phoneNumber, LocalDateTime createdAt, LocalDateTime lastLoginAt,
+                String address, String name, String socialType, String socialId) {
         this.id = id;
-        this.email = email;
         this.password = password;
-        this.nickname = nickName;
-        this.phoneNumber = phone_Number;
-        this.createdAt = created_at;
-        this.lastLoginAt = last_login_at;
+        this.nickname = nickname;
+        this.phoneNumber = phoneNumber;
+        this.createdAt = createdAt;
+        this.lastLoginAt = lastLoginAt;
         this.address = address;
         this.name = name;
         this.socialType = socialType;
         this.socialId = socialId;
+        this.email = email;
     }
 
     @Override
@@ -96,22 +93,5 @@ public class User implements UserDetails {
     @Override
     public boolean isEnabled() {
         return true;
-    }
-
-    @Override
-    public String toString() {
-        return "User{" +
-                "id=" + id +
-                ", password='" + password + '\'' +
-                ", nickName='" + nickname + '\'' +
-                ", phone_Number='" + phoneNumber + '\'' +
-                ", created_at=" + createdAt +
-                ", last_login_at=" + lastLoginAt +
-                ", address='" + address + '\'' +
-                ", name='" + name + '\'' +
-                ", social_type='" + socialType + '\'' +
-                ", social_id='" + socialId + '\'' +
-                ", email='" + email + '\'' +
-                '}';
     }
 }
