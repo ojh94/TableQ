@@ -1,4 +1,4 @@
-package com.itschool.tableq.controller.api;
+package com.itschool.tableq.controller;
 
 import com.itschool.tableq.network.request.UserRequest;
 import com.itschool.tableq.service.UserService;
@@ -22,7 +22,7 @@ public class UserController {
 
     @PostMapping("/user")
     public String signup(@ModelAttribute UserRequest request, BindingResult bindingResult) {
-        /*userService.save(request);*/
+        userService.signup(request);
         return "redirect:/login";
     }
 
