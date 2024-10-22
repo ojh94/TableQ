@@ -18,12 +18,12 @@ public class OwnerService {
 
     public Long save(AddOwnerRequest dto) {
         return ownerRepository.save(Owner.builder()
-                .username(dto.getUsername())
+                .userName(dto.getUsername())
                 .password(dto.getPassword())
                 .name(dto.getName())
-                .phone_number(dto.getPhoneNumber())
-                .created_at(LocalDateTime.now())
-                .last_modified_at(LocalDateTime.now())
+                .phoneNumber(dto.getPhoneNumber())
+                .createdAt(LocalDateTime.now())
+                .lastModifiedAt(LocalDateTime.now())
                 .build()).getId();
     }
 
