@@ -24,7 +24,7 @@ public class Owner implements UserDetails {
     private Long id;
 
     @Column(nullable = false)
-    private String username;
+    private String userName;
 
     @Column(nullable = false)
     private String password;
@@ -33,28 +33,33 @@ public class Owner implements UserDetails {
     private String name;
 
     @Column(nullable = false)
-    private String phone_number;
+    private String phoneNumber;
 
     @Column(nullable = false)
-    private LocalDateTime created_at;
+    private LocalDateTime createdAt;
 
     @Column(nullable = false)
-    private LocalDateTime last_modified_at;
+    private LocalDateTime lastModifiedAt;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return List.of();
     }
 
+    @Override
+    public String getUsername() {
+        return "";
+    }
+
     @Builder
-    public Owner(Long id, String username, String password, String name, String phone_number, LocalDateTime created_at, LocalDateTime last_modified_at) {
+    public Owner(Long id, String userName, String password, String name, String phoneNumber, LocalDateTime createdAt, LocalDateTime lastModifiedAt) {
         this.id = id;
-        this.username = username;
+        this.userName = userName;
         this.password = password;
         this.name = name;
-        this.phone_number = phone_number;
-        this.created_at = created_at;
-        this.last_modified_at = last_modified_at;
+        this.phoneNumber = phoneNumber;
+        this.createdAt = createdAt;
+        this.lastModifiedAt = lastModifiedAt;
     }
 
     @Override
