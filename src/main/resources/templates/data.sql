@@ -1,0 +1,2 @@
+INSERT INTO restaurant (name, type, location, rating, reviews, description, phone, address, operating_hours_weekdays, operating_hours_weekend, break_time_weekdays, break_time_weekend, holiday, facilities, hashtags)
+VALUES ('레스토랑 1', '한식', '서울시 강남구', 4.5, 120, '맛있는 한식을 제공합니다.', '02-123-4567', '서울시 강남구 테헤란로 123', '10:00 AM - 10:00 PM', '11:00 AM - 9:00 PM', '3:00 PM - 5:00 PM', '없음', '일요일', '주차,Wi-Fi,화장실', '#한식맛집,#데이트코스,#가족모임');
