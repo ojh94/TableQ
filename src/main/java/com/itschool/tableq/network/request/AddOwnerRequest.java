@@ -14,8 +14,8 @@ public class AddOwnerRequest {
     private String username;
     private String password;
     private String name;
-    private String phone_number;
-    private LocalDateTime created_at;
-    private LocalDateTime last_modified_at;
+    private String phoneNumber;
+    private LocalDateTime createdAt;
+    private LocalDateTime lastLoginAt;
 
 }
