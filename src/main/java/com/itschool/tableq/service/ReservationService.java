@@ -1,6 +1,6 @@
 package com.itschool.tableq.service;
 
-import com.itschool.tableq.domain.Reservations;
+import com.itschool.tableq.domain.Reservation;
 import com.itschool.tableq.network.request.AddReservationRequest;
 import com.itschool.tableq.repository.ReservationRepository;
 import lombok.RequiredArgsConstructor;
@@ -16,9 +16,9 @@ public class ReservationService {
         int number = 0 ;
         return number;
     }
-    public Reservations save(AddReservationRequest request){
-        return reservationRepository.save(Reservations.builder()
-                .customerContactNumber(request.getCustomerContactNumber())
+    public Reservation save(AddReservationRequest request){
+        return reservationRepository.save(Reservation.builder()
+                .contactNumber(request.getCustomerContactNumber())
                 .reservationNumber(request.getReservation_number())
                 .reservationNumber(count())
                 .reserveTime(LocalDateTime.now())

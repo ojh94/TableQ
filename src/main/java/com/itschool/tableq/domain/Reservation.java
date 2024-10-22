@@ -11,38 +11,40 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @Getter
 @Entity
-public class Reservations {
+public class Reservation {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", updatable = false)
     private Long id;
 
-    @Column(name = "customer_contact_number",nullable = false)
-    private String customerContactNumber;
+    @Column(nullable = false)
+    private String contactNumber;
 
-    @Column(name = "reservation_number",nullable = false)
+    @Column(nullable = false)
     private Integer reservationNumber;
 
-    @Column(name = "entered", nullable = false)
-    private boolean entered;
+    @Column(nullable = false)
+    private boolean isEntered;
 
-    @Column(name = "reserve_time",nullable = false)
+    @Column(nullable = false)
     private LocalDateTime reserveTime;
 
-    @Column(name = "entered_time")
     private LocalDateTime enteredTime;
 
-    @Column(name = "people")
     private Integer people;
 
     @ManyToOne
     @JoinColumn(name = "store_id")
     private Store store;
 
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
+
     @Builder
-    public Reservations(String customerContactNumber, Integer reservationNumber,
-                        LocalDateTime reserveTime, Integer people, Store store){
-        this.customerContactNumber = customerContactNumber;
+    public Reservation(String contactNumber, Integer reservationNumber,
+                       LocalDateTime reserveTime, Integer people, Store store, User user){
+        this.contactNumber = contactNumber;
         this.reservationNumber = reservationNumber;
         this.reserveTime = reserveTime;
         this.people = people;

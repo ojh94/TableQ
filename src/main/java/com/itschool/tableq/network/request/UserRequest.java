@@ -7,12 +7,10 @@ import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.security.Timestamp;
 import java.time.LocalDateTime;
 
 @Getter
-@Setter
-public class AddUserRequest {
+public class UserRequest {
 
     private Long id;
 
