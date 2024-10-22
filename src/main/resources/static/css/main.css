@@ -81,11 +81,35 @@ header .container {
   align-items: center;
 }
 
+header .logo {
+  background: center / contain no-repeat url("/img/logo-reverse.png");
+  margin: auto 10px;
+  height: 30px;
+  width: 131px;
+}
+
+header .home {
+  height: 60px;
+  width: 60px;
+}
+
+header .home a {
+  background: center / contain no-repeat url("/img/favicon/favicon-io-reverse/android-chrome-512x512.png");
+  height: 100%;
+  width: 100%;
+  display: block;
+  text-indent: -9999px; /* 대체 텍스트 */
+}
+
 header, .toolbar-top, .toolbar {
   max-width: 1200px;  /* 헤더와 툴바에도 동일한 고정된 너비 적용 */
   margin: 0 auto;     /* 가로 중앙 정렬 */
   width: 100%;
   padding: 0 15px;    /* 좌우 패딩 추가 */
+}
+
+.btn-light {
+    margin: 10px;
 }
 
 .main-container{

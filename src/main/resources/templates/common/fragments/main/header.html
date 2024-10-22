@@ -1,0 +1,14 @@
+<header th:fragment="HeaderFragment" class="toolbar-top">
+    <div class="logo">
+    </div>
+
+    <div class="home">
+        <a href="/"></a>
+    </div>
+
+    <nav>
+        <!-- 로그인 한 경우 -->
+        <!--<span th:if="${nickname != null}" th:text="${nickname} + '님, 환영합니다.'"></span>-->
+        <a th:if="${nickname != null}" class="btn btn-light" href="/logout" aria-label="로그아웃">로그아웃</a>
+    </nav>
+</header>

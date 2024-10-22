@@ -57,7 +57,7 @@ public class WebSecurityConfig {
                 .formLogin(formLogin -> formLogin // 폼 기반 로그인 설정
                         .loginPage("/login")
                         .usernameParameter("email")
-                        .defaultSuccessUrl("/index")
+                        .defaultSuccessUrl("/")
                 )
                 .logout(logout -> logout // 로그아웃 설정
                         .logoutUrl("/logout")
