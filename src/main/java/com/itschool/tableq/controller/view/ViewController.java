@@ -16,7 +16,7 @@ public class ViewController {
     @Autowired
     private RestaurantRepository restaurantRepository;
 
-
+    // 홈
     @GetMapping("/")
     public String home(@AuthenticationPrincipal User user, Model model) {
         if(user != null) { // 로그인 한 상태
@@ -28,17 +28,40 @@ public class ViewController {
         }
     }
 
+    // Oauth 연동 페이지
     @GetMapping("/auth")
     public String auth() {
         return "auth";
     }
+    
+    // 로그인 페이지
     @GetMapping("/login")
     public String login() { return "login"; }
 
+    // 회원 가입 페이지
     @GetMapping("/signup")
     public String signup() {
         return "signup";
     }
+
+    // 관심매장 페이지
+    @GetMapping("/favorites")
+    public String favorites(@AuthenticationPrincipal User user, Model model) {
+        if(user != null)
+            model.addAttribute("nickname",
+                    (user.getNickname() != null) ? user.getNickname() : user.getName());
+        return "favorites";
+    }
+
+    // 관심매장 페이지
+    @GetMapping("/mypage")
+    public String myPage(@AuthenticationPrincipal User user, Model model) {
+        if(user != null)
+            model.addAttribute("nickname",
+                    (user.getNickname() != null) ? user.getNickname() : user.getName());
+        return "mypage";
+    }
+
 
     @GetMapping("/restaurant/{id}")
     public String getRestaurantDetails() { // 데이터베이스 연결 시 괄호 안에 넣기 @PathVariable Long id, Model model
