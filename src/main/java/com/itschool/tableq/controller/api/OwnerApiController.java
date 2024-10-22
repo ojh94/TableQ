@@ -1,6 +1,6 @@
 package com.itschool.tableq.controller.api;
 
-import com.itschool.tableq.network.request.AddOwnerRequest;
+import com.itschool.tableq.network.request.OwnerRequest;
 import com.itschool.tableq.service.OwnerService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -12,7 +12,6 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
 @RequiredArgsConstructor
 @Controller
@@ -21,7 +20,7 @@ public class OwnerApiController {
     private final OwnerService ownerService;
 
     @PostMapping("/owner")
-    public String addOwner(@ModelAttribute AddOwnerRequest request, BindingResult bindingResult) {
+    public String addOwner(@ModelAttribute OwnerRequest request, BindingResult bindingResult) {
         ownerService.save(request);
         return "redirect:/ownerlogin";
     }

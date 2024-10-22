@@ -2,14 +2,12 @@ package com.itschool.tableq.network.request;
 
 import lombok.Getter;
 import lombok.Setter;
-import org.springframework.cglib.core.Local;
 
-import java.security.Timestamp;
 import java.time.LocalDateTime;
 
 @Getter
 @Setter
-public class AddOwnerRequest {
+public class OwnerRequest {
     private Long id;
     private String username;
     private String password;
