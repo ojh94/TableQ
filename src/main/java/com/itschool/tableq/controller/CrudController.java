@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 @Component
 public abstract class CrudController<Req, Res, Entity> implements CrudInterface<Req,Res> {
     @Autowired(required = false)
-    protected BaseService baseService;
+    protected BaseService<Req,Res,Entity> baseService;
 
     @Override
     @PostMapping("")
