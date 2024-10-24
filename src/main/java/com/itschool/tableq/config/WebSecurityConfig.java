@@ -68,7 +68,7 @@ public class WebSecurityConfig {
                         .deleteCookies("JSESSIONID")
                 )
                 .csrf((csrf) -> csrf.ignoringRequestMatchers(
-                        new AntPathRequestMatcher("api/**"),
+                        new AntPathRequestMatcher("/api/**"),
                         new AntPathRequestMatcher("/api-docs"),
                         new AntPathRequestMatcher("/api-docs/**"),
                         new AntPathRequestMatcher("/v3/api-docs/**")
