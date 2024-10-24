@@ -1,29 +1,71 @@
 package com.itschool.tableq.service;
 
 import com.itschool.tableq.domain.Reservation;
-import com.itschool.tableq.network.request.AddReservationRequest;
+import com.itschool.tableq.network.Header;
+import com.itschool.tableq.network.Response.ReservationResponse;
+import com.itschool.tableq.network.request.ReservationRequest;
 import com.itschool.tableq.repository.ReservationRepository;
+import com.itschool.tableq.service.base.BaseService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.webjars.NotFoundException;
 
 import java.time.LocalDateTime;
 
 @RequiredArgsConstructor
 @Service
-public class ReservationService {
-    private final ReservationRepository reservationRepository;
-    public int count(){
-        int number = 0 ;
+public class ReservationService extends
+        BaseService<ReservationRequest, ReservationResponse, Reservation> {
+
+    @Override
+    protected ReservationResponse response(Reservation reservation) {
+        return new ReservationResponse(reservation);
+    }
+
+    public Integer count(){
+        int number = 0;
+
         return number;
     }
-    public Reservation save(AddReservationRequest request){
-        return reservationRepository.save(Reservation.builder()
-                .reservationNumber(request.getReservation_number())
+
+    @Override
+    public Header<ReservationResponse> create(Header<ReservationRequest> request) {
+        ReservationRequest reservationRequest = request.getData();
+
+        Reservation reservation = Reservation.builder()
                 .reservationNumber(count())
                 .reserveTime(LocalDateTime.now())
-                .people(request.getPeople())
-                .store(request.getStore())
-                .build()
-        );
+                .people(reservationRequest.getPeople())
+                .store(reservationRequest.getStore())
+                .user(reservationRequest.getUser())
+                .build();
+
+        baseRepository.save(reservation);
+        return Header.OK(response(reservation));
+    }
+
+    @Override
+    public Header<ReservationResponse> read(Long id) {
+        return Header.OK(response(baseRepository.findById(id).orElse(null)));
+    }
+
+    @Override
+    public Header<ReservationResponse> update(Long id, Header<ReservationRequest> request) {
+        ReservationRequest reservationRequest = request.getData();
+
+        return baseRepository.findById(id)
+                .map(reservation -> {
+                    reservation.setEnteredTime(LocalDateTime.now());
+                    reservation.setEntered(true);
+
+                    baseRepository.save(reservation);
+                    return Header.OK(response((reservation)));
+                })
+                .orElseThrow(()->new NotFoundException("reservation not found"));
+    }
+
+    @Override
+    public Header delete(Long id) {
+        return null;
     }
 }

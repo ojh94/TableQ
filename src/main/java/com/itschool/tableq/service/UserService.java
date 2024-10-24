@@ -4,6 +4,7 @@ import com.itschool.tableq.domain.User;
 import com.itschool.tableq.network.Header;
 import com.itschool.tableq.network.Response.UserResponse;
 import com.itschool.tableq.network.request.UserRequest;
+import com.itschool.tableq.repository.UserRepository;
 import com.itschool.tableq.service.base.BaseService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -66,7 +67,7 @@ public class UserService extends BaseService<UserRequest, UserResponse, User> {
     }
 
     @Override
-    public Header delete(Long id) {
+    public Header<UserResponse> delete(Long id) {
         return baseRepository.findById(id)
                 .map(user-> {
                     baseRepository.delete(user);
@@ -86,6 +87,9 @@ public class UserService extends BaseService<UserRequest, UserResponse, User> {
                 .build()).getId();
     }
 
+    public Boolean checkEmail(String email) {
+        return ((UserRepository)baseRepository).findByEmail(email).isEmpty();
+    }
 
     public List<User> getAllUsers() {
         return baseRepository.findAll();
