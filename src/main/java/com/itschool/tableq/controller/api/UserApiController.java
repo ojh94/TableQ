@@ -24,4 +24,10 @@ public class UserApiController extends CrudController<UserRequest, UserResponse,
     public Header<Boolean> checkEamil(@RequestParam(name = "email") String email){
         return Header.OK(((UserService)baseService).checkEmail(email));
     }
+
+    @Operation(summary = "전화번호 중복확인")
+    @GetMapping("/check-phonenumber")
+    public Header<Boolean> checkPhoneNumber(@RequestParam(name = "phoneNumber") String phoneNumber){
+        return Header.OK(((UserService)baseService).checkPhoneNumber(phoneNumber));
+    }
 }
