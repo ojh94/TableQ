@@ -19,9 +19,9 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/api/user")
 public class UserApiController extends CrudController<UserRequest, UserResponse, User> {
-    @Operation(summary = "이메일 중복 확인", description = "email이 기존에 가입되었는지 확인")
+    @Operation(summary = "이메일 중복 확인", description = "가입이 가능할 때 true 반환")
     @GetMapping("/check-email")
-    public Header<Boolean> isDuplicated(@RequestParam(name = "email") String email){
+    public Header<Boolean> checkEamil(@RequestParam(name = "email") String email){
         return Header.OK(((UserService)baseService).checkEmail(email));
     }
 }
