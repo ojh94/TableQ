@@ -3,7 +3,6 @@ package com.itschool.tableq.controller;
 import com.itschool.tableq.ifs.CrudInterface;
 import com.itschool.tableq.network.Header;
 import com.itschool.tableq.service.base.BaseService;
-import io.micrometer.observation.annotation.Observed;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,7 +26,7 @@ public abstract class CrudController<Req, Res, Entity> implements CrudInterface<
     @Override
     @Operation(summary = "읽기", description = "ID로 엔티티를 조회")
     @GetMapping("{id}")
-    public Header<Res> read(@PathVariable Long id){
+    public Header<Res> read(@PathVariable(name = "id") Long id){
         log.info("{}","{}","read: ",id);
         return baseService.read(id);
     }
@@ -35,7 +34,7 @@ public abstract class CrudController<Req, Res, Entity> implements CrudInterface<
     @Override
     @Operation(summary = "수정", description = "ID로 엔티티를 업데이트")
     @PutMapping("{id}")
-    public Header<Res> update(@PathVariable Long id,
+    public Header<Res> update(@PathVariable(name = "id") Long id,
                               @RequestBody Header<Req> request) {
         log.info("{}","{}","update: ",id,request);
         return baseService.update(id,request);
@@ -44,7 +43,7 @@ public abstract class CrudController<Req, Res, Entity> implements CrudInterface<
     @Override
     @DeleteMapping("{id}")
     @Operation(summary = "삭제", description = "ID로 엔티티를 삭제")
-    public Header delete(@PathVariable Long id) {
+    public Header delete(@PathVariable(name = "id") Long id) {
         log.info("{}","{}","delete: ",id);
         baseService.delete(id);
         return Header.OK();
