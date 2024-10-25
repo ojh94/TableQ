@@ -1,12 +1,11 @@
 package com.itschool.tableq.controller.view;
 
 import com.itschool.tableq.domain.User;
-import com.itschool.tableq.network.request.Restaurant;
-import com.itschool.tableq.repository.RestaurantRepository;
+import com.itschool.tableq.network.response.UserResponse;
+import com.itschool.tableq.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 
@@ -14,14 +13,16 @@ import org.springframework.web.bind.annotation.GetMapping;
 public class ViewController {
 
     @Autowired
-    private RestaurantRepository restaurantRepository;
+    private UserService userService;
+
+    /*@Autowired
+    private Restaurant restaurantRepository;*/
 
     // 홈
     @GetMapping("/")
     public String home(@AuthenticationPrincipal User user, Model model) {
         if(user != null) { // 로그인 한 상태
-            model.addAttribute("nickname",
-                    (user.getNickname() != null)? user.getNickname() : user.getName());
+            model.addAttribute("user", user);
             return "index";
         } else { // 로그인 안 한 상태
             return "welcome";
@@ -33,7 +34,7 @@ public class ViewController {
     public String auth() {
         return "auth";
     }
-    
+
     // 로그인 페이지
     @GetMapping("/login")
     public String login() { return "login"; }
@@ -48,17 +49,17 @@ public class ViewController {
     @GetMapping("/favorites")
     public String favorites(@AuthenticationPrincipal User user, Model model) {
         if(user != null)
-            model.addAttribute("nickname",
-                    (user.getNickname() != null) ? user.getNickname() : user.getName());
+            model.addAttribute("user", user);
         return "favorites";
     }
 
     // 관심매장 페이지
     @GetMapping("/mypage")
     public String myPage(@AuthenticationPrincipal User user, Model model) {
+        UserResponse userResponse = userService.read(user.getId()).getData();
+
         if(user != null)
-            model.addAttribute("nickname",
-                    (user.getNickname() != null) ? user.getNickname() : user.getName());
+            model.addAttribute("user", userResponse);
         return "mypage";
     }
 
