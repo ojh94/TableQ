@@ -45,6 +45,26 @@ public class ViewController {
         return "signup";
     }
 
+    @GetMapping("/ownerApply")
+    public String ownerApply() {
+        return "ownerApply";
+    }
+
+    @GetMapping("/ownerLogin")
+    public String ownerLogin() {
+        return "ownerLogin";
+    }
+
+    @GetMapping("/ownerParticular")
+    public String ownerParticular() {
+        return "ownerParticular";
+    }
+
+    @GetMapping("/ownerParticularModify")
+    public String ownerParticularModify() {
+        return "ownerParticularModify";
+    }
+
     // 관심매장 페이지
     @GetMapping("/favorites")
     public String favorites(@AuthenticationPrincipal User user, Model model) {
@@ -62,6 +82,8 @@ public class ViewController {
             model.addAttribute("user", userResponse);
         return "mypage";
     }
+
+
 
 
     @GetMapping("/restaurant/{id}")
