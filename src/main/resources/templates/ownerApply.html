@@ -61,14 +61,14 @@
                 <p style="color: rgba(237, 125, 49, 0.7); font-size:14px;">매장 정보와 문의사항을 남겨주세요.<br>영업일 기준 평균 2일 내에 연락드려요.</p>
                 <ul class="nav nav-tabs" id="myTab" role="tablist">
                     <li class="nav-item" role="presentation">
-                        <button class="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#home" type="button" role="tab" aria-controls="home" aria-selected="true">대기</button>
+                        <button class="nav-link active" id="wait-tap" data-bs-toggle="tab" data-bs-target="#wait" type="button" role="tab" aria-controls="wait" aria-selected="true">대기</button>
                     </li>
                     <li class="nav-item" role="presentation">
-                        <button class="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#profile" type="button" role="tab" aria-controls="profile" aria-selected="false">테이블오더</button>
+                        <button class="nav-link" id="order-tab" data-bs-toggle="tab" data-bs-target="#order" type="button" role="tab" aria-controls="order" aria-selected="false">테이블오더</button>
                     </li>
                 </ul>
                 <div class="tab-content" id="myTabContent">
-                    <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+                    <div class="tab-pane fade show active" id="wait" role="tabpanel" aria-labelledby="wait-tap">
                         <div class="mb-3"></div>
                         <div class="mb-3">
                             <label for="wait_mutual">상호명</label>
@@ -97,7 +97,7 @@
 
                         <div class="mb-3">
                             <label for="wait_phone">연락처(숫자만 입력해주세요.)</label>
-                            <input type="number" class="form-control" id="wait_phone" required>
+                            <input type="text" class="form-control" id="wait_phone" required>
                         </div>
 
                         <div class="mb-3">
@@ -143,7 +143,7 @@
                             <button style="border: none; background: none; outline:none;"><small style="color: #0099FF; text-decoration: underline;">상세보기</small></button>
                         </div>
                     </div>
-                    <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+                    <div class="tab-pane fade" id="order" role="tabpanel" aria-labelledby="order-tab">
                         <div class="mb-3"></div>
                         <div class="mb-3">
                             <label for="order_mutual">상호명</label>
@@ -182,7 +182,7 @@
 
                         <div class="mb-3">
                             <label for="order_phone">연락처(숫자만 입력해주세요.)</label>
-                            <input type="number" class="form-control" id="order_phone" required>
+                            <input type="text" class="form-control" id="order_phone" required>
                         </div>
 
                         <div class="mb-3">

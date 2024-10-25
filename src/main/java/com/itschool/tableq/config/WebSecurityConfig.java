@@ -48,6 +48,8 @@ public class WebSecurityConfig {
                                 new AntPathRequestMatcher("/user"),
                                 new AntPathRequestMatcher("/ownerApply"),
                                 new AntPathRequestMatcher("/ownerLogin"),
+                                new AntPathRequestMatcher("/ownerParticular"),
+                                new AntPathRequestMatcher("/ownerParticularModify"),
                                 new AntPathRequestMatcher("/api/**"),
                                 new AntPathRequestMatcher("/api-docs"),
                                 new AntPathRequestMatcher("/api-docs/**"),

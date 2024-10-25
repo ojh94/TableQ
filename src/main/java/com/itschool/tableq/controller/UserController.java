@@ -34,6 +34,16 @@ public class UserController {
         return "ownerLogin";
     }
 
+    @GetMapping("/ownerParticular")
+    public String ownerParticular() {
+        return "ownerParticular";
+    }
+
+    @GetMapping("/ownerParticularModify")
+    public String ownerParticularModify() {
+        return "ownerParticularModify";
+    }
+
     @GetMapping("/logout")
     public String logout(HttpServletRequest request, HttpServletResponse response) {
         new SecurityContextLogoutHandler().logout(request, response, SecurityContextHolder.getContext().getAuthentication());
