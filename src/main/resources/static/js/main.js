@@ -55,6 +55,35 @@ document.addEventListener('DOMContentLoaded', () => {
       return card;
   }
 
+    function createRestaurantCardDetail(restaurant) {
+        const card = document.createElement('div');
+        card.className = 'card';
+        card.innerHTML = `
+            <div class="card-header">
+                <button class="favorite-btn" onclick="toggleFavorite(${restaurant.id})">
+                    <i data-lucide="heart"></i>
+                </button>
+                <h4 class="card-title">${restaurant.name}</h4>
+                <p class="card-description">${restaurant.type} • ${restaurant.location}</p>
+            </div>
+            <div class="card-content">
+
+                <div class="rating">
+                    <i data-lucide="star" class="rating-star"></i>
+                    <span class="rating-value">${restaurant.rating}</span>
+                    <span class="rating-count">(${restaurant.reviews}+ 리뷰)</span>
+                </div>
+                <div class="location">
+                    <i data-lucide="map-pin" class="location-icon"></i>
+                    <span>${restaurant.location}</span>
+                </div>
+            </div>
+
+            </div>
+        `;
+        return card;
+    }
+
   // 레스토랑 카드 렌더링
   if(restaurantGrid){
    restaurants.forEach(restaurant => {
@@ -62,9 +91,17 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
+  if(restaurantGrid2){
   restaurants2.forEach(restaurant => {
-    restaurantGrid2.appendChild(createRestaurantCard(restaurant));
+      restaurantGrid2.appendChild(createRestaurantCard(restaurant));
+  });
+  }
+
+
+ restaurants2.forEach(restaurant => {
+    restaurantGrid3.appendChild(createRestaurantCardDetail(restaurant));
 });
+
 
 
   // 아이콘 다시 초기화 (동적으로 추가된 요소에 대해)
