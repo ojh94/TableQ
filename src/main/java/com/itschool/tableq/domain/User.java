@@ -1,5 +1,6 @@
 package com.itschool.tableq.domain;
 
+import com.itschool.tableq.network.request.UserRequest;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
@@ -64,6 +65,15 @@ public class User implements UserDetails {
         this.socialType = socialType;
         this.socialId = socialId;
         this.email = email;
+    }
+
+    public void update(UserRequest dto) {
+        this.password = dto.getPassword() == null? this.password : dto.getPassword();
+        this.nickname = dto.getNickname() == null? this.nickname : dto.getNickname();
+        this.phoneNumber = dto.getPhoneNumber() == null? this.phoneNumber : dto.getPhoneNumber();
+        this.address = dto.getAddress() == null? this.address : dto.getAddress();
+        this.name = dto.getName() == null? this.name : dto.getName();
+        this.email = dto.getEmail() == null? this.email : dto.getEmail();
     }
 
     @Override
