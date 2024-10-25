@@ -77,6 +77,7 @@ header {
   display: flex;
   justify-content: space-between;
   align-items: center;
+
 }
 
 header .container {
@@ -324,7 +325,7 @@ header, .toolbar-top, .toolbar {
     max-width: 2000px;  /* 고정된 최대 너비 */
     margin: 0 auto;     /* 가로 중앙 정렬 */
     padding: 0 15px;    /* 좌우 패딩 */
-    width: 150%;
+
   }
 }
 
@@ -358,6 +359,7 @@ header {
   padding: 1rem;
   font-size: 1.5rem;
   margin-bottom: 20px;
+  max-width: 95%;
 }
 .section-list {
   color: black;
