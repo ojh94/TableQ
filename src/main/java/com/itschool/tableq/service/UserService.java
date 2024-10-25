@@ -2,7 +2,7 @@ package com.itschool.tableq.service;
 
 import com.itschool.tableq.domain.User;
 import com.itschool.tableq.network.Header;
-import com.itschool.tableq.network.response.UserResponse;
+import com.itschool.tableq.network.Response.UserResponse;
 import com.itschool.tableq.network.request.UserRequest;
 import com.itschool.tableq.repository.UserRepository;
 import com.itschool.tableq.service.base.BaseService;
@@ -33,7 +33,7 @@ public class UserService extends BaseService<UserRequest, UserResponse, User> {
                 .email(userRequest.getEmail())
                 .password(bCryptPasswordEncoder.encode(userRequest.getPassword()))
                 .name(userRequest.getName())
-                .phoneNumber(String.valueOf(userRequest.getPhoneNumber()))
+                .phoneNumber(userRequest.getPhoneNumber())
                 .createdAt(LocalDateTime.now())
                 .lastLoginAt(LocalDateTime.now())
                 .build();

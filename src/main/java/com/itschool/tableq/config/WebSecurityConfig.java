@@ -37,7 +37,7 @@ public class WebSecurityConfig {
         return http
                 .authorizeHttpRequests(auth -> auth // 인증, 인가 설정
                         .requestMatchers(
-                                /*new AntPathRequestMatcher("**"),*/ // 운영에 반영 x
+                                new AntPathRequestMatcher("**"), // 운영에 반영 x
                                 new AntPathRequestMatcher("/"),
                                 new AntPathRequestMatcher("/css/**"),
                                 new AntPathRequestMatcher("/img/**"),

@@ -1,38 +1,16 @@
 package com.itschool.tableq.controller.api;
 
+import com.itschool.tableq.controller.CrudController;
+import com.itschool.tableq.domain.Owner;
+import com.itschool.tableq.network.Response.OwnerResponse;
 import com.itschool.tableq.network.request.OwnerRequest;
-import com.itschool.tableq.service.OwnerService;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
-import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
-import org.springframework.stereotype.Controller;
-import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
+import groovy.util.logging.Slf4j;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import org.springframework.web.bind.annotation.*;
 
-@RequiredArgsConstructor
-@Controller
-public class OwnerApiController {
-
-    private final OwnerService ownerService;
-
-    @PostMapping("/owner")
-    public String addOwner(@ModelAttribute OwnerRequest request, BindingResult bindingResult) {
-        ownerService.save(request);
-        return "redirect:/ownerlogin";
-    }
-
-    @GetMapping("/ownerlogout")
-    public String logout(HttpServletRequest request, HttpServletResponse response) {
-        new SecurityContextLogoutHandler().logout(request, response, SecurityContextHolder.getContext().getAuthentication());
-        return "redirect:/ownerlogin";
-    }
-
-    @GetMapping("/ownerlogin")
-    public String ownerlogin(HttpServletRequest request, HttpServletResponse response) {
-        return "ownerLogin";
-    }
+@Slf4j
+@Tag(name = "점주", description = "점주 관련 API") // 문서에서 쉽게 찾도록 한글로 했음
+@RestController
+@RequestMapping("/api/owner")
+public class OwnerApiController extends CrudController<OwnerRequest, OwnerResponse, Owner> {
 }
