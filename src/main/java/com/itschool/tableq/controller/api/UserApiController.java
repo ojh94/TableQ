@@ -7,19 +7,27 @@ import com.itschool.tableq.network.Response.UserResponse;
 import com.itschool.tableq.network.request.UserRequest;
 import com.itschool.tableq.service.UserService;
 import groovy.util.logging.Slf4j;
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+@Slf4j
 @Tag(name = "사용자", description = "사용자 관련 API") // 문서에서 쉽게 찾도록 한글로 했음
 @RestController
 @RequestMapping("/api/user")
 public class UserApiController extends CrudController<UserRequest, UserResponse, User> {
+    @Operation(summary = "이메일 중복 확인", description = "가입이 가능할 때 true 반환")
     @GetMapping("/check-email")
-    public Header<Boolean> isDuplicated(@RequestParam String email){
+    public Header<Boolean> checkEamil(@RequestParam(name = "email") String email){
         return Header.OK(((UserService)baseService).checkEmail(email));
+    }
+
+    @Operation(summary = "전화번호 중복확인")
+    @GetMapping("/check-phonenumber")
+    public Header<Boolean> checkPhoneNumber(@RequestParam(name = "phoneNumber") String phoneNumber){
+        return Header.OK(((UserService)baseService).checkPhoneNumber(phoneNumber));
     }
 }
