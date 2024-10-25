@@ -8,28 +8,17 @@ document.addEventListener('DOMContentLoaded', () => {
   // 아이콘 초기화
   lucide.createIcons();
 
-  // 검색 기능
-  searchForm.addEventListener('submit', (e) => {
-      e.preventDefault();
-      console.log('Searching for:', searchInput.value);
-      // 여기에 실제 검색 로직을 구현
-  });
 
-  // 정렬 기능
-  sortSelect.addEventListener('change', () => {
-      console.log('Sorting by:', sortSelect.value);
-      // 여기에 실제 정렬 로직을 구현
-  });
 
   // 레스토랑 데이터 (실제로는 API에서 가져올 것입니다)
   const restaurants = [
-      { id: 1, name: '레스토랑 1',img:"./img/ramen.jpg", type: '한식', location: '서울시 강남구', rating: 4.5, reviews: 120 },
-      { id: 2, name: '레스토랑 2',img:"./img/ramen.jpg", type: '일식', location: '서울시 마포구', rating: 4.2, reviews: 85 },
-      { id: 3, name: '레스토랑 3',img:"./img/ramen.jpg", type: '양식', location: '서울시 종로구', rating: 4.7, reviews: 150 },
+      { id: 1, name: '레스토랑 1',img:"/img/ramen.jpg", type: '한식', location: '서울시 강남구', rating: 4.5, reviews: 120 },
+      { id: 2, name: '레스토랑 2',img:"/img/ramen.jpg", type: '일식', location: '서울시 마포구', rating: 4.2, reviews: 85 },
+      { id: 3, name: '레스토랑 3',img:"/img/ramen.jpg", type: '양식', location: '서울시 종로구', rating: 4.7, reviews: 150 },
   ];
   // 방문했던 레스토랑 데이터
   const restaurants2 = [
-    { id: 1, name: '레스토랑 1',img:"./img/ramen.jpg", type: '한식', location: '서울시 강남구', rating: 4.5, reviews: 120 },
+    { id: 1, name: '레스토랑 1',img:"/img/ramen.jpg", type: '한식', location: '서울시 강남구', rating: 4.5, reviews: 120 },
 
 ];
 
@@ -67,9 +56,12 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // 레스토랑 카드 렌더링
-  restaurants.forEach(restaurant => {
-      restaurantGrid.appendChild(createRestaurantCard(restaurant));
-  });
+  if(restaurantGrid){
+   restaurants.forEach(restaurant => {
+        restaurantGrid.appendChild(createRestaurantCard(restaurant));
+    });
+  }
+
   restaurants2.forEach(restaurant => {
     restaurantGrid2.appendChild(createRestaurantCard(restaurant));
 });
@@ -79,11 +71,6 @@ document.addEventListener('DOMContentLoaded', () => {
   lucide.createIcons();
 });
 
-// 찜하기 기능
-function toggleFavorite(restaurantId) {
-  console.log('Toggled favorite for restaurant:', restaurantId);
-  // 여기에 실제 찜하기 로직을 구현
-}
 
 // 예약 기능
 function bookRestaurant(restaurantId) {
@@ -100,16 +87,28 @@ document.querySelectorAll(".btn-reserve").forEach((button) => {
   });
 });
 
-// '검색' 버튼 클릭 시 이벤트 핸들러
-document.querySelector('.toolbar-item[href="#searchInput"]').addEventListener('click', function (e) {
-    e.preventDefault();
 
-    // 페이지를 맨 위로 스크롤
-    window.scrollTo({
-        top: 0,
-        behavior: 'smooth'
-    });
 
-    // 포커스를 검색 입력란에 맞춤
-    document.querySelector('#searchInput').focus();
+document.addEventListener('DOMContentLoaded', () => {
+  // 표시할 레스토랑 ID (필요에 따라 변경 가능)
+  const selectedRestaurantId = '1';  // 이 ID에 맞는 레스토랑 정보 표시
+  const selectedRestaurant = document.querySelector(`.restaurant-item[data-id="${selectedRestaurantId}"]`);
+
+  if (selectedRestaurant) {
+    const restaurantName = selectedRestaurant.getAttribute('data-name');
+    const restaurantRating = selectedRestaurant.getAttribute('data-rating');
+    const restaurantReviews = selectedRestaurant.getAttribute('data-reviews');
+
+    // 헤더 정보 업데이트
+    const header = document.querySelector('header');
+    header.innerHTML += `
+      <div class="restaurant-info">
+        <h1>${restaurantName} (ID: ${selectedRestaurantId})</h1>
+        <p>별점: ${restaurantRating} (리뷰: ${restaurantReviews}개)</p>
+      </div>
+    `;
+
+    // 배경 이미지 업데이트
+    document.body.style.backgroundImage = `url('/img/restaurant-${selectedRestaurantId}.jpg')`;
+  }
 });

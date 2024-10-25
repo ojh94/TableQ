@@ -2,18 +2,17 @@ package com.itschool.tableq.service;
 
 import com.itschool.tableq.domain.User;
 import com.itschool.tableq.network.Header;
-import com.itschool.tableq.network.Response.UserResponse;
+import com.itschool.tableq.network.response.UserResponse;
 import com.itschool.tableq.network.request.UserRequest;
 import com.itschool.tableq.repository.UserRepository;
 import com.itschool.tableq.service.base.BaseService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.webjars.NotFoundException;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
 
 @RequiredArgsConstructor
 @Service
@@ -49,21 +48,16 @@ public class UserService extends BaseService<UserRequest, UserResponse, User> {
     }
 
     @Override
+    @Transactional
     public Header<UserResponse> update(Long id, Header<UserRequest> request) {
         UserRequest userRequest = request.getData();
 
-        return baseRepository.findById(id)
-                .map(user -> {
-                    user.setEmail(userRequest.getEmail());
-                    user.setPassword(bCryptPasswordEncoder.encode(userRequest.getPassword()));
-                    user.setName(userRequest.getName());
-                    user.setPhoneNumber(userRequest.getPhoneNumber());
-                    user.setLastLoginAt(LocalDateTime.now());
+        User user = baseRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("not found" + id));
 
-                    baseRepository.save(user);
-                    return Header.OK(response(user));
-                })
-                .orElseThrow(()-> new NotFoundException("user not found"));
+        user.update(userRequest);
+
+        return Header.OK(response(user));
     }
 
     @Override

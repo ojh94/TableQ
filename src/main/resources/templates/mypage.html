@@ -1,4 +1,78 @@
 <main layout:decorate="~{common/layouts/mainLayout}"
       layout:fragment="Content">
-  <div></div>
+    <div class="child">
+        <div class="row">
+            <div class="input-form col-md-12 mx-auto">
+                <h4 class="mb-4 text-orange text-center" style="font-weight:bold">회원정보 수정</h4>
+                <form class="validation-form" id="signupForm" novalidate> <!--method="put" th:action="@{/api/user/{id}(id=${user.id})}"-->
+
+                    <div id="id" style="display: none;" th:text="${user.id}"></div>
+
+                    <div class="mb-2">
+                        <label for="nickname">닉네임</label>
+                        <input type="text" class="form-control" id="nickname" name="nickname"
+                               placeholder="" required th:value="${user.nickname}">
+                        <div class="invalid-feedback">
+                            닉네임을 입력해주세요.
+                        </div>
+                    </div>
+
+                    <div class="mb-2">
+                        <label for="name">이름</label>
+                        <input type="text" class="form-control" id="name" name="name"
+                               placeholder="" required readonly th:value="${user.name}">
+                        <div class="invalid-feedback">
+                            이름을 입력해주세요.
+                        </div>
+                    </div>
+
+                    <div class="mb-2">
+                        <label for="address">주소</label>
+                        <div class="certification">
+                            <input type="text" class="form-control" id="address" name="address"
+                                   placeholder="주소를 입력해주세요." required th:value="${user.address}">
+                        </div>
+                        <div class="invalid-feedback">
+                            주소를 입력해주세요.
+                        </div>
+                    </div>
+
+                    <div class="mb-2">
+                        <label for="email">이메일</label>
+                        <div class="certification">
+                            <input type="email" class="form-control" id="email" name="email"
+                                   placeholder="you@example.com" required readonly th:value="${user.email}">
+                            <button type="button">변경</button>
+                        </div>
+                        <div class="invalid-feedback">
+                            이메일을 입력해주세요.
+                        </div>
+                    </div>
+
+                    <div class="mb-2">
+                        <label for="phone">전화번호</label>
+                        <div class="certification">
+                            <input type="number" class="form-control" id="phone" name="phoneNumber"
+                                   placeholder="숫자만 입력해주세요." readonly required th:value="${user.phoneNumber}">
+                            <button type="button">변경</button>
+                        </div>
+                        <div class="invalid-feedback">
+                            전화번호를 입력해주세요.
+                        </div>
+                    </div>
+
+                    <div class="mb-4 row justify-content-center">
+                      <div class="col-auto">
+                        <button class="btn btn-orange btn-lg text-light" type="submit" form="signupForm" style="width: 200px;">수정</button>
+                      </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <footer class="my-3 text-center text-small">
+            <p class="mb-1">© 2024 Table Q.</p>
+        </footer>
+    </div>
 </main>
+
+<script defer src="/js/mypage.js"></script>

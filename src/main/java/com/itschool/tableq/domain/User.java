@@ -1,5 +1,6 @@
 package com.itschool.tableq.domain;
 
+import com.itschool.tableq.network.request.UserRequest;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
@@ -13,7 +14,6 @@ import java.util.List;
 @Table(name = "users")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
-@Setter
 @ToString
 @Entity
 public class User implements UserDetails {
@@ -66,6 +66,15 @@ public class User implements UserDetails {
         this.email = email;
     }
 
+    public void update(UserRequest dto) {
+        this.password = dto.getPassword() == null? this.password : dto.getPassword();
+        this.nickname = dto.getNickname() == null? this.nickname : dto.getNickname();
+        this.phoneNumber = dto.getPhoneNumber() == null? this.phoneNumber : dto.getPhoneNumber();
+        this.address = dto.getAddress() == null? this.address : dto.getAddress();
+        this.name = dto.getName() == null? this.name : dto.getName();
+        this.email = dto.getEmail() == null? this.email : dto.getEmail();
+    }
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return List.of(new SimpleGrantedAuthority("user"));
@@ -73,7 +82,7 @@ public class User implements UserDetails {
 
     @Override
     public String getUsername() {
-        return "";
+        return this.email;
     }
 
     @Override
