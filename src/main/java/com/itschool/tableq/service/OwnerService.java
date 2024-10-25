@@ -22,20 +22,6 @@ public class OwnerService extends BaseService<OwnerRequest, OwnerResponse, Owner
 
 
 
-
-
-
-    public Long save(OwnerRequest dto) {
-        return ownerRepository.save(Owner.builder()
-                .userName(dto.getUsername())
-                .password(dto.getPassword())
-                .name(dto.getName())
-                .phoneNumber(dto.getPhoneNumber())
-                .createdAt(LocalDateTime.now())
-                .lastModifiedAt(LocalDateTime.now())
-                .build()).getId();
-    }
-
     public List<Owner> findAll() {
         return ownerRepository.findAll();
     }

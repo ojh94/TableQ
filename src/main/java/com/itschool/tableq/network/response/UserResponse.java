@@ -1,4 +1,4 @@
-package com.itschool.tableq.network.response;
+package com.itschool.tableq.network.Response;
 
 import com.itschool.tableq.domain.User;
 import jakarta.validation.constraints.Email;

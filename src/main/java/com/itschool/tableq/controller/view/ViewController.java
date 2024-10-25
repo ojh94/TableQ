@@ -1,7 +1,7 @@
 package com.itschool.tableq.controller.view;
 
 import com.itschool.tableq.domain.User;
-import com.itschool.tableq.network.response.UserResponse;
+import com.itschool.tableq.network.Response.UserResponse;
 import com.itschool.tableq.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
