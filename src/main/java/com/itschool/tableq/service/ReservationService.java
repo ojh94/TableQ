@@ -35,7 +35,7 @@ public class ReservationService extends
                 .reservationNumber(count())
                 .reserveTime(LocalDateTime.now())
                 .people(reservationRequest.getPeople())
-                .store(reservationRequest.getRestaurant())
+                .restaurant(reservationRequest.getRestaurant())
                 .user(reservationRequest.getUser())
                 .build();
 
