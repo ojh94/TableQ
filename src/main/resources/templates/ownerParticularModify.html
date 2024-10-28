@@ -60,7 +60,7 @@
                         <!-- Post header-->
                         <header class="mb-4">
                             <!-- Post title-->
-                            <h1 class="fw-bolder mb-1">와타요업 탄방점</h1>
+                            <h1 class="fw-bolder mb-1"><input value="와타요업 탄방점"></h1>
                             <!-- Post meta content-->
                             <span style="color: gold; font-size: 1.6rem;">&#9733;</span>4.8 / <a href="#" style="text-decoration: underline;">394개의 리뷰</a>
                             <hr/>
@@ -130,24 +130,11 @@
                         <div class="tab-content" id="myTabContent">
                             <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
                                 <h4 class="fw-bolder mb-4 mt-5">영업정보</h4>
-                                <table>
-                                    <tr>
-                                        <td>운영시간</td>
-                                        <td>오늘 12:00 - 21:00</td>
-                                    </tr>
-                                    <tr>
-                                        <td>브레이크 타임</td>
-                                        <td>오늘 15:00 - 17:30</td>
-                                    </tr>
-                                    <tr>
-                                        <td>휴무일</td>
-                                        <td>-</td>
-                                    </tr>
-                                    <tr>
-                                        <td>전화번호</td>
-                                        <td>010-1234-5678</td>
-                                    </tr>
-                                </table>
+                                <div style="text-align: center;">
+                                    <p style="color: #696969;">매장의 영업정보를 설정해주세요</p>
+                                    <a class="pick-outline" type="button" data-bs-toggle="modal" data-bs-target="#times-modal">설정하기</a>
+                                </div>
+
                                 <h4 class="fw-bolder mb-4 mt-5">위치정보</h4>
                                 <p class="mb-4" style="display: block;">대전 서구 계룡로603번길 29 1층</p>
                                 <button style="border: none; padding: 5px 10px; border-radius: 20px;"><i class="bi bi-clipboard"></i>&nbsp;주소복사</button>
@@ -260,7 +247,7 @@
                         </div>
                     </article>
                     <div class="mt-5 px-5">
-                        <button class="btn btn-primary btn-lg btn-secondary" style="font-weight: bold;" type="button">취소</button>
+                        <button id="cancel" class="btn btn-primary btn-lg btn-secondary" style="font-weight: bold;" type="button">취소</button>
                         <button class="btn btn-primary btn-lg btn-orange" style="float: right;" type="button">수정완료</button>
                     </div>
                 </div>
@@ -313,13 +300,97 @@
                         <div class="form-check">
                             <input class="form-check-input" type="checkbox" value="" id="keywords-1" checked>
                             <label class="form-check-label" for="keywords-1">
-                                홈테이블
+                                아늑한
                             </label>
                         </div>
                         <div class="form-check">
                             <input class="form-check-input" type="checkbox" value="" id="keywords-2" checked>
                             <label class="form-check-label" for="keywords-2">
-                                친구랑 가기 좋은
+                                세련된
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" value="" id="keywords-3" checked>
+                            <label class="form-check-label" for="keywords-3">
+                                조용한
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" value="" id="keywords-4" checked>
+                            <label class="form-check-label" for="keywords-4">
+                                빈티지
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" value="" id="keywords-5" checked>
+                            <label class="form-check-label" for="keywords-5">
+                                모던한
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" value="" id="keywords-6" checked>
+                            <label class="form-check-label" for="keywords-6">
+                                고급스러운
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" value="" id="keywords-7" checked>
+                            <label class="form-check-label" for="keywords-7">
+                                클래식한
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" value="" id="keywords-8" checked>
+                            <label class="form-check-label" for="keywords-8">
+                                감성적인
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" value="" id="keywords-9" checked>
+                            <label class="form-check-label" for="keywords-9">
+                                깔끔한
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" value="" id="keywords-10" checked>
+                            <label class="form-check-label" for="keywords-10">
+                                화사한
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" value="" id="keywords-11" checked>
+                            <label class="form-check-label" for="keywords-11">
+                                이국적인
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" value="" id="keywords-12" checked>
+                            <label class="form-check-label" for="keywords-12">
+                                트렌디한
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" value="" id="keywords-13" checked>
+                            <label class="form-check-label" for="keywords-13">
+                                데이트하기 좋은
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" value="" id="keywords-14" checked>
+                            <label class="form-check-label" for="keywords-14">
+                                레트로한
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" value="" id="keywords-15" checked>
+                            <label class="form-check-label" for="keywords-15">
+                                전통적인
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" value="" id="keywords-16" checked>
+                            <label class="form-check-label" for="keywords-16">
+                                로맨틱한
                             </label>
                         </div>
                     </div>
@@ -330,6 +401,127 @@
                 </div>
             </div>
         </div>
+
+        <!-- 영업정보 모달 -->
+        <div class="modal fade" id="times-modal" tabindex="-1" aria-labelledby="timesLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-scrollable">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="timesLabel">영업정보</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="card mb-3" style="background-color: rgba(237, 125, 49, 0.1);">
+                            <div class="card-body">
+                                <table>
+                                    <tr>
+                                        <td>전화번호</td>
+                                        <td><input value="01012345678"/></td>
+                                    </tr>
+                                    <tr>
+                                        <td>휴무일</td>
+                                        <td><input value="-"/></td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="card" style="background-color: rgba(128, 128, 128, 0.1);">
+                            <div class="card-body">
+                                <p class="fw-bold">월요일</p>
+                                <table>
+                                    <tr>
+                                        <td>운영시간</td>
+                                        <td><input type="time" value=""/></td>
+                                    </tr>
+                                    <tr>
+                                        <td>브레이크 타임</td>
+                                        <td><input type="time" value=""/></td>
+                                    </tr>
+                                </table>
+                                <div class="mt-5"></div>
+                                <p class="fw-bold">화요일</p>
+                                <table>
+                                    <tr>
+                                        <td>운영시간</td>
+                                        <td><input type="time" value=""/></td>
+                                    </tr>
+                                    <tr>
+                                        <td>브레이크 타임</td>
+                                        <td><input type="time" value=""/></td>
+                                    </tr>
+                                </table>
+                                <div class="mt-5"></div>
+                                <p class="fw-bold">수요일</p>
+                                <table>
+                                    <tr>
+                                        <td>운영시간</td>
+                                        <td><input type="time" value=""/></td>
+                                    </tr>
+                                    <tr>
+                                        <td>브레이크 타임</td>
+                                        <td><input type="time" value=""/></td>
+                                    </tr>
+                                </table>
+                                <div class="mt-5"></div>
+                                <p class="fw-bold">목요일</p>
+                                <table>
+                                    <tr>
+                                        <td>운영시간</td>
+                                        <td><input type="time" value=""/></td>
+                                    </tr>
+                                    <tr>
+                                        <td>브레이크 타임</td>
+                                        <td><input type="time" value=""/></td>
+                                    </tr>
+                                </table>
+                                <div class="mt-5"></div>
+                                <p class="fw-bold">금요일</p>
+                                <table>
+                                    <tr>
+                                        <td>운영시간</td>
+                                        <td><input type="time" value=""/></td>
+                                    </tr>
+                                    <tr>
+                                        <td>브레이크 타임</td>
+                                        <td><input type="time" value=""/></td>
+                                    </tr>
+                                </table>
+                                <div class="mt-5"></div>
+                                <p class="fw-bold">토요일</p>
+                                <table>
+                                    <tr>
+                                        <td>운영시간</td>
+                                        <td><input type="time" value=""/></td>
+                                    </tr>
+                                    <tr>
+                                        <td>브레이크 타임</td>
+                                        <td><input type="time" value=""/></td>
+                                    </tr>
+                                </table>
+                                <div class="mt-5"></div>
+                                <p class="fw-bold">일요일</p>
+                                <table>
+                                    <tr>
+                                        <td>운영시간</td>
+                                        <td><input type="time" value=""/></td>
+                                    </tr>
+                                    <tr>
+                                        <td>브레이크 타임</td>
+                                        <td><input type="time" value=""/></td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <script>
+        document.getElementById('cancel').addEventListener('click', function() {
+            window.history.back(); // 페이지를 이전 페이지로 이동
+        });
+        </script>
 
         <!-- Bootstrap core JS-->
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
