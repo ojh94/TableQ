@@ -28,7 +28,7 @@ public class RestaurantService extends BaseService<RestaurantRequest, Restaurant
         Restaurant restaurant = Restaurant.builder()
                 .name(restaurantRequest.getName())
                 .address(restaurantRequest.getAddress())
-                .introduction(restaurantRequest.getIntroduction())
+                .information(restaurantRequest.getIntroduction())
                 .contactNumber(restaurantRequest.getContact_number())
                 .isAvailable(restaurantRequest.isAvailable())
                 .createdAt(LocalDateTime.now())

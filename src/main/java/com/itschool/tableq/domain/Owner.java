@@ -9,7 +9,7 @@ import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.List;
 
-@Table(name = "owner")
+@Table(name = "owners")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 @Setter
@@ -22,7 +22,7 @@ public class Owner implements UserDetails {
     private Long id;
 
     @Column(nullable = false)
-    private String userName;
+    private String username;
 
     @Column(nullable = false)
     private String password;
@@ -50,9 +50,9 @@ public class Owner implements UserDetails {
     }
 
     @Builder
-    public Owner(Long id, String userName, String password, String name, String phoneNumber, LocalDateTime createdAt, LocalDateTime lastModifiedAt) {
+    public Owner(Long id, String username, String password, String name, String phoneNumber, LocalDateTime createdAt, LocalDateTime lastModifiedAt) {
         this.id = id;
-        this.userName = userName;
+        this.username = username;
         this.password = password;
         this.name = name;
         this.phoneNumber = phoneNumber;

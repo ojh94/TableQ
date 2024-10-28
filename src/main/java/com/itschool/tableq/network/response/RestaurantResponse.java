@@ -35,7 +35,7 @@ public class RestaurantResponse {
         this.id = restaurant.getId();
         this.name = restaurant.getName();
         this.address = restaurant.getAddress();
-        this.introduction = restaurant.getIntroduction();
+        this.introduction = restaurant.getInformation();
         this.contactNumber = restaurant.getContactNumber();
         this.isAvailable = restaurant.isAvailable();
         this.createdAt = restaurant.getCreatedAt();

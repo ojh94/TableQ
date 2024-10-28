@@ -24,7 +24,7 @@ public class Restaurant {
     @Column(nullable = false)
     private String address;
 
-    private String introduction;
+    private String information;
 
     @Column(nullable = false)
     private String contactNumber;
@@ -43,11 +43,11 @@ public class Restaurant {
     private BuisnessInformation buisnessInformation;
 
     @Builder
-    public Restaurant(String name, String address, String introduction, String contactNumber, boolean isAvailable,
+    public Restaurant(String name, String address, String information, String contactNumber, boolean isAvailable,
                       LocalDateTime createdAt, LocalDateTime lastModifiedAt, BuisnessInformation buisnessInformation) {
         this.name = name;
         this.address = address;
-        this.introduction = introduction;
+        this.information = information;
         this.contactNumber = contactNumber;
         this.isAvailable = isAvailable;
         this.createdAt = createdAt;
@@ -58,7 +58,7 @@ public class Restaurant {
     public void update(RestaurantRequest restaurantRequest) {
         this.name = restaurantRequest.getName() == null ? this.name : restaurantRequest.getName();
         this.address = restaurantRequest.getAddress() == null ? this.address : restaurantRequest.getAddress();
-        this.introduction = restaurantRequest.getIntroduction() == null ? this.introduction : restaurantRequest.getIntroduction();
+        this.information = restaurantRequest.getIntroduction() == null ? this.information : restaurantRequest.getIntroduction();
         this.contactNumber = restaurantRequest.getContact_number() == null ? this.contactNumber : restaurantRequest.getContact_number();
     }
 }

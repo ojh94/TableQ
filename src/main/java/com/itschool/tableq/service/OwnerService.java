@@ -36,7 +36,7 @@ public class OwnerService extends BaseService<OwnerRequest, OwnerResponse, Owner
         OwnerRequest ownerRequest = request.getData();
 
         Owner owner = Owner.builder()
-                .userName(ownerRequest.getUsername())
+                .username(ownerRequest.getUsername())
                 .password(bCryptPasswordEncoder.encode(ownerRequest.getPassword()))
                 .name(ownerRequest.getName())
                 .phoneNumber(ownerRequest.getPhoneNumber())
@@ -59,7 +59,7 @@ public class OwnerService extends BaseService<OwnerRequest, OwnerResponse, Owner
 
         return baseRepository.findById(id)
                 .map(owner -> {
-                    owner.setUserName(ownerRequest.getUsername());
+                    owner.setUsername(ownerRequest.getUsername());
                     owner.setName(ownerRequest.getName());
                     owner.setPassword(bCryptPasswordEncoder.encode(ownerRequest.getPassword()));
                     owner.setPhoneNumber(ownerRequest.getPhoneNumber());
