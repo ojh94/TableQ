@@ -3,7 +3,7 @@ package com.itschool.tableq.controller.api;
 import com.itschool.tableq.controller.CrudController;
 import com.itschool.tableq.domain.User;
 import com.itschool.tableq.network.Header;
-import com.itschool.tableq.network.Response.UserResponse;
+import com.itschool.tableq.network.response.UserResponse;
 import com.itschool.tableq.network.request.UserRequest;
 import com.itschool.tableq.service.UserService;
 import groovy.util.logging.Slf4j;

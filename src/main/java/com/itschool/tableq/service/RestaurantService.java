@@ -2,7 +2,7 @@ package com.itschool.tableq.service;
 
 import com.itschool.tableq.domain.Restaurant;
 import com.itschool.tableq.network.Header;
-import com.itschool.tableq.network.Response.RestaurantResponse;
+import com.itschool.tableq.network.response.RestaurantResponse;
 import com.itschool.tableq.network.request.RestaurantRequest;
 import com.itschool.tableq.service.base.BaseService;
 import lombok.RequiredArgsConstructor;
@@ -26,14 +26,14 @@ public class RestaurantService extends BaseService<RestaurantRequest, Restaurant
         RestaurantRequest restaurantRequest = request.getData();
 
         Restaurant restaurant = Restaurant.builder()
-                .buisness_id(restaurantRequest.getBuisness_id())
                 .name(restaurantRequest.getName())
                 .address(restaurantRequest.getAddress())
                 .introduction(restaurantRequest.getIntroduction())
-                .contact_number(restaurantRequest.getContact_number())
-                .is_available(restaurantRequest.is_available())
-                .created_at(LocalDateTime.now())
-                .last_modified_at(LocalDateTime.now())
+                .contactNumber(restaurantRequest.getContact_number())
+                .isAvailable(restaurantRequest.isAvailable())
+                .createdAt(LocalDateTime.now())
+                .lastModifiedAt(LocalDateTime.now())
+                .buisnessInformation(restaurantRequest.getBuisnessInformation())
                 .build();
 
         baseRepository.save(restaurant);

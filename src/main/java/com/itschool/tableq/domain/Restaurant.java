@@ -1,14 +1,12 @@
 package com.itschool.tableq.domain;
 
 import com.itschool.tableq.network.request.RestaurantRequest;
-import com.itschool.tableq.repository.RestaurantRepository;
 import jakarta.persistence.*;
 import lombok.*;
-import org.springframework.security.core.userdetails.UserDetails;
 
 import java.time.LocalDateTime;
 
-@Table(name = "Restaurant")
+@Table(name = "restaurants")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 @ToString
@@ -21,9 +19,6 @@ public class Restaurant {
     private Long id;
 
     @Column(nullable = false)
-    private Long buisness_id;
-
-    @Column(nullable = false)
     private String name;
 
     @Column(nullable = false)
@@ -32,33 +27,38 @@ public class Restaurant {
     private String introduction;
 
     @Column(nullable = false)
-    private String contact_number;
+    private String contactNumber;
 
     @Column(nullable = false)
-    private boolean is_available;
+    private boolean isAvailable;
 
     @Column(nullable = false)
-    private LocalDateTime created_at;
+    private LocalDateTime createdAt;
 
     @Column(nullable = false)
-    private LocalDateTime last_modified_at;
+    private LocalDateTime lastModifiedAt;
+
+    @ManyToOne
+    @JoinColumn(name = "buisness_id", updatable = false)
+    private BuisnessInformation buisnessInformation;
 
     @Builder
-    public Restaurant(Long buisness_id, String name, String address, String introduction, String contact_number, boolean is_available, LocalDateTime created_at, LocalDateTime last_modified_at) {
-        this.buisness_id = buisness_id;
+    public Restaurant(String name, String address, String introduction, String contactNumber, boolean isAvailable,
+                      LocalDateTime createdAt, LocalDateTime lastModifiedAt, BuisnessInformation buisnessInformation) {
         this.name = name;
         this.address = address;
         this.introduction = introduction;
-        this.contact_number = contact_number;
-        this.is_available = is_available;
-        this.created_at = created_at;
-        this.last_modified_at = last_modified_at;
+        this.contactNumber = contactNumber;
+        this.isAvailable = isAvailable;
+        this.createdAt = createdAt;
+        this.lastModifiedAt = lastModifiedAt;
+        this.buisnessInformation = buisnessInformation;
     }
 
     public void update(RestaurantRequest restaurantRequest) {
         this.name = restaurantRequest.getName() == null ? this.name : restaurantRequest.getName();
         this.address = restaurantRequest.getAddress() == null ? this.address : restaurantRequest.getAddress();
         this.introduction = restaurantRequest.getIntroduction() == null ? this.introduction : restaurantRequest.getIntroduction();
-        this.contact_number = restaurantRequest.getContact_number() == null ? this.contact_number : restaurantRequest.getContact_number();
+        this.contactNumber = restaurantRequest.getContact_number() == null ? this.contactNumber : restaurantRequest.getContact_number();
     }
 }

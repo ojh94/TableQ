@@ -1,4 +1,4 @@
-package com.itschool.tableq.network.Response;
+package com.itschool.tableq.network.response;
 
 import com.itschool.tableq.domain.Owner;
 import jakarta.validation.constraints.NotBlank;

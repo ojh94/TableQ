@@ -2,7 +2,7 @@ package com.itschool.tableq.controller.api;
 
 import com.itschool.tableq.controller.CrudController;
 import com.itschool.tableq.domain.Owner;
-import com.itschool.tableq.network.Response.OwnerResponse;
+import com.itschool.tableq.network.response.OwnerResponse;
 import com.itschool.tableq.network.request.OwnerRequest;
 import groovy.util.logging.Slf4j;
 import io.swagger.v3.oas.annotations.tags.Tag;
