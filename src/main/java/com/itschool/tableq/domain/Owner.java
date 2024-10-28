@@ -9,7 +9,7 @@ import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.List;
 
-@Table(name = "owner")
+@Table(name = "owners")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 @Setter
