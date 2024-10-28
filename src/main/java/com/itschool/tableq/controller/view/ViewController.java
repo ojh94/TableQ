@@ -1,13 +1,16 @@
 package com.itschool.tableq.controller.view;
 
 import com.itschool.tableq.domain.User;
+import com.itschool.tableq.network.Response.RestaurantResponse;
 import com.itschool.tableq.network.Response.UserResponse;
+import com.itschool.tableq.service.RestaurantService;
 import com.itschool.tableq.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.ui.Model;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 
 @Controller
 public class ViewController {
@@ -15,8 +18,8 @@ public class ViewController {
     @Autowired
     private UserService userService;
 
-    /*@Autowired
-    private Restaurant restaurantRepository;*/
+    @Autowired
+    private RestaurantService restaurantService;
 
     // 홈
     @GetMapping("/")
@@ -83,24 +86,12 @@ public class ViewController {
         return "mypage";
     }
 
-
-
-
     @GetMapping("/restaurant/{id}")
-    public String getRestaurantDetails() { // 데이터베이스 연결 시 괄호 안에 넣기 @PathVariable Long id, Model model
+    public String getRestaurantDetails(@PathVariable Long id, Model model) { // 데이터베이스 연결 시 괄호 안에 넣기
 
-//        // 레스토랑 ID에 해당하는 정보를 데이터베이스에서 조회
-//        Restaurant restaurant = restaurantRepository.findById(id)
-//                .orElseThrow(() -> new IllegalArgumentException("Invalid restaurant Id:" + id));
-//
-//        // 편의시설과 해시태그를 배열로 변환하여 템플릿에 전달
-//        String[] facilitiesArray = restaurant.getFacilities().split(",");
-//        String[] hashtagsArray = restaurant.getHashtags().split(",");
-//
-//        // 모델에 데이터 추가
-//        model.addAttribute("restaurant", restaurant);
-//        model.addAttribute("facilities", facilitiesArray);
-//        model.addAttribute("hashtags", hashtagsArray);
+        RestaurantResponse response = restaurantService.read(id).getData();
+
+        model.addAttribute("restaurant", response);
 
         // restaurant-detail.html 파일을 반환 (템플릿 이름)
         return "restaurant-detail";
