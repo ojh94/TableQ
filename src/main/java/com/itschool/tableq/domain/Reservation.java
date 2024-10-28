@@ -39,7 +39,7 @@ public class Reservation {
 
     @ManyToOne
     @JoinColumn(name = "store_id",updatable = false)
-    private Store store;
+    private Restaurant restaurant;
 
     @ManyToOne
     @JoinColumn(name = "user_id", updatable = false)
@@ -47,11 +47,11 @@ public class Reservation {
 
     @Builder
     public Reservation(Integer reservationNumber,
-                       LocalDateTime reserveTime, Integer people, Store store, User user){
+                       LocalDateTime reserveTime, Integer people, Restaurant restaurant, User user){
         this.reservationNumber = reservationNumber;
         this.reserveTime = reserveTime;
         this.people = people;
-        this.store = store;
+        this.restaurant = restaurant;
         this.user = user;
     }
 }

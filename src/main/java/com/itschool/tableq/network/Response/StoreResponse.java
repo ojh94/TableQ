@@ -1,11 +1,8 @@
 package com.itschool.tableq.network.Response;
 
-import com.itschool.tableq.domain.Store;
-import jakarta.persistence.Column;
+import com.itschool.tableq.domain.Restaurant;
 import lombok.Getter;
 
-import java.math.BigDecimal;
-import java.security.Timestamp;
 import java.time.LocalDateTime;
 
 @Getter
@@ -32,15 +29,15 @@ public class StoreResponse {
         this.last_modified_at = last_modified_at;
     }
 
-    public StoreResponse(Store store) {
-        this.id = store.getId();
-        this.buisness_id = store.getBuisness_id();
-        this.name = store.getName();
-        this.address = store.getAddress();
-        this.introduction = store.getIntroduction();
-        this.contact_number = store.getContact_number();
-        this.is_available = store.is_available();
-        this.created_at = store.getCreated_at();
-        this.last_modified_at = store.getLast_modified_at();
+    public StoreResponse(Restaurant restaurant) {
+        this.id = restaurant.getId();
+        this.buisness_id = restaurant.getBuisness_id();
+        this.name = restaurant.getName();
+        this.address = restaurant.getAddress();
+        this.introduction = restaurant.getIntroduction();
+        this.contact_number = restaurant.getContact_number();
+        this.is_available = restaurant.is_available();
+        this.created_at = restaurant.getCreated_at();
+        this.last_modified_at = restaurant.getLast_modified_at();
     }
 }

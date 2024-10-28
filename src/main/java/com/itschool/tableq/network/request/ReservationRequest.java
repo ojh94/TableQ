@@ -1,6 +1,6 @@
 package com.itschool.tableq.network.request;
 
-import com.itschool.tableq.domain.Store;
+import com.itschool.tableq.domain.Restaurant;
 import com.itschool.tableq.domain.User;
 import lombok.Getter;
 import lombok.Setter;
@@ -17,6 +17,6 @@ public class ReservationRequest {
     private LocalDateTime reserveTime;
     private LocalDateTime enteredTime;
     private Integer people;
-    private Store store;
+    private Restaurant restaurant;
     private User user;
 }
