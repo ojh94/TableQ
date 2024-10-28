@@ -1,7 +1,7 @@
 package com.itschool.tableq.network.Response;
 
 import com.itschool.tableq.domain.Reservation;
-import com.itschool.tableq.domain.Store;
+import com.itschool.tableq.domain.Restaurant;
 import com.itschool.tableq.domain.User;
 
 import java.time.LocalDateTime;
@@ -13,7 +13,7 @@ public class ReservationResponse {
     private LocalDateTime reserveTime;
     private LocalDateTime enteredTime;
     private Integer people;
-    private Store store;
+    private Restaurant restaurant;
     private User user;
 
     public ReservationResponse(Reservation reservation) {
@@ -23,7 +23,7 @@ public class ReservationResponse {
         this.reserveTime = reservation.getReserveTime();
         this.enteredTime = reservation.getEnteredTime();
         this.people = reservation.getPeople();
-        this.store = reservation.getStore();
+        this.restaurant = reservation.getRestaurant();
         this.user = reservation.getUser();
     }
 }
