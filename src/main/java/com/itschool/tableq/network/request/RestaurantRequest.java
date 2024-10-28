@@ -1,7 +1,6 @@
 package com.itschool.tableq.network.request;
 
 import lombok.*;
-import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 
@@ -23,10 +22,10 @@ public class RestaurantRequest {
 
     private String contact_number;
 
-    private boolean is_available;
+    private boolean isAvailable;
 
-    private LocalDateTime created_at;
+    private LocalDateTime createdAt;
 
-    private LocalDateTime last_modified_at;
+    private LocalDateTime lastModifiedAt;
 
 }
