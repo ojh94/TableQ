@@ -156,6 +156,7 @@
                                 <h4 class="fw-bolder mb-4 mt-5">위치정보</h4>
                                 <!--<p style="display: block;"></p>-->
                                 <div style="text-align: center;">
+                                    <p style="color: #696969;">매장의 주소를 입력해주세요</p>
                                     <input style="width: 300px;" value="대전 서구 계룡로603번길 29 1층">
                                     <button>주소검색</button>
                                 </div>
@@ -179,50 +180,52 @@
 
                             <div class="tab-pane fade" id="menu" role="tabpanel" aria-labelledby="menu-tab">
                                 <h4 class="fw-bolder mb-4 mt-5">메뉴</h4>
-                                <div class="menu-item" style="display: flex; align-items: center;">
+                                <div class="menu-item mb-4" style="display: flex; align-items: center;">
                                     <div class="item-info">
                                         <div>
-                                            <h4 style="display: flex; align-items: center;">스페셜텐동&nbsp;
+                                            <h4 style="display: flex; align-items: center;"><input value="스페셜텐동" placeholder="메뉴명">&nbsp;
                                                 <span class="badge" style="background-color: rgba(237, 125, 49, 1); font-size: 13px;">추천</span>
                                             </h4>
-                                            <h5 class="price" style="margin-bottom: 0px;">16,500원</h5>
+                                            <h5 class="price" style="margin-bottom: 0px;"><input value="16,500원" placeholder="가격"></h5>
                                         </div>
                                         <!--<p class="item-text">
                                             새우가 포함된 텐동
                                         </p>-->
                                     </div>
-                                    <img style="width: 20%; margin-left: auto; border-radius: 10px;" src="/img/test-img/텐동.jpg" alt="#" class="photo" />
+                                    <img style="width: 20%; margin-left: auto; border-radius: 10px;" src="/img/test-img/텐동.jpg" alt="#" class="photo"/>
+                                    <i class="bi bi-x-square px-4" style="font-size: 25px; cursor: pointer;" onclick="deleteMenuItem(this)"></i>
                                 </div>
-                                <div class="mb-4"></div>
-                                <div class="menu-item" style="display: flex; align-items: center;">
+                                <div class="menu-item mb-4" style="display: flex; align-items: center;">
                                     <div class="item-info">
                                         <div>
-                                            <h4>아나고텐동</h4>
-                                            <h5 class="price" style="margin-bottom: 0px;">15,500원</h5>
+                                            <h4><input value="아나고텐동" placeholder="메뉴명"></h4>
+                                            <h5 class="price" style="margin-bottom: 0px;"><input value="15,500원" placeholder="가격"></h5>
                                         </div>
                                         <!--<p class="item-text">
                                             새우가 포함된 텐동
                                         </p>-->
                                     </div>
-                                    <img style="width: 20%; margin-left: auto; border-radius: 10px;" src="/img/test-img/텐동.jpg" alt="#" class="photo" />
+                                    <img style="width: 20%; margin-left: auto; border-radius: 10px;" src="/img/test-img/텐동.jpg" alt="#" class="photo"/>
+                                    <i class="bi bi-x-square px-4" style="font-size: 25px; cursor: pointer;" onclick="deleteMenuItem(this)"></i>
                                 </div>
-                                <div class="d-grid mt-5">
-                                    <button class="btn btn-primary btn-menu" type="button"><i class="bi bi-plus-circle-dotted"></i></button>
+                                <div id="addMenu" class="d-grid mt-5">
+                                    <button id="addMenuButton" class="btn btn-primary btn-menu" type="button"><i class="bi bi-plus-circle-dotted"></i></button>
                                 </div>
 
                                 <hr class="mb-5 mt-5"/>
 
-                                <div class="menu-item" style="display: flex; align-items: center;">
+                                <div class="menu-item mb-4" style="display: flex; align-items: center;">
                                     <div class="item-info">
                                         <div>
-                                            <h4>콜라</h4>
-                                            <h5 class="price" style="margin-bottom: 0px;">2,000원</h5>
+                                            <h4><input value="콜라" placeholder="메뉴명"></h4>
+                                            <h5 class="price" style="margin-bottom: 0px;"><input value="2,000원" placeholder="가격"></h5>
                                         </div>
                                         <!--<p class="item-text">
                                             새우가 포함된 텐동
                                         </p>-->
                                     </div>
-                                    <img style="width: 20%; margin-left: auto; border-radius: 10px;" src="/img/test-img/텐동.jpg" alt="#" class="photo" />
+                                    <img style="width: 20%; margin-left: auto; border-radius: 10px;" src="/img/test-img/텐동.jpg" alt="#" class="photo"/>
+                                    <i class="bi bi-x-square px-4" style="font-size: 25px; cursor: pointer;" onclick="deleteMenuItem(this)"></i>
                                 </div>
                                 <div class="d-grid mt-5">
                                     <button class="btn btn-primary btn-menu" type="button"><i class="bi bi-plus-circle-dotted"></i></button>
@@ -557,6 +560,32 @@
             const reviewTab = new bootstrap.Tab(document.getElementById("review-tab"));
             reviewTab.show();
         });
+
+        // 새로운 메뉴 추가
+        document.getElementById('addMenuButton').addEventListener('click', function() {
+            const menuItemHTML = `
+                <div class="menu-item mb-4" style="display: flex; align-items: center;">
+                    <div class="item-info">
+                        <div>
+                            <h4><input value="" placeholder="메뉴명"></h4>
+                            <h5 class="price" style="margin-bottom: 0px;"><input value="" placeholder="가격"></h5>
+                        </div>
+                    </div>
+                    <img style="width: 20%; margin-left: auto; border-radius: 10px;" src="/img/test-img/텐동.jpg" alt="#" class="photo"/>
+                    <i class="bi bi-x-square px-4" style="font-size: 25px; cursor: pointer;" onclick="deleteMenuItem(this)"></i>
+                </div>
+            `;
+
+            document.getElementById('addMenu').insertAdjacentHTML('beforebegin', menuItemHTML);
+        });
+
+        // 메뉴 단일 삭제
+        function deleteMenuItem(iconElement) {
+            const menuItem = iconElement.closest('.menu-item');
+            if (menuItem) {
+                menuItem.remove();
+            }
+        }
         </script>
 
         <!-- Bootstrap core JS-->
