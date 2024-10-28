@@ -2,7 +2,7 @@ package com.itschool.tableq.controller.api;
 
 import com.itschool.tableq.controller.CrudController;
 import com.itschool.tableq.domain.Reservation;
-import com.itschool.tableq.network.Response.ReservationResponse;
+import com.itschool.tableq.network.response.ReservationResponse;
 import com.itschool.tableq.network.request.ReservationRequest;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.web.bind.annotation.RequestMapping;

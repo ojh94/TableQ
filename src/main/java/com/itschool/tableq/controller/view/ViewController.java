@@ -1,8 +1,8 @@
 package com.itschool.tableq.controller.view;
 
 import com.itschool.tableq.domain.User;
-import com.itschool.tableq.network.Response.RestaurantResponse;
-import com.itschool.tableq.network.Response.UserResponse;
+import com.itschool.tableq.network.response.RestaurantResponse;
+import com.itschool.tableq.network.response.UserResponse;
 import com.itschool.tableq.service.RestaurantService;
 import com.itschool.tableq.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
