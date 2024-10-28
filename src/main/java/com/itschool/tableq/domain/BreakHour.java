@@ -6,20 +6,19 @@ import org.springframework.cglib.core.Local;
 
 import java.time.LocalTime;
 
-@Table(name = "opening_hours")
+@Table(name = "break_hours")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@AllArgsConstructor
 @Getter
 @Entity
-public class OpeningHour {
+public class BreakHour {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(updatable = false,nullable = false)
     private Long id;
 
-    private LocalTime openAt;
+    private LocalTime breakStart;
 
-    private LocalTime closeAt;
+    private LocalTime breakEnd;
 
     @Column(nullable = false)
     private String dayOfWeek;
@@ -29,7 +28,9 @@ public class OpeningHour {
     private Restaurant restaurant;
 
     @Builder
-    public OpeningHour(String dayOfWeek, Restaurant restaurant){
+    public BreakHour(LocalTime breakStart, LocalTime breakEnd, String dayOfWeek, Restaurant restaurant){
+        this.breakStart = breakStart;
+        this.breakEnd = breakEnd;
         this.dayOfWeek = dayOfWeek;
         this.restaurant = restaurant;
     }
