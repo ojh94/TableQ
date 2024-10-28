@@ -35,6 +35,12 @@
                 color: #696969;
                 margin-right: 4px;
             }
+
+            .main-img {
+              width: 900px;
+              height: 400px;
+              object-fit: cover;
+            }
         </style>
     </head>
     <body>
@@ -63,7 +69,7 @@
                             <h1 class="fw-bolder mb-1">와타요업 탄방점</h1>
                             <!-- Post meta content-->
                             <!--<div class="text-muted fst-italic mb-2">YOUR FAVORITE TENDON HAUS</div>-->
-                            <span style="color: gold; font-size: 1.6rem;">&#9733;</span>4.8 / <a href="#" style="text-decoration: underline;">394개의 리뷰</a>
+                            <i class="bi bi-star-fill" style="color: #FAC608 !important;"></i>&nbsp;4.8 / <a href="#" style="text-decoration: underline;">394개의 리뷰</a>
                             <hr/>
                             <div><i class="fas fa-clock"></i>&nbsp;영업중 : 오늘 12:00 ~ 21:00</div>
                             <!-- Post categories-->
@@ -71,7 +77,28 @@
                             <a class="badge bg-secondary text-decoration-none link-light">현장대기</a>
                         </header>
                         <!-- Preview image figure-->
-                        <figure><img class="img-fluid rounded" src="https://dummyimage.com/900x400/ced4da/6c757d.jpg" alt="..." /></figure>
+                        <!--<figure><img class="img-fluid rounded" src="https://dummyimage.com/900x400/ced4da/6c757d.jpg" alt="..." /></figure>-->
+                        <div id="carouselExampleControls" class="carousel slide">
+                            <div class="carousel-inner">
+                                <div class="carousel-item active">
+                                    <img src="https://cphoto.asiae.co.kr/listimglink/1/2020081014120617011_1597036326.jpg" class="d-block w-100 main-img" alt="...">
+                                </div>
+                                <div class="carousel-item">
+                                    <img src="https://dummyimage.com/900x400/ced4da/6c757d.jpg" class="d-block w-100 main-img" alt="...">
+                                </div>
+                                <div class="carousel-item">
+                                    <img src="https://dummyimage.com/900x400/ced4da/6c757d.jpg" class="d-block w-100 main-img" alt="...">
+                                </div>
+                            </div>
+                            <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="prev">
+                                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                <span class="visually-hidden">Previous</span>
+                            </button>
+                            <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="next">
+                                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                <span class="visually-hidden">Next</span>
+                            </button>
+                        </div>
                         <hr class="mb-5 mt-5"/>
                         <h4 class="fw-bolder mb-4">대기 정보</h4>
                         <div class="card mb-4" onclick="">
@@ -154,6 +181,7 @@
                                 </table>
                                 <h4 class="fw-bolder mb-4 mt-5">위치정보</h4>
                                 <p class="mb-4" style="display: block;">대전 서구 계룡로603번길 29 1층</p>
+                                <!-- 네이버 지도 API 필요 -->
                                 <button style="border: none; padding: 5px 10px; border-radius: 20px;"><i class="bi bi-clipboard"></i>&nbsp;주소복사</button>
 
                                 <h4 class="fw-bolder mb-4 mt-5">편의시설</h4>
@@ -285,7 +313,7 @@
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
-                        <div class="card mb-3" style="background-color: rgba(237, 125, 49, 0.1);">
+                        <div class="card mb-3" style="background-color: rgba(237, 125, 49, 0.1); border: none;">
                             <div class="card-body">
                                 <p class="fw-bold">오늘 (월요일)</p>
                                 <table>
@@ -300,7 +328,7 @@
                                 </table>
                             </div>
                         </div>
-                        <div class="card" style="background-color: rgba(128, 128, 128, 0.1);">
+                        <div class="card" style="background-color: rgba(128, 128, 128, 0.1); border: none;">
                             <div class="card-body">
                                 <p class="fw-bold">월요일</p>
                                 <table>

@@ -62,7 +62,7 @@
                             <!-- Post title-->
                             <h1 class="fw-bolder mb-1"><input value="와타요업 탄방점"></h1>
                             <!-- Post meta content-->
-                            <span style="color: gold; font-size: 1.6rem;">&#9733;</span>4.8 / <a href="#" style="text-decoration: underline;">394개의 리뷰</a>
+                            <i class="bi bi-star-fill" style="color: #FAC608 !important;"></i>&nbsp;4.8 / <a id="goToReview" href="#review" style="text-decoration: underline;">394개의 리뷰</a>
                             <hr/>
                             <div><i class="fas fa-clock"></i>&nbsp;영업중 : 오늘 12:00 ~ 21:00</div>
                             <!-- Post categories-->
@@ -136,8 +136,11 @@
                                 </div>
 
                                 <h4 class="fw-bolder mb-4 mt-5">위치정보</h4>
-                                <p class="mb-4" style="display: block;">대전 서구 계룡로603번길 29 1층</p>
-                                <button style="border: none; padding: 5px 10px; border-radius: 20px;"><i class="bi bi-clipboard"></i>&nbsp;주소복사</button>
+                                <!--<p style="display: block;"></p>-->
+                                <div style="text-align: center;">
+                                    <input style="width: 300px;" value="대전 서구 계룡로603번길 29 1층">
+                                    <button>주소검색</button>
+                                </div>
 
                                 <h4 class="fw-bolder mb-4 mt-5">편의시설</h4>
                                 <div style="text-align: center;">
@@ -411,7 +414,7 @@
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
-                        <div class="card mb-3" style="background-color: rgba(237, 125, 49, 0.1);">
+                        <div class="card mb-3" style="background-color: rgba(237, 125, 49, 0.1); border: none;">
                             <div class="card-body">
                                 <table>
                                     <tr>
@@ -425,7 +428,7 @@
                                 </table>
                             </div>
                         </div>
-                        <div class="card" style="background-color: rgba(128, 128, 128, 0.1);">
+                        <div class="card" style="background-color: rgba(128, 128, 128, 0.1); border: none;">
                             <div class="card-body">
                                 <p class="fw-bold">월요일</p>
                                 <table>
@@ -518,8 +521,15 @@
         </div>
 
         <script>
+        // 페이지를 이전 페이지로 이동
         document.getElementById('cancel').addEventListener('click', function() {
-            window.history.back(); // 페이지를 이전 페이지로 이동
+            window.history.back();
+        });
+
+        // review 탭으로 이동
+        document.getElementById("goToReview").addEventListener("click", function(event) {
+            const reviewTab = new bootstrap.Tab(document.getElementById("review-tab"));
+            reviewTab.show();
         });
         </script>
 

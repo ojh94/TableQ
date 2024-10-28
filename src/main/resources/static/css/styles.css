@@ -3609,8 +3609,10 @@ textarea.form-control-lg {
   --bs-nav-link-padding-x: 1rem;
   --bs-nav-link-padding-y: 1rem;
   --bs-nav-link-font-weight: ;
-  --bs-nav-link-color: var(--bs-link-color);
-  --bs-nav-link-hover-color: var(--bs-link-hover-color);
+  /*--bs-nav-link-color: var(--bs-link-color);*/
+  /*--bs-nav-link-hover-color: var(--bs-link-hover-color);*/
+  --bs-nav-link-color: rgba(237, 125, 49, 1);
+  --bs-nav-link-hover-color: rgba(237, 125, 49, 0.8);
   --bs-nav-link-disabled-color: #6c757d;
   display: flex;
   flex-wrap: wrap;
