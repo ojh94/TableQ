@@ -1,12 +1,14 @@
 package com.itschool.tableq.network.request;
 
 import lombok.*;
+import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@Setter
 @Getter
 public class RestaurantRequest {
     private Long id;

@@ -6,7 +6,7 @@ import lombok.Getter;
 import java.time.LocalDateTime;
 
 @Getter
-public class StoreResponse {
+public class RestaurantResponse {
     private Long id;
     private Long buisness_id;
     private String name;
@@ -17,7 +17,7 @@ public class StoreResponse {
     private LocalDateTime created_at;
     private LocalDateTime last_modified_at;
 
-    public StoreResponse(Long id, Long buisness_id, String name, String address, String introduction, String contact_number, boolean is_available, LocalDateTime created_at, LocalDateTime last_modified_at) {
+    public RestaurantResponse(Long id, Long buisness_id, String name, String address, String introduction, String contact_number, boolean is_available, LocalDateTime created_at, LocalDateTime last_modified_at) {
         this.id = id;
         this.buisness_id = buisness_id;
         this.name = name;
@@ -29,7 +29,7 @@ public class StoreResponse {
         this.last_modified_at = last_modified_at;
     }
 
-    public StoreResponse(Restaurant restaurant) {
+    public RestaurantResponse(Restaurant restaurant) {
         this.id = restaurant.getId();
         this.buisness_id = restaurant.getBuisness_id();
         this.name = restaurant.getName();
