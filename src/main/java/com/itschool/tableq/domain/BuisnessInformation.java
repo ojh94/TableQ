@@ -8,11 +8,11 @@ import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 
-@Table
+@Table(name = "buisness_informations")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 @Entity
-public class BuisnessInfo {
+public class BuisnessInformation {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(updatable = false)
@@ -38,7 +38,7 @@ public class BuisnessInfo {
     private Owner owner;
 
     @Builder
-    public BuisnessInfo(String buisnessNumber, String buisnessName, String contactNumber, Owner owner){
+    public BuisnessInformation(String buisnessNumber, String buisnessName, String contactNumber, Owner owner){
         this.buisnessNumber = buisnessNumber;
         this.buisnessName = buisnessName;
         this.contactNumber = contactNumber;
