@@ -6,7 +6,7 @@ import lombok.*;
 
 import java.time.LocalDateTime;
 
-@Table(name = "Restaurant")
+@Table(name = "restaurants")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 @ToString
@@ -17,9 +17,6 @@ public class Restaurant {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", updatable = false)
     private Long id;
-
-    @Column(nullable = false)
-    private Long buisnessId;
 
     @Column(nullable = false)
     private String name;
@@ -41,9 +38,13 @@ public class Restaurant {
     @Column(nullable = false)
     private LocalDateTime lastModifiedAt;
 
+    @ManyToOne
+    @JoinColumn(name = "buisness_id", updatable = false)
+    private BuisnessInformation buisnessInformation;
+
     @Builder
-    public Restaurant(Long buisnessId, String name, String address, String introduction, String contactNumber, boolean isAvailable, LocalDateTime createdAt, LocalDateTime lastModifiedAt) {
-        this.buisnessId = buisnessId;
+    public Restaurant(String name, String address, String introduction, String contactNumber, boolean isAvailable,
+                      LocalDateTime createdAt, LocalDateTime lastModifiedAt, BuisnessInformation buisnessInformation) {
         this.name = name;
         this.address = address;
         this.introduction = introduction;
@@ -51,6 +52,7 @@ public class Restaurant {
         this.isAvailable = isAvailable;
         this.createdAt = createdAt;
         this.lastModifiedAt = lastModifiedAt;
+        this.buisnessInformation = buisnessInformation;
     }
 
     public void update(RestaurantRequest restaurantRequest) {

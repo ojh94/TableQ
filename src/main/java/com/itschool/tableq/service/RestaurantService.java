@@ -26,7 +26,6 @@ public class RestaurantService extends BaseService<RestaurantRequest, Restaurant
         RestaurantRequest restaurantRequest = request.getData();
 
         Restaurant restaurant = Restaurant.builder()
-                .buisnessId(restaurantRequest.getBuisness_id())
                 .name(restaurantRequest.getName())
                 .address(restaurantRequest.getAddress())
                 .introduction(restaurantRequest.getIntroduction())
@@ -34,6 +33,7 @@ public class RestaurantService extends BaseService<RestaurantRequest, Restaurant
                 .isAvailable(restaurantRequest.isAvailable())
                 .createdAt(LocalDateTime.now())
                 .lastModifiedAt(LocalDateTime.now())
+                .buisnessInformation(restaurantRequest.getBuisnessInformation())
                 .build();
 
         baseRepository.save(restaurant);
