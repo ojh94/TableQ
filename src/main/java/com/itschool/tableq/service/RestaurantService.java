@@ -2,7 +2,7 @@ package com.itschool.tableq.service;
 
 import com.itschool.tableq.domain.Restaurant;
 import com.itschool.tableq.network.Header;
-import com.itschool.tableq.network.Response.RestaurantResponse;
+import com.itschool.tableq.network.response.RestaurantResponse;
 import com.itschool.tableq.network.request.RestaurantRequest;
 import com.itschool.tableq.service.base.BaseService;
 import lombok.RequiredArgsConstructor;

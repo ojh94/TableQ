@@ -1,4 +1,4 @@
-package com.itschool.tableq.network.Response;
+package com.itschool.tableq.network.response;
 
 import com.itschool.tableq.domain.Restaurant;
 import lombok.Getter;

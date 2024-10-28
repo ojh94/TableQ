@@ -2,7 +2,7 @@ package com.itschool.tableq.service;
 
 import com.itschool.tableq.domain.Owner;
 import com.itschool.tableq.network.Header;
-import com.itschool.tableq.network.Response.OwnerResponse;
+import com.itschool.tableq.network.response.OwnerResponse;
 import com.itschool.tableq.network.request.OwnerRequest;
 import com.itschool.tableq.repository.OwnerRepository;
 import com.itschool.tableq.service.base.BaseService;
