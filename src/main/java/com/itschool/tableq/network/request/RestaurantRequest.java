@@ -1,6 +1,5 @@
 package com.itschool.tableq.network.request;
 
-import jakarta.persistence.Column;
 import lombok.*;
 
 import java.time.LocalDateTime;
@@ -9,7 +8,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
-public class StoreRequest {
+public class RestaurantRequest {
     private Long id;
 
     private Long buisness_id;
