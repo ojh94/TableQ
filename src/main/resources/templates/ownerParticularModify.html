@@ -53,6 +53,15 @@
                 color: #808080 !important;
                 background-color: #F5F5F5 !important;
             }
+
+            .menu-img {
+                width: 150px;
+                height: 150px;
+                object-fit: cover;
+                margin-left: auto;
+                border-radius: 10px;
+                cursor: pointer;
+            }
         </style>
     </head>
     <body>
@@ -126,12 +135,7 @@
                             </div>
                         </div>
                     </article>
-                    <!-- Post content-->
-<!--                        <section class="mb-5">
-                        <p class="fs-5 mb-4">Science is an enterprise that should be cherished as an activity of the free human mind. Because it transforms who we are, how we live, and it gives us an understanding of our place in the universe.</p>
-                        <p class="fs-5 mb-4">The universe is large and old, and the ingredients for life as we know it are everywhere, so there's no reason to think that Earth would be unique in that regard. Whether of not the life became intelligent is a different question, and we'll see if we find that.</p>
-                        <p class="fs-5 mb-4">If you get asteroids about a kilometer in size, those are large enough and carry enough energy into our system to disrupt transportation, communication, the food chains, and that can be a really bad day on Earth.</p>
-                    </section>-->
+
                     <hr class="mb-5 mt-5"/>
                     <ul class="nav nav-tabs nav-fill mb-5 fs-5 fw-bold">
                         <li class="nav-item">
@@ -180,11 +184,12 @@
 
                             <div class="tab-pane fade" id="menu" role="tabpanel" aria-labelledby="menu-tab">
                                 <h4 class="fw-bolder mb-4 mt-5">메뉴</h4>
+
                                 <div class="menu-item mb-4" style="display: flex; align-items: center;">
                                     <div class="item-info">
                                         <div>
-                                            <h4 style="display: flex; align-items: center;"><input value="스페셜텐동" placeholder="메뉴명">&nbsp;
-                                                <span class="badge" style="background-color: rgba(237, 125, 49, 1); font-size: 13px;">추천</span>
+                                            <h4><input value="스페셜텐동" placeholder="메뉴명">
+                                                &nbsp;<span class="badge" style="background-color: rgba(237, 125, 49, 1); font-size: 13px;">추천</span>
                                             </h4>
                                             <h5 class="price" style="margin-bottom: 0px;"><input value="16,500원" placeholder="가격"></h5>
                                         </div>
@@ -192,9 +197,11 @@
                                             새우가 포함된 텐동
                                         </p>-->
                                     </div>
-                                    <img style="width: 20%; margin-left: auto; border-radius: 10px;" src="/img/test-img/텐동.jpg" alt="#" class="photo"/>
+                                    <img class="photo menu-img" src="/img/test-img/텐동.jpg" alt="#" onclick="triggerFileInput(this)"/>
+                                    <input type="file" style="display: none;" accept="image/*" onchange="updateImage(event, this)" />
                                     <i class="bi bi-x-square px-4" style="font-size: 25px; cursor: pointer;" onclick="deleteMenuItem(this)"></i>
                                 </div>
+
                                 <div class="menu-item mb-4" style="display: flex; align-items: center;">
                                     <div class="item-info">
                                         <div>
@@ -205,9 +212,11 @@
                                             새우가 포함된 텐동
                                         </p>-->
                                     </div>
-                                    <img style="width: 20%; margin-left: auto; border-radius: 10px;" src="/img/test-img/텐동.jpg" alt="#" class="photo"/>
+                                    <img class="photo menu-img" src="/img/test-img/텐동.jpg" alt="#" onclick="triggerFileInput(this)"/>
+                                    <input type="file" style="display: none;" accept="image/*" onchange="updateImage(event, this)" />
                                     <i class="bi bi-x-square px-4" style="font-size: 25px; cursor: pointer;" onclick="deleteMenuItem(this)"></i>
                                 </div>
+
                                 <div id="addMenu" class="d-grid mt-5">
                                     <button id="addMenuButton" class="btn btn-primary btn-menu" type="button"><i class="bi bi-plus-circle-dotted"></i></button>
                                 </div>
@@ -224,9 +233,11 @@
                                             새우가 포함된 텐동
                                         </p>-->
                                     </div>
-                                    <img style="width: 20%; margin-left: auto; border-radius: 10px;" src="/img/test-img/텐동.jpg" alt="#" class="photo"/>
+                                    <img class="photo menu-img" src="/img/test-img/텐동.jpg" alt="#" onclick="triggerFileInput(this)"/>
+                                    <input type="file" style="display: none;" accept="image/*" onchange="updateImage(event, this)" />
                                     <i class="bi bi-x-square px-4" style="font-size: 25px; cursor: pointer;" onclick="deleteMenuItem(this)"></i>
                                 </div>
+
                                 <div class="d-grid mt-5">
                                     <button class="btn btn-primary btn-menu" type="button"><i class="bi bi-plus-circle-dotted"></i></button>
                                 </div>
@@ -571,7 +582,8 @@
                             <h5 class="price" style="margin-bottom: 0px;"><input value="" placeholder="가격"></h5>
                         </div>
                     </div>
-                    <img style="width: 20%; margin-left: auto; border-radius: 10px;" src="/img/test-img/텐동.jpg" alt="#" class="photo"/>
+                    <img class="photo menu-img" src="/img/test-img/텐동.jpg" alt="#" onclick="triggerFileInput(this)"/>
+                    <input type="file" style="display: none;" accept="image/*" onchange="updateImage(event, this)" />
                     <i class="bi bi-x-square px-4" style="font-size: 25px; cursor: pointer;" onclick="deleteMenuItem(this)"></i>
                 </div>
             `;
@@ -584,6 +596,26 @@
             const menuItem = iconElement.closest('.menu-item');
             if (menuItem) {
                 menuItem.remove();
+            }
+        }
+
+        // 메뉴 이미지 파일 불러오기
+        function triggerFileInput(imgElement) {
+            const fileInput = imgElement.nextElementSibling; // 해당 이미지 다음 형제 요소인 input을 선택
+            fileInput.click(); // 클릭 이벤트 트리거
+        }
+
+        function updateImage(event, fileInputElement) {
+            const file = event.target.files[0];
+            const reader = new FileReader();
+
+            reader.onload = function(e) {
+                const imgElement = fileInputElement.previousElementSibling; // 해당 input의 이전 형제 요소인 img를 선택
+                imgElement.src = e.target.result; // 새로운 이미지로 src 변경
+            };
+
+            if (file) {
+                reader.readAsDataURL(file); // 파일 읽기
             }
         }
         </script>
