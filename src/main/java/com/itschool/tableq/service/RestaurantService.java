@@ -7,6 +7,7 @@ import com.itschool.tableq.network.request.RestaurantRequest;
 import com.itschool.tableq.service.base.BaseService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.nio.channels.FileLockInterruptionException;
 import java.time.LocalDateTime;
@@ -47,6 +48,7 @@ public class RestaurantService extends BaseService<RestaurantRequest, Restaurant
     }
 
     @Override
+    @Transactional
     public Header<RestaurantResponse> update(Long id, Header<RestaurantRequest> request) {
         RestaurantRequest restaurantRequest = request.getData();
 

@@ -9,6 +9,7 @@ import com.itschool.tableq.service.base.BaseService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.webjars.NotFoundException;
 
 import java.time.LocalDateTime;
@@ -54,6 +55,7 @@ public class OwnerService extends BaseService<OwnerRequest, OwnerResponse, Owner
     }
 
     @Override
+    @Transactional
     public Header<OwnerResponse> update(Long id, Header<OwnerRequest> request) {
         OwnerRequest ownerRequest = request.getData();
 
