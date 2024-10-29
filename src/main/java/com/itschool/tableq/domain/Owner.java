@@ -1,5 +1,6 @@
 package com.itschool.tableq.domain;
 
+import com.itschool.tableq.network.request.OwnerRequest;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
@@ -58,6 +59,13 @@ public class Owner implements UserDetails {
         this.phoneNumber = phoneNumber;
         this.createdAt = createdAt;
         this.lastModifiedAt = lastModifiedAt;
+    }
+
+    public void update(OwnerRequest dto){
+        this.username = dto.getUsername() == null? this.username: dto.getUsername();
+        this.password = dto.getPassword() == null? this.password: dto.getPassword();
+        this.name = dto.getName() == null? this.name: dto.getName();
+        this.phoneNumber = dto.getPhoneNumber() == null? this.phoneNumber: dto.getPhoneNumber();
     }
 
     @Override

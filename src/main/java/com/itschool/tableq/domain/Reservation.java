@@ -1,5 +1,6 @@
 package com.itschool.tableq.domain;
 
+import com.itschool.tableq.network.request.ReservationRequest;
 import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
@@ -53,5 +54,15 @@ public class Reservation {
         this.people = people;
         this.restaurant = restaurant;
         this.user = user;
+    }
+
+    public void update(ReservationRequest dto){
+        this.reservationNumber = dto.getReservationNumber() == null? this.reservationNumber: dto.getReservationNumber();
+        this.isEntered = dto.isEntered();
+        this.reserveTime = dto.getReserveTime();
+        this.enteredTime = dto.getEnteredTime();
+        this.people = dto.getPeople();
+        this.restaurant = dto.getRestaurant();
+        this.user = dto.getUser() == null? this.user: dto.getUser();
     }
 }

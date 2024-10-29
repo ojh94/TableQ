@@ -8,6 +8,7 @@ import com.itschool.tableq.service.base.BaseService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.nio.channels.FileLockInterruptionException;
 import java.time.LocalDateTime;
 
 @RequiredArgsConstructor
@@ -47,7 +48,12 @@ public class RestaurantService extends BaseService<RestaurantRequest, Restaurant
 
     @Override
     public Header<RestaurantResponse> update(Long id, Header<RestaurantRequest> request) {
-        return null;
+        RestaurantRequest restaurantRequest = request.getData();
+
+        Restaurant restaurant = baseRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("not found"));
+        restaurant.update(restaurantRequest);
+
+        return Header.OK(response(restaurant));
     }
 
     @Override

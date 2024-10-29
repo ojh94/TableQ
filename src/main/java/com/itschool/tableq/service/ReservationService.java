@@ -52,15 +52,12 @@ public class ReservationService extends
     public Header<ReservationResponse> update(Long id, Header<ReservationRequest> request) {
         ReservationRequest reservationRequest = request.getData();
 
-        return baseRepository.findById(id)
-                .map(reservation -> {
-                    reservation.setEnteredTime(LocalDateTime.now());
-                    reservation.setEntered(true);
+        Reservation reservation = baseRepository.findById(id).orElse(null);
 
-                    baseRepository.save(reservation);
-                    return Header.OK(response((reservation)));
-                })
-                .orElseThrow(()->new NotFoundException("reservation not found"));
+        reservation.update(reservationRequest);
+
+        return Header.OK(response(reservation));
+
     }
 
     @Override
