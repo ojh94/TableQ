@@ -7,6 +7,7 @@ import com.itschool.tableq.network.request.ReservationRequest;
 import com.itschool.tableq.service.base.BaseService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.webjars.NotFoundException;
 
 import java.time.LocalDateTime;
@@ -49,18 +50,16 @@ public class ReservationService extends
     }
 
     @Override
+    @Transactional
     public Header<ReservationResponse> update(Long id, Header<ReservationRequest> request) {
         ReservationRequest reservationRequest = request.getData();
 
-        return baseRepository.findById(id)
-                .map(reservation -> {
-                    reservation.setEnteredTime(LocalDateTime.now());
-                    reservation.setEntered(true);
+        Reservation reservation = baseRepository.findById(id).orElse(null);
 
-                    baseRepository.save(reservation);
-                    return Header.OK(response((reservation)));
-                })
-                .orElseThrow(()->new NotFoundException("reservation not found"));
+        reservation.update(reservationRequest);
+
+        return Header.OK(response(reservation));
+
     }
 
     @Override

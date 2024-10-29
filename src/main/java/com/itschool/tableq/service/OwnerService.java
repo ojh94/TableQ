@@ -9,6 +9,7 @@ import com.itschool.tableq.service.base.BaseService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.webjars.NotFoundException;
 
 import java.time.LocalDateTime;
@@ -36,7 +37,7 @@ public class OwnerService extends BaseService<OwnerRequest, OwnerResponse, Owner
         OwnerRequest ownerRequest = request.getData();
 
         Owner owner = Owner.builder()
-                .userName(ownerRequest.getUsername())
+                .username(ownerRequest.getUsername())
                 .password(bCryptPasswordEncoder.encode(ownerRequest.getPassword()))
                 .name(ownerRequest.getName())
                 .phoneNumber(ownerRequest.getPhoneNumber())
@@ -54,21 +55,14 @@ public class OwnerService extends BaseService<OwnerRequest, OwnerResponse, Owner
     }
 
     @Override
+    @Transactional
     public Header<OwnerResponse> update(Long id, Header<OwnerRequest> request) {
         OwnerRequest ownerRequest = request.getData();
 
-        return baseRepository.findById(id)
-                .map(owner -> {
-                    owner.setUserName(ownerRequest.getUsername());
-                    owner.setName(ownerRequest.getName());
-                    owner.setPassword(bCryptPasswordEncoder.encode(ownerRequest.getPassword()));
-                    owner.setPhoneNumber(ownerRequest.getPhoneNumber());
-                    owner.setLastModifiedAt(LocalDateTime.now());
+        Owner owner = baseRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("not found"));
+        owner.update(ownerRequest);
 
-                    ownerRepository.save(owner);
-                    return Header.OK(response(owner));
-                })
-                .orElseThrow(()-> new NotFoundException("owner not found"));
+        return Header.OK(response(owner));
     }
 
     @Override

@@ -1,5 +1,6 @@
 package com.itschool.tableq.domain;
 
+import com.itschool.tableq.network.request.OwnerRequest;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
@@ -9,7 +10,7 @@ import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.List;
 
-@Table(name = "owner")
+@Table(name = "owners")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 @Setter
@@ -22,7 +23,7 @@ public class Owner implements UserDetails {
     private Long id;
 
     @Column(nullable = false)
-    private String userName;
+    private String username;
 
     @Column(nullable = false)
     private String password;
@@ -50,14 +51,21 @@ public class Owner implements UserDetails {
     }
 
     @Builder
-    public Owner(Long id, String userName, String password, String name, String phoneNumber, LocalDateTime createdAt, LocalDateTime lastModifiedAt) {
+    public Owner(Long id, String username, String password, String name, String phoneNumber, LocalDateTime createdAt, LocalDateTime lastModifiedAt) {
         this.id = id;
-        this.userName = userName;
+        this.username = username;
         this.password = password;
         this.name = name;
         this.phoneNumber = phoneNumber;
         this.createdAt = createdAt;
         this.lastModifiedAt = lastModifiedAt;
+    }
+
+    public void update(OwnerRequest dto){
+        this.username = dto.getUsername() == null? this.username: dto.getUsername();
+        this.password = dto.getPassword() == null? this.password: dto.getPassword();
+        this.name = dto.getName() == null? this.name: dto.getName();
+        this.phoneNumber = dto.getPhoneNumber() == null? this.phoneNumber: dto.getPhoneNumber();
     }
 
     @Override
