@@ -59,8 +59,8 @@ public class ViewController {
     }
 
     @GetMapping("/ownerParticular/{id}")
-    public String ownerParticular(@AuthenticationPrincipal User user, Model model) {
-        model.addAttribute("user", user);
+    public String ownerParticular(@PathVariable Long id, Model model) {
+        model.addAttribute("id", id);
         return "ownerParticular";
     }
 

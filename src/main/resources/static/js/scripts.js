@@ -86,7 +86,10 @@ function updateActiveCarouselImage(event) {
 
 function requestRestaurantApi() {
 
-    /*const id = 1; // 추후 수정 필요*/
+    /*let abc = window.location.href.split('/');
+    const id = abc[abc.length - 1];*/
+
+    const id = document.getElementById("restaurant-id").value;
 
     $.ajax({
         url: `/api/restaurant/${id}`,
@@ -108,6 +111,9 @@ function requestRestaurantApi() {
                 $('#available').css("display" ,"none");
                 $("body > div > div.container.mt-5 > div > div > article:nth-child(1) > table > tbody > tr:nth-child(1) > td:nth-child(2)")
                 .text("현장대기 가능");
+            } else {
+                $("body > div > div.container.mt-5 > div > div > article:nth-child(1) > table > tbody > tr:nth-child(1) > td:nth-child(2)")
+                .text("원격줄서기, 현장대기 모두 가능");
             }
 
             console.log('가게 set 완료');
