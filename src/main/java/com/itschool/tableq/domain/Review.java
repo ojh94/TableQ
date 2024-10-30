@@ -6,6 +6,8 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
+
 @Table(name = "reviews")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
@@ -19,6 +21,10 @@ public class Review {
     @Column(nullable = false)
     private String content;
 
+    private LocalDateTime createdAt;
+
+    private LocalDateTime lastModifiedAt;
+
     @ManyToOne
     @JoinColumn(name = "restaurant_id", updatable = false)
     private Restaurant restaurant;
@@ -28,9 +34,11 @@ public class Review {
     private User user;
 
     @Builder
-    public Review(String content, Restaurant restaurant, User user){
+    public Review(String content, LocalDateTime createdAt, LocalDateTime lastModifiedAt, Restaurant restaurant, User user){
         this.content = content;
         this.restaurant = restaurant;
+        this.createdAt = createdAt;
+        this.lastModifiedAt = lastModifiedAt;
         this.user = user;
     }
 }
