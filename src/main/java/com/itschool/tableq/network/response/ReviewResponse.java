@@ -24,19 +24,10 @@ public class ReviewResponse {
 
     private LocalDateTime lastModifiedAt;
 
-    private Long restaurantId;
-
-    private Long userId;
-
     public ReviewResponse(Review review){
         this.id = review.getId();
         this.content = review.getContent();
         this.createdAt = review.getCreatedAt();
         this.lastModifiedAt = review.getLastModifiedAt();
-        this.restaurantId = review.getRestaurant().getId();
-        this.userId = review.getUser().getId();
-    }
-
-    public ReviewResponse(List<Review> reviews) {
     }
 }
