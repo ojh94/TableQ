@@ -3,6 +3,7 @@ package com.itschool.tableq.service;
 import com.itschool.tableq.domain.Restaurant;
 import com.itschool.tableq.domain.Review;
 import com.itschool.tableq.domain.User;
+import com.itschool.tableq.ifs.AuthorCheck;
 import com.itschool.tableq.network.Header;
 import com.itschool.tableq.network.request.ReviewRequest;
 import com.itschool.tableq.network.response.ReviewResponse;
@@ -84,8 +85,12 @@ public class ReviewService extends BaseService<ReviewRequest, ReviewResponse, Re
         return null;
     }
 
+    @AuthorCheck
     @Override
     public Header delete(Long id) {
-        return null;
+        return baseRepository.findById(id).map(review -> {
+            baseRepository.delete(review);
+            return Header.OK(response(review));
+        }).orElseThrow(()->new RuntimeException("review delete fail"));
     }
 }
