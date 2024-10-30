@@ -1,632 +1,481 @@
-<!DOCTYPE html>
-<html lang="en">
-    <head>
-        <meta charset="utf-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-        <meta name="description" content="" />
-        <meta name="author" content="" />
-        <title>점주 상세 페이지</title>
-        <!-- Favicon -->
-        <link rel="apple-touch-icon" sizes="180x180" href="/img/favicon/favicon-io/apple-touch-icon.png"/>
-        <link rel="icon" type="image/png" sizes="32x32" href="/img/favicon/favicon-io/favicon-32x32.png"/>
-        <link rel="icon" type="image/png" sizes="16x16" href="/img/favicon/favicon-io/favicon-16x16.png"/>
-        <!-- Core theme CSS (includes Bootstrap) -->
-        <link href="/css/styles.css" rel="stylesheet" />
-        <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
+<div layout:decorate="~{common/layouts/ownerLayout}"
+     layout:fragment="Content">
 
-        <style>
-            th, td {
-              padding-right: 35px;
-            }
-
-            .btn-orange {
-                background-color: rgba(237, 125, 49, 1) !important;
-                border-color: rgba(237, 125, 49, 1) !important;
-                font-weight: bold !important;
-            }
-
-            .pick-outline {
-                display: inline-block; /* 필요한 경우 inline 요소에 block 속성 적용 */
-                padding: 5px 14px;
-                border: 1px solid gray; /* 회색 테두리 */
-                border-radius: 20px; /* 테두리 둥글게 */
-                text-decoration: none; /* 밑줄 제거 */
-                color: #696969;
-                margin-right: 4px;
-            }
-
-            .btn-menu {
-                border: 1.7px dashed #A3A3A3;
-                border-radius: 7px;
-                font-size: 25px;
-                color: #808080;
-                background-color: transparent;
-                cursor: pointer;
-            }
-
-            .btn-menu:active,
-            .btn-menu:hover {
-                border: 1.7px dashed #A3A3A3 !important;
-                border-radius: 7px !important;
-                font-size: 25px !important;
-                color: #808080 !important;
-                background-color: #F5F5F5 !important;
-            }
-
-            .menu-img {
-                width: 150px;
-                height: 150px;
-                object-fit: cover;
-                margin-left: auto;
-                border-radius: 10px;
-                cursor: pointer;
-            }
-        </style>
-    </head>
-    <body>
-        <!-- Responsive navbar-->
-        <nav class="navbar navbar-expand-lg navbar-dark" style="background-color: rgba(237, 125, 49, 1) !important;">
-            <div class="container">
-                <a class="navbar-brand" href="#!">TableQ</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
-                <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                    <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
-                        <li class="nav-item"><a class="nav-link" href="#">마이페이지</a></li>
-                        <li class="nav-item"><a class="nav-link active" aria-current="page" href="#">상세페이지</a></li>
-                    </ul>
-                </div>
-            </div>
-        </nav>
-        <!-- Page content-->
-        <div class="container mt-5">
-            <div class="row">
-                <div class="col-lg-8">
-                    <!-- Post content-->
-                    <article>
-                        <!-- Post header-->
-                        <header class="mb-4">
-                            <!-- Post title-->
-                            <h1 class="fw-bolder mb-1"><input value="와타요업 탄방점"></h1>
-                            <!-- Post meta content-->
-                            <i class="bi bi-star-fill" style="color: #FAC608 !important;"></i>&nbsp;4.8 / <a id="goToReview" href="#review" style="text-decoration: underline;">394개의 리뷰</a>
-                            <hr/>
-                            <div><i class="fas fa-clock"></i>&nbsp;영업중 : 오늘 12:00 ~ 21:00</div>
-                            <!-- Post categories-->
-                            <a class="badge bg-secondary text-decoration-none link-light">원격줄서기</a>
-                            <a class="badge bg-secondary text-decoration-none link-light">현장대기</a>
-                        </header>
-                        <!-- Preview image figure-->
-                        <figure><img class="img-fluid rounded" src="https://dummyimage.com/900x400/ced4da/6c757d.jpg" alt="..." /></figure>
-                        <hr class="mb-5 mt-5"/>
-                        <h4 class="fw-bolder mb-4">대기 정보</h4>
-                        <div class="card mb-4" onclick="">
-                            <div class="card-body">
-                                <i class="fas fa-clock"></i>
-                                &nbsp;원격줄서기 시간 : 오늘 12:00 - 21:00
-                            </div>
-                        </div>
-                        <table>
-                            <tr>
-                                <td>대기신청</td>
-                                <td>원격줄서기, 현장대기 모두 가능</td>
-                            </tr>
-                            <tr>
-                                <td>순서미루기</td>
-                                <td>가능</td>
-                            </tr>
-                            <tr>
-                                <td>대기확정코드</td>
-                                <td>입력 필요</td>
-                            </tr>
-                        </table>
-                        <hr class="mb-5 mt-5"/>
-                        <h4 class="fw-bolder">요일별 대기시간 통계</h4>
-                        <div class="mt-4 px-5">
-                            <div class="row">
-                                <div class="card" style="padding-right: 0px; padding-left: 0px; border: none;">
-                                    <!--<div class="card-header">
-                                        <i class="fas fa-chart-bar me-1"></i>
-                                        Bar Chart Example
-                                    </div>-->
-                                    <div class="card-body"><canvas id="myBarChart" width="100%" height="35"></canvas></div>
-                                    <!--<div class="card-footer small text-muted">Updated yesterday at 11:59 PM</div>-->
-                                </div>
-                            </div>
-                        </div>
-                    </article>
-
+    <!-- Page content-->
+    <div class="container mt-5">
+        <div class="row">
+            <div class="col-lg-8">
+                <!-- Post content-->
+                <article>
+                    <!-- Post header-->
+                    <header class="mb-4">
+                        <!-- Post title-->
+                        <h1 class="fw-bolder mb-1"><input value="와타요업 탄방점"></h1>
+                        <!-- Post meta content-->
+                        <i class="bi bi-star-fill" style="color: #FAC608 !important;"></i>&nbsp;4.8 / <a id="goToReview" href="#review" style="text-decoration: underline;">394개의 리뷰</a>
+                        <hr/>
+                        <div><i class="fas fa-clock"></i>&nbsp;영업중 : 오늘 12:00 ~ 21:00</div>
+                        <!-- Post categories-->
+                        <a class="badge bg-secondary text-decoration-none link-light">원격줄서기</a>
+                        <a class="badge bg-secondary text-decoration-none link-light">현장대기</a>
+                    </header>
+                    <!-- Preview image figure-->
+                    <figure><img class="img-fluid rounded" src="https://dummyimage.com/900x400/ced4da/6c757d.jpg" alt="..." /></figure>
                     <hr class="mb-5 mt-5"/>
-                    <ul class="nav nav-tabs nav-fill mb-5 fs-5 fw-bold">
-                        <li class="nav-item">
-                            <a class="nav-link active" id="home-tap" data-bs-toggle="tab" data-bs-target="#home" type="button" role="tab" aria-controls="home" aria-selected="true">홈</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" id="menu-tab" data-bs-toggle="tab" data-bs-target="#menu" type="button" role="tab" aria-controls="menu" aria-selected="false">메뉴</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" id="review-tab" data-bs-toggle="tab" data-bs-target="#review" type="button" role="tab" aria-controls="review" aria-selected="false">리뷰</a>
-                        </li>
-                    </ul>
-                    <article class="px-5">
-                        <div class="tab-content" id="myTabContent">
-                            <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
-                                <h4 class="fw-bolder mb-4 mt-5">영업정보</h4>
-                                <div style="text-align: center;">
-                                    <p style="color: #696969;">매장의 영업정보를 설정해주세요</p>
-                                    <a class="pick-outline" type="button" data-bs-toggle="modal" data-bs-target="#times-modal">설정하기</a>
-                                </div>
+                    <h4 class="fw-bolder mb-4">대기 정보</h4>
+                    <div class="card mb-4" onclick="">
+                        <div class="card-body">
+                            <i class="fas fa-clock"></i>
+                            &nbsp;원격줄서기 시간 : 오늘 12:00 - 21:00
+                        </div>
+                    </div>
+                    <table>
+                        <tr>
+                            <td>대기신청</td>
+                            <td>원격줄서기, 현장대기 모두 가능</td>
+                        </tr>
+                        <tr>
+                            <td>순서미루기</td>
+                            <td>가능</td>
+                        </tr>
+                        <tr>
+                            <td>대기확정코드</td>
+                            <td>입력 필요</td>
+                        </tr>
+                    </table>
+                    <hr class="mb-5 mt-5"/>
+                    <h4 class="fw-bolder">요일별 대기시간 통계</h4>
+                    <div class="mt-4 px-5">
+                        <div class="row">
+                            <div class="card" style="padding-right: 0px; padding-left: 0px; border: none;">
+                                <!--<div class="card-header">
+                                    <i class="fas fa-chart-bar me-1"></i>
+                                    Bar Chart Example
+                                </div>-->
+                                <div class="card-body"><canvas id="myBarChart" width="100%" height="35"></canvas></div>
+                                <!--<div class="card-footer small text-muted">Updated yesterday at 11:59 PM</div>-->
+                            </div>
+                        </div>
+                    </div>
+                </article>
 
-                                <h4 class="fw-bolder mb-4 mt-5">위치정보</h4>
-                                <!--<p style="display: block;"></p>-->
-                                <div style="text-align: center;">
-                                    <p style="color: #696969;">매장의 주소를 입력해주세요</p>
-                                    <input style="width: 300px;" value="대전 서구 계룡로603번길 29 1층">
-                                    <button>주소검색</button>
-                                </div>
-
-                                <h4 class="fw-bolder mb-4 mt-5">편의시설</h4>
-                                <div style="text-align: center;">
-                                    <p style="color: #696969;">매장의 편의시설을 선택해주세요</p>
-                                    <a class="pick-outline" type="button" data-bs-toggle="modal" data-bs-target="#amenities-modal">선택하기</a>
-                                </div>
-
-                                <h4 class="fw-bolder mb-4 mt-5">매장소개</h4>
-                                <textarea style="width: 100%; height: 200px;"></textarea>
-
-                                <h4 class="fw-bolder mb-4 mt-5">매장 Pick</h4>
-                                <div style="text-align: center;">
-                                    <p style="color: #696969;">매장의 키워드를 선택해주세요</p>
-                                    <a class="pick-outline" type="button" data-bs-toggle="modal" data-bs-target="#keywords-modal">선택하기</a>
-                                </div>
-
+                <hr class="mb-5 mt-5"/>
+                <ul class="nav nav-tabs nav-fill mb-5 fs-5 fw-bold">
+                    <li class="nav-item">
+                        <a class="nav-link active" id="home-tap" data-bs-toggle="tab" data-bs-target="#home" type="button" role="tab" aria-controls="home" aria-selected="true">홈</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="menu-tab" data-bs-toggle="tab" data-bs-target="#menu" type="button" role="tab" aria-controls="menu" aria-selected="false">메뉴</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="review-tab" data-bs-toggle="tab" data-bs-target="#review" type="button" role="tab" aria-controls="review" aria-selected="false">리뷰</a>
+                    </li>
+                </ul>
+                <article class="px-5">
+                    <div class="tab-content" id="myTabContent">
+                        <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+                            <h4 class="fw-bolder mb-4 mt-5">영업정보</h4>
+                            <div style="text-align: center;">
+                                <p style="color: #696969;">매장의 영업정보를 설정해주세요</p>
+                                <a class="pick-outline" type="button" data-bs-toggle="modal" data-bs-target="#times-modal">설정하기</a>
                             </div>
 
-                            <div class="tab-pane fade" id="menu" role="tabpanel" aria-labelledby="menu-tab">
-                                <h4 class="fw-bolder mb-4 mt-5">메뉴</h4>
-
-                                <div class="menu-item mb-4" style="display: flex; align-items: center;">
-                                    <div class="item-info">
-                                        <div>
-                                            <h4><input value="스페셜텐동" placeholder="메뉴명">
-                                                &nbsp;<span class="badge" style="background-color: rgba(237, 125, 49, 1); font-size: 13px;">추천</span>
-                                            </h4>
-                                            <h5 class="price" style="margin-bottom: 0px;"><input value="16,500원" placeholder="가격"></h5>
-                                        </div>
-                                        <!--<p class="item-text">
-                                            새우가 포함된 텐동
-                                        </p>-->
-                                    </div>
-                                    <img class="photo menu-img" src="/img/test-img/텐동.jpg" alt="#" onclick="triggerFileInput(this)"/>
-                                    <input type="file" style="display: none;" accept="image/*" onchange="updateImage(event, this)" />
-                                    <i class="bi bi-x-square px-4" style="font-size: 25px; cursor: pointer;" onclick="deleteMenuItem(this)"></i>
-                                </div>
-
-                                <div class="menu-item mb-4" style="display: flex; align-items: center;">
-                                    <div class="item-info">
-                                        <div>
-                                            <h4><input value="아나고텐동" placeholder="메뉴명"></h4>
-                                            <h5 class="price" style="margin-bottom: 0px;"><input value="15,500원" placeholder="가격"></h5>
-                                        </div>
-                                        <!--<p class="item-text">
-                                            새우가 포함된 텐동
-                                        </p>-->
-                                    </div>
-                                    <img class="photo menu-img" src="/img/test-img/텐동.jpg" alt="#" onclick="triggerFileInput(this)"/>
-                                    <input type="file" style="display: none;" accept="image/*" onchange="updateImage(event, this)" />
-                                    <i class="bi bi-x-square px-4" style="font-size: 25px; cursor: pointer;" onclick="deleteMenuItem(this)"></i>
-                                </div>
-
-                                <div id="addMenu" class="d-grid mt-5">
-                                    <button id="addMenuButton" class="btn btn-primary btn-menu" type="button"><i class="bi bi-plus-circle-dotted"></i></button>
-                                </div>
-
-                                <hr class="mb-5 mt-5"/>
-
-                                <div class="menu-item mb-4" style="display: flex; align-items: center;">
-                                    <div class="item-info">
-                                        <div>
-                                            <h4><input value="콜라" placeholder="메뉴명"></h4>
-                                            <h5 class="price" style="margin-bottom: 0px;"><input value="2,000원" placeholder="가격"></h5>
-                                        </div>
-                                        <!--<p class="item-text">
-                                            새우가 포함된 텐동
-                                        </p>-->
-                                    </div>
-                                    <img class="photo menu-img" src="/img/test-img/텐동.jpg" alt="#" onclick="triggerFileInput(this)"/>
-                                    <input type="file" style="display: none;" accept="image/*" onchange="updateImage(event, this)" />
-                                    <i class="bi bi-x-square px-4" style="font-size: 25px; cursor: pointer;" onclick="deleteMenuItem(this)"></i>
-                                </div>
-
-                                <div class="d-grid mt-5">
-                                    <button class="btn btn-primary btn-menu" type="button"><i class="bi bi-plus-circle-dotted"></i></button>
-                                </div>
+                            <h4 class="fw-bolder mb-4 mt-5">위치정보</h4>
+                            <!--<p style="display: block;"></p>-->
+                            <div style="text-align: center;">
+                                <p style="color: #696969;">매장의 주소를 입력해주세요</p>
+                                <input style="width: 300px;" value="대전 서구 계룡로603번길 29 1층">
+                                <button>주소검색</button>
                             </div>
 
-                            <div class="tab-pane fade" id="review" role="tabpanel" aria-labelledby="review-tab">
-                                <!-- Comments section-->
-                                <section class="mb-5">
-                                    <div class="card bg-light">
-                                        <div class="card-body">
-                                            <!-- Comment form-->
-                                            <form class="mb-4"><textarea class="form-control" rows="3" placeholder="Join the discussion and leave a comment!"></textarea></form>
-                                            <!-- Comment with nested comments-->
-                                            <div class="d-flex mb-4">
-                                                <!-- Parent comment-->
-                                                <div class="flex-shrink-0"><img class="rounded-circle" src="https://dummyimage.com/50x50/ced4da/6c757d.jpg" alt="..." /></div>
-                                                <div class="ms-3">
-                                                    <div class="fw-bold">홍민경</div>
-                                                    If you're going to lead a space frontier, it has to be government; it'll never be private enterprise. Because the space frontier is dangerous, and it's expensive, and it has unquantified risks.
-                                                    <!-- Child comment 1-->
-                                                    <div class="d-flex mt-4">
-                                                        <div class="flex-shrink-0"><img class="rounded-circle" src="https://dummyimage.com/50x50/ced4da/6c757d.jpg" alt="..." /></div>
-                                                        <div class="ms-3">
-                                                            <div class="fw-bold">김윤아</div>
-                                                            And under those conditions, you cannot establish a capital-market evaluation of that enterprise. You can't get investors.
-                                                        </div>
+                            <h4 class="fw-bolder mb-4 mt-5">편의시설</h4>
+                            <div style="text-align: center;">
+                                <p style="color: #696969;">매장의 편의시설을 선택해주세요</p>
+                                <a class="pick-outline" type="button" data-bs-toggle="modal" data-bs-target="#amenities-modal">선택하기</a>
+                            </div>
+
+                            <h4 class="fw-bolder mb-4 mt-5">매장소개</h4>
+                            <textarea style="width: 100%; height: 200px;"></textarea>
+
+                            <h4 class="fw-bolder mb-4 mt-5">매장 Pick</h4>
+                            <div style="text-align: center;">
+                                <p style="color: #696969;">매장의 키워드를 선택해주세요</p>
+                                <a class="pick-outline" type="button" data-bs-toggle="modal" data-bs-target="#keywords-modal">선택하기</a>
+                            </div>
+
+                        </div>
+
+                        <div class="tab-pane fade" id="menu" role="tabpanel" aria-labelledby="menu-tab">
+                            <h4 class="fw-bolder mb-4 mt-5">메뉴</h4>
+
+                            <div class="menu-item mb-4" style="display: flex; align-items: center;">
+                                <div class="item-info">
+                                    <div>
+                                        <h4><input value="스페셜텐동" placeholder="메뉴명">
+                                            &nbsp;<span class="badge" style="background-color: rgba(237, 125, 49, 1); font-size: 13px;">추천</span>
+                                        </h4>
+                                        <h5 class="price" style="margin-bottom: 0px;"><input value="16,500원" placeholder="가격"></h5>
+                                    </div>
+                                    <!--<p class="item-text">
+                                        새우가 포함된 텐동
+                                    </p>-->
+                                </div>
+                                <img class="photo menu-img-modify" src="/img/test-img/텐동.jpg" alt="#" onclick="triggerFileInput(this)"/>
+                                <input type="file" style="display: none;" accept="image/*" onchange="updateImage(event, this)" />
+                                <i class="bi bi-x-square px-4" style="font-size: 25px; cursor: pointer;" onclick="deleteMenuItem(this)"></i>
+                            </div>
+
+                            <div class="menu-item mb-4" style="display: flex; align-items: center;">
+                                <div class="item-info">
+                                    <div>
+                                        <h4><input value="아나고텐동" placeholder="메뉴명"></h4>
+                                        <h5 class="price" style="margin-bottom: 0px;"><input value="15,500원" placeholder="가격"></h5>
+                                    </div>
+                                    <!--<p class="item-text">
+                                        새우가 포함된 텐동
+                                    </p>-->
+                                </div>
+                                <img class="photo menu-img-modify" src="/img/test-img/텐동.jpg" alt="#" onclick="triggerFileInput(this)"/>
+                                <input type="file" style="display: none;" accept="image/*" onchange="updateImage(event, this)" />
+                                <i class="bi bi-x-square px-4" style="font-size: 25px; cursor: pointer;" onclick="deleteMenuItem(this)"></i>
+                            </div>
+
+                            <div id="addMenu" class="d-grid mt-5">
+                                <button id="addMenuButton" class="btn btn-primary btn-menu" type="button"><i class="bi bi-plus-circle-dotted"></i></button>
+                            </div>
+
+                            <hr class="mb-5 mt-5"/>
+
+                            <div class="menu-item mb-4" style="display: flex; align-items: center;">
+                                <div class="item-info">
+                                    <div>
+                                        <h4><input value="콜라" placeholder="메뉴명"></h4>
+                                        <h5 class="price" style="margin-bottom: 0px;"><input value="2,000원" placeholder="가격"></h5>
+                                    </div>
+                                    <!--<p class="item-text">
+                                        새우가 포함된 텐동
+                                    </p>-->
+                                </div>
+                                <img class="photo menu-img-modify" src="/img/test-img/텐동.jpg" alt="#" onclick="triggerFileInput(this)"/>
+                                <input type="file" style="display: none;" accept="image/*" onchange="updateImage(event, this)" />
+                                <i class="bi bi-x-square px-4" style="font-size: 25px; cursor: pointer;" onclick="deleteMenuItem(this)"></i>
+                            </div>
+
+                            <div class="d-grid mt-5">
+                                <button class="btn btn-primary btn-menu" type="button"><i class="bi bi-plus-circle-dotted"></i></button>
+                            </div>
+                        </div>
+
+                        <div class="tab-pane fade" id="review" role="tabpanel" aria-labelledby="review-tab">
+                            <!-- Comments section-->
+                            <section class="mb-5">
+                                <div class="card bg-light">
+                                    <div class="card-body">
+                                        <!-- Comment form-->
+                                        <form class="mb-4"><textarea class="form-control" rows="3" placeholder="Join the discussion and leave a comment!"></textarea></form>
+                                        <!-- Comment with nested comments-->
+                                        <div class="d-flex mb-4">
+                                            <!-- Parent comment-->
+                                            <div class="flex-shrink-0"><img class="rounded-circle" src="https://dummyimage.com/50x50/ced4da/6c757d.jpg" alt="..." /></div>
+                                            <div class="ms-3">
+                                                <div class="fw-bold">홍민경</div>
+                                                If you're going to lead a space frontier, it has to be government; it'll never be private enterprise. Because the space frontier is dangerous, and it's expensive, and it has unquantified risks.
+                                                <!-- Child comment 1-->
+                                                <div class="d-flex mt-4">
+                                                    <div class="flex-shrink-0"><img class="rounded-circle" src="https://dummyimage.com/50x50/ced4da/6c757d.jpg" alt="..." /></div>
+                                                    <div class="ms-3">
+                                                        <div class="fw-bold">김윤아</div>
+                                                        And under those conditions, you cannot establish a capital-market evaluation of that enterprise. You can't get investors.
                                                     </div>
-                                                    <!-- Child comment 2-->
-                                                    <div class="d-flex mt-4">
-                                                        <div class="flex-shrink-0"><img class="rounded-circle" src="https://dummyimage.com/50x50/ced4da/6c757d.jpg" alt="..." /></div>
-                                                        <div class="ms-3">
-                                                            <div class="fw-bold">최유라</div>
-                                                            When you put money directly to a problem, it makes a good headline.
-                                                        </div>
+                                                </div>
+                                                <!-- Child comment 2-->
+                                                <div class="d-flex mt-4">
+                                                    <div class="flex-shrink-0"><img class="rounded-circle" src="https://dummyimage.com/50x50/ced4da/6c757d.jpg" alt="..." /></div>
+                                                    <div class="ms-3">
+                                                        <div class="fw-bold">최유라</div>
+                                                        When you put money directly to a problem, it makes a good headline.
                                                     </div>
                                                 </div>
                                             </div>
-                                            <!-- Single comment-->
-                                            <div class="d-flex">
-                                                <div class="flex-shrink-0"><img class="rounded-circle" src="https://dummyimage.com/50x50/ced4da/6c757d.jpg" alt="..." /></div>
-                                                <div class="ms-3">
-                                                    <div class="fw-bold">홍길동</div>
-                                                    When I look at the universe and all the ways the universe wants to kill us, I find it hard to reconcile that with statements of beneficence.
-                                                </div>
+                                        </div>
+                                        <!-- Single comment-->
+                                        <div class="d-flex">
+                                            <div class="flex-shrink-0"><img class="rounded-circle" src="https://dummyimage.com/50x50/ced4da/6c757d.jpg" alt="..." /></div>
+                                            <div class="ms-3">
+                                                <div class="fw-bold">홍길동</div>
+                                                When I look at the universe and all the ways the universe wants to kill us, I find it hard to reconcile that with statements of beneficence.
                                             </div>
                                         </div>
                                     </div>
-                                </section>
-                            </div>
+                                </div>
+                            </section>
                         </div>
-                    </article>
-                    <div class="mt-5 px-5">
-                        <button id="cancel" class="btn btn-primary btn-lg btn-secondary" style="font-weight: bold;" type="button">취소</button>
-                        <button class="btn btn-primary btn-lg btn-orange" style="float: right;" type="button">수정완료</button>
                     </div>
+                </article>
+                <div class="mt-5 px-5">
+                    <button id="cancel" class="btn btn-primary btn-lg btn-secondary" style="font-weight: bold;" type="button">취소</button>
+                    <button class="btn btn-primary btn-lg btn-orange" style="float: right;" type="button">수정완료</button>
                 </div>
             </div>
         </div>
-        <!-- Footer-->
-        <footer class="py-5 bg-dark mt-5">
-            <div class="container"><p class="m-0 text-center text-white">© 2024 Table Q.</p></div>
-        </footer>
+    </div>
 
-        <!-- 편의시설 모달 -->
-        <div class="modal fade" id="amenities-modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="amenitiesLabel" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="amenitiesLabel">편의시설</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+    <!-- 편의시설 모달 -->
+    <div class="modal fade" id="amenities-modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="amenitiesLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="amenitiesLabel">편의시설</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" value="" id="amenities-1">
+                        <label class="form-check-label" for="amenities-1">
+                            주차 이용 가능
+                        </label>
                     </div>
-                    <div class="modal-body">
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" value="" id="amenities-1">
-                            <label class="form-check-label" for="amenities-1">
-                                주차 이용 가능
-                            </label>
-                        </div>
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" value="" id="amenities-2" checked>
-                            <label class="form-check-label" for="amenities-2">
-                                화장실 남녀 구분
-                            </label>
-                        </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" value="" id="amenities-2" checked>
+                        <label class="form-check-label" for="amenities-2">
+                            화장실 남녀 구분
+                        </label>
                     </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
-                        <button type="button" class="btn btn-primary">선택완료</button>
-                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
+                    <button type="button" class="btn btn-primary">선택완료</button>
                 </div>
             </div>
         </div>
+    </div>
 
-        <!-- 키워드 모달 -->
-        <div class="modal fade" id="keywords-modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="keywordsLabel" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="keywordsLabel">매장 Pick</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+    <!-- 키워드 모달 -->
+    <div class="modal fade" id="keywords-modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="keywordsLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="keywordsLabel">매장 Pick</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" value="" id="keywords-1" checked>
+                        <label class="form-check-label" for="keywords-1">
+                            아늑한
+                        </label>
                     </div>
-                    <div class="modal-body">
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" value="" id="keywords-1" checked>
-                            <label class="form-check-label" for="keywords-1">
-                                아늑한
-                            </label>
-                        </div>
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" value="" id="keywords-2" checked>
-                            <label class="form-check-label" for="keywords-2">
-                                세련된
-                            </label>
-                        </div>
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" value="" id="keywords-3" checked>
-                            <label class="form-check-label" for="keywords-3">
-                                조용한
-                            </label>
-                        </div>
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" value="" id="keywords-4" checked>
-                            <label class="form-check-label" for="keywords-4">
-                                빈티지
-                            </label>
-                        </div>
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" value="" id="keywords-5" checked>
-                            <label class="form-check-label" for="keywords-5">
-                                모던한
-                            </label>
-                        </div>
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" value="" id="keywords-6" checked>
-                            <label class="form-check-label" for="keywords-6">
-                                고급스러운
-                            </label>
-                        </div>
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" value="" id="keywords-7" checked>
-                            <label class="form-check-label" for="keywords-7">
-                                클래식한
-                            </label>
-                        </div>
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" value="" id="keywords-8" checked>
-                            <label class="form-check-label" for="keywords-8">
-                                감성적인
-                            </label>
-                        </div>
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" value="" id="keywords-9" checked>
-                            <label class="form-check-label" for="keywords-9">
-                                깔끔한
-                            </label>
-                        </div>
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" value="" id="keywords-10" checked>
-                            <label class="form-check-label" for="keywords-10">
-                                화사한
-                            </label>
-                        </div>
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" value="" id="keywords-11" checked>
-                            <label class="form-check-label" for="keywords-11">
-                                이국적인
-                            </label>
-                        </div>
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" value="" id="keywords-12" checked>
-                            <label class="form-check-label" for="keywords-12">
-                                트렌디한
-                            </label>
-                        </div>
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" value="" id="keywords-13" checked>
-                            <label class="form-check-label" for="keywords-13">
-                                데이트하기 좋은
-                            </label>
-                        </div>
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" value="" id="keywords-14" checked>
-                            <label class="form-check-label" for="keywords-14">
-                                레트로한
-                            </label>
-                        </div>
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" value="" id="keywords-15" checked>
-                            <label class="form-check-label" for="keywords-15">
-                                전통적인
-                            </label>
-                        </div>
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" value="" id="keywords-16" checked>
-                            <label class="form-check-label" for="keywords-16">
-                                로맨틱한
-                            </label>
-                        </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" value="" id="keywords-2" checked>
+                        <label class="form-check-label" for="keywords-2">
+                            세련된
+                        </label>
                     </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
-                        <button type="button" class="btn btn-primary">선택완료</button>
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" value="" id="keywords-3" checked>
+                        <label class="form-check-label" for="keywords-3">
+                            조용한
+                        </label>
                     </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" value="" id="keywords-4" checked>
+                        <label class="form-check-label" for="keywords-4">
+                            빈티지
+                        </label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" value="" id="keywords-5" checked>
+                        <label class="form-check-label" for="keywords-5">
+                            모던한
+                        </label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" value="" id="keywords-6" checked>
+                        <label class="form-check-label" for="keywords-6">
+                            고급스러운
+                        </label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" value="" id="keywords-7" checked>
+                        <label class="form-check-label" for="keywords-7">
+                            클래식한
+                        </label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" value="" id="keywords-8" checked>
+                        <label class="form-check-label" for="keywords-8">
+                            감성적인
+                        </label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" value="" id="keywords-9" checked>
+                        <label class="form-check-label" for="keywords-9">
+                            깔끔한
+                        </label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" value="" id="keywords-10" checked>
+                        <label class="form-check-label" for="keywords-10">
+                            화사한
+                        </label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" value="" id="keywords-11" checked>
+                        <label class="form-check-label" for="keywords-11">
+                            이국적인
+                        </label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" value="" id="keywords-12" checked>
+                        <label class="form-check-label" for="keywords-12">
+                            트렌디한
+                        </label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" value="" id="keywords-13" checked>
+                        <label class="form-check-label" for="keywords-13">
+                            데이트하기 좋은
+                        </label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" value="" id="keywords-14" checked>
+                        <label class="form-check-label" for="keywords-14">
+                            레트로한
+                        </label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" value="" id="keywords-15" checked>
+                        <label class="form-check-label" for="keywords-15">
+                            전통적인
+                        </label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" value="" id="keywords-16" checked>
+                        <label class="form-check-label" for="keywords-16">
+                            로맨틱한
+                        </label>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
+                    <button type="button" class="btn btn-primary">선택완료</button>
                 </div>
             </div>
         </div>
+    </div>
 
-        <!-- 영업정보 모달 -->
-        <div class="modal fade" id="times-modal" tabindex="-1" aria-labelledby="timesLabel" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-scrollable">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="timesLabel">영업정보</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                        <div class="card mb-3" style="background-color: rgba(237, 125, 49, 0.1); border: none;">
-                            <div class="card-body">
-                                <table>
-                                    <tr>
-                                        <td>전화번호</td>
-                                        <td><input value="01012345678"/></td>
-                                    </tr>
-                                    <tr>
-                                        <td>휴무일</td>
-                                        <td><input value="-"/></td>
-                                    </tr>
-                                </table>
-                            </div>
+    <!-- 영업정보 모달 -->
+    <div class="modal fade" id="times-modal" tabindex="-1" aria-labelledby="timesLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="timesLabel">영업정보</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="card mb-3" style="background-color: rgba(237, 125, 49, 0.1); border: none;">
+                        <div class="card-body">
+                            <table>
+                                <tr>
+                                    <td>전화번호</td>
+                                    <td><input value="01012345678"/></td>
+                                </tr>
+                                <tr>
+                                    <td>휴무일</td>
+                                    <td><input value="-"/></td>
+                                </tr>
+                            </table>
                         </div>
-                        <div class="card" style="background-color: rgba(128, 128, 128, 0.1); border: none;">
-                            <div class="card-body">
-                                <p class="fw-bold">월요일</p>
-                                <table>
-                                    <tr>
-                                        <td>운영시간</td>
-                                        <td><input type="time" value=""/></td>
-                                    </tr>
-                                    <tr>
-                                        <td>브레이크 타임</td>
-                                        <td><input type="time" value=""/></td>
-                                    </tr>
-                                </table>
-                                <div class="mt-5"></div>
-                                <p class="fw-bold">화요일</p>
-                                <table>
-                                    <tr>
-                                        <td>운영시간</td>
-                                        <td><input type="time" value=""/></td>
-                                    </tr>
-                                    <tr>
-                                        <td>브레이크 타임</td>
-                                        <td><input type="time" value=""/></td>
-                                    </tr>
-                                </table>
-                                <div class="mt-5"></div>
-                                <p class="fw-bold">수요일</p>
-                                <table>
-                                    <tr>
-                                        <td>운영시간</td>
-                                        <td><input type="time" value=""/></td>
-                                    </tr>
-                                    <tr>
-                                        <td>브레이크 타임</td>
-                                        <td><input type="time" value=""/></td>
-                                    </tr>
-                                </table>
-                                <div class="mt-5"></div>
-                                <p class="fw-bold">목요일</p>
-                                <table>
-                                    <tr>
-                                        <td>운영시간</td>
-                                        <td><input type="time" value=""/></td>
-                                    </tr>
-                                    <tr>
-                                        <td>브레이크 타임</td>
-                                        <td><input type="time" value=""/></td>
-                                    </tr>
-                                </table>
-                                <div class="mt-5"></div>
-                                <p class="fw-bold">금요일</p>
-                                <table>
-                                    <tr>
-                                        <td>운영시간</td>
-                                        <td><input type="time" value=""/></td>
-                                    </tr>
-                                    <tr>
-                                        <td>브레이크 타임</td>
-                                        <td><input type="time" value=""/></td>
-                                    </tr>
-                                </table>
-                                <div class="mt-5"></div>
-                                <p class="fw-bold">토요일</p>
-                                <table>
-                                    <tr>
-                                        <td>운영시간</td>
-                                        <td><input type="time" value=""/></td>
-                                    </tr>
-                                    <tr>
-                                        <td>브레이크 타임</td>
-                                        <td><input type="time" value=""/></td>
-                                    </tr>
-                                </table>
-                                <div class="mt-5"></div>
-                                <p class="fw-bold">일요일</p>
-                                <table>
-                                    <tr>
-                                        <td>운영시간</td>
-                                        <td><input type="time" value=""/></td>
-                                    </tr>
-                                    <tr>
-                                        <td>브레이크 타임</td>
-                                        <td><input type="time" value=""/></td>
-                                    </tr>
-                                </table>
-                            </div>
+                    </div>
+                    <div class="card" style="background-color: rgba(128, 128, 128, 0.1); border: none;">
+                        <div class="card-body">
+                            <p class="fw-bold">월요일</p>
+                            <table>
+                                <tr>
+                                    <td>운영시간</td>
+                                    <td><input type="time" value=""/></td>
+                                </tr>
+                                <tr>
+                                    <td>브레이크 타임</td>
+                                    <td><input type="time" value=""/></td>
+                                </tr>
+                            </table>
+                            <div class="mt-5"></div>
+                            <p class="fw-bold">화요일</p>
+                            <table>
+                                <tr>
+                                    <td>운영시간</td>
+                                    <td><input type="time" value=""/></td>
+                                </tr>
+                                <tr>
+                                    <td>브레이크 타임</td>
+                                    <td><input type="time" value=""/></td>
+                                </tr>
+                            </table>
+                            <div class="mt-5"></div>
+                            <p class="fw-bold">수요일</p>
+                            <table>
+                                <tr>
+                                    <td>운영시간</td>
+                                    <td><input type="time" value=""/></td>
+                                </tr>
+                                <tr>
+                                    <td>브레이크 타임</td>
+                                    <td><input type="time" value=""/></td>
+                                </tr>
+                            </table>
+                            <div class="mt-5"></div>
+                            <p class="fw-bold">목요일</p>
+                            <table>
+                                <tr>
+                                    <td>운영시간</td>
+                                    <td><input type="time" value=""/></td>
+                                </tr>
+                                <tr>
+                                    <td>브레이크 타임</td>
+                                    <td><input type="time" value=""/></td>
+                                </tr>
+                            </table>
+                            <div class="mt-5"></div>
+                            <p class="fw-bold">금요일</p>
+                            <table>
+                                <tr>
+                                    <td>운영시간</td>
+                                    <td><input type="time" value=""/></td>
+                                </tr>
+                                <tr>
+                                    <td>브레이크 타임</td>
+                                    <td><input type="time" value=""/></td>
+                                </tr>
+                            </table>
+                            <div class="mt-5"></div>
+                            <p class="fw-bold">토요일</p>
+                            <table>
+                                <tr>
+                                    <td>운영시간</td>
+                                    <td><input type="time" value=""/></td>
+                                </tr>
+                                <tr>
+                                    <td>브레이크 타임</td>
+                                    <td><input type="time" value=""/></td>
+                                </tr>
+                            </table>
+                            <div class="mt-5"></div>
+                            <p class="fw-bold">일요일</p>
+                            <table>
+                                <tr>
+                                    <td>운영시간</td>
+                                    <td><input type="time" value=""/></td>
+                                </tr>
+                                <tr>
+                                    <td>브레이크 타임</td>
+                                    <td><input type="time" value=""/></td>
+                                </tr>
+                            </table>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-
-        <script>
-        // 페이지를 이전 페이지로 이동
-        document.getElementById('cancel').addEventListener('click', function() {
-            window.history.back();
-        });
-
-        // review 탭으로 이동
-        document.getElementById("goToReview").addEventListener("click", function(event) {
-            const reviewTab = new bootstrap.Tab(document.getElementById("review-tab"));
-            reviewTab.show();
-        });
-
-        // 새로운 메뉴 추가
-        document.getElementById('addMenuButton').addEventListener('click', function() {
-            const menuItemHTML = `
-                <div class="menu-item mb-4" style="display: flex; align-items: center;">
-                    <div class="item-info">
-                        <div>
-                            <h4><input value="" placeholder="메뉴명"></h4>
-                            <h5 class="price" style="margin-bottom: 0px;"><input value="" placeholder="가격"></h5>
-                        </div>
-                    </div>
-                    <img class="photo menu-img" src="/img/test-img/텐동.jpg" alt="#" onclick="triggerFileInput(this)"/>
-                    <input type="file" style="display: none;" accept="image/*" onchange="updateImage(event, this)" />
-                    <i class="bi bi-x-square px-4" style="font-size: 25px; cursor: pointer;" onclick="deleteMenuItem(this)"></i>
-                </div>
-            `;
-
-            document.getElementById('addMenu').insertAdjacentHTML('beforebegin', menuItemHTML);
-        });
-
-        // 메뉴 단일 삭제
-        function deleteMenuItem(iconElement) {
-            const menuItem = iconElement.closest('.menu-item');
-            if (menuItem) {
-                menuItem.remove();
-            }
-        }
-
-        // 메뉴 이미지 파일 불러오기
-        function triggerFileInput(imgElement) {
-            const fileInput = imgElement.nextElementSibling; // 해당 이미지 다음 형제 요소인 input을 선택
-            fileInput.click(); // 클릭 이벤트 트리거
-        }
-
-        function updateImage(event, fileInputElement) {
-            const file = event.target.files[0];
-            const reader = new FileReader();
-
-            reader.onload = function(e) {
-                const imgElement = fileInputElement.previousElementSibling; // 해당 input의 이전 형제 요소인 img를 선택
-                imgElement.src = e.target.result; // 새로운 이미지로 src 변경
-            };
-
-            if (file) {
-                reader.readAsDataURL(file); // 파일 읽기
-            }
-        }
-        </script>
-
-        <!-- Bootstrap core JS-->
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
-        <!-- Core theme JS-->
-        <script src="/js/scripts.js"></script>
-
-        <!-- Chart.js -->
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js" crossorigin="anonymous"></script>
-        <script src="/js/chart-bar-demo.js"></script>
-    </body>
-</html>
+    </div>
+</div>
