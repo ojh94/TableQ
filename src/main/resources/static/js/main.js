@@ -8,7 +8,57 @@ document.addEventListener('DOMContentLoaded', () => {
   // 아이콘 초기화
   lucide.createIcons();
 
+  // 1. 카드 렌더링 함수 (가장 위로 이동)
+    function renderRestaurants() {
+      if (restaurantGrid) {
+        restaurantGrid.innerHTML = ''; // 기존 카드 초기화
+        restaurants.forEach(restaurant => {
+          restaurantGrid.appendChild(createRestaurantCard(restaurant));
+        });
+        lucide.createIcons(); // 아이콘 재초기화
+      }
+    }
 
+$(document).ready(function(){
+    requestRestaurantApi();
+});
+
+function requestRestaurantApi() {
+
+    const id = 1; // 추후 수정 필요
+
+    $.ajax({
+        url: `/api/restaurant/${id}`,
+        type: 'GET', // 필요한 HTTP 메서드로 변경
+        contentType: 'application/json', // JSON 형식으로 데이터 전송
+        success: function(response) {
+            // 요청 성공 시 동작
+//            const rName = $('#card-title > h4');
+
+            console.log(response);
+
+             // API에서 받아온 이름을 restaurants 배열의 해당 레스토랑에 업데이트
+                    const restaurant = restaurants.find(r => r.id === id);
+                    if (restaurant) {
+                      restaurant.name = response.data.name;
+                      renderRestaurants(); // 이름 업데이트 후 카드 다시 렌더링
+                    }
+
+
+//            rName[0].textContent = response.data.name;
+//
+//
+//            console.log('가게 name set 완료');
+
+
+        },
+        error: function(xhr, status, error) {
+            // 요청 실패 시 동작
+            console.error('수정 실패:', error);
+            alert('수정 중 오류가 발생했습니다.');
+        }
+    });
+}
 
   // 레스토랑 데이터 (실제로는 API에서 가져올 것입니다)
   const restaurants = [
@@ -84,6 +134,8 @@ document.addEventListener('DOMContentLoaded', () => {
         return card;
     }
 
+
+
   // 레스토랑 카드 렌더링
   if(restaurantGrid){
    restaurants.forEach(restaurant => {
@@ -149,3 +201,8 @@ document.addEventListener('DOMContentLoaded', () => {
     document.body.style.backgroundImage = `url('/img/restaurant-${selectedRestaurantId}.jpg')`;
   }
 });
+
+
+
+
+
