@@ -58,8 +58,9 @@ public class ViewController {
         return "ownerLogin";
     }
 
-    @GetMapping("/ownerParticular")
-    public String ownerParticular() {
+    @GetMapping("/ownerParticular/{id}")
+    public String ownerParticular(@AuthenticationPrincipal User user, Model model) {
+        model.addAttribute("user", user);
         return "ownerParticular";
     }
 

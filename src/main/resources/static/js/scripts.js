@@ -60,10 +60,33 @@ function updateImage(event, fileInputElement) {
     }
 }
 
+// 상세 메인 이미지 파일 불러오기
+function updateActiveCarouselImage(event) {
+    const file = event.target.files[0];
+    const reader = new FileReader();
+
+    reader.onload = function(e) {
+        const activeImage = document.querySelector('#carouselExampleControls .carousel-item.active img');
+
+        if (activeImage) {
+            activeImage.src = e.target.result; // 이미지 src를 업데이트합니다.
+        }
+    };
+
+    if (file) {
+        reader.readAsDataURL(file); // 파일을 Data URL로 읽어 이미지 업데이트
+    }
+
+    // 같은 파일 선택 시에도 업데이트를 트리거하기 위해 input value를 초기화합니다.
+    event.target.value = '';
+}
+
+
+
 
 function requestRestaurantApi() {
 
-    const id = 1; // 추후 수정 필요
+    /*const id = 1; // 추후 수정 필요*/
 
     $.ajax({
         url: `/api/restaurant/${id}`,
@@ -73,15 +96,21 @@ function requestRestaurantApi() {
             // 요청 성공 시 동작
             const rName = $('body > div > div.container.mt-5 > div > div > article:nth-child(1) > header > h1');
             const rAddress = $('#home > p:nth-child(4)');
-
+            const rIntroduction = $('#home > p:nth-child(11)');
 
             console.log(response);
 
             rName[0].textContent = response.data.name;
             rAddress[0].textContent = response.data.address;
+            rIntroduction[0].textContent = response.data.introduction;
 
-            console.log('가게 name set 완료');
-            console.log('가게 address set 완료');
+            if (response.data.available == false) {
+                $('#available').css("display" ,"none");
+                $("body > div > div.container.mt-5 > div > div > article:nth-child(1) > table > tbody > tr:nth-child(1) > td:nth-child(2)")
+                .text("현장대기 가능");
+            }
+
+            console.log('가게 set 완료');
 
         },
         error: function(xhr, status, error) {
