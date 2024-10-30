@@ -47,7 +47,7 @@ public class Owner implements UserDetails {
 
     @Override
     public String getUsername() {
-        return "";
+        return username;
     }
 
     @Builder

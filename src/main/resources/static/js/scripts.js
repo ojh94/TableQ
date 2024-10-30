@@ -1,35 +1,49 @@
 $(document).ready(function() {
-    // review 탭으로 이동
-    document.getElementById("goToReview").addEventListener("click", function(event) {
-        const reviewTab = new bootstrap.Tab(document.getElementById("review-tab"));
-        reviewTab.show();
-    });
+    if (window.location.pathname
+    === '/ownerParticular/' + document.getElementById("restaurant-id").value) {
+        requestRestaurantApi();
 
-    requestRestaurantApi();
-});
+        // 점주 상세페이지 수정 버튼 클릭
+        document.getElementById("modify-button").onclick = function() {
+            const id = document.getElementById("restaurant-id").value;
+            location.href = '/ownerParticularModify/' + id;
+        };
+    }
 
-// 페이지를 이전 페이지로 이동
-document.getElementById('cancel').addEventListener('click', function() {
-    window.history.back();
-});
+    if (window.location.pathname
+    === '/ownerParticularModify/' + document.getElementById("restaurant-id").value) {
+        requestRestaurantModifyApi();
 
-// 새로운 메뉴 추가
-document.getElementById('addMenuButton').addEventListener('click', function() {
-    const menuItemHTML = `
-        <div class="menu-item mb-4" style="display: flex; align-items: center;">
-            <div class="item-info">
-                <div>
-                    <h4><input value="" placeholder="메뉴명"></h4>
-                    <h5 class="price" style="margin-bottom: 0px;"><input value="" placeholder="가격"></h5>
+        // 페이지를 이전 페이지로 이동
+        document.getElementById('cancel').addEventListener('click', function() {
+            window.history.back();
+        });
+
+        // 새로운 메뉴 추가
+        document.getElementById('addMenuButton').addEventListener('click', function() {
+            const menuItemHTML = `
+                <div class="menu-item mb-4" style="display: flex; align-items: center;">
+                    <div class="item-info">
+                        <div>
+                            <h4><input value="" placeholder="메뉴명"></h4>
+                            <h5 class="price" style="margin-bottom: 0px;"><input value="" placeholder="가격"></h5>
+                        </div>
+                    </div>
+                    <img class="photo menu-img-modify" src="/img/test-img/텐동.jpg" alt="#" onclick="triggerFileInput(this)"/>
+                    <input type="file" style="display: none;" accept="image/*" onchange="updateImage(event, this)" />
+                    <i class="bi bi-x-square px-4" style="font-size: 25px; cursor: pointer;" onclick="deleteMenuItem(this)"></i>
                 </div>
-            </div>
-            <img class="photo menu-img-modify" src="/img/test-img/텐동.jpg" alt="#" onclick="triggerFileInput(this)"/>
-            <input type="file" style="display: none;" accept="image/*" onchange="updateImage(event, this)" />
-            <i class="bi bi-x-square px-4" style="font-size: 25px; cursor: pointer;" onclick="deleteMenuItem(this)"></i>
-        </div>
-    `;
+            `;
 
-    document.getElementById('addMenu').insertAdjacentHTML('beforebegin', menuItemHTML);
+            document.getElementById('addMenu').insertAdjacentHTML('beforebegin', menuItemHTML);
+        });
+    }
+});
+
+// review 탭으로 이동
+document.getElementById("goToReview").addEventListener("click", function(event) {
+    const reviewTab = new bootstrap.Tab(document.getElementById("review-tab"));
+    reviewTab.show();
 });
 
 // 메뉴 단일 삭제
@@ -82,12 +96,8 @@ function updateActiveCarouselImage(event) {
 }
 
 
-
-
+// 점주 상세페이지 API
 function requestRestaurantApi() {
-
-    /*let abc = window.location.href.split('/');
-    const id = abc[abc.length - 1];*/
 
     const id = document.getElementById("restaurant-id").value;
 
@@ -106,6 +116,47 @@ function requestRestaurantApi() {
             rName[0].textContent = response.data.name;
             rAddress[0].textContent = response.data.address;
             rIntroduction[0].textContent = response.data.introduction;
+
+            if (response.data.available == false) {
+                $('#available').css("display" ,"none");
+                $("body > div > div.container.mt-5 > div > div > article:nth-child(1) > table > tbody > tr:nth-child(1) > td:nth-child(2)")
+                .text("현장대기 가능");
+            } else {
+                $("body > div > div.container.mt-5 > div > div > article:nth-child(1) > table > tbody > tr:nth-child(1) > td:nth-child(2)")
+                .text("원격줄서기, 현장대기 모두 가능");
+            }
+
+            console.log('가게 set 완료');
+
+        },
+        error: function(xhr, status, error) {
+            // 요청 실패 시 동작
+            console.error('수정 실패:', error);
+            alert('수정 중 오류가 발생했습니다.');
+        }
+    });
+}
+
+// 점주 상세 수정페이지 API
+function requestRestaurantModifyApi() {
+
+    const id = document.getElementById("restaurant-id").value;
+
+    $.ajax({
+        url: `/api/restaurant/${id}`,
+        type: 'GET', // 필요한 HTTP 메서드로 변경
+        contentType: 'application/json', // JSON 형식으로 데이터 전송
+        success: function(response) {
+            // 요청 성공 시 동작
+            const rName = $('body > div > div.container.mt-5 > div > div > article:nth-child(1) > header > h1 > input');
+            const rAddress = $('#home > div:nth-child(4) > input');
+            const rIntroduction = $('#home > textarea');
+
+            console.log(response);
+
+            rName.val(response.data.name);
+            rAddress.val(response.data.address);
+            rIntroduction.val(response.data.introduction);
 
             if (response.data.available == false) {
                 $('#available').css("display" ,"none");
