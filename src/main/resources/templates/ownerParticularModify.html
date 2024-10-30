@@ -1,6 +1,8 @@
 <div layout:decorate="~{common/layouts/ownerLayout}"
      layout:fragment="Content">
 
+    <input type="hidden" id="restaurant-id" th:value="${id}">
+
     <!-- Page content-->
     <div class="container mt-5">
         <div class="row">
@@ -10,7 +12,7 @@
                     <!-- Post header-->
                     <header class="mb-4">
                         <!-- Post title-->
-                        <h1 class="fw-bolder mb-1"><input value="와타요업 탄방점"></h1>
+                        <h1 class="fw-bolder mb-1"><input value=""></h1>
                         <!-- Post meta content-->
                         <i class="bi bi-star-fill" style="color: #FAC608 !important;"></i>&nbsp;4.8 / <a id="goToReview" href="#review" style="text-decoration: underline;">394개의 리뷰</a>
                         <hr/>
@@ -52,7 +54,7 @@
                     <table>
                         <tr>
                             <td>대기신청</td>
-                            <td>원격줄서기, 현장대기 모두 가능</td>
+                            <td></td>
                         </tr>
                         <tr>
                             <td>순서미루기</td>
@@ -104,7 +106,7 @@
                             <!--<p style="display: block;"></p>-->
                             <div style="text-align: center;">
                                 <p style="color: #696969;">매장의 주소를 입력해주세요</p>
-                                <input style="width: 300px;" value="대전 서구 계룡로603번길 29 1층">
+                                <input style="width: 300px;" value="">
                                 <button>주소검색</button>
                             </div>
 

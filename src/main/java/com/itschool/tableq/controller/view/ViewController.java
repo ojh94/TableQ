@@ -64,8 +64,9 @@ public class ViewController {
         return "ownerParticular";
     }
 
-    @GetMapping("/ownerParticularModify")
-    public String ownerParticularModify() {
+    @GetMapping("/ownerParticularModify/{id}")
+    public String ownerParticularModify(@PathVariable Long id, Model model) {
+        model.addAttribute("id", id);
         return "ownerParticularModify";
     }
 
