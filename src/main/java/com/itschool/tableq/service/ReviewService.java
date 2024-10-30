@@ -3,7 +3,7 @@ package com.itschool.tableq.service;
 import com.itschool.tableq.domain.Restaurant;
 import com.itschool.tableq.domain.Review;
 import com.itschool.tableq.domain.User;
-import com.itschool.tableq.ifs.AuthorCheck;
+import com.itschool.tableq.ifs.annotation.AuthorCheck;
 import com.itschool.tableq.network.Header;
 import com.itschool.tableq.network.request.ReviewRequest;
 import com.itschool.tableq.network.response.ReviewResponse;
