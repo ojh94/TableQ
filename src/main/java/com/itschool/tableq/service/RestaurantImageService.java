@@ -54,7 +54,7 @@ public class RestaurantImageService extends
         return Header.OK(response(baseRepository.findById(id).orElse(null)));
     }
 
-    public Header<List<RestaurantImageResponse>> readByRestaurant(Long restaurantId){
+    public Header<List<RestaurantImageResponse>> readByRestaurantId(Long restaurantId){
         Restaurant restaurant = restaurantRepository.findById(restaurantId).get();
         List<RestaurantImage> imageList = ((RestaurantImageRepository)baseRepository).findByRestaurant(restaurant).orElse(null);
 
