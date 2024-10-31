@@ -119,9 +119,11 @@
                                 </tr>
                             </table>
                             <h4 class="fw-bolder mb-4 mt-5">위치정보</h4>
-                            <p class="mb-4" style="display: block;"></p>
+                            <p id="text-copy" class="mb-4" style="display: block;"></p>
                             <!-- 네이버 지도 API 필요 -->
-                            <button style="border: none; padding: 5px 10px; border-radius: 20px;"><i class="bi bi-clipboard"></i>&nbsp;주소복사</button>
+                            <button onclick="copyText()" style="border: none; padding: 5px 10px; border-radius: 20px;">
+                                <i class="bi bi-clipboard"></i>&nbsp;주소복사
+                            </button>
 
                             <h4 class="fw-bolder mb-4 mt-5">편의시설</h4>
                             <p><i class="bi bi-people">&nbsp;&nbsp;</i>단체석 구비</p>
@@ -132,10 +134,10 @@
                             <p></p>
 
                             <h4 class="fw-bolder mb-4 mt-5">매장 Pick</h4>
-                            <a class="pick-outline">깔끔한</a>
-                            <a class="pick-outline">홈테이블</a>
-                            <a class="pick-outline">친구랑 같이 가기 좋은</a>
-                            <a class="pick-outline">일식</a>
+                            <a class="pick-outline mb-2">깔끔한</a>
+                            <a class="pick-outline mb-2">홈테이블</a>
+                            <a class="pick-outline mb-2">친구랑 같이 가기 좋은</a>
+                            <a class="pick-outline mb-2">일식</a>
                         </div>
 
                         <div class="tab-pane fade" id="menu" role="tabpanel" aria-labelledby="menu-tab">
