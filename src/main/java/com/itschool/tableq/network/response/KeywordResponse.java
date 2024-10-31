@@ -6,9 +6,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-@Builder
 @NoArgsConstructor
-@AllArgsConstructor
 @Getter
 public class KeywordResponse {
     private Long id;

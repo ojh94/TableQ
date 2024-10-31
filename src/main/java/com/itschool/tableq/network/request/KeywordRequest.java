@@ -1,7 +1,6 @@
 package com.itschool.tableq.network.request;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 @Getter
 @Setter

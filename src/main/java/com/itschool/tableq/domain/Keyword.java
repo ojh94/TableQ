@@ -1,15 +1,15 @@
 package com.itschool.tableq.domain;
 
+import com.itschool.tableq.network.request.KeywordRequest;
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Table(name = "keywords")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
+@ToString
 @Entity
-public class Keyword {
+public class Keyword{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", updatable = false)
@@ -17,4 +17,14 @@ public class Keyword {
 
     @Column(nullable = false,unique = true)
     private String name;
+
+    @Builder
+    public Keyword(Long id, String name) {
+        this.id = id;
+        this.name = name;
+    }
+
+    public void update(KeywordRequest keywordRequest) {
+        this.name = keywordRequest.getName();
+    }
 }
