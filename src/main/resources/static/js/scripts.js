@@ -30,7 +30,7 @@ $(document).ready(function() {
                         </div>
                     </div>
                     <img class="photo menu-img-modify" src="/img/test-img/텐동.jpg" alt="#" onclick="triggerFileInput(this)"/>
-                    <input type="file" style="display: none;" accept="image/*" onchange="updateImage(event, this)" />
+                    <input type="file" style="display: none;" accept="image" onchange="updateImage(event, this)" />
                     <i class="bi bi-x-square px-4" style="font-size: 25px; cursor: pointer;" onclick="deleteMenuItem(this)"></i>
                 </div>
             `;
@@ -45,6 +45,21 @@ document.getElementById("goToReview").addEventListener("click", function(event) 
     const reviewTab = new bootstrap.Tab(document.getElementById("review-tab"));
     reviewTab.show();
 });
+
+// 주소 복사 기능
+function copyText() {
+    // 복사할 텍스트 가져오기
+    const text = document.getElementById("text-copy").textContent;
+
+    // 클립보드에 복사
+    navigator.clipboard.writeText(text)
+        .then(() => {
+            alert("주소가 복사되었습니다.");
+        })
+        .catch((err) => {
+            console.error("복사 실패:", err);
+        });
+}
 
 // 메뉴 단일 삭제
 function deleteMenuItem(iconElement) {
@@ -110,12 +125,14 @@ function requestRestaurantApi() {
             const rName = $('body > div > div.container.mt-5 > div > div > article:nth-child(1) > header > h1');
             const rAddress = $('#home > p:nth-child(4)');
             const rIntroduction = $('#home > p:nth-child(11)');
+            const rContactNumber = $('#home > table > tbody > tr:nth-child(4) > td:nth-child(2)');
 
             console.log(response);
 
             rName[0].textContent = response.data.name;
             rAddress[0].textContent = response.data.address;
             rIntroduction[0].textContent = response.data.introduction;
+            rContactNumber[0].textContent = response.data.contactNumber;
 
             if (response.data.available == false) {
                 $('#available').css("display" ,"none");
@@ -151,12 +168,14 @@ function requestRestaurantModifyApi() {
             const rName = $('body > div > div.container.mt-5 > div > div > article:nth-child(1) > header > h1 > input');
             const rAddress = $('#home > div:nth-child(4) > input');
             const rIntroduction = $('#home > textarea');
+            const rContactNumber = $('#times-modal > div > div > div.modal-body > div.card.mb-3 > div > table > tbody > tr:nth-child(1) > td:nth-child(2) > input');
 
             console.log(response);
 
             rName.val(response.data.name);
             rAddress.val(response.data.address);
             rIntroduction.val(response.data.introduction);
+            rContactNumber.val(response.data.contactNumber);
 
             if (response.data.available == false) {
                 $('#available').css("display" ,"none");
@@ -177,3 +196,20 @@ function requestRestaurantModifyApi() {
         }
     });
 }
+
+
+/*
+
+// 키워드 조회 (DB 속 키워드 개수 만큼 for문을 돌린다)
+// 대상 요소를 선택
+const targetElement = document.querySelector('#home > h4:nth-child(12)');
+
+// 새 요소 생성
+const newElement = document.createElement('a');
+newElement.className = 'pick-outline mb-2';
+newElement.textContent = response.data.name;
+
+// 대상 요소 바로 아래에 새 요소 삽입
+targetElement.insertAdjacentElement('afterend', newElement);
+
+*/
