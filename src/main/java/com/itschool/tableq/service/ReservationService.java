@@ -57,7 +57,7 @@ public class ReservationService extends
 
         number = reservationList.size()+1;
 
-        return number+1;
+        return number;
     }
 
     @Override

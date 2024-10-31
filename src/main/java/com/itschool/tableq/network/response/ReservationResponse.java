@@ -16,7 +16,7 @@ import java.time.LocalDateTime;
 @Getter
 public class ReservationResponse {
     private Long id;
-    private Integer reservation_number;
+    private Integer reservationNumber;
     private boolean isEntered;
     private LocalDateTime reserveTime;
     private LocalDateTime enteredTime;
@@ -26,7 +26,7 @@ public class ReservationResponse {
 
     public ReservationResponse(Reservation reservation) {
         this.id = reservation.getId();
-        this.reservation_number = reservation.getReservationNumber();
+        this.reservationNumber = reservation.getReservationNumber();
         this.isEntered = reservation.isEntered();
         this.reserveTime = reservation.getReserveTime();
         this.enteredTime = reservation.getEnteredTime();
