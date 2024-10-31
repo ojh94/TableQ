@@ -1,5 +1,6 @@
 package com.itschool.tableq.domain;
 
+import com.itschool.tableq.network.request.RestaurantImageRequest;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -33,9 +34,16 @@ public class RestaurantImage {
     private Restaurant restaurant;
 
     @Builder
-    public RestaurantImage(String title, String path, Restaurant restaurant){
+    public RestaurantImage(String title, String path, LocalDateTime uploadTime, Restaurant restaurant){
         this.title = title;
         this.path = path;
+        this.uploadTime = uploadTime;
         this.restaurant = restaurant;
+    }
+
+    public void update(RestaurantImageRequest dto){
+        this.title = dto.getTitle();
+        this.path = dto.getPath();
+        this.uploadTime = dto.getUploadTime();
     }
 }
