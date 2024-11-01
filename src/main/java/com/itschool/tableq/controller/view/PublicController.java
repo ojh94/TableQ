@@ -42,12 +42,4 @@ public class PublicController {
     public String signup() {
         return "signup";
     }
-
-    // (Not public 로그인 필요) 관심매장 페이지
-    @GetMapping("/favorites")
-    public String favorites(@AuthenticationPrincipal User user, Model model) {
-        if(user != null)
-            model.addAttribute("user", user);
-        return "favorites";
-    }
 }
