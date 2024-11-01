@@ -26,4 +26,27 @@ public class MyPageController {
             model.addAttribute("user", userResponse);
         return "mypage";
     }
+
+    // 개인정보 변경 페이지
+    @GetMapping("/edit")
+    public String editPage() {
+        return "";
+    }
+
+    // 비밀번호 변경 페이지
+    @GetMapping("/password")
+    public String editPassword() {
+        return "";
+    }
+
+    // 이용 내역 페이지
+    @GetMapping("/history")
+    public String getHistoryPage() {
+        return "";
+    }
+
+    @GetMapping("/my-review")
+    public String getMyReviewPage() {
+        return "";
+    }
 }
