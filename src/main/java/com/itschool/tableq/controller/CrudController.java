@@ -4,16 +4,18 @@ import com.itschool.tableq.ifs.CrudInterface;
 import com.itschool.tableq.network.Header;
 import com.itschool.tableq.service.base.BaseService;
 import io.swagger.v3.oas.annotations.Operation;
-import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.*;
 
-@Slf4j
 @Component
 public abstract class CrudController<Req, Res, Entity> implements CrudInterface<Req,Res> {
     @Autowired(required = false)
     protected BaseService<Req,Res,Entity> baseService;
+
+    protected final Logger log = LoggerFactory.getLogger(this.getClass());
 
     @Override
     @Operation(summary = "생성", description = "새로운 엔티티를 생성")

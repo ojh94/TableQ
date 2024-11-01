@@ -2,6 +2,7 @@ package com.itschool.tableq.controller.api;
 
 import com.itschool.tableq.controller.CrudController;
 import com.itschool.tableq.domain.Keyword;
+import com.itschool.tableq.network.request.KeywordRequest;
 import com.itschool.tableq.network.response.KeywordResponse;
 import com.itschool.tableq.repository.KeywordRepository;
 import groovy.util.logging.Slf4j;
@@ -13,5 +14,5 @@ import org.springframework.web.bind.annotation.RestController;
 @Tag(name = "키워드", description = "키워드 관련 API")
 @RestController
 @RequestMapping("/api/keyword")
-public class KeywordController extends CrudController<KeywordRepository, KeywordResponse, Keyword> {
+public class KeywordController extends CrudController<KeywordRequest, KeywordResponse, Keyword> {
 }
