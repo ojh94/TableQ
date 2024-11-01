@@ -49,4 +49,9 @@ public class MyPageController {
     public String getMyReviewPage() {
         return "";
     }
+
+    @GetMapping("/waiting")
+    public String getWaitingPage() {
+        return "";
+    }
 }

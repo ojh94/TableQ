@@ -22,4 +22,7 @@ public class OwnerController {
     public String ownerMypage() {
         return "owner-mypage";
     }
+
+    @GetMapping("/welcome")
+    public String getOwnerWelcome() { return "ownerWelcome";  }
 }
