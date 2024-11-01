@@ -1,17 +1,17 @@
 $(document).ready(function() {
     if (window.location.pathname
-    === '/ownerParticular/' + document.getElementById("restaurant-id").value) {
+    === '/restaurant/' + document.getElementById("restaurant-id").value) {
         requestRestaurantApi();
 
         // 점주 상세페이지 수정 버튼 클릭
         document.getElementById("modify-button").onclick = function() {
             const id = document.getElementById("restaurant-id").value;
-            location.href = '/ownerParticularModify/' + id;
+            location.href = '/restaurant/modify/' + id;
         };
     }
 
     if (window.location.pathname
-    === '/ownerParticularModify/' + document.getElementById("restaurant-id").value) {
+    === '/restaurant/modify/' + document.getElementById("restaurant-id").value) {
         requestRestaurantModifyApi();
 
         // 페이지를 이전 페이지로 이동
@@ -111,7 +111,7 @@ function updateActiveCarouselImage(event) {
 }
 
 
-// 점주 상세페이지 API
+// 점주 상세페이지 restaurant API
 function requestRestaurantApi() {
 
     const id = document.getElementById("restaurant-id").value;
@@ -154,7 +154,7 @@ function requestRestaurantApi() {
     });
 }
 
-// 점주 상세 수정페이지 API
+// 점주 상세 수정페이지 restaurant API
 function requestRestaurantModifyApi() {
 
     const id = document.getElementById("restaurant-id").value;
@@ -197,6 +197,48 @@ function requestRestaurantModifyApi() {
     });
 }
 
+// restaurantImage API
+function requestRestaurantImageApi() {
+
+    const id = document.getElementById("restaurant-id").value;
+
+    $.ajax({
+        url: `/api/restaurant-image/${id}`,
+        type: 'GET', // 필요한 HTTP 메서드로 변경
+        contentType: 'application/json', // JSON 형식으로 데이터 전송
+        success: function(response) {
+            // 요청 성공 시 동작
+            const rImage = $('#carouselExampleControls > div > div.carousel-item.active > img');
+
+            rImage.attr('src', response.data.path);
+
+            console.log('가게 이미지 set 완료');
+
+        },
+        error: function(xhr, status, error) {
+        // 요청 실패 시 동작
+        console.error('수정 실패:', error);
+        alert('수정 중 오류가 발생했습니다.');
+        }
+    });
+}
+
+// review API
+function requestReviewApi() {
+
+    const id = document.getElementById("restaurant-id").value;
+
+    $.ajax({
+        url: `/api/review/${id}`,
+        type: 'GET', // 필요한 HTTP 메서드로 변경
+        contentType: 'application/json', // JSON 형식으로 데이터 전송
+        success: function(response) {
+            // 요청 성공 시 동작
+
+            console.log('가게 이미지 set 완료');
+        }
+    });
+}
 
 /*
 

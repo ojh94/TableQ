@@ -58,16 +58,21 @@ public class ViewController {
         return "ownerLogin";
     }
 
-    @GetMapping("/ownerParticular/{id}")
-    public String ownerParticular(@PathVariable Long id, Model model) {
-        model.addAttribute("id", id);
-        return "ownerParticular";
+    @GetMapping("/owner/mypage")
+    public String ownerMypage() {
+        return "owner-mypage";
     }
 
-    @GetMapping("/ownerParticularModify/{id}")
-    public String ownerParticularModify(@PathVariable Long id, Model model) {
+    @GetMapping("/restaurant/{id}")
+    public String restaurant(@PathVariable Long id, Model model) {
         model.addAttribute("id", id);
-        return "ownerParticularModify";
+        return "restaurant";
+    }
+
+    @GetMapping("/restaurant/modify/{id}")
+    public String restaurantModify(@PathVariable Long id, Model model) {
+        model.addAttribute("id", id);
+        return "restaurant-modify";
     }
 
     // 관심매장 페이지
@@ -88,7 +93,7 @@ public class ViewController {
         return "mypage";
     }
 
-    @GetMapping("/restaurant/{id}")
+    /*@GetMapping("/restaurant/{id}")
     public String getRestaurantDetails(@PathVariable Long id, Model model) { // 데이터베이스 연결 시 괄호 안에 넣기
 
         RestaurantResponse response = restaurantService.read(id).getData();
@@ -97,5 +102,5 @@ public class ViewController {
 
         // restaurant-detail.html 파일을 반환 (템플릿 이름)
         return "restaurant-detail";
-    }
+    }*/
 }

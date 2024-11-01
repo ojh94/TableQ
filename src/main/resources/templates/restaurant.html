@@ -1,4 +1,4 @@
-<div layout:decorate="~{common/layouts/ownerLayout}"
+<div layout:decorate="~{common/layouts/restaurantLayout}"
      layout:fragment="Content">
 
     <input type="hidden" id="restaurant-id" th:value="${id}">
@@ -188,48 +188,70 @@
                         </div>
 
                         <div class="tab-pane fade" id="review" role="tabpanel" aria-labelledby="review-tab">
+                            <div class="d-flex">
+                                <div class="text-center p-4 ms-5 d-flex flex-column justify-content-center">
+                                    <h6>전체 평점</h6>
+                                    <span style="display: flex; align-items: center;">
+                                        <i class="bi bi-star-fill" style="color: #FAC608; font-size: 35px;"></i>
+                                        <span style="font-size: 40px;">&nbsp;4.8</span>
+                                    </span>
+                                </div>
+                                <div class="vr m-3" style="height: 130px;"></div>
+
+                            </div>
                             <!-- Comments section-->
                             <section class="mb-5">
                                 <div class="card bg-light">
                                     <div class="card-body">
                                         <!-- Comment form-->
-                                        <form class="mb-4"><textarea class="form-control" rows="3" placeholder="Join the discussion and leave a comment!"></textarea></form>
+                                        <form class="mb-4">
+                                            <textarea class="form-control" rows="3" placeholder="Join the discussion and leave a comment!"></textarea>
+                                        </form>
                                         <!-- Comment with nested comments-->
                                         <div class="d-flex mb-4">
-                                            <!-- Parent comment-->
                                             <div class="flex-shrink-0"><img class="rounded-circle" src="https://dummyimage.com/50x50/ced4da/6c757d.jpg" alt="..." /></div>
                                             <div class="ms-3">
                                                 <div class="fw-bold">홍민경</div>
                                                 If you're going to lead a space frontier, it has to be government; it'll never be private enterprise. Because the space frontier is dangerous, and it's expensive, and it has unquantified risks.
-                                                <!-- Child comment 1-->
-                                                <div class="d-flex mt-4">
-                                                    <div class="flex-shrink-0"><img class="rounded-circle" src="https://dummyimage.com/50x50/ced4da/6c757d.jpg" alt="..." /></div>
-                                                    <div class="ms-3">
-                                                        <div class="fw-bold">김윤아</div>
-                                                        And under those conditions, you cannot establish a capital-market evaluation of that enterprise. You can't get investors.
-                                                    </div>
-                                                </div>
-                                                <!-- Child comment 2-->
-                                                <div class="d-flex mt-4">
-                                                    <div class="flex-shrink-0"><img class="rounded-circle" src="https://dummyimage.com/50x50/ced4da/6c757d.jpg" alt="..." /></div>
-                                                    <div class="ms-3">
-                                                        <div class="fw-bold">최유라</div>
-                                                        When you put money directly to a problem, it makes a good headline.
-                                                    </div>
-                                                </div>
                                             </div>
                                         </div>
-                                        <!-- Single comment-->
-                                        <div class="d-flex">
+                                        <div class="d-flex mb-4">
                                             <div class="flex-shrink-0"><img class="rounded-circle" src="https://dummyimage.com/50x50/ced4da/6c757d.jpg" alt="..." /></div>
                                             <div class="ms-3">
-                                                <div class="fw-bold">홍길동</div>
+                                                <div class="fw-bold">김윤아</div>
+                                                When I look at the universe and all the ways the universe wants to kill us, I find it hard to reconcile that with statements of beneficence.
+                                            </div>
+                                        </div>
+                                        <div class="d-flex mb-4">
+                                            <div class="flex-shrink-0"><img class="rounded-circle" src="https://dummyimage.com/50x50/ced4da/6c757d.jpg" alt="..." /></div>
+                                            <div class="ms-3">
+                                                <div class="fw-bold">최유라</div>
                                                 When I look at the universe and all the ways the universe wants to kill us, I find it hard to reconcile that with statements of beneficence.
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </section>
+
+                            <!-- 페이지네이션 -->
+                            <nav aria-label="Page navigation example">
+                                <ul class="pagination justify-content-center">
+                                    <li class="page-item">
+                                        <a class="page-link" href="#" aria-label="Previous">
+                                            <span aria-hidden="true">&laquo;</span>
+                                        </a>
+                                    </li>
+                                    <li class="page-item"><a class="page-link" href="#">1</a></li>
+                                    <li class="page-item"><a class="page-link" href="#">2</a></li>
+                                    <li class="page-item"><a class="page-link" href="#">3</a></li>
+                                    <li class="page-item">
+                                        <a class="page-link" href="#" aria-label="Next">
+                                            <span aria-hidden="true">&raquo;</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </nav>
+
                         </div>
                     </div>
                 </article>
