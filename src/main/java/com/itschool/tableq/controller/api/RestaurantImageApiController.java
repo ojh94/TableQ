@@ -11,6 +11,6 @@ import org.springframework.web.bind.annotation.RestController;
 @Tag(name = "식당 이미지", description = "식당 이미지 관련 API")
 @RestController
 @RequestMapping("api/restaurant-image")
-public class RestaurantImageController extends CrudController<RestaurantImageRequest, RestaurantImageResponse, RestaurantImage> {
+public class RestaurantImageApiController extends CrudController<RestaurantImageRequest, RestaurantImageResponse, RestaurantImage> {
 
 }

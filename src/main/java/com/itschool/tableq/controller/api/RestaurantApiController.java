@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 @Tag(name = "레스토랑", description = "레스토랑 관련 API")
 @RestController
 @RequestMapping("/api/restaurant")
-public class RestaurantController extends CrudController<RestaurantRequest, RestaurantResponse, Restaurant> {
+public class RestaurantApiController extends CrudController<RestaurantRequest, RestaurantResponse, Restaurant> {
 
 
 }

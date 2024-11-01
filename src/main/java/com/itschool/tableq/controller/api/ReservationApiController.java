@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 @Tag(name = "예약", description = "예약 관련 API")
 @RestController
 @RequestMapping("api/reservation")
-public class ReservationController extends
+public class ReservationApiController extends
         CrudController<ReservationRequest, ReservationResponse, Reservation> {
 
 }
