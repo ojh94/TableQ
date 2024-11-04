@@ -30,28 +30,28 @@ public class MyPageController {
     // 개인정보 변경 페이지
     @GetMapping("/edit")
     public String editPage() {
-        return "";
+        return "edit";
     }
 
     // 비밀번호 변경 페이지
     @GetMapping("/password")
     public String editPassword() {
-        return "";
+        return "password";
     }
 
     // 이용 내역 페이지
     @GetMapping("/history")
     public String getHistoryPage() {
-        return "";
+        return "history";
     }
 
     @GetMapping("/my-review")
     public String getMyReviewPage() {
-        return "";
+        return "my-review";
     }
 
     @GetMapping("/waiting")
     public String getWaitingPage() {
-        return "";
+        return "waiting";
     }
 }
