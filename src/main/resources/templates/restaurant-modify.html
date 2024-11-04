@@ -133,8 +133,11 @@
                             <div class="menu-item mb-4" style="display: flex; align-items: center;">
                                 <div class="item-info">
                                     <div>
-                                        <h4><input value="스페셜텐동" placeholder="메뉴명">
-                                            &nbsp;<span class="badge" style="background-color: rgba(237, 125, 49, 1); font-size: 13px;">추천</span>
+                                        <h4 style="display: flex; align-items: center;">
+                                            <input value="스페셜텐동" placeholder="메뉴명">&nbsp;
+                                            <span class="badge" style="background-color: rgba(237, 125, 49, 1); font-size: 13px; display: flex; align-items: center;">추천
+                                                <input type="checkbox" style="margin-left: 6px;">
+                                            </span>
                                         </h4>
                                         <h5 class="price" style="margin-bottom: 0px;"><input value="16,500원" placeholder="가격"></h5>
                                     </div>
@@ -150,7 +153,12 @@
                             <div class="menu-item mb-4" style="display: flex; align-items: center;">
                                 <div class="item-info">
                                     <div>
-                                        <h4><input value="아나고텐동" placeholder="메뉴명"></h4>
+                                        <h4 style="display: flex; align-items: center;">
+                                            <input value="아나고텐동" placeholder="메뉴명">&nbsp;
+                                            <span class="badge" style="background-color: rgba(237, 125, 49, 1); font-size: 13px; display: flex; align-items: center;">추천
+                                                <input type="checkbox" style="margin-left: 6px;">
+                                            </span>
+                                        </h4>
                                         <h5 class="price" style="margin-bottom: 0px;"><input value="15,500원" placeholder="가격"></h5>
                                     </div>
                                     <!--<p class="item-text">
@@ -171,7 +179,12 @@
                             <div class="menu-item mb-4" style="display: flex; align-items: center;">
                                 <div class="item-info">
                                     <div>
-                                        <h4><input value="콜라" placeholder="메뉴명"></h4>
+                                        <h4 style="display: flex; align-items: center;">
+                                            <input value="콜라" placeholder="메뉴명">&nbsp;
+                                            <span class="badge" style="background-color: rgba(237, 125, 49, 1); font-size: 13px; display: flex; align-items: center;">추천
+                                                <input type="checkbox" style="margin-left: 6px;">
+                                            </span>
+                                        </h4>
                                         <h5 class="price" style="margin-bottom: 0px;"><input value="2,000원" placeholder="가격"></h5>
                                     </div>
                                     <!--<p class="item-text">
@@ -189,33 +202,81 @@
                         </div>
 
                         <div class="tab-pane fade" id="review" role="tabpanel" aria-labelledby="review-tab">
+                            <div class="d-flex m-5">
+                                <div class="text-center p-4 d-flex flex-column justify-content-center">
+                                    <h6>전체 평점</h6>
+                                    <span style="display: flex; align-items: center;">
+                                        <i class="bi bi-star-fill" style="color: #FAC608; font-size: 35px;"></i>
+                                        <span style="font-size: 40px;">&nbsp;4.8</span>
+                                    </span>
+                                </div>
+                                <div class="vr m-5" style="height: 150px;"></div>
+
+                                <div class="review-bars">
+                                    <div class="review-bar">
+                                        <span class="star-label">5점</span>
+                                        <div class="bar">
+                                            <div class="fill" style="width: 80%;"></div>
+                                        </div>
+                                        <span class="percentage">80%</span>
+                                    </div>
+                                    <div class="review-bar">
+                                        <span class="star-label">4점</span>
+                                        <div class="bar">
+                                            <div class="fill" style="width: 60%;"></div>
+                                        </div>
+                                        <span class="percentage">60%</span>
+                                    </div>
+                                    <div class="review-bar">
+                                        <span class="star-label">3점</span>
+                                        <div class="bar">
+                                            <div class="fill" style="width: 40%;"></div>
+                                        </div>
+                                        <span class="percentage">40%</span>
+                                    </div>
+                                    <div class="review-bar">
+                                        <span class="star-label">2점</span>
+                                        <div class="bar">
+                                            <div class="fill" style="width: 20%;"></div>
+                                        </div>
+                                        <span class="percentage">20%</span>
+                                    </div>
+                                    <div class="review-bar">
+                                        <span class="star-label">1점</span>
+                                        <div class="bar">
+                                            <div class="fill" style="width: 10%;"></div>
+                                        </div>
+                                        <span class="percentage">10%</span>
+                                    </div>
+                                </div>
+                            </div>
+
                             <!-- Comments section-->
                             <section class="mb-5">
                                 <div class="card bg-light">
                                     <div class="card-body">
                                         <!-- Comment form-->
                                         <form class="mb-4">
-                                            <textarea class="form-control" rows="3" placeholder="Join the discussion and leave a comment!"></textarea>
+                                            <textarea id="review-textarea" class="form-control" rows="4" placeholder="솔직한 평가를 남겨주세요!"></textarea>
                                         </form>
                                         <!-- Comment with nested comments-->
-                                        <div class="d-flex mb-4">
-                                            <div class="flex-shrink-0"><img class="rounded-circle" src="https://dummyimage.com/50x50/ced4da/6c757d.jpg" alt="..." /></div>
+                                        <div class="d-flex">
                                             <div class="ms-3">
-                                                <div class="fw-bold">홍민경</div>
-                                                If you're going to lead a space frontier, it has to be government; it'll never be private enterprise. Because the space frontier is dangerous, and it's expensive, and it has unquantified risks.
+                                                <div class="fw-bold mb-3">홍민경<small>&nbsp;(2일 전)</small></div>
+                                                <p style="margin: 0;"></p>
                                             </div>
                                         </div>
-                                        <div class="d-flex mb-4">
-                                            <div class="flex-shrink-0"><img class="rounded-circle" src="https://dummyimage.com/50x50/ced4da/6c757d.jpg" alt="..." /></div>
+                                        <hr style="margin: 1.5rem 0;">
+                                        <div class="d-flex">
                                             <div class="ms-3">
-                                                <div class="fw-bold">김윤아</div>
+                                                <div class="fw-bold mb-3">김윤아<small>&nbsp;(2일 전)</small></div>
                                                 When I look at the universe and all the ways the universe wants to kill us, I find it hard to reconcile that with statements of beneficence.
                                             </div>
                                         </div>
-                                        <div class="d-flex mb-4">
-                                            <div class="flex-shrink-0"><img class="rounded-circle" src="https://dummyimage.com/50x50/ced4da/6c757d.jpg" alt="..." /></div>
+                                        <hr style="margin: 1.5rem 0;">
+                                        <div class="d-flex">
                                             <div class="ms-3">
-                                                <div class="fw-bold">최유라</div>
+                                                <div class="fw-bold mb-3">최유라<small>&nbsp;(2일 전)</small></div>
                                                 When I look at the universe and all the ways the universe wants to kill us, I find it hard to reconcile that with statements of beneficence.
                                             </div>
                                         </div>
