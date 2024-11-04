@@ -16,9 +16,7 @@ import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -34,6 +32,11 @@ public class ReviewService extends BaseService<ReviewRequest, ReviewResponse, Re
 
     @Autowired
     UserRepository userRepository;
+
+    @Override
+    public Header<List<ReviewResponse>> getPaginatedList(Pageable pageable) {
+        return null;
+    }
 
     @Override
     protected ReviewResponse response(Review review) {

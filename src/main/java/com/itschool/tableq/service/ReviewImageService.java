@@ -10,6 +10,7 @@ import com.itschool.tableq.repository.ReviewRepository;
 import com.itschool.tableq.service.base.BaseService;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import org.springframework.data.domain.Pageable;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -18,6 +19,11 @@ public class ReviewImageService
         extends BaseService<ReviewImageRequest, ReviewImageResponse, ReviewImage> {
     @Autowired
     ReviewRepository reviewRepository;
+
+    @Override
+    public Header<List<ReviewImageResponse>> getPaginatedList(Pageable pageable) {
+        return null;
+    }
 
     @Override
     protected ReviewImageResponse response(ReviewImage reviewImage) {

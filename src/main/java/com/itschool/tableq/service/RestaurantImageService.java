@@ -10,6 +10,7 @@ import com.itschool.tableq.repository.RestaurantRepository;
 import com.itschool.tableq.service.base.BaseService;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import org.springframework.data.domain.Pageable;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -18,6 +19,11 @@ public class RestaurantImageService extends
         BaseService<RestaurantImageRequest, RestaurantImageResponse, RestaurantImage> {
     @Autowired
     RestaurantRepository restaurantRepository;
+
+    @Override
+    public Header<List<RestaurantImageResponse>> getPaginatedList(Pageable pageable) {
+        return null;
+    }
 
     @Override
     protected RestaurantImageResponse response(RestaurantImage restaurantImage) {

@@ -11,6 +11,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import org.springframework.data.domain.Pageable;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -19,6 +20,11 @@ import java.util.List;
 public class UserService extends BaseService<UserRequest, UserResponse, User> {
 
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
+
+    @Override
+    public Header<List<UserResponse>> getPaginatedList(Pageable pageable) {
+        return null;
+    }
 
     @Override
     protected UserResponse response(User user) {

@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import org.springframework.data.domain.Pageable;
 import java.security.Key;
 import java.util.List;
 
@@ -21,6 +22,11 @@ public class KeywordService extends BaseService<KeywordRequest, KeywordResponse,
     private final KeywordRepository keywordRepository;
 
     public List<Keyword> findAll(){return keywordRepository.findAll();}
+
+    @Override
+    public Header<List<KeywordResponse>> getPaginatedList(Pageable pageable) {
+        return null;
+    }
 
     @Override
     protected KeywordResponse response(Keyword keyword) {

@@ -12,19 +12,24 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.webjars.NotFoundException;
 
+import org.springframework.data.domain.Pageable;
 import java.time.LocalDateTime;
 import java.util.List;
 
 @RequiredArgsConstructor
 @Service
 public class OwnerService extends BaseService<OwnerRequest, OwnerResponse, Owner> {
+
     private final OwnerRepository ownerRepository;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
-
-
     public List<Owner> findAll() {
         return ownerRepository.findAll();
+    }
+
+    @Override
+    public Header<List<OwnerResponse>> getPaginatedList(Pageable pageable) {
+        return null;
     }
 
     @Override

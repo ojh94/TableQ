@@ -19,6 +19,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.webjars.NotFoundException;
 
+import org.springframework.data.domain.Pageable;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -33,6 +34,11 @@ public class ReservationService extends
 
     @Autowired
     RestaurantRepository restaurantRepository;
+
+    @Override
+    public Header<List<ReservationResponse>> getPaginatedList(Pageable pageable) {
+        return null;
+    }
 
     @Override
     protected ReservationResponse response(Reservation reservation) {

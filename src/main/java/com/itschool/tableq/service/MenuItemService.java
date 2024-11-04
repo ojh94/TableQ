@@ -17,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import org.springframework.data.domain.Pageable;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -27,6 +28,11 @@ public class MenuItemService extends BaseService<MenuItemRequest, MenuItemRespon
 
     @Autowired
     RestaurantRepository restaurantRepository;
+
+    @Override
+    public Header<List<MenuItemResponse>> getPaginatedList(Pageable pageable) {
+        return null;
+    }
 
     @Override
     protected MenuItemResponse response(MenuItem menuItem) {
