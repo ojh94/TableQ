@@ -35,7 +35,11 @@ public class MyPageController {
 
     // 비밀번호 변경 페이지
     @GetMapping("/password")
-    public String editPassword() {
+    public String editPassword(@AuthenticationPrincipal User user, Model model) {
+        UserResponse userResponse = userService.read(user.getId()).getData();
+
+        if(user != null)
+            model.addAttribute("user", userResponse);
         return "password";
     }
 
