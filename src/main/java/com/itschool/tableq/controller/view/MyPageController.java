@@ -18,7 +18,7 @@ public class MyPageController {
     private UserService userService;
 
     // 마이 페이지
-    @GetMapping("/")
+    @GetMapping("")
     public String myPage(@AuthenticationPrincipal User user, Model model) {
         UserResponse userResponse = userService.read(user.getId()).getData();
 
