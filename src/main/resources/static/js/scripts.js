@@ -10,6 +10,7 @@ $(document).ready(function() {
     if (window.location.pathname
     === '/restaurant/' + document.getElementById("restaurant-id").value) {
         requestRestaurantApi();
+        requestReviewApi();
 
 
         // 점주 상세페이지 수정 버튼 클릭
@@ -34,7 +35,12 @@ $(document).ready(function() {
                 <div class="menu-item mb-4" style="display: flex; align-items: center;">
                     <div class="item-info">
                         <div>
-                            <h4><input value="" placeholder="메뉴명"></h4>
+                            <h4 style="display: flex; align-items: center;">
+                                <input value="" placeholder="메뉴명">&nbsp;
+                                <span class="badge" style="background-color: rgba(237, 125, 49, 1); font-size: 13px; display: flex; align-items: center;">추천
+                                    <input type="checkbox" style="margin-left: 6px;">
+                                </span>
+                            </h4>
                             <h5 class="price" style="margin-bottom: 0px;"><input value="" placeholder="가격"></h5>
                         </div>
                     </div>
@@ -326,6 +332,9 @@ function requestReviewApi() {
         contentType: 'application/json', // JSON 형식으로 데이터 전송
         success: function(response) {
             // 요청 성공 시 동작
+            const rContent = $('#review > section > div > div > div:nth-child(2) > div > p');
+
+            rContent[0].textContent = response.data.content;
 
             console.log('가게 이미지 set 완료');
         }

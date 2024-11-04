@@ -10894,3 +10894,49 @@ th, td {
     color: #808080 !important;
     background-color: #F5F5F5 !important;
 }
+
+.review-bars {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 4px;
+}
+
+.review-bar {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.star-label {
+    width: 50px;
+    text-align: right;
+    font-weight: bold;
+}
+
+.bar {
+    flex: 1;
+    background-color: #e0e0e0;
+    height: 7px; /* 바 높이 */
+    border-radius: 6px; /* 바의 둥글기 */
+    overflow: hidden;
+    position: relative;
+}
+
+.fill {
+    background-color: #FAC608;
+    height: 100%;
+    border-radius: 6px 0 0 6px;
+    position: absolute;
+    left: 0;
+    top: 0;
+}
+
+.percentage {
+    width: 40px;
+    text-align: right;
+    color: #808080; /* 회색 글씨 */
+    font-weight: normal; /* 글씨 굵기 보통 */
+    font-size: 14px; /* 적절한 글씨 크기 */
+}

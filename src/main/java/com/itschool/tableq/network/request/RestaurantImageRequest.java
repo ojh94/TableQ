@@ -13,7 +13,7 @@ import java.time.LocalDateTime;
 public class RestaurantImageRequest {
     private Long id;
 
-    private String title;
+    private String filename;
 
     private String path;
 

@@ -49,6 +49,7 @@ public class ReviewService extends BaseService<ReviewRequest, ReviewResponse, Re
 
         Review review = Review.builder()
                 .content(reviewRequest.getContent())
+                .starRating(reviewRequest.getStarRating())
                 .createdAt(LocalDateTime.now())
                 .lastModifiedAt(LocalDateTime.now())
                 .restaurant(reviewRequest.getRestaurant())

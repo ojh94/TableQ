@@ -6,7 +6,6 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.apache.catalina.Store;
 
 import java.time.LocalDateTime;
 
@@ -21,7 +20,7 @@ public class RestaurantImage {
     private Long id;
 
     @Column(nullable = false)
-    private String title;
+    private String filename;
 
     @Column(nullable = false)
     private String path;
@@ -34,15 +33,15 @@ public class RestaurantImage {
     private Restaurant restaurant;
 
     @Builder
-    public RestaurantImage(String title, String path, LocalDateTime uploadTime, Restaurant restaurant){
-        this.title = title;
+    public RestaurantImage(String filename, String path, LocalDateTime uploadTime, Restaurant restaurant){
+        this.filename = filename;
         this.path = path;
         this.uploadTime = uploadTime;
         this.restaurant = restaurant;
     }
 
     public void update(RestaurantImageRequest dto){
-        this.title = dto.getTitle();
+        this.filename = dto.getFilename();
         this.path = dto.getPath();
         this.uploadTime = dto.getUploadTime();
     }

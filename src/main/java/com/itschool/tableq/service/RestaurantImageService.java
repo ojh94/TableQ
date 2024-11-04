@@ -2,11 +2,9 @@ package com.itschool.tableq.service;
 
 import com.itschool.tableq.domain.Restaurant;
 import com.itschool.tableq.domain.RestaurantImage;
-import com.itschool.tableq.domain.Review;
 import com.itschool.tableq.network.Header;
 import com.itschool.tableq.network.request.RestaurantImageRequest;
 import com.itschool.tableq.network.response.RestaurantImageResponse;
-import com.itschool.tableq.network.response.ReviewResponse;
 import com.itschool.tableq.repository.RestaurantImageRepository;
 import com.itschool.tableq.repository.RestaurantRepository;
 import com.itschool.tableq.service.base.BaseService;
@@ -39,7 +37,7 @@ public class RestaurantImageService extends
     public Header<RestaurantImageResponse> create(Header<RestaurantImageRequest> request) {
         RestaurantImageRequest imageRequest = request.getData();
         RestaurantImage restaurantImage = RestaurantImage.builder()
-                .title(imageRequest.getTitle())
+                .filename(imageRequest.getFilename())
                 .path(imageRequest.getPath())
                 .restaurant(imageRequest.getRestaurant())
                 .uploadTime(LocalDateTime.now())
