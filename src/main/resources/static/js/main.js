@@ -60,6 +60,7 @@ document.addEventListener('DOMContentLoaded', () => {
    restaurants.forEach(restaurant => {
         restaurantGrid.appendChild(createRestaurantCard(restaurant));
     });
+
   }
 
   restaurants2.forEach(restaurant => {
@@ -72,9 +73,11 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 
+
 // 예약 기능
 function bookRestaurant(restaurantId) {
   console.log('Booking restaurant:', restaurantId);
+  sessionStorage.setItem('restaurantId', restaurantId);
   const detailPageUrl = `/restaurant/${restaurantId}`; // 상세 페이지 URL
     window.location.href = detailPageUrl;
 }
@@ -107,8 +110,21 @@ document.addEventListener('DOMContentLoaded', () => {
         <p>별점: ${restaurantRating} (리뷰: ${restaurantReviews}개)</p>
       </div>
     `;
-
-    // 배경 이미지 업데이트
-    document.body.style.backgroundImage = `url('/img/restaurant-${selectedRestaurantId}.jpg')`;
-  }
+    }
 });
+
+//function bookRestaurant(restaurantId) {
+//    console.log('Booking restaurant:', restaurantId);
+//
+//    const detailPageUrl = `/restaurant/${restaurantId}`; // 상세 페이지 URL
+//
+//    // 레스토랑 데이터 찾기
+//    const restaurant = restaurants.find(r => r.id === restaurantId);
+//
+//    // localStorage에 저장
+//    localStorage.setItem('selectedRestaurant', JSON.stringify(restaurant));
+//
+//    // 상세 페이지로 이동
+//    window.location.href = detailPageUrl`;
+//}
+//
