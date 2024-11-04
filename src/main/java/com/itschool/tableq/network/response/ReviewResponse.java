@@ -20,6 +20,8 @@ public class ReviewResponse {
 
     private String content;
 
+    private UserResponse user;
+
     private LocalDateTime createdAt;
 
     private LocalDateTime lastModifiedAt;
@@ -27,6 +29,7 @@ public class ReviewResponse {
     public ReviewResponse(Review review){
         this.id = review.getId();
         this.content = review.getContent();
+        this.user = new UserResponse(review.getUser());
         this.createdAt = review.getCreatedAt();
         this.lastModifiedAt = review.getLastModifiedAt();
     }
