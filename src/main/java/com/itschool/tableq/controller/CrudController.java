@@ -7,6 +7,9 @@ import io.swagger.v3.oas.annotations.Operation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,6 +19,13 @@ public abstract class CrudController<Req, Res, Entity> implements CrudInterface<
     protected BaseService<Req,Res,Entity> baseService;
 
     protected final Logger log = LoggerFactory.getLogger(this.getClass());
+
+    @GetMapping("")
+    @Operation(summary = "페이지별 조회", description = "pageable로 엔티티 목록을 조회")
+    public Header getPaginatedList(@PageableDefault(sort = "id", direction = Sort.Direction.DESC) Pageable pageable){
+        log.info("{}","{}","getPaginatedList: ", pageable);
+        return baseService.getPaginatedList(pageable);
+    }
 
     @Override
     @Operation(summary = "생성", description = "새로운 엔티티를 생성")
@@ -50,4 +60,5 @@ public abstract class CrudController<Req, Res, Entity> implements CrudInterface<
         baseService.delete(id);
         return Header.OK();
     }
+
 }
