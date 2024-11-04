@@ -22,6 +22,8 @@ public class ReviewResponse {
 
     private Integer starRating;
 
+    private UserResponse user;
+
     private LocalDateTime createdAt;
 
     private LocalDateTime lastModifiedAt;
@@ -30,6 +32,7 @@ public class ReviewResponse {
         this.id = review.getId();
         this.content = review.getContent();
         this.starRating = review.getStarRating();
+        this.user = new UserResponse(review.getUser());
         this.createdAt = review.getCreatedAt();
         this.lastModifiedAt = review.getLastModifiedAt();
     }
