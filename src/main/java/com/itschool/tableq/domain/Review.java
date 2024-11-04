@@ -21,6 +21,9 @@ public class Review {
     @Column(nullable = false)
     private String content;
 
+    @Column(nullable = false)
+    private Integer starRating;
+
     private LocalDateTime createdAt;
 
     private LocalDateTime lastModifiedAt;
@@ -34,8 +37,9 @@ public class Review {
     private User user;
 
     @Builder
-    public Review(String content, LocalDateTime createdAt, LocalDateTime lastModifiedAt, Restaurant restaurant, User user){
+    public Review(String content, Integer starRating, LocalDateTime createdAt, LocalDateTime lastModifiedAt, Restaurant restaurant, User user){
         this.content = content;
+        this.starRating = starRating;
         this.restaurant = restaurant;
         this.createdAt = createdAt;
         this.lastModifiedAt = lastModifiedAt;

@@ -1,6 +1,5 @@
 package com.itschool.tableq.network.response;
 
-import com.itschool.tableq.domain.Restaurant;
 import com.itschool.tableq.domain.RestaurantImage;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -16,7 +15,7 @@ import java.time.LocalDateTime;
 public class RestaurantImageResponse {
     private Long id;
 
-    private String title;
+    private String filename;
 
     private String path;
 
@@ -26,7 +25,7 @@ public class RestaurantImageResponse {
 
     public RestaurantImageResponse(RestaurantImage restaurantImage){
         this.id = restaurantImage.getId();
-        this.title = restaurantImage.getTitle();
+        this.filename = restaurantImage.getFilename();
         this.path = restaurantImage.getPath();
         this.uploadTime = restaurantImage.getUploadTime();
         this.restaurantId = restaurantImage.getRestaurant().getId();

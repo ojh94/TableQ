@@ -15,6 +15,8 @@ public class ReviewRequest {
 
     private String content;
 
+    private Integer starRating;
+
     private LocalDateTime createdAt;
 
     private LocalDateTime lastModifiedAt;

@@ -25,4 +25,9 @@ public class OwnerController {
 
     @GetMapping("/welcome")
     public String getOwnerWelcome() { return "ownerWelcome";  }
+
+    @GetMapping("/owner-auth")
+    public String auth() {
+        return "";
+    }
 }
