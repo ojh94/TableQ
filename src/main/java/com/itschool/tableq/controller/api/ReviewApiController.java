@@ -22,7 +22,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/review")
 public class ReviewApiController extends CrudController<ReviewRequest, ReviewResponse, Review> {
-    @Operation(summary = "레스토랑별 리뷰 조회", description = "Restaurant ID로 엔티티 목록을 조회")
+    @Operation(summary = "레스토랑별 리뷰 조회", description = "Restaurant ID 및 pageable로 엔티티 목록을 조회")
     @GetMapping("/restaurant/{id}")
     public Header<List<ReviewResponse>> readByRestaurantId(@PathVariable(name = "id") Long id,
                                                            @PageableDefault(sort = "id", direction = Sort.Direction.DESC) Pageable pageable){
