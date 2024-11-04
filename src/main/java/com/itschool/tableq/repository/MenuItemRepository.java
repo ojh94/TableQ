@@ -9,4 +9,6 @@ import java.util.Optional;
 
 public interface MenuItemRepository extends JpaRepository<MenuItem, Long> {
     Optional<List<MenuItem>> findByRestaurant(Restaurant restaurant);
+
+    Optional<Long> countBy();
 }

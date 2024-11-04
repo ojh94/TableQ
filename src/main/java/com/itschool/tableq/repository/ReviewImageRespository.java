@@ -9,4 +9,6 @@ import java.util.Optional;
 
 public interface ReviewImageRespository extends JpaRepository<ReviewImage, Long> {
     Optional<List<ReviewImage>> findByReview(Review review);
+
+    Optional<Long> countBy();
 }

@@ -11,4 +11,6 @@ import java.util.Optional;
 public interface ReservationRepository extends JpaRepository<Reservation, Long> {
     Optional<List<Reservation>> findByRestaurant(Restaurant restaurant);
     Optional<List<Reservation>> findByUser(User user);
+
+    Optional<Long> countBy();
 }
