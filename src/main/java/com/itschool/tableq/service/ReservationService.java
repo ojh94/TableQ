@@ -55,6 +55,10 @@ public class ReservationService extends
         List<Reservation> reservationList = ((ReservationRepository)baseRepository)
                 .findByRestaurant(restaurant).orElse(null);
 
+        for(Reservation reservation : reservationList){
+
+        }
+
         number = reservationList.size()+1;
 
         return number;
