@@ -14,6 +14,7 @@ $(document).ready(function() {
     if (window.location.pathname
     === '/restaurant/modify/' + document.getElementById("restaurant-id").value) {
         requestRestaurantModifyApi();
+        requestReviewApi();
 
         // 페이지를 이전 페이지로 이동
         document.getElementById('cancel').addEventListener('click', function() {
@@ -116,39 +117,6 @@ function updateActiveCarouselImage(event) {
     event.target.value = '';
 }
 
-// 리뷰 가져오기
-function loadReviews() {
-    const restaurantId = document.getElementById("restaurant-id").value;
-
-    $.ajax({
-        url: `/api/restaurant/${restaurantId}/reviews`,
-        type: 'GET',
-        contentType: 'application/json',
-        success: function (response) {
-            const reviewContainer = $('#reviewContainer'); // 리뷰를 표시할 컨테이너
-
-            reviewContainer.empty(); // 기존 리뷰를 초기화
-
-            // 응답 데이터에서 리뷰를 하나씩 추가
-            response.data.reviews.forEach(review => {
-                const reviewHTML = `
-                    <div class="review-item">
-                        <h5>${review.user}</h5>
-                        <p>${review.content}</p>
-                        <p>${new Date(review.date).toLocaleDateString()}</p>
-                    </div>
-                `;
-                reviewContainer.append(reviewHTML);
-            });
-            console.log('리뷰 로드 완료');
-        },
-        error: function (xhr, status, error) {
-            console.error('리뷰 로드 실패:', error);
-            alert('리뷰 데이터를 불러오는 중 오류가 발생했습니다.');
-        }
-    });
-}
-
 // 점주 상세페이지 restaurant API
 function requestRestaurantApi() {
 
@@ -202,20 +170,6 @@ function requestRestaurantModifyApi() {
         type: 'GET', // 필요한 HTTP 메서드로 변경
         contentType: 'application/json', // JSON 형식으로 데이터 전송
         success: function(response) {
-
-             const reviewContainer = $('#reviewContainer'); // 리뷰를 표시할 컨테이너
-
-                        // 리뷰 HTML 추가
-                        response.data.reviews.forEach(review => {
-                            const reviewHTML = `
-                                <div class="review-item">
-                                    <h5>${review.user}</h5>
-                                    <p>${review.content}</p>
-                                    <p>${new Date(review.date).toLocaleDateString()}</p>
-                                </div>
-                            `;
-                            reviewContainer.append(reviewHTML);
-                        });
             // 요청 성공 시 동작
             const rName = $('body > div > div.container.mt-5 > div > div > article:nth-child(1) > header > h1 > input');
             const rAddress = $('#home > div:nth-child(4) > input');
