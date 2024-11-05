@@ -132,8 +132,6 @@ header, .toolbar-top, .toolbar {
   padding: 20px;
   max-width: 20000px; /* 중앙 콘텐츠의 너비를 늘림 */
   margin: 0 auto;
-
-
 }
 
 .logo {
