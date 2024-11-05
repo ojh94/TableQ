@@ -16,5 +16,7 @@ public interface ReviewRepository extends JpaRepository<Review, Long> {
 
     List<Review> findByUser(User user);
 
+    Optional<Review> getFirstByOrderByIdDesc();
+
     Optional<Long> countBy();
 }

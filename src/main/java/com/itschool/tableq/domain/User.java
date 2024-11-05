@@ -14,6 +14,7 @@ import java.util.List;
 @Table(name = "users")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
+@Setter
 @ToString
 @Entity
 public class User implements UserDetails {
@@ -34,6 +35,8 @@ public class User implements UserDetails {
 
     @Column(updatable = false)
     private LocalDateTime createdAt;
+
+    private LocalDateTime updatedAt;
 
     @Column(nullable = false)
     private LocalDateTime lastLoginAt;
