@@ -1,0 +1,49 @@
+<main layout:decorate="~{common/layouts/mainLayout}" layout:fragment="Content">
+    <link rel="stylesheet" href="/css/mypage.css" />
+    <div class="mypage-container">
+        <!-- 사용자 정보 -->
+        <div class="user-info">
+            <span class="user-name" th:text="${user.name} + '님'">이름 님</span>
+            <a href="/mypage/edit" class="user-settings">
+                <i class="icon-settings"></i> <!-- 설정 아이콘 -->
+            </a>
+        </div>
+
+        <!-- 이용 예정 내역 -->
+        <div class="reservation-info">
+            <div class="no-reservation">
+                <p class="emoji">😢</p>
+                <p>이용 예정인 내역이 없어요.</p>
+            </div>
+            <button type="button" class="btn btn-orange" onclick="location.href='/nearby'">내 주변 매장 보러가기</button>
+        </div>
+
+        <!-- 이용 정보 섹션 -->
+        <div class="my-category">
+            <section class="section-title">이용 정보</section>
+            <ul class="list-group">
+                <li class="list-item">
+                    <a href="/mypage/my-review">
+                        <i class="bi bi-chat-left-dots"></i> <i>내 리뷰</i>
+                    </a>
+                    <i class="icon-arrow"></i>
+                </li>
+                <li class="list-item">
+                    <a href="/mypage/history">
+                        <i class="bi bi-calendar-check" ></i> <i>이용 내역</i>
+                    </a>
+                    <i class="icon-arrow"></i>
+                </li>
+                <li class="list-item">
+                    <a href="/mypage/recent-stores">
+                        <i class="bi bi-shop"></i> <i>최근 본 매장</i>
+                    </a>
+                    <i class="icon-arrow"></i>
+                </li>
+            </ul>
+        </div>
+    </div>
+</main>
+
+<script defer src="/js/mypage.js"></script>
+
