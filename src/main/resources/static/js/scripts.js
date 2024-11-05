@@ -1,17 +1,8 @@
 $(document).ready(function() {
-      document.getElementById("goToReview").addEventListener("click", function(event) {
-            const reviewTab = new bootstrap.Tab(document.getElementById("review-tab"));
-            reviewTab.show();
-
-        });
-
-
-
     if (window.location.pathname
     === '/restaurant/' + document.getElementById("restaurant-id").value) {
         requestRestaurantApi();
         requestReviewApi();
-
 
         // 점주 상세페이지 수정 버튼 클릭
         document.getElementById("modify-button").onclick = function() {
@@ -23,6 +14,7 @@ $(document).ready(function() {
     if (window.location.pathname
     === '/restaurant/modify/' + document.getElementById("restaurant-id").value) {
         requestRestaurantModifyApi();
+        requestReviewApi();
 
         // 페이지를 이전 페이지로 이동
         document.getElementById('cancel').addEventListener('click', function() {
@@ -125,42 +117,8 @@ function updateActiveCarouselImage(event) {
     event.target.value = '';
 }
 
-function loadReviews() {
-    const restaurantId = document.getElementById("restaurant-id").value;
-
-    $.ajax({
-        url: `/api/restaurant/${restaurantId}/reviews`,
-        type: 'GET',
-        contentType: 'application/json',
-        success: function (response) {
-            const reviewContainer = $('#reviewContainer'); // 리뷰를 표시할 컨테이너
-
-            reviewContainer.empty(); // 기존 리뷰를 초기화
-
-            // 응답 데이터에서 리뷰를 하나씩 추가
-            response.data.reviews.forEach(review => {
-                const reviewHTML = `
-                    <div class="review-item">
-                        <h5>${review.user}</h5>
-                        <p>${review.content}</p>
-                        <p>${new Date(review.date).toLocaleDateString()}</p>
-                    </div>
-                `;
-                reviewContainer.append(reviewHTML);
-            });
-            console.log('리뷰 로드 완료');
-        },
-        error: function (xhr, status, error) {
-            console.error('리뷰 로드 실패:', error);
-            alert('리뷰 데이터를 불러오는 중 오류가 발생했습니다.');
-        }
-    });
-}
-
 // 점주 상세페이지 restaurant API
 function requestRestaurantApi() {
-
-    const restaurantIdElement = document.getElementById("restaurant-id");
 
     const id = document.getElementById("restaurant-id").value;
 
@@ -212,20 +170,6 @@ function requestRestaurantModifyApi() {
         type: 'GET', // 필요한 HTTP 메서드로 변경
         contentType: 'application/json', // JSON 형식으로 데이터 전송
         success: function(response) {
-
-             const reviewContainer = $('#reviewContainer'); // 리뷰를 표시할 컨테이너
-
-                        // 리뷰 HTML 추가
-                        response.data.reviews.forEach(review => {
-                            const reviewHTML = `
-                                <div class="review-item">
-                                    <h5>${review.user}</h5>
-                                    <p>${review.content}</p>
-                                    <p>${new Date(review.date).toLocaleDateString()}</p>
-                                </div>
-                            `;
-                            reviewContainer.append(reviewHTML);
-                        });
             // 요청 성공 시 동작
             const rName = $('body > div > div.container.mt-5 > div > div > article:nth-child(1) > header > h1 > input');
             const rAddress = $('#home > div:nth-child(4) > input');
@@ -259,42 +203,6 @@ function requestRestaurantModifyApi() {
     });
 }
 
-document.addEventListener('DOMContentLoaded', async () => {
-  const urlParams = new URLSearchParams(window.location.search);
-  const restaurantId = urlParams.get('id'); // URL에서 restaurantId를 가져옴
-
-  if (restaurantId) {
-    // 해당 restaurantId로 가게 정보를 가져오는 API 호출
-    try {
-      const response = await fetch(`/api/restaurants/${restaurantId}`);
-      const restaurant = await response.json();
-
-      if (restaurant) {
-        // 가게 이름 등 필요한 정보를 DOM에 추가
-        const header = document.querySelector('header');
-        header.innerHTML += `
-          <div class="restaurant-info">
-            <h1>${restaurant.name} (ID: ${restaurantId})</h1>
-            <p>(리뷰: ${restaurant.content})</p>
-          </div>
-        `;
-
-        // 배경 이미지 업데이트
-        document.body.style.backgroundImage = `url('/img/restaurant-${restaurantId}.jpg')`;
-      }
-    } catch (error) {
-      console.error('가게 정보를 가져오는데 실패했습니다.', error);
-    }
-  }else {
-       console.error('restaurantId가 정의되지 않았습니다.');
-     }
-});
-
-fetch(`/api/restaurants/${restaurantId}`)
-  .then(response => response.json())
-  .then(data => console.log(data))
-  .catch(error => console.error('Error:', error));
-
 // restaurantImage API
 function requestRestaurantImageApi() {
 
@@ -327,16 +235,112 @@ function requestReviewApi() {
     const id = document.getElementById("restaurant-id").value;
 
     $.ajax({
-        url: `/api/review/${id}`,
+        url: `/api/review/restaurant/${id}`,
         type: 'GET', // 필요한 HTTP 메서드로 변경
         contentType: 'application/json', // JSON 형식으로 데이터 전송
         success: function(response) {
             // 요청 성공 시 동작
-            const rContent = $('#review > section > div > div > div:nth-child(2) > div > p');
 
-            rContent[0].textContent = response.data.content;
+            const reviews = response.data; // 리뷰 데이터 배열
 
-            console.log('가게 이미지 set 완료');
+            // 별점 평균 계산 및 출력
+            const totalStars = reviews.reduce((sum, review) => sum + review.starRating, 0);
+            const averageStars = (reviews.length > 0) ? (totalStars / reviews.length).toFixed(1) : 0;
+            $('#average-1').html('&nbsp;' + averageStars +'&nbsp;/&nbsp;');
+            $('#average-2').html('&nbsp;' + averageStars);
+
+            // 별점별 리뷰 카운트 및 출력
+            const fiveStarCount = reviews.filter(review => review.starRating === 5).length;
+            const fourStarCount = reviews.filter(review => review.starRating === 4).length;
+            const threeStarCount = reviews.filter(review => review.starRating === 3).length;
+            const twoStarCount = reviews.filter(review => review.starRating === 2).length;
+            const oneStarCount = reviews.filter(review => review.starRating === 1).length;
+
+            $('#5-point').html(fiveStarCount + '개');
+            $('#4-point').html(fourStarCount + '개');
+            $('#3-point').html(threeStarCount + '개');
+            $('#2-point').html(twoStarCount + '개');
+            $('#1-point').html(oneStarCount + '개');
+
+            // 별점별 bar 길이 설정
+            fiveBar = (fiveStarCount / reviews.length) * 100;
+            fourBar = (fourStarCount / reviews.length) * 100;
+            threeBar = (threeStarCount / reviews.length) * 100;
+            twoBar = (twoStarCount / reviews.length) * 100;
+            oneBar = (oneStarCount / reviews.length) * 100;
+
+            $('#5-bar').css('width', fiveBar + '%');
+            $('#4-bar').css('width', fourBar + '%');
+            $('#3-bar').css('width', threeBar + '%');
+            $('#2-bar').css('width', twoBar + '%');
+            $('#1-bar').css('width', oneBar + '%');
+
+            // 각 리뷰를 form 아래에 반복해서 추가
+            reviews.forEach((review) => {
+
+                // TIMESTAMP를 Date 객체로 변환 후 년, 월, 일 포맷으로 변환
+                const createdAt = new Date(review.createdAt);
+                const formattedDate =
+                `${createdAt.getFullYear()}-${String(createdAt.getMonth() + 1).padStart(2, '0')}-${String(createdAt.getDate()).padStart(2, '0')}`;
+
+                // 별점별 별 아이콘을 추가할 문자열
+                let starIcons = '';
+                if (review.starRating === 5) {
+                    starIcons = '<i class="bi bi-star-fill" style="color: #FAC608 !important;"></i>'
+                              + '<i class="bi bi-star-fill" style="color: #FAC608 !important;"></i>'
+                              + '<i class="bi bi-star-fill" style="color: #FAC608 !important;"></i>'
+                              + '<i class="bi bi-star-fill" style="color: #FAC608 !important;"></i>'
+                              + '<i class="bi bi-star-fill" style="color: #FAC608 !important;"></i>';
+                } else if (review.starRating === 4) {
+                    starIcons = '<i class="bi bi-star-fill" style="color: #FAC608 !important;"></i>'
+                              + '<i class="bi bi-star-fill" style="color: #FAC608 !important;"></i>'
+                              + '<i class="bi bi-star-fill" style="color: #FAC608 !important;"></i>'
+                              + '<i class="bi bi-star-fill" style="color: #FAC608 !important;"></i>'
+                              + '<i class="bi bi-star-fill" style="color: #e0e0e0 !important;"></i>';
+
+                } else if (review.starRating === 3) {
+                    starIcons = '<i class="bi bi-star-fill" style="color: #FAC608 !important;"></i>'
+                              + '<i class="bi bi-star-fill" style="color: #FAC608 !important;"></i>'
+                              + '<i class="bi bi-star-fill" style="color: #FAC608 !important;"></i>'
+                              + '<i class="bi bi-star-fill" style="color: #e0e0e0 !important;"></i>'
+                              + '<i class="bi bi-star-fill" style="color: #e0e0e0 !important;"></i>';
+
+                } else if (review.starRating === 2) {
+                    starIcons = '<i class="bi bi-star-fill" style="color: #FAC608 !important;"></i>'
+                              + '<i class="bi bi-star-fill" style="color: #FAC608 !important;"></i>'
+                              + '<i class="bi bi-star-fill" style="color: #e0e0e0 !important;"></i>'
+                              + '<i class="bi bi-star-fill" style="color: #e0e0e0 !important;"></i>'
+                              + '<i class="bi bi-star-fill" style="color: #e0e0e0 !important;"></i>';
+
+                } else if (review.starRating === 1) {
+                    starIcons = '<i class="bi bi-star-fill" style="color: #FAC608 !important;"></i>'
+                              + '<i class="bi bi-star-fill" style="color: #e0e0e0 !important;"></i>'
+                              + '<i class="bi bi-star-fill" style="color: #e0e0e0 !important;"></i>'
+                              + '<i class="bi bi-star-fill" style="color: #e0e0e0 !important;"></i>'
+                              + '<i class="bi bi-star-fill" style="color: #e0e0e0 !important;"></i>';
+                }
+
+                const reviewHtml = `
+                    <hr style="margin: 1.5rem 0;">
+                    <div class="d-flex">
+                        <div class="ms-3">
+                            <div>${starIcons}</div>
+                            <div class="fw-bold mt-2 mb-3">${review.user.name}<small>&nbsp;(${formattedDate})</small></div>
+                            <p style="margin: 0;">${review.content}</p>
+                        </div>
+                    </div>
+                `;
+
+                // 리뷰 출력할 위치
+                $('#review-form').after(reviewHtml);
+            });
+
+            console.log('리뷰 set 완료');
+        },
+        error: function(xhr, status, error) {
+        // 요청 실패 시 동작
+        console.error('수정 실패:', error);
+        alert('수정 중 오류가 발생했습니다.');
         }
     });
 }

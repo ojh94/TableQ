@@ -2,8 +2,6 @@
      layout:fragment="Content">
 
 <style>
-
-
 .form-control:focus {
     
 }
@@ -23,7 +21,11 @@
                         <h1 class="fw-bolder mb-1"></h1>
                         <!-- Post meta content-->
                         <!--<div class="text-muted fst-italic mb-2">YOUR FAVORITE TENDON HAUS</div>-->
-                        <i class="bi bi-star-fill" style="color: #FAC608 !important;"></i>&nbsp;4.8 / <a id="goToReview" href="#review" style="text-decoration: underline;">394개의 리뷰</a>
+                        <div style="display: flex; align-items: center;">
+                            <i class="bi bi-star-fill" style="color: #FAC608;"></i>
+                            <p id="average-1" class="m-0"></p>
+                            <a id="goToReview" href="#review" style="text-decoration: underline;">394개의 리뷰</a>
+                        </div>
                         <hr/>
                         <div><i class="fas fa-clock"></i>&nbsp;영업중 : 오늘 12:00 ~ 21:00</div>
                         <!-- Post categories-->
@@ -201,7 +203,7 @@
                                     <h6>전체 평점</h6>
                                     <span style="display: flex; align-items: center;">
                                         <i class="bi bi-star-fill" style="color: #FAC608; font-size: 35px;"></i>
-                                        <span style="font-size: 40px;">&nbsp;4.8</span>
+                                        <span id="average-2" style="font-size: 40px;"></span>
                                     </span>
                                 </div>
                                 <div class="vr m-5" style="height: 150px;"></div>
@@ -210,37 +212,37 @@
                                     <div class="review-bar">
                                         <span class="star-label">5점</span>
                                         <div class="bar">
-                                            <div class="fill" style="width: 80%;"></div>
+                                            <div id="5-bar" class="fill"></div>
                                         </div>
-                                        <span class="percentage">80%</span>
+                                        <span id="5-point" class="percentage"></span>
                                     </div>
                                     <div class="review-bar">
                                         <span class="star-label">4점</span>
                                         <div class="bar">
-                                            <div class="fill" style="width: 60%;"></div>
+                                            <div id="4-bar" class="fill"></div>
                                         </div>
-                                        <span class="percentage">60%</span>
+                                        <span id="4-point" class="percentage"></span>
                                     </div>
                                     <div class="review-bar">
                                         <span class="star-label">3점</span>
                                         <div class="bar">
-                                            <div class="fill" style="width: 40%;"></div>
+                                            <div id="3-bar" class="fill"></div>
                                         </div>
-                                        <span class="percentage">40%</span>
+                                        <span id="3-point" class="percentage"></span>
                                     </div>
                                     <div class="review-bar">
                                         <span class="star-label">2점</span>
                                         <div class="bar">
-                                            <div class="fill" style="width: 20%;"></div>
+                                            <div id="2-bar" class="fill"></div>
                                         </div>
-                                        <span class="percentage">20%</span>
+                                        <span id="2-point" class="percentage"></span>
                                     </div>
                                     <div class="review-bar">
                                         <span class="star-label">1점</span>
                                         <div class="bar">
-                                            <div class="fill" style="width: 10%;"></div>
+                                            <div id="1-bar" class="fill"></div>
                                         </div>
-                                        <span class="percentage">10%</span>
+                                        <span id="1-point" class="percentage"></span>
                                     </div>
                                 </div>
                             </div>
@@ -249,31 +251,9 @@
                             <section class="mb-5">
                                 <div class="card bg-light">
                                     <div class="card-body">
-                                        <!-- Comment form-->
-                                        <form class="mb-4">
+                                        <form id="review-form" class="mb-4">
                                             <textarea id="review-textarea" class="form-control" rows="4" placeholder="솔직한 평가를 남겨주세요!"></textarea>
                                         </form>
-                                        <!-- Comment with nested comments-->
-                                        <div class="d-flex">
-                                            <div class="ms-3">
-                                                <div class="fw-bold mb-3">홍민경<small>&nbsp;(2일 전)</small></div>
-                                                <p style="margin: 0;"></p>
-                                            </div>
-                                        </div>
-                                        <hr style="margin: 1.5rem 0;">
-                                        <div class="d-flex">
-                                            <div class="ms-3">
-                                                <div class="fw-bold mb-3">김윤아<small>&nbsp;(2일 전)</small></div>
-                                                When I look at the universe and all the ways the universe wants to kill us, I find it hard to reconcile that with statements of beneficence.
-                                            </div>
-                                        </div>
-                                        <hr style="margin: 1.5rem 0;">
-                                        <div class="d-flex">
-                                            <div class="ms-3">
-                                                <div class="fw-bold mb-3">최유라<small>&nbsp;(2일 전)</small></div>
-                                                When I look at the universe and all the ways the universe wants to kill us, I find it hard to reconcile that with statements of beneficence.
-                                            </div>
-                                        </div>
                                     </div>
                                 </div>
                             </section>
@@ -296,7 +276,6 @@
                                     </li>
                                 </ul>
                             </nav>
-
                         </div>
                     </div>
                 </article>
