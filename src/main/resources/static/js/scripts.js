@@ -154,8 +154,8 @@ function requestRestaurantApi() {
         },
         error: function(xhr, status, error) {
             // 요청 실패 시 동작
-            console.error('수정 실패:', error);
-            alert('수정 중 오류가 발생했습니다.');
+            console.error('가게 set 실패:', error);
+            alert('가게 set 중 오류가 발생했습니다.');
         }
     });
 }
@@ -192,13 +192,13 @@ function requestRestaurantModifyApi() {
                 .text("원격줄서기, 현장대기 모두 가능");
             }
 
-            console.log('가게 set 완료');
+            console.log('가게 수정 set 완료');
 
         },
         error: function(xhr, status, error) {
             // 요청 실패 시 동작
-            console.error('수정 실패:', error);
-            alert('수정 중 오류가 발생했습니다.');
+            console.error('가게 수정 set 실패:', error);
+            alert('가게 수정 set 중 오류가 발생했습니다.');
         }
     });
 }
@@ -223,8 +223,8 @@ function requestRestaurantImageApi() {
         },
         error: function(xhr, status, error) {
         // 요청 실패 시 동작
-        console.error('수정 실패:', error);
-        alert('수정 중 오류가 발생했습니다.');
+        console.error('가게 이미지 set 실패:', error);
+        alert('가게 이미지 set 중 오류가 발생했습니다.');
         }
     });
 }
@@ -242,6 +242,9 @@ function requestReviewApi() {
             // 요청 성공 시 동작
 
             const reviews = response.data; // 리뷰 데이터 배열
+
+            $('#reviews-number')[0].textContent = '리뷰 ' + reviews.length + '건';
+            $('#goToReview')[0].textContent = reviews.length + '개의 리뷰';
 
             // 별점 평균 계산 및 출력
             const totalStars = reviews.reduce((sum, review) => sum + review.starRating, 0);
@@ -339,8 +342,96 @@ function requestReviewApi() {
         },
         error: function(xhr, status, error) {
         // 요청 실패 시 동작
-        console.error('수정 실패:', error);
-        alert('수정 중 오류가 발생했습니다.');
+        console.error('리뷰 set 실패:', error);
+        alert('리뷰 set 중 오류가 발생했습니다.');
+        }
+    });
+}
+
+// 점주 상세 페이지 menu API
+function requestMenuApi() {
+
+    const id = document.getElementById("restaurant-id").value;
+
+    $.ajax({
+        url: `/api/menu-item/${id}`,
+        type: 'GET', // 필요한 HTTP 메서드로 변경
+        contentType: 'application/json', // JSON 형식으로 데이터 전송
+        success: function(response) {
+            // 요청 성공 시 동작
+
+            const menus = response.data; // 메뉴 데이터 배열
+
+            menus.forEach((menu) => {
+
+                if (menu.태그 === null) {
+
+                    const menuHtml = `
+                        <div class="menu-item mb-4" style="display: flex; align-items: center;">
+                            <div class="item-info">
+                                <div style="display: flex; align-items: center; margin-bottom: 12px;">
+                                    <h4 class="m-0">${menu.name}</h4>
+                                </div>
+                                <h5 class="price" style="margin-bottom: 0px;">${menu.price}원</h5>
+                                <!--<p class="item-text">
+                                    ${menu.description}
+                                </p>-->
+                            </div>
+                            <img class="photo menu-img" src="${menu.imageUrl}" alt="#"/>
+                        </div>
+                    `;
+
+                    // menu-list 요소의 끝에 새로운 메뉴 항목을 추가
+                    $('#menu-list').append(menuHtml);
+
+                } else {
+                    const menuHtml = `
+                        <div class="menu-item mb-4" style="display: flex; align-items: center;">
+                            <div class="item-info">
+                                <div style="display: flex; align-items: center; margin-bottom: 12px;">
+                                    <h4 class="m-0">${menu.name}</h4>
+                                    <span class="badge ms-2" style="background-color: rgba(237, 125, 49, 1); font-size: 13px;">${menu.태그}</span>
+                                </div>
+                                <h5 class="price" style="margin-bottom: 0px;">${menu.price}원</h5>
+                                <!--<p class="item-text">
+                                    ${menu.description}
+                                </p>-->
+                            </div>
+                            <img class="photo menu-img" src="${menu.imageUrl}" alt="#"/>
+                        </div>
+                    `;
+
+                    // menu-list 요소의 끝에 새로운 메뉴 항목을 추가
+                    $('#menu-list').append(menuHtml);
+                }
+            });
+
+            console.log('메뉴 set 완료');
+        },
+        error: function(xhr, status, error) {
+        // 요청 실패 시 동작
+        console.error('메뉴 set 실패:', error);
+        alert('메뉴 set 중 오류가 발생했습니다.');
+        }
+    });
+}
+
+// 점주 상세 수정 페이지 menu API
+function requestMenuModifyApi() {
+
+}
+
+// 점주 정보 API
+function requestOwnerInformationApi() {
+
+    const id = document.getElementById("restaurant-id").value;
+
+    $.ajax({
+        url: `/api//${id}`,
+        type: 'GET', // 필요한 HTTP 메서드로 변경
+        contentType: 'application/json', // JSON 형식으로 데이터 전송
+        success: function(response) {
+
         }
     });
 }

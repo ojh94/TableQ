@@ -24,7 +24,7 @@
                         <div style="display: flex; align-items: center;">
                             <i class="bi bi-star-fill" style="color: #FAC608;"></i>
                             <p id="average-1" class="m-0"></p>
-                            <a id="goToReview" href="#review" style="text-decoration: underline;">394개의 리뷰</a>
+                            <a id="goToReview" href="#review" style="text-decoration: underline;"></a>
                         </div>
                         <hr/>
                         <div><i class="fas fa-clock"></i>&nbsp;영업중 : 오늘 12:00 ~ 21:00</div>
@@ -153,48 +153,50 @@
                         <div class="tab-pane fade" id="menu" role="tabpanel" aria-labelledby="menu-tab">
                             <h4 class="fw-bolder mb-4 mt-5">메뉴</h4>
 
-                            <div class="menu-item mb-4" style="display: flex; align-items: center;">
-                                <div class="item-info">
-                                    <div>
-                                        <h4 style="display: flex; align-items: center;">스페셜텐동
-                                            &nbsp;<span class="badge" style="background-color: rgba(237, 125, 49, 1); font-size: 13px;">추천</span>
-                                        </h4>
+                            <div id="menu-list">
+
+                                <div class="menu-item mb-4" style="display: flex; align-items: center;">
+                                    <div class="item-info">
+                                        <div style="display: flex; align-items: center; margin-bottom: 12px;">
+                                            <h4 class="m-0">스페셜텐동</h4>
+                                            <span class="badge ms-2" style="background-color: rgba(237, 125, 49, 1); font-size: 13px;">추천</span>
+                                        </div>
                                         <h5 class="price" style="margin-bottom: 0px;">16,500원</h5>
+                                        <!--<p class="item-text">
+                                            새우가 포함된 텐동
+                                        </p>-->
                                     </div>
-                                    <!--<p class="item-text">
-                                        새우가 포함된 텐동
-                                    </p>-->
+                                    <img class="photo menu-img" src="/img/test-img/텐동.jpg" alt="#"/>
                                 </div>
-                                <img class="photo menu-img" src="/img/test-img/텐동.jpg" alt="#"/>
-                            </div>
 
-                            <div class="menu-item mb-4" style="display: flex; align-items: center;">
-                                <div class="item-info">
-                                    <div>
-                                        <h4 style="display: flex; align-items: center;">아나고텐동</h4>
+                                <div class="menu-item mb-4" style="display: flex; align-items: center;">
+                                    <div class="item-info">
+                                        <div style="display: flex; align-items: center; margin-bottom: 12px;">
+                                            <h4 class="m-0">아나고텐동</h4>
+                                        </div>
                                         <h5 class="price" style="margin-bottom: 0px;">15,500원</h5>
+                                        <!--<p class="item-text">
+                                            새우가 포함된 텐동
+                                        </p>-->
                                     </div>
-                                    <!--<p class="item-text">
-                                        새우가 포함된 텐동
-                                    </p>-->
+                                    <img class="photo menu-img" src="/img/test-img/텐동.jpg" alt="#"/>
                                 </div>
-                                <img class="photo menu-img" src="/img/test-img/텐동.jpg" alt="#"/>
-                            </div>
 
-                            <hr class="mb-5 mt-5"/>
-
-                            <div class="menu-item mb-4" style="display: flex; align-items: center;">
-                                <div class="item-info">
-                                    <div>
-                                        <h4 style="display: flex; align-items: center;">콜라</h4>
+                                <div class="menu-item mb-4" style="display: flex; align-items: center;">
+                                    <div class="item-info">
+                                        <div style="display: flex; align-items: center; margin-bottom: 12px;">
+                                            <h4 class="m-0">콜라</h4>
+                                        </div>
                                         <h5 class="price" style="margin-bottom: 0px;">2,000원</h5>
+                                        <!--<p class="item-text">
+                                            새우가 포함된 텐동
+                                        </p>-->
                                     </div>
-                                    <!--<p class="item-text">
-                                        새우가 포함된 텐동
-                                    </p>-->
+                                    <img class="photo menu-img" src="/img/test-img/텐동.jpg" alt="#"/>
                                 </div>
-                                <img class="photo menu-img" src="/img/test-img/텐동.jpg" alt="#"/>
+
                             </div>
+
                         </div>
 
                         <div class="tab-pane fade" id="review" role="tabpanel" aria-labelledby="review-tab">
@@ -251,6 +253,7 @@
                             <section class="mb-5">
                                 <div class="card bg-light">
                                     <div class="card-body">
+                                        <p id="reviews-number" class="mx-2 fw-bold"></p>
                                         <form id="review-form" class="mb-4">
                                             <textarea id="review-textarea" class="form-control" rows="4" placeholder="솔직한 평가를 남겨주세요!"></textarea>
                                         </form>
