@@ -1,6 +1,7 @@
 package com.itschool.tableq.domain;
 
 import com.itschool.tableq.domain.base.AuditableEntity;
+import com.itschool.tableq.network.request.BreakHourRequest;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.cglib.core.Local;
@@ -29,10 +30,15 @@ public class BreakHour extends AuditableEntity {
     private Restaurant restaurant;
 
     @Builder
-    public BreakHour(LocalTime breakStart, LocalTime breakEnd, String dayOfWeek, Restaurant restaurant){
+    public BreakHour(LocalTime breakStart, LocalTime breakEnd, String dayOfWeek){
         this.breakStart = breakStart;
         this.breakEnd = breakEnd;
         this.dayOfWeek = dayOfWeek;
-        this.restaurant = restaurant;
+    }
+
+    public void update(BreakHourRequest breakHourRequest) {
+        this.breakStart = breakHourRequest.getBreakStart() == null ? this.breakStart : breakHourRequest.getBreakStart();
+        this.breakEnd = breakHourRequest.getBreakEnd() == null ? this.breakEnd : breakHourRequest.getBreakEnd();
+        this.dayOfWeek = breakHourRequest.getDayOfWeek() == null ? this.dayOfWeek : breakHourRequest.getDayOfWeek();
     }
 }
