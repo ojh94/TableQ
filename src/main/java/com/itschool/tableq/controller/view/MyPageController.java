@@ -60,4 +60,9 @@ public class MyPageController {
     public String getWaitingPage() {
         return "waiting";
     }
+
+    @GetMapping("/recently-viewed")
+    public String getRecentlyViewed() {
+        return "recently-viewed";
+    }
 }
