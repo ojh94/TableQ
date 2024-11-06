@@ -1,6 +1,6 @@
 package com.itschool.tableq.network.response;
 
-import com.itschool.tableq.domain.BuisnessInformation;
+import com.itschool.tableq.domain.BusinessInformation;
 import com.itschool.tableq.domain.Restaurant;
 import lombok.Getter;
 
@@ -16,10 +16,10 @@ public class RestaurantResponse {
     private boolean isAvailable;
     private LocalDateTime createdAt;
     private LocalDateTime lastModifiedAt;
-    private BuisnessInformation buisnessInformation;
+    private BusinessInformation businessInformation;
 
     public RestaurantResponse(Long id, String name, String address, String introduction, String contactNumber, boolean isAvailable,
-                              LocalDateTime createdAt, LocalDateTime lastModifiedAt, BuisnessInformation buisnessInformation) {
+                              LocalDateTime createdAt, LocalDateTime lastModifiedAt, BusinessInformation businessInformation) {
         this.id = id;
         this.name = name;
         this.address = address;
@@ -28,7 +28,7 @@ public class RestaurantResponse {
         this.isAvailable = isAvailable;
         this.createdAt = createdAt;
         this.lastModifiedAt = lastModifiedAt;
-        this.buisnessInformation = buisnessInformation;
+        this.businessInformation = businessInformation;
     }
 
     public RestaurantResponse(Restaurant restaurant) {
@@ -40,6 +40,6 @@ public class RestaurantResponse {
         this.isAvailable = restaurant.isAvailable();
         this.createdAt = restaurant.getCreatedAt();
         this.lastModifiedAt = restaurant.getLastModifiedAt();
-        this.buisnessInformation = restaurant.getBuisnessInformation();
+        this.businessInformation = restaurant.getBusinessInformation();
     }
 }

@@ -28,8 +28,6 @@ public class ReservationResponse {
         this.id = reservation.getId();
         this.reservationNumber = reservation.getReservationNumber();
         this.isEntered = reservation.isEntered();
-        this.reserveTime = reservation.getReserveTime();
-        this.enteredTime = reservation.getEnteredTime();
         this.people = reservation.getPeople();
         this.restaurant = reservation.getRestaurant();
         this.user = reservation.getUser();

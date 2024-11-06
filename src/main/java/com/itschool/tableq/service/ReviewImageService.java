@@ -46,7 +46,6 @@ public class ReviewImageService
         ReviewImage reviewImage = ReviewImage.builder()
                 .filename(imageRequest.getFilename())
                 .path(imageRequest.getPath())
-                .uploadAt(LocalDateTime.now())
                 .review(imageRequest.getReview())
                 .build();
 

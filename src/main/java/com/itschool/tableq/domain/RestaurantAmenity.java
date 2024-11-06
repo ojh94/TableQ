@@ -1,6 +1,7 @@
 package com.itschool.tableq.domain;
 
 import com.itschool.tableq.domain.base.AuditableEntity;
+import com.itschool.tableq.network.request.RestaurantAmenityRequest;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -29,5 +30,10 @@ public class RestaurantAmenity extends AuditableEntity {
     public RestaurantAmenity(Restaurant restaurant, Amenity amenity){
         this.restaurant = restaurant;
         this.amenity = amenity;
+    }
+
+    public void update(RestaurantAmenityRequest restaurantAmenityRequest) {
+        this.restaurant = restaurantAmenityRequest.getRestaurant();
+        this.amenity = restaurantAmenityRequest.getAmenity();
     }
 }

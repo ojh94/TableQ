@@ -5,8 +5,6 @@ import com.itschool.tableq.network.request.RestaurantRequest;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.time.LocalDateTime;
-
 @Table(name = "restaurants")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
@@ -35,16 +33,16 @@ public class Restaurant extends AuditableEntity {
 
     @ManyToOne
     @JoinColumn(name = "buisness_id", updatable = false)
-    private BuisnessInformation buisnessInformation;
+    private BusinessInformation businessInformation;
 
     @Builder
-    public Restaurant(String name, String address, String information, String contactNumber, boolean isAvailable, BuisnessInformation buisnessInformation) {
+    public Restaurant(String name, String address, String information, String contactNumber, boolean isAvailable, BusinessInformation businessInformation) {
         this.name = name;
         this.address = address;
         this.information = information;
         this.contactNumber = contactNumber;
         this.isAvailable = isAvailable;
-        this.buisnessInformation = buisnessInformation;
+        this.businessInformation = businessInformation;
     }
 
     public void update(RestaurantRequest restaurantRequest) {

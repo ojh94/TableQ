@@ -27,7 +27,6 @@ public class RestaurantImageResponse {
         this.id = restaurantImage.getId();
         this.filename = restaurantImage.getFilename();
         this.path = restaurantImage.getPath();
-        this.uploadTime = restaurantImage.getUploadTime();
         this.restaurantId = restaurantImage.getRestaurant().getId();
     }
 }

@@ -10,12 +10,12 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @Getter
 @Setter
-public class BuisnessInformationRequest {
+public class BusinessInformationRequest {
     private Long id;
 
-    private String buisnessNumber;
+    private String businessNumber;
 
-    private String buisnessName;
+    private String businessName;
 
     private String contactNumber;
 

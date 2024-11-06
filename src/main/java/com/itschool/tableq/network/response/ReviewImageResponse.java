@@ -27,7 +27,6 @@ public class ReviewImageResponse {
     public ReviewImageResponse(ReviewImage reviewImage){
         this.filename = reviewImage.getFilename();
         this.path = reviewImage.getPath();
-        this.uploadAt = reviewImage.getUploadAt();
         this.reviewId = reviewImage.getReview().getId();
     }
 }

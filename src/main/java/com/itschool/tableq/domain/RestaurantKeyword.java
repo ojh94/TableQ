@@ -1,6 +1,7 @@
 package com.itschool.tableq.domain;
 
 import com.itschool.tableq.domain.base.AuditableEntity;
+import com.itschool.tableq.network.request.RestaurantKeywordRequest;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -29,6 +30,11 @@ public class RestaurantKeyword extends AuditableEntity {
     public RestaurantKeyword(Restaurant restaurant, Keyword keyword){
         this.restaurant = restaurant;
         this.keyword = keyword;
+    }
+
+    public void update(RestaurantKeywordRequest restaurantKeywordRequest) {
+        this.restaurant = restaurantKeywordRequest.getRestaurant();
+        this.keyword = restaurantKeywordRequest.getKeyword();
     }
 }
 

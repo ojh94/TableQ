@@ -10,8 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import org.springframework.data.domain.Pageable;
-import java.nio.channels.FileLockInterruptionException;
-import java.time.LocalDateTime;
+
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -39,7 +38,7 @@ public class RestaurantService extends BaseService<RestaurantRequest, Restaurant
                 .information(restaurantRequest.getIntroduction())
                 .contactNumber(restaurantRequest.getContact_number())
                 .isAvailable(restaurantRequest.isAvailable())
-                .buisnessInformation(restaurantRequest.getBuisnessInformation())
+                .businessInformation(restaurantRequest.getBusinessInformation())
                 .build();
 
         baseRepository.save(restaurant);
