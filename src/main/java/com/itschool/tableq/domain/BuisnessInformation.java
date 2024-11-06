@@ -1,16 +1,14 @@
 package com.itschool.tableq.domain;
 
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.time.LocalDateTime;
 
 @Table(name = "buisness_informations")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
+@ToString
 @Entity
 public class BuisnessInformation {
     @Id
@@ -43,5 +41,11 @@ public class BuisnessInformation {
         this.buisnessName = buisnessName;
         this.contactNumber = contactNumber;
         this.owner = owner;
+    }
+
+    public void update(BuisnessInformation buisnessInformation) {
+        this.buisnessNumber = buisnessInformation.getBuisnessNumber() == null? this.buisnessNumber : buisnessInformation.getBuisnessNumber();
+        this.buisnessName = buisnessInformation.getBuisnessName() == null? this.buisnessName : buisnessInformation.getBuisnessName();
+        this.contactNumber = buisnessInformation.getContactNumber() == null? this.contactNumber : buisnessInformation.getContactNumber();
     }
 }
