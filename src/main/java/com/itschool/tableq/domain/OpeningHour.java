@@ -1,6 +1,7 @@
 package com.itschool.tableq.domain;
 
 import com.itschool.tableq.network.request.OpeningHourRequest;
+import com.itschool.tableq.domain.base.AuditableEntity;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.cglib.core.Local;
@@ -12,7 +13,7 @@ import java.time.LocalTime;
 @AllArgsConstructor
 @Getter
 @Entity
-public class OpeningHour {
+public class OpeningHour extends AuditableEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(updatable = false,nullable = false)

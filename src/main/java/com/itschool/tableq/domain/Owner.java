@@ -1,5 +1,6 @@
 package com.itschool.tableq.domain;
 
+import com.itschool.tableq.domain.base.AuditableEntity;
 import com.itschool.tableq.network.request.OwnerRequest;
 import jakarta.persistence.*;
 import lombok.*;
@@ -15,7 +16,7 @@ import java.util.List;
 @Getter
 @Setter
 @Entity
-public class Owner implements UserDetails {
+public class Owner extends AuditableEntity implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -34,12 +35,6 @@ public class Owner implements UserDetails {
     @Column(nullable = false)
     private String phoneNumber;
 
-    @Column(nullable = false)
-    private LocalDateTime createdAt;
-
-    @Column(nullable = false)
-    private LocalDateTime lastModifiedAt;
-
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return List.of();
@@ -51,14 +46,12 @@ public class Owner implements UserDetails {
     }
 
     @Builder
-    public Owner(Long id, String username, String password, String name, String phoneNumber, LocalDateTime createdAt, LocalDateTime lastModifiedAt) {
+    public Owner(Long id, String username, String password, String name, String phoneNumber) {
         this.id = id;
         this.username = username;
         this.password = password;
         this.name = name;
         this.phoneNumber = phoneNumber;
-        this.createdAt = createdAt;
-        this.lastModifiedAt = lastModifiedAt;
     }
 
     public void update(OwnerRequest dto){

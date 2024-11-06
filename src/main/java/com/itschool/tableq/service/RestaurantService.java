@@ -39,8 +39,6 @@ public class RestaurantService extends BaseService<RestaurantRequest, Restaurant
                 .information(restaurantRequest.getIntroduction())
                 .contactNumber(restaurantRequest.getContact_number())
                 .isAvailable(restaurantRequest.isAvailable())
-                .createdAt(LocalDateTime.now())
-                .lastModifiedAt(LocalDateTime.now())
                 .buisnessInformation(restaurantRequest.getBuisnessInformation())
                 .build();
 
