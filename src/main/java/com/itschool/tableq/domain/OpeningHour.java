@@ -1,5 +1,6 @@
 package com.itschool.tableq.domain;
 
+import com.itschool.tableq.network.request.OpeningHourRequest;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.cglib.core.Local;
@@ -29,8 +30,16 @@ public class OpeningHour {
     private Restaurant restaurant;
 
     @Builder
-    public OpeningHour(String dayOfWeek, Restaurant restaurant){
+    public OpeningHour(LocalTime openAt, LocalTime closeAt, String dayOfWeek) {
+        this.openAt = openAt;
+        this.closeAt = closeAt;
         this.dayOfWeek = dayOfWeek;
-        this.restaurant = restaurant;
+    }
+
+    public void update(OpeningHourRequest openingHourRequest) {
+        this.openAt = openingHourRequest.getOpenAt() == null ? this.openAt : openingHourRequest.getOpenAt();
+        this.closeAt = openingHourRequest.getCloseAt() == null ? this.closeAt : openingHourRequest.getCloseAt();
+        this.dayOfWeek = openingHourRequest.getDayOfWeek() == null ? this.dayOfWeek : openingHourRequest.getDayOfWeek();
+        this.restaurant = openingHourRequest.getRestaurant() == null ? this.restaurant : openingHourRequest.getRestaurant();
     }
 }

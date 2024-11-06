@@ -29,19 +29,21 @@ public class MyPageController {
 
     // 개인정보 변경 페이지
     @GetMapping("/edit")
-    public String editPage() {
-        return "edit";
-    }
-
-    // 비밀번호 변경 페이지
-    @GetMapping("/password")
     public String editPassword(@AuthenticationPrincipal User user, Model model) {
         UserResponse userResponse = userService.read(user.getId()).getData();
 
         if(user != null)
             model.addAttribute("user", userResponse);
+        return "edit";
+    }
+
+
+    // 비밀번호 변경 페이지
+    @GetMapping("/password")
+    public String editPage() {
         return "password";
     }
+
 
     // 이용 내역 페이지
     @GetMapping("/history")
@@ -57,5 +59,10 @@ public class MyPageController {
     @GetMapping("/waiting")
     public String getWaitingPage() {
         return "waiting";
+    }
+
+    @GetMapping("/recently-viewed")
+    public String getRecentlyViewed() {
+        return "recently-viewed";
     }
 }
