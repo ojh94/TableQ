@@ -6,6 +6,18 @@
                 <h4 class="mb-4 text-orange text-center" style="font-weight:bold">회원정보 수정</h4>
                 <form class="validation-form" id="signupForm" novalidate> <!--method="put" th:action="@{/api/user/{id}(id=${user.id})}"-->
 
+                    <div class="mb-2">
+                        <h5>SNS 연동</h5>
+                        <div class="d-flex justify-content-center">
+                            <button class="btn btn-kakao" id="kakaoLogin" style="margin-right: 10px;">
+                                <img src="/img/signin-assets/kakao/en/kakao_login_large_narrow.png" alt="카카오 로그인" style="width: 160px; margin-right: 8px;">
+                            </button>
+                            <button class="btn btn-google" id="googleLogin">
+                                <img src="/img/signin-assets/google/Web%20(mobile%20+%20desktop)/png@4x/neutral/web_neutral_sq_SI@4x.png" alt="구글 로그인" style="width: 160px; margin-right: 8px;">
+                            </button>
+                        </div>
+                    </div>
+
                     <div id="id" style="display: none;" th:text="${user.id}"></div>
 
                     <div class="mb-2">
@@ -58,6 +70,25 @@
                         </div>
                         <div class="invalid-feedback">
                             전화번호를 입력해주세요.
+                        </div>
+                    </div>
+
+                    <!-- 비밀번호 변경 필드 -->
+                    <div class="mb-2">
+                        <label for="pass1">비밀번호</label>
+                        <input type="password" class="form-control" id="pass1" name="password"
+                               placeholder="새 비밀번호를 입력해주세요." required>
+                        <div class="invalid-feedback">
+                            비밀번호를 입력해주세요.
+                        </div>
+                    </div>
+
+                    <div class="mb-2">
+                        <label for="passwordConfirm">비밀번호 확인</label>
+                        <input type="password" class="form-control" id="passwordConfirm" name="passwordConfirm"
+                               placeholder="비밀번호를 다시 입력해주세요." required>
+                        <div class="invalid-feedback">
+                            비밀번호가 일치하지 않습니다.
                         </div>
                     </div>
 

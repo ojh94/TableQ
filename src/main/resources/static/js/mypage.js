@@ -1,3 +1,12 @@
+document.getElementById('kakaoLogin').addEventListener('click', function() {
+    window.location.href = '/oauth2/authorization/kakao'; // Spring Security 설정에 따라 변경 가능
+});
+
+document.getElementById('googleLogin').addEventListener('click', function() {
+    window.location.href = '/oauth2/authorization/google'; // Spring Security 설정에 따라 변경 가능
+});
+
+
 $(document).ready(function() {
     $('#signupForm').on('submit', function(event) {
         event.preventDefault(); // 폼의 기본 제출 동작을 막음
@@ -9,7 +18,8 @@ $(document).ready(function() {
         const formData = {
             "data": {
                 "nickname" : $('#nickname').val(),
-                "address" : $('#address').val()
+                "address" : $('#address').val(),
+                "password" : $('#password').val()
             }
             // 필요한 추가 필드가 있다면 여기에 추가
         };
@@ -36,3 +46,4 @@ $(document).ready(function() {
         });
     });
 });
+
