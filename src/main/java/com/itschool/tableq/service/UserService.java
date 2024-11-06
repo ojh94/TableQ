@@ -56,7 +56,6 @@ public class UserService extends BaseService<UserRequest, UserResponse, User> {
                 .password(bCryptPasswordEncoder.encode(userRequest.getPassword()))
                 .name(userRequest.getName())
                 .phoneNumber(userRequest.getPhoneNumber())
-                .createdAt(LocalDateTime.now())
                 .lastLoginAt(LocalDateTime.now())
                 .build();
 
@@ -98,7 +97,6 @@ public class UserService extends BaseService<UserRequest, UserResponse, User> {
                 .password(bCryptPasswordEncoder.encode(dto.getPassword()))
                 .name(dto.getName())
                 .phoneNumber(dto.getPhoneNumber())
-                .createdAt(LocalDateTime.now())
                 .lastLoginAt(LocalDateTime.now())
                 .build()).getId();
     }

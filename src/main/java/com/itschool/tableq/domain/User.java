@@ -1,5 +1,6 @@
 package com.itschool.tableq.domain;
 
+import com.itschool.tableq.domain.base.AuditableEntity;
 import com.itschool.tableq.network.request.UserRequest;
 import jakarta.persistence.*;
 import lombok.*;
@@ -17,7 +18,7 @@ import java.util.List;
 @Setter
 @ToString
 @Entity
-public class User implements UserDetails {
+public class User extends AuditableEntity implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -32,11 +33,6 @@ public class User implements UserDetails {
 
     @Column(nullable = false, unique = true)
     private String phoneNumber;
-
-    @Column(updatable = false)
-    private LocalDateTime createdAt;
-
-    private LocalDateTime updatedAt;
 
     @Column(nullable = false)
     private LocalDateTime lastLoginAt;
@@ -54,13 +50,12 @@ public class User implements UserDetails {
     private String email;
 
     @Builder
-    public User(Long id, String email, String password, String nickname, String phoneNumber, LocalDateTime createdAt, LocalDateTime lastLoginAt,
+    public User(Long id, String email, String password, String nickname, String phoneNumber, LocalDateTime lastLoginAt,
                 String address, String name, String socialType, String socialId) {
         this.id = id;
         this.password = password;
         this.nickname = nickname;
         this.phoneNumber = phoneNumber;
-        this.createdAt = createdAt;
         this.lastLoginAt = lastLoginAt;
         this.address = address;
         this.name = name;

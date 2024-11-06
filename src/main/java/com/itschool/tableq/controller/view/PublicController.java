@@ -1,6 +1,8 @@
 package com.itschool.tableq.controller.view;
 
 import com.itschool.tableq.domain.User;
+import com.itschool.tableq.network.Header;
+import com.itschool.tableq.network.request.UserRequest;
 import com.itschool.tableq.network.response.UserResponse;
 import com.itschool.tableq.service.RestaurantService;
 import com.itschool.tableq.service.UserService;
@@ -8,13 +10,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.*;
 
 @Controller
 @RequestMapping("/")
 public class PublicController {
+
+    @Autowired
+    UserService userService;
 
     // 홈
     @GetMapping("/")
@@ -41,5 +45,16 @@ public class PublicController {
     @GetMapping("/signup")
     public String signup() {
         return "signup";
+    }
+
+    @PostMapping("/user")
+    public String signup(@ModelAttribute UserRequest userRequest) { // BindingResult bindingResult
+        Header<UserResponse> userResponse = userService.create(Header.OK(userRequest));
+        
+        if(userResponse != null) {
+            return "redirect:/login";   
+        }
+        
+        throw new NullPointerException("생성된 유저가 없음");
     }
 }

@@ -46,8 +46,6 @@ public class OwnerService extends BaseService<OwnerRequest, OwnerResponse, Owner
                 .password(bCryptPasswordEncoder.encode(ownerRequest.getPassword()))
                 .name(ownerRequest.getName())
                 .phoneNumber(ownerRequest.getPhoneNumber())
-                .createdAt(LocalDateTime.now())
-                .lastModifiedAt(LocalDateTime.now())
                 .build();
 
         baseRepository.save(owner);

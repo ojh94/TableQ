@@ -1,5 +1,6 @@
 package com.itschool.tableq.domain;
 
+import com.itschool.tableq.domain.base.AuditableEntity;
 import com.itschool.tableq.network.request.RestaurantRequest;
 import jakarta.persistence.*;
 import lombok.*;
@@ -11,7 +12,7 @@ import java.time.LocalDateTime;
 @Getter
 @ToString
 @Entity
-public class Restaurant {
+public class Restaurant extends AuditableEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -32,26 +33,17 @@ public class Restaurant {
     @Column(nullable = false)
     private boolean isAvailable;
 
-    @Column(nullable = false)
-    private LocalDateTime createdAt;
-
-    @Column(nullable = false)
-    private LocalDateTime lastModifiedAt;
-
     @ManyToOne
     @JoinColumn(name = "buisness_id", updatable = false)
     private BuisnessInformation buisnessInformation;
 
     @Builder
-    public Restaurant(String name, String address, String information, String contactNumber, boolean isAvailable,
-                      LocalDateTime createdAt, LocalDateTime lastModifiedAt, BuisnessInformation buisnessInformation) {
+    public Restaurant(String name, String address, String information, String contactNumber, boolean isAvailable, BuisnessInformation buisnessInformation) {
         this.name = name;
         this.address = address;
         this.information = information;
         this.contactNumber = contactNumber;
         this.isAvailable = isAvailable;
-        this.createdAt = createdAt;
-        this.lastModifiedAt = lastModifiedAt;
         this.buisnessInformation = buisnessInformation;
     }
 

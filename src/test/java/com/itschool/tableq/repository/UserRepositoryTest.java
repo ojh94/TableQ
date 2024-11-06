@@ -35,7 +35,6 @@ class UserRepositoryTest extends ApplicationTests {
                 .phoneNumber("010-0000-9999")
                 .name("홍길동")
                 .nickname("닉네임")
-                .createdAt(LocalDateTime.now())
                 .lastLoginAt(LocalDateTime.now())
                 .build();
 
@@ -57,7 +56,6 @@ class UserRepositoryTest extends ApplicationTests {
                 .phoneNumber("010-0000-9999")
                 .name("홍길동")
                 .nickname("닉네임")
-                .createdAt(LocalDateTime.now())
                 .lastLoginAt(LocalDateTime.now())
                 .build();
 
@@ -82,17 +80,22 @@ class UserRepositoryTest extends ApplicationTests {
                 .phoneNumber("010-0000-9999")
                 .name("홍길동")
                 .nickname("닉네임")
-                .createdAt(LocalDateTime.now())
                 .lastLoginAt(LocalDateTime.now())
                 .build();
 
         User savedEntity = userRepository.save(entity);
 
+        System.out.println("---------------- savedEntity = " + savedEntity);
+        System.out.println("---------------- savedEntity.getLastModifiedAt() = " + savedEntity.getLastModifiedAt());
+
         // 저장된 엔티티 업데이트
         savedEntity.setPassword("0000");
-        savedEntity.setUpdatedAt(LocalDateTime.now());
 
-        User updatedEntity = userRepository.save(savedEntity);
+        // saveAndFlush()를 사용하여 즉시 데이터베이스에 반영
+        User updatedEntity = userRepository.saveAndFlush(savedEntity);
+
+        System.out.println("---------------- updatedEntity = " + updatedEntity);
+        System.out.println("---------------- updatedEntity.getLastModifiedAt() = " + updatedEntity.getLastModifiedAt());
 
         assertThat(updatedEntity).isNotNull();
         assertThat(updatedEntity.getPassword()).isEqualTo("0000");
@@ -110,7 +113,6 @@ class UserRepositoryTest extends ApplicationTests {
                 .phoneNumber("010-0000-9999")
                 .name("홍길동")
                 .nickname("닉네임")
-                .createdAt(LocalDateTime.now())
                 .lastLoginAt(LocalDateTime.now())
                 .build();
 

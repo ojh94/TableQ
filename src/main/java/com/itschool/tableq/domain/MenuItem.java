@@ -1,5 +1,6 @@
 package com.itschool.tableq.domain;
 
+import com.itschool.tableq.domain.base.AuditableEntity;
 import com.itschool.tableq.network.request.MenuItemRequest;
 import jakarta.persistence.*;
 import lombok.*;
@@ -10,7 +11,7 @@ import lombok.*;
 @Builder
 @Getter
 @Entity
-public class MenuItem {
+public class MenuItem extends AuditableEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(updatable = false, nullable = false)
@@ -26,6 +27,8 @@ public class MenuItem {
 
     private String imageUrl;
 
+    private Boolean recommendation;
+
     @ManyToOne
     @JoinColumn(name = "restaurant_id")
     private Restaurant restaurant;
@@ -35,5 +38,6 @@ public class MenuItem {
         this.price = menuItemRequest.getPrice();
         this.description = menuItemRequest.getDescription();
         this.imageUrl = menuItemRequest.getImageUrl();
+        this.recommendation = menuItemRequest.getRecommendation();
     }
 }

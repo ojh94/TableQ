@@ -40,7 +40,6 @@ public class UserApiController extends CrudController<UserRequest, UserResponse,
                     .email(userResponse.getEmail())
                     .nickname(userResponse.getNickname())
                     .phoneNumber(userResponse.getPhoneNumber())
-                    .createdAt(userResponse.getCreatedAt())
                     .lastLoginAt(userResponse.getLastLoginAt())
                     .address(userResponse.getAddress())
                     .name(userResponse.getName())

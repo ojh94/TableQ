@@ -1,5 +1,6 @@
 package com.itschool.tableq.domain;
 
+import com.itschool.tableq.domain.base.AuditableEntity;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -12,7 +13,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 @Entity
-public class Review {
+public class Review extends AuditableEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(updatable = false, nullable = false)
@@ -24,10 +25,6 @@ public class Review {
     @Column(nullable = false)
     private Integer starRating;
 
-    private LocalDateTime createdAt;
-
-    private LocalDateTime lastModifiedAt;
-
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "restaurant_id", updatable = false)
     private Restaurant restaurant;
@@ -37,12 +34,10 @@ public class Review {
     private User user;
 
     @Builder
-    public Review(String content, Integer starRating, LocalDateTime createdAt, LocalDateTime lastModifiedAt, Restaurant restaurant, User user){
+    public Review(String content, Integer starRating, Restaurant restaurant, User user){
         this.content = content;
         this.starRating = starRating;
         this.restaurant = restaurant;
-        this.createdAt = createdAt;
-        this.lastModifiedAt = lastModifiedAt;
         this.user = user;
     }
 }

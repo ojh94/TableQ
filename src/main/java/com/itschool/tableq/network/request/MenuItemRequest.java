@@ -22,5 +22,7 @@ public class MenuItemRequest {
     @URL
     private String imageUrl;
 
+    private Boolean recommendation;
+
     private Long restaurantId;
 }
