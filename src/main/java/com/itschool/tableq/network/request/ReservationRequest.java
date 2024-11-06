@@ -14,8 +14,8 @@ public class ReservationRequest {
     private String contactNumber;
     private Integer reservationNumber;
     private boolean isEntered;
-    private LocalDateTime reserveTime;
-    private LocalDateTime enteredTime;
+    private LocalDateTime createdAt;
+    private LocalDateTime lastModifiedAt;
     private Integer people;
     private Restaurant restaurant;
     private User user;

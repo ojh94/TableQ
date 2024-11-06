@@ -23,9 +23,5 @@ public class RestaurantRequest {
 
     private boolean isAvailable;
 
-    private LocalDateTime createdAt;
-
-    private LocalDateTime lastModifiedAt;
-
     private BusinessInformation businessInformation;
 }

@@ -21,7 +21,6 @@ public class OwnerResponse {
     @NotBlank
     private String phoneNumber;
 
-    private LocalDateTime createdAt;
     private LocalDateTime lastLoginAt;
 
     public OwnerResponse(Owner owner) {
@@ -29,7 +28,6 @@ public class OwnerResponse {
         this.username = owner.getUsername();
         this.name = owner.getName();
         this.phoneNumber = owner.getPhoneNumber();
-        this.createdAt = owner.getCreatedAt();
         this.lastLoginAt = LocalDateTime.now();
     }
 }

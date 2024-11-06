@@ -25,8 +25,6 @@ public class UserResponse {
     @Pattern(regexp = "^\\+?\\d{10,15}$", message = "유효한 핸드폰 번호를 입력하세요.") // 핸드폰 번호 정규 표현식
     private String phoneNumber;
 
-    private LocalDateTime createdAt;
-
     private LocalDateTime lastLoginAt;
 
     private String address;
@@ -46,7 +44,6 @@ public class UserResponse {
         this.id = user.getId();
         this.nickname = user.getNickname();
         this.phoneNumber = user.getPhoneNumber();
-        this.createdAt = user.getCreatedAt();
         this.lastLoginAt = user.getLastLoginAt();
         this.address = user.getAddress();
         this.name = user.getName();

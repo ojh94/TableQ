@@ -20,8 +20,6 @@ public class ReviewImageResponse {
 
     private String path;
 
-    private LocalDateTime uploadAt;
-
     private Long reviewId;
 
     public ReviewImageResponse(ReviewImage reviewImage){

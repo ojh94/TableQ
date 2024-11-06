@@ -13,7 +13,5 @@ public class OwnerRequest {
     private String password;
     private String name;
     private String phoneNumber;
-    private LocalDateTime createdAt;
     private LocalDateTime lastLoginAt;
-
 }

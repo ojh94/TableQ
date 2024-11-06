@@ -17,8 +17,6 @@ public class RestaurantImageRequest {
 
     private String path;
 
-    private LocalDateTime uploadTime;
-
     private Restaurant restaurant;
 }
 
