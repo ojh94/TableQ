@@ -4,7 +4,7 @@ import com.itschool.tableq.domain.base.AuditableEntity;
 import jakarta.persistence.*;
 import lombok.*;
 
-@Table(name = "buisness_informations")
+@Table(name = "business_informations")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 @ToString
