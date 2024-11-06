@@ -27,7 +27,7 @@
                             <a id="goToReview" href="#review" style="text-decoration: underline;"></a>
                         </div>
                         <hr/>
-                        <div><i class="fas fa-clock"></i>&nbsp;영업중 : 오늘 12:00 ~ 21:00</div>
+                        <div id="today-open-1"><i class="fas fa-clock"></i>&nbsp;영업중 : 오늘 12:00 ~ 21:00</div>
                         <!-- Post categories-->
                         <a id="available" class="badge bg-secondary text-decoration-none link-light">원격줄서기</a>
                         <a class="badge bg-secondary text-decoration-none link-light">현장대기</a>
@@ -56,9 +56,9 @@
                     <hr class="mb-5 mt-5"/>
                     <h4 class="fw-bolder mb-4">대기 정보</h4>
                     <div class="card mb-4" onclick="">
-                        <div class="card-body">
+                        <div id="today-open-2" class="card-body">
                             <i class="fas fa-clock"></i>
-                            &nbsp;원격줄서기 시간 : 오늘 12:00 - 21:00
+                            &nbsp;원격줄서기 시간 :&nbsp;&nbsp;<strong>휴무</strong>
                         </div>
                     </div>
                     <table>
@@ -113,11 +113,11 @@
                             <table>
                                 <tr>
                                     <td>운영시간</td>
-                                    <td>오늘 12:00 - 21:00</td>
+                                    <td id="today-open-3"><strong>휴무</strong></td>
                                 </tr>
                                 <tr>
                                     <td>브레이크 타임</td>
-                                    <td>오늘 15:00 - 17:30</td>
+                                    <td>-</td>
                                 </tr>
                                 <tr>
                                     <td>휴무일</td>
@@ -125,7 +125,7 @@
                                 </tr>
                                 <tr>
                                     <td>전화번호</td>
-                                    <td>010-1234-5678</td>
+                                    <td></td>
                                 </tr>
                             </table>
                             <h4 class="fw-bolder mb-4 mt-5">위치정보</h4>
@@ -300,11 +300,11 @@
                 <div class="modal-body">
                     <div class="card mb-3" style="background-color: rgba(237, 125, 49, 0.1); border: none;">
                         <div class="card-body">
-                            <p class="fw-bold">오늘 (월요일)</p>
+                            <p id="today-week" class="fw-bold">오늘 (휴무)</p>
                             <table>
                                 <tr>
                                     <td>운영시간</td>
-                                    <td>11:00 ~ 20:30</td>
+                                    <td id="today-open-4">-</td>
                                 </tr>
                                 <tr>
                                     <td>브레이크 타임</td>
@@ -319,11 +319,11 @@
                             <table>
                                 <tr>
                                     <td>운영시간</td>
-                                    <td>11:00 ~ 20:30</td>
+                                    <td id="monday-open">-</td>
                                 </tr>
                                 <tr>
                                     <td>브레이크 타임</td>
-                                    <td>-</td>
+                                    <td id="monday-break">-</td>
                                 </tr>
                             </table>
                             <div class="mt-5"></div>
@@ -331,11 +331,11 @@
                             <table>
                                 <tr>
                                     <td>운영시간</td>
-                                    <td>11:00 ~ 20:30</td>
+                                    <td id="tuesday-open">-</td>
                                 </tr>
                                 <tr>
                                     <td>브레이크 타임</td>
-                                    <td>-</td>
+                                    <td id="tuesday-break">-</td>
                                 </tr>
                             </table>
                             <div class="mt-5"></div>
@@ -343,11 +343,11 @@
                             <table>
                                 <tr>
                                     <td>운영시간</td>
-                                    <td>11:00 ~ 20:30</td>
+                                    <td id="wednesday-open">-</td>
                                 </tr>
                                 <tr>
                                     <td>브레이크 타임</td>
-                                    <td>-</td>
+                                    <td id="wednesday-break">-</td>
                                 </tr>
                             </table>
                             <div class="mt-5"></div>
@@ -355,11 +355,11 @@
                             <table>
                                 <tr>
                                     <td>운영시간</td>
-                                    <td>11:00 ~ 20:30</td>
+                                    <td id="thursday-open">-</td>
                                 </tr>
                                 <tr>
                                     <td>브레이크 타임</td>
-                                    <td>-</td>
+                                    <td id="thursday-break">-</td>
                                 </tr>
                             </table>
                             <div class="mt-5"></div>
@@ -367,11 +367,11 @@
                             <table>
                                 <tr>
                                     <td>운영시간</td>
-                                    <td>11:00 ~ 20:30</td>
+                                    <td id="friday-open">-</td>
                                 </tr>
                                 <tr>
                                     <td>브레이크 타임</td>
-                                    <td>-</td>
+                                    <td id="friday-break">-</td>
                                 </tr>
                             </table>
                             <div class="mt-5"></div>
@@ -379,11 +379,11 @@
                             <table>
                                 <tr>
                                     <td>운영시간</td>
-                                    <td>11:00 ~ 20:30</td>
+                                    <td id="saturday-open">-</td>
                                 </tr>
                                 <tr>
                                     <td>브레이크 타임</td>
-                                    <td>-</td>
+                                    <td id="saturday-break">-</td>
                                 </tr>
                             </table>
                             <div class="mt-5"></div>
@@ -391,11 +391,11 @@
                             <table>
                                 <tr>
                                     <td>운영시간</td>
-                                    <td>11:00 ~ 20:30</td>
+                                    <td id="sunday-open">-</td>
                                 </tr>
                                 <tr>
                                     <td>브레이크 타임</td>
-                                    <td>-</td>
+                                    <td id="sunday-break">-</td>
                                 </tr>
                             </table>
                         </div>

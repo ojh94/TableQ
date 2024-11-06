@@ -20,7 +20,7 @@
                             <a id="goToReview" href="#review" style="text-decoration: underline;"></a>
                         </div>
                         <hr/>
-                        <div><i class="fas fa-clock"></i>&nbsp;영업중 : 오늘 12:00 ~ 21:00</div>
+                        <div id="today-open-1"><i class="fas fa-clock"></i>&nbsp;영업중 : 오늘 12:00 ~ 21:00</div>
                         <!-- Post categories-->
                         <a id="available" class="badge bg-secondary text-decoration-none link-light">원격줄서기</a>
                         <a class="badge bg-secondary text-decoration-none link-light">현장대기</a>
@@ -50,7 +50,7 @@
                     <hr class="mb-5 mt-5"/>
                     <h4 class="fw-bolder mb-4">대기 정보</h4>
                     <div class="card mb-4" onclick="">
-                        <div class="card-body">
+                        <div id="today-open-2" class="card-body">
                             <i class="fas fa-clock"></i>
                             &nbsp;원격줄서기 시간 : 오늘 12:00 - 21:00
                         </div>
@@ -134,9 +134,9 @@
                         <div class="tab-pane fade" id="menu" role="tabpanel" aria-labelledby="menu-tab">
                             <h4 class="fw-bolder mb-4 mt-5">메뉴</h4>
 
-                            <div class="menu-item mb-4" style="display: flex; align-items: center;">
-                                <div class="item-info">
-                                    <div>
+                            <div id="menu-list">
+                                <div class="menu-item mb-4" style="display: flex; align-items: center;">
+                                    <div class="item-info">
                                         <h4 style="display: flex; align-items: center;">
                                             <input value="스페셜텐동" placeholder="메뉴명">&nbsp;
                                             <span class="badge" style="background-color: rgba(237, 125, 49, 1); font-size: 13px; display: flex; align-items: center;">추천
@@ -144,60 +144,60 @@
                                             </span>
                                         </h4>
                                         <h5 class="price" style="margin-bottom: 0px;"><input value="16,500원" placeholder="가격"></h5>
-                                    </div>
                                     <!--<p class="item-text">
                                         새우가 포함된 텐동
-                                    </p>-->
-                                </div>
-                                <img class="photo menu-img-modify" src="/img/test-img/텐동.jpg" alt="#" onclick="triggerFileInput(this)"/>
-                                <input type="file" style="display: none;" accept="image/*" onchange="updateImage(event, this)" />
-                                <i class="bi bi-x-square px-4" style="font-size: 25px; cursor: pointer;" onclick="deleteMenuItem(this)"></i>
-                            </div>
-
-                            <div class="menu-item mb-4" style="display: flex; align-items: center;">
-                                <div class="item-info">
-                                    <div>
-                                        <h4 style="display: flex; align-items: center;">
-                                            <input value="아나고텐동" placeholder="메뉴명">&nbsp;
-                                            <span class="badge" style="background-color: rgba(237, 125, 49, 1); font-size: 13px; display: flex; align-items: center;">추천
-                                                <input type="checkbox" style="margin-left: 6px;">
-                                            </span>
-                                        </h4>
-                                        <h5 class="price" style="margin-bottom: 0px;"><input value="15,500원" placeholder="가격"></h5>
+                                        </p>-->
                                     </div>
-                                    <!--<p class="item-text">
-                                        새우가 포함된 텐동
-                                    </p>-->
+                                    <img class="photo menu-img-modify" src="/img/test-img/텐동.jpg" alt="#" onclick="triggerFileInput(this)"/>
+                                    <input type="file" style="display: none;" accept="image/*" onchange="updateImage(event, this)" />
+                                    <i class="bi bi-x-square px-4" style="font-size: 25px; cursor: pointer;" onclick="deleteMenuItem(this)"></i>
                                 </div>
-                                <img class="photo menu-img-modify" src="/img/test-img/텐동.jpg" alt="#" onclick="triggerFileInput(this)"/>
-                                <input type="file" style="display: none;" accept="image/*" onchange="updateImage(event, this)" />
-                                <i class="bi bi-x-square px-4" style="font-size: 25px; cursor: pointer;" onclick="deleteMenuItem(this)"></i>
-                            </div>
 
-                            <!--<div id="addMenu" class="d-grid mt-5">
-                                <button id="addMenuButton" class="btn btn-primary btn-menu" type="button"><i class="bi bi-plus-circle-dotted"></i></button>
-                            </div>-->
-
-                            <!--<hr class="mb-5 mt-5"/>-->
-
-                            <div class="menu-item mb-4" style="display: flex; align-items: center;">
-                                <div class="item-info">
-                                    <div>
-                                        <h4 style="display: flex; align-items: center;">
-                                            <input value="콜라" placeholder="메뉴명">&nbsp;
-                                            <span class="badge" style="background-color: rgba(237, 125, 49, 1); font-size: 13px; display: flex; align-items: center;">추천
-                                                <input type="checkbox" style="margin-left: 6px;">
-                                            </span>
-                                        </h4>
-                                        <h5 class="price" style="margin-bottom: 0px;"><input value="2,000원" placeholder="가격"></h5>
+                                <div class="menu-item mb-4" style="display: flex; align-items: center;">
+                                    <div class="item-info">
+                                        <div>
+                                            <h4 style="display: flex; align-items: center;">
+                                                <input value="아나고텐동" placeholder="메뉴명">&nbsp;
+                                                <span class="badge" style="background-color: rgba(237, 125, 49, 1); font-size: 13px; display: flex; align-items: center;">추천
+                                                    <input type="checkbox" style="margin-left: 6px;">
+                                                </span>
+                                            </h4>
+                                            <h5 class="price" style="margin-bottom: 0px;"><input value="15,500원" placeholder="가격"></h5>
+                                        </div>
+                                        <!--<p class="item-text">
+                                            새우가 포함된 텐동
+                                        </p>-->
                                     </div>
-                                    <!--<p class="item-text">
-                                        새우가 포함된 텐동
-                                    </p>-->
+                                    <img class="photo menu-img-modify" src="/img/test-img/텐동.jpg" alt="#" onclick="triggerFileInput(this)"/>
+                                    <input type="file" style="display: none;" accept="image/*" onchange="updateImage(event, this)" />
+                                    <i class="bi bi-x-square px-4" style="font-size: 25px; cursor: pointer;" onclick="deleteMenuItem(this)"></i>
                                 </div>
-                                <img class="photo menu-img-modify" src="/img/test-img/텐동.jpg" alt="#" onclick="triggerFileInput(this)"/>
-                                <input type="file" style="display: none;" accept="image/*" onchange="updateImage(event, this)" />
-                                <i class="bi bi-x-square px-4" style="font-size: 25px; cursor: pointer;" onclick="deleteMenuItem(this)"></i>
+
+                                <!--<div id="addMenu" class="d-grid mt-5">
+                                    <button id="addMenuButton" class="btn btn-primary btn-menu" type="button"><i class="bi bi-plus-circle-dotted"></i></button>
+                                </div>-->
+
+                                <!--<hr class="mb-5 mt-5"/>-->
+
+                                <div class="menu-item mb-4" style="display: flex; align-items: center;">
+                                    <div class="item-info">
+                                        <div>
+                                            <h4 style="display: flex; align-items: center;">
+                                                <input value="콜라" placeholder="메뉴명">&nbsp;
+                                                <span class="badge" style="background-color: rgba(237, 125, 49, 1); font-size: 13px; display: flex; align-items: center;">추천
+                                                    <input type="checkbox" style="margin-left: 6px;">
+                                                </span>
+                                            </h4>
+                                            <h5 class="price" style="margin-bottom: 0px;"><input value="2,000원" placeholder="가격"></h5>
+                                        </div>
+                                        <!--<p class="item-text">
+                                            새우가 포함된 텐동
+                                        </p>-->
+                                    </div>
+                                    <img class="photo menu-img-modify" src="/img/test-img/텐동.jpg" alt="#" onclick="triggerFileInput(this)"/>
+                                    <input type="file" style="display: none;" accept="image/*" onchange="updateImage(event, this)" />
+                                    <i class="bi bi-x-square px-4" style="font-size: 25px; cursor: pointer;" onclick="deleteMenuItem(this)"></i>
+                                </div>
                             </div>
 
                             <div id="addMenu" class="d-grid mt-5">
@@ -454,7 +454,7 @@
                             <table>
                                 <tr>
                                     <td>전화번호</td>
-                                    <td><input value="01012345678"/></td>
+                                    <td><input/></td>
                                 </tr>
                                 <tr>
                                     <td>휴무일</td>
@@ -469,11 +469,11 @@
                             <table>
                                 <tr>
                                     <td>운영시간</td>
-                                    <td><input type="time" value=""/></td>
+                                    <td><input id="monday-open" type="time" value=""/> ~ <input id="monday-close" type="time" value=""/></td>
                                 </tr>
                                 <tr>
                                     <td>브레이크 타임</td>
-                                    <td><input type="time" value=""/></td>
+                                    <td><input id="monday-break" type="time" value=""/></td>
                                 </tr>
                             </table>
                             <div class="mt-5"></div>
@@ -481,11 +481,11 @@
                             <table>
                                 <tr>
                                     <td>운영시간</td>
-                                    <td><input type="time" value=""/></td>
+                                    <td><input id="tuesday-open" type="time" value=""/> ~ <input id="tuesday-close" type="time" value=""/></td>
                                 </tr>
                                 <tr>
                                     <td>브레이크 타임</td>
-                                    <td><input type="time" value=""/></td>
+                                    <td><input id="tuesday-break" type="time" value=""/></td>
                                 </tr>
                             </table>
                             <div class="mt-5"></div>
@@ -493,11 +493,11 @@
                             <table>
                                 <tr>
                                     <td>운영시간</td>
-                                    <td><input type="time" value=""/></td>
+                                    <td><input id="wednesday-open" type="time" value=""/> ~ <input id="wednesday-close" type="time" value=""/></td>
                                 </tr>
                                 <tr>
                                     <td>브레이크 타임</td>
-                                    <td><input type="time" value=""/></td>
+                                    <td><input id="wednesday-break" type="time" value=""/></td>
                                 </tr>
                             </table>
                             <div class="mt-5"></div>
@@ -505,11 +505,11 @@
                             <table>
                                 <tr>
                                     <td>운영시간</td>
-                                    <td><input type="time" value=""/></td>
+                                    <td><input id="thursday-open" type="time" value=""/> ~ <input id="thursday-close" type="time" value=""/></td>
                                 </tr>
                                 <tr>
                                     <td>브레이크 타임</td>
-                                    <td><input type="time" value=""/></td>
+                                    <td><input id="thursday-break" type="time" value=""/></td>
                                 </tr>
                             </table>
                             <div class="mt-5"></div>
@@ -517,11 +517,11 @@
                             <table>
                                 <tr>
                                     <td>운영시간</td>
-                                    <td><input type="time" value=""/></td>
+                                    <td><input id="friday-open" type="time" value=""/> ~ <input id="friday-close" type="time" value=""/></td>
                                 </tr>
                                 <tr>
                                     <td>브레이크 타임</td>
-                                    <td><input type="time" value=""/></td>
+                                    <td><input id="friday-break" type="time" value=""/></td>
                                 </tr>
                             </table>
                             <div class="mt-5"></div>
@@ -529,11 +529,11 @@
                             <table>
                                 <tr>
                                     <td>운영시간</td>
-                                    <td><input type="time" value=""/></td>
+                                    <td><input id="saturday-open" type="time" value=""/> ~ <input id="saturday-close" type="time" value=""/></td>
                                 </tr>
                                 <tr>
                                     <td>브레이크 타임</td>
-                                    <td><input type="time" value=""/></td>
+                                    <td><input id="saturday-break" type="time" value=""/></td>
                                 </tr>
                             </table>
                             <div class="mt-5"></div>
@@ -541,11 +541,11 @@
                             <table>
                                 <tr>
                                     <td>운영시간</td>
-                                    <td><input type="time" value=""/></td>
+                                    <td><input id="sunday-open" type="time" value=""/> ~ <input id="sunday-close" type="time" value=""/></td>
                                 </tr>
                                 <tr>
                                     <td>브레이크 타임</td>
-                                    <td><input type="time" value=""/></td>
+                                    <td><input id="sunday-break" type="time" value=""/></td>
                                 </tr>
                             </table>
                         </div>
