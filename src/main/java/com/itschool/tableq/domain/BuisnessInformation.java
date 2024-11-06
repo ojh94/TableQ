@@ -26,12 +26,6 @@ public class BuisnessInformation extends AuditableEntity {
     @Column(unique = true)
     private String contactNumber;
 
-    @Column(nullable = false)
-    private LocalDateTime createdAt;
-
-    @Column(nullable = false)
-    private LocalDateTime lastModifiedAt;
-
     @ManyToOne
     @JoinColumn(name="owner_id",updatable = false)
     private Owner owner;

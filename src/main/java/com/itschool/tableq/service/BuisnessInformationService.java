@@ -1,44 +1,43 @@
 package com.itschool.tableq.service;
 
 import com.itschool.tableq.domain.BuisnessInformation;
-import com.itschool.tableq.domain.User;
+import com.itschool.tableq.domain.Owner;
 import com.itschool.tableq.network.Header;
-import com.itschool.tableq.network.Pagination;
 import com.itschool.tableq.network.request.BuisnessInformationRequest;
 import com.itschool.tableq.network.response.BuisnessInformationResponse;
-import com.itschool.tableq.network.response.KeywordResponse;
-import com.itschool.tableq.network.response.UserResponse;
+import com.itschool.tableq.repository.OwnerRepository;
 import com.itschool.tableq.service.base.BaseService;
 import jakarta.transaction.Transactional;
-import org.springframework.data.domain.Page;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
-public class BuisnessInformationService extends BaseService<BuisnessInformationRequest, BuisnessInformationResponse, BuisnessInformation> {
+public class BuisnessInformationService
+        extends BaseService<BuisnessInformationRequest, BuisnessInformationResponse, BuisnessInformation> {
+    @Autowired
+    OwnerRepository ownerRepository;
 
     @Override
     public Header<List<BuisnessInformationResponse>> getPaginatedList(Pageable pageable) {
-        Page<BuisnessInformation> entities =  baseRepository.findAll(pageable);
-
-        List<BuisnessInformationResponse> BuisnessInformationResponsesList = entities.stream()
-                .map(entity -> response(entity))
-                .collect(Collectors.toList());
-
-        Pagination pagination = Pagination.builder()
-                .totalPages(entities.getTotalPages())
-                .totalElements(entities.getTotalElements())
-                .currentPage(entities.getNumber())
-                .currentElements(entities.getNumberOfElements())
-                .build();
-
-        return Header.OK(BuisnessInformationResponsesList, pagination);
+        return null;
     }
 
     @Override
     protected BuisnessInformationResponse response(BuisnessInformation buisnessInformation) {
         return new BuisnessInformationResponse(buisnessInformation);
+    }
+
+    protected List<BuisnessInformationResponse> responseList(List<BuisnessInformation> buisnessInformations){
+        List<BuisnessInformationResponse> responseList = new ArrayList<>();
+
+        for(BuisnessInformation buisnessInformation : buisnessInformations){
+            responseList.add(response(buisnessInformation));
+        }
+
+        return responseList;
     }
 
     @Override
@@ -49,6 +48,7 @@ public class BuisnessInformationService extends BaseService<BuisnessInformationR
                 .buisnessNumber(buisnessInformationRequest.getBuisnessNumber())
                 .buisnessName(buisnessInformationRequest.getBuisnessName())
                 .contactNumber(buisnessInformationRequest.getContactNumber())
+                .owner(buisnessInformationRequest.getOwner())
                 .build();
 
         baseRepository.save(buisnessInformation);

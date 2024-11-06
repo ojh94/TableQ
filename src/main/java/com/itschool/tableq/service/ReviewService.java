@@ -72,7 +72,6 @@ public class ReviewService extends BaseService<ReviewRequest, ReviewResponse, Re
 
         baseRepository.save(review);
 
-        baseRepository.save(review);
         return Header.OK(response(review));
     }
 

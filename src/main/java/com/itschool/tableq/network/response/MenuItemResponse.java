@@ -24,11 +24,14 @@ public class MenuItemResponse {
     @URL
     private String imageUrl;
 
+    private Boolean recommendation;
+
     public MenuItemResponse(MenuItem menuItem) {
         this.id = menuItem.getId();
         this.name = menuItem.getName();
         this.price = menuItem.getPrice();
         this.description = menuItem.getDescription();
         this.imageUrl = menuItem.getDescription();
+        this.recommendation = menuItem.getRecommendation();
     }
 }

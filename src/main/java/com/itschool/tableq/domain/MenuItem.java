@@ -27,6 +27,8 @@ public class MenuItem extends AuditableEntity {
 
     private String imageUrl;
 
+    private Boolean recommendation;
+
     @ManyToOne
     @JoinColumn(name = "restaurant_id")
     private Restaurant restaurant;
@@ -36,5 +38,6 @@ public class MenuItem extends AuditableEntity {
         this.price = menuItemRequest.getPrice();
         this.description = menuItemRequest.getDescription();
         this.imageUrl = menuItemRequest.getImageUrl();
+        this.recommendation = menuItemRequest.getRecommendation();
     }
 }
