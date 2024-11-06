@@ -46,7 +46,6 @@ public class RestaurantImageService extends
                 .filename(imageRequest.getFilename())
                 .path(imageRequest.getPath())
                 .restaurant(imageRequest.getRestaurant())
-                .uploadTime(LocalDateTime.now())
                 .build();
 
         baseRepository.save(restaurantImage);

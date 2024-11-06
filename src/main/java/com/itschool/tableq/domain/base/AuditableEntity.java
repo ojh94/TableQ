@@ -17,11 +17,11 @@ public abstract class AuditableEntity {
 
     @CreatedDate
     @Column(updatable = false, nullable = false)
-    private LocalDateTime createdAt;
+    protected LocalDateTime createdAt;
 
     @LastModifiedDate
     @Column(insertable = false)
     // nullable = false
     // not null 조건을 주려면 DB에서 updated_at 컬럼에 default값을 현재 시간으로 설정 필요
-    private LocalDateTime lastModifiedAt;
+    protected LocalDateTime lastModifiedAt;
 }

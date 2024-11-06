@@ -32,11 +32,6 @@ public class Reservation extends AuditableEntity {
     @ColumnDefault("false")
     private boolean isEntered;
 
-    @Column(nullable = false, updatable = false)
-    private LocalDateTime reserveTime;
-
-    private LocalDateTime enteredTime;
-
     private Integer people;
 
     @ManyToOne
@@ -48,10 +43,8 @@ public class Reservation extends AuditableEntity {
     private User user;
 
     @Builder
-    public Reservation(Integer reservationNumber,
-                       LocalDateTime reserveTime, Integer people, Restaurant restaurant, User user){
+    public Reservation(Integer reservationNumber, Integer people, Restaurant restaurant, User user){
         this.reservationNumber = reservationNumber;
-        this.reserveTime = reserveTime;
         this.people = people;
         this.restaurant = restaurant;
         this.user = user;
@@ -59,7 +52,5 @@ public class Reservation extends AuditableEntity {
 
     public void update(ReservationRequest dto){
         this.isEntered = dto.isEntered();
-        this.enteredTime = dto.getEnteredTime();
-
     }
 }

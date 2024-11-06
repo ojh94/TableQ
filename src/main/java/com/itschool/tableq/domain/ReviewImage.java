@@ -25,18 +25,14 @@ public class ReviewImage extends AuditableEntity {
     @Column(nullable = false)
     private String path;
 
-    @Column(nullable = false)
-    private LocalDateTime uploadAt;
-
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "review_id", updatable = false)
     private Review review;
 
     @Builder
-    public ReviewImage(String filename, String path, LocalDateTime uploadAt, Review review){
+    public ReviewImage(String filename, String path, Review review){
         this.filename = filename;
         this.path = path;
-        this.uploadAt = uploadAt;
         this.review = review;
     }
 }

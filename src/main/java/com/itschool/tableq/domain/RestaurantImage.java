@@ -26,24 +26,19 @@ public class RestaurantImage extends AuditableEntity {
     @Column(nullable = false)
     private String path;
 
-    @Column(nullable = false)
-    private LocalDateTime uploadTime;
-
     @ManyToOne
     @JoinColumn(name = "restaurant_id", updatable = false)
     private Restaurant restaurant;
 
     @Builder
-    public RestaurantImage(String filename, String path, LocalDateTime uploadTime, Restaurant restaurant){
+    public RestaurantImage(String filename, String path, Restaurant restaurant){
         this.filename = filename;
         this.path = path;
-        this.uploadTime = uploadTime;
         this.restaurant = restaurant;
     }
 
     public void update(RestaurantImageRequest dto){
         this.filename = dto.getFilename();
         this.path = dto.getPath();
-        this.uploadTime = dto.getUploadTime();
     }
 }

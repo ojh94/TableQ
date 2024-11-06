@@ -76,7 +76,6 @@ public class ReservationService extends
 
         Reservation reservation = Reservation.builder()
                 .reservationNumber(count(reservationRequest.getRestaurant()))
-                .reserveTime(LocalDateTime.now())
                 .people(reservationRequest.getPeople())
                 .restaurant(reservationRequest.getRestaurant())
                 .user(reservationRequest.getUser())

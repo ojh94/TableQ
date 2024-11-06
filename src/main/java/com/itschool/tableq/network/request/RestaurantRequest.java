@@ -1,6 +1,6 @@
 package com.itschool.tableq.network.request;
 
-import com.itschool.tableq.domain.BuisnessInformation;
+import com.itschool.tableq.domain.BusinessInformation;
 import lombok.*;
 
 import java.time.LocalDateTime;
@@ -27,5 +27,5 @@ public class RestaurantRequest {
 
     private LocalDateTime lastModifiedAt;
 
-    private BuisnessInformation buisnessInformation;
+    private BusinessInformation businessInformation;
 }
