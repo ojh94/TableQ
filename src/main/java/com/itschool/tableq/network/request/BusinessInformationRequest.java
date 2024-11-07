@@ -19,9 +19,5 @@ public class BusinessInformationRequest {
 
     private String contactNumber;
 
-    private LocalDateTime createdAt;
-
-    private LocalDateTime lastModifiedAt;
-
     private Owner owner;
 }

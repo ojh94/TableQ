@@ -17,7 +17,5 @@ public class ReviewImageRequest {
 
     private String path;
 
-    private LocalDateTime uploadAt;
-
     private Review review;
 }

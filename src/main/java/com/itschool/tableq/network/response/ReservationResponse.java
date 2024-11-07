@@ -18,8 +18,8 @@ public class ReservationResponse {
     private Long id;
     private Integer reservationNumber;
     private boolean isEntered;
-    private LocalDateTime reserveTime;
-    private LocalDateTime enteredTime;
+    private LocalDateTime createdAt;
+    private LocalDateTime lastModifiedAt;
     private Integer people;
     private Restaurant restaurant;
     private User user;
@@ -31,5 +31,7 @@ public class ReservationResponse {
         this.people = reservation.getPeople();
         this.restaurant = reservation.getRestaurant();
         this.user = reservation.getUser();
+        this.createdAt = reservation.getCreatedAt();
+        this.lastModifiedAt = reservation.getLastModifiedAt();
     }
 }

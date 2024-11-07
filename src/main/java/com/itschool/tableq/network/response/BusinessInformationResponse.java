@@ -21,10 +21,6 @@ public class BusinessInformationResponse {
 
     private String contactNumber;
 
-    private LocalDateTime createdAt;
-
-    private LocalDateTime lastModifiedAt;
-
     private Long ownerId;
 
     public BusinessInformationResponse(BusinessInformation businessInformation) {
@@ -32,8 +28,6 @@ public class BusinessInformationResponse {
         this.businessNumber = businessInformation.getBusinessNumber();
         this.businessName = businessInformation.getBusinessName();
         this.contactNumber = businessInformation.getContactNumber();
-        this.createdAt = businessInformation.getCreatedAt();
-        this.lastModifiedAt = businessInformation.getLastModifiedAt();
         this.ownerId = businessInformation.getOwner().getId();
     }
 }
