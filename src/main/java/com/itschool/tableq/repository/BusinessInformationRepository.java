@@ -8,4 +8,5 @@ import java.util.Optional;
 public interface BusinessInformationRepository extends JpaRepository<BusinessInformation, Long> {
 
     Optional<Long> countBy();
+    Optional<BusinessInformation> findByBusinessNumber(String businessNumber);
 }
