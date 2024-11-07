@@ -1,15 +1,13 @@
 package com.itschool.tableq.service;
 
-import com.itschool.tableq.domain.BreakHour;
-import com.itschool.tableq.domain.MenuItem;
-import com.itschool.tableq.domain.Restaurant;
-import com.itschool.tableq.domain.Review;
+import com.itschool.tableq.domain.*;
 import com.itschool.tableq.network.Header;
 import com.itschool.tableq.network.Pagination;
 import com.itschool.tableq.network.request.BreakHourRequest;
 import com.itschool.tableq.network.response.BreakHourResponse;
 import com.itschool.tableq.network.response.MenuItemResponse;
 import com.itschool.tableq.network.response.ReviewResponse;
+import com.itschool.tableq.network.response.UserResponse;
 import com.itschool.tableq.repository.BreakHoursRepository;
 import com.itschool.tableq.repository.MenuItemRepository;
 import com.itschool.tableq.repository.RestaurantRepository;
@@ -35,7 +33,20 @@ public class BreakHourService extends BaseService<BreakHourRequest, BreakHourRes
 
     @Override
     public Header<List<BreakHourResponse>> getPaginatedList(Pageable pageable) {
-        return null;
+        Page<BreakHour> entities =  baseRepository.findAll(pageable);
+
+        List<BreakHourResponse> breakHourResponsesList = entities.stream()
+                .map(entity -> response(entity))
+                .collect(Collectors.toList());
+
+        Pagination pagination = Pagination.builder()
+                .totalPages(entities.getTotalPages())
+                .totalElements(entities.getTotalElements())
+                .currentPage(entities.getNumber())
+                .currentElements(entities.getNumberOfElements())
+                .build();
+
+        return Header.OK(breakHourResponsesList, pagination);
     }
 
     @Override

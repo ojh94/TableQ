@@ -2,18 +2,23 @@ package com.itschool.tableq.service;
 
 import com.itschool.tableq.domain.Review;
 import com.itschool.tableq.domain.ReviewImage;
+import com.itschool.tableq.domain.User;
 import com.itschool.tableq.network.Header;
+import com.itschool.tableq.network.Pagination;
 import com.itschool.tableq.network.request.ReviewImageRequest;
 import com.itschool.tableq.network.response.ReviewImageResponse;
+import com.itschool.tableq.network.response.UserResponse;
 import com.itschool.tableq.repository.ReviewImageRespository;
 import com.itschool.tableq.repository.ReviewRepository;
 import com.itschool.tableq.service.base.BaseService;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class ReviewImageService
         extends BaseService<ReviewImageRequest, ReviewImageResponse, ReviewImage> {
@@ -22,7 +27,20 @@ public class ReviewImageService
 
     @Override
     public Header<List<ReviewImageResponse>> getPaginatedList(Pageable pageable) {
-        return null;
+        Page<ReviewImage> entities =  baseRepository.findAll(pageable);
+
+        List<ReviewImageResponse> reviewImageResponsesList = entities.stream()
+                .map(entity -> response(entity))
+                .collect(Collectors.toList());
+
+        Pagination pagination = Pagination.builder()
+                .totalPages(entities.getTotalPages())
+                .totalElements(entities.getTotalElements())
+                .currentPage(entities.getNumber())
+                .currentElements(entities.getNumberOfElements())
+                .build();
+
+        return Header.OK(reviewImageResponsesList, pagination);
     }
 
     @Override

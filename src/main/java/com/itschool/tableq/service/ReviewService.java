@@ -8,6 +8,7 @@ import com.itschool.tableq.network.Header;
 import com.itschool.tableq.network.Pagination;
 import com.itschool.tableq.network.request.ReviewRequest;
 import com.itschool.tableq.network.response.ReviewResponse;
+import com.itschool.tableq.network.response.UserResponse;
 import com.itschool.tableq.repository.RestaurantRepository;
 import com.itschool.tableq.repository.ReviewRepository;
 import com.itschool.tableq.repository.UserRepository;
@@ -35,7 +36,20 @@ public class ReviewService extends BaseService<ReviewRequest, ReviewResponse, Re
 
     @Override
     public Header<List<ReviewResponse>> getPaginatedList(Pageable pageable) {
-        return null;
+        Page<Review> entities =  baseRepository.findAll(pageable);
+
+        List<ReviewResponse> reviewResponseList = entities.stream()
+                .map(entity -> response(entity))
+                .collect(Collectors.toList());
+
+        Pagination pagination = Pagination.builder()
+                .totalPages(entities.getTotalPages())
+                .totalElements(entities.getTotalElements())
+                .currentPage(entities.getNumber())
+                .currentElements(entities.getNumberOfElements())
+                .build();
+
+        return Header.OK(reviewResponseList, pagination);
     }
 
     @Override

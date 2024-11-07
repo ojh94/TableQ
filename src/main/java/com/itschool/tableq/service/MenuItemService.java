@@ -3,17 +3,21 @@ package com.itschool.tableq.service;
 import com.itschool.tableq.domain.MenuItem;
 import com.itschool.tableq.domain.Restaurant;
 import com.itschool.tableq.domain.Review;
+import com.itschool.tableq.domain.User;
 import com.itschool.tableq.network.Header;
+import com.itschool.tableq.network.Pagination;
 import com.itschool.tableq.network.request.MenuItemRequest;
 import com.itschool.tableq.network.request.RestaurantRequest;
 import com.itschool.tableq.network.response.MenuItemResponse;
 import com.itschool.tableq.network.response.RestaurantResponse;
 import com.itschool.tableq.network.response.ReviewResponse;
+import com.itschool.tableq.network.response.UserResponse;
 import com.itschool.tableq.repository.MenuItemRepository;
 import com.itschool.tableq.repository.RestaurantRepository;
 import com.itschool.tableq.service.base.BaseService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -21,6 +25,7 @@ import org.springframework.data.domain.Pageable;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
@@ -31,7 +36,20 @@ public class MenuItemService extends BaseService<MenuItemRequest, MenuItemRespon
 
     @Override
     public Header<List<MenuItemResponse>> getPaginatedList(Pageable pageable) {
-        return null;
+        Page<MenuItem> entities =  baseRepository.findAll(pageable);
+
+        List<MenuItemResponse> menuItemResponsesList = entities.stream()
+                .map(entity -> response(entity))
+                .collect(Collectors.toList());
+
+        Pagination pagination = Pagination.builder()
+                .totalPages(entities.getTotalPages())
+                .totalElements(entities.getTotalElements())
+                .currentPage(entities.getNumber())
+                .currentElements(entities.getNumberOfElements())
+                .build();
+
+        return Header.OK(menuItemResponsesList, pagination);
     }
 
     @Override
