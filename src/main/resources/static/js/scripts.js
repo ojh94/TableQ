@@ -394,7 +394,8 @@ function requestMenuApi() {
                 }
 
                 menuHtml +=
-                    `" alt="메뉴" onerror="this.src='https://placehold.jp/150x150.png'"/>
+                    `" alt="메뉴" onerror="this.src='https://placehold.jp/150x150.png'"
+                    />
                     </div>
                     `;
 
