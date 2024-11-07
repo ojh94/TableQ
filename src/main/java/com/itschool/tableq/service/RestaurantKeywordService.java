@@ -1,15 +1,20 @@
 package com.itschool.tableq.service;
 
 import com.itschool.tableq.domain.RestaurantKeyword;
+import com.itschool.tableq.domain.User;
 import com.itschool.tableq.network.Header;
+import com.itschool.tableq.network.Pagination;
 import com.itschool.tableq.network.request.RestaurantKeywordRequest;
 import com.itschool.tableq.network.response.RestaurantKeywordResponse;
+import com.itschool.tableq.network.response.UserResponse;
 import com.itschool.tableq.service.base.BaseService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
@@ -17,7 +22,20 @@ public class RestaurantKeywordService extends BaseService<RestaurantKeywordReque
 
     @Override
     public Header<List<RestaurantKeywordResponse>> getPaginatedList(Pageable pageable) {
-        return null;
+        Page<RestaurantKeyword> entities =  baseRepository.findAll(pageable);
+
+        List<RestaurantKeywordResponse> restaurantKeywordResponsesList = entities.stream()
+                .map(entity -> response(entity))
+                .collect(Collectors.toList());
+
+        Pagination pagination = Pagination.builder()
+                .totalPages(entities.getTotalPages())
+                .totalElements(entities.getTotalElements())
+                .currentPage(entities.getNumber())
+                .currentElements(entities.getNumberOfElements())
+                .build();
+
+        return Header.OK(restaurantKeywordResponsesList, pagination);
     }
 
     @Override

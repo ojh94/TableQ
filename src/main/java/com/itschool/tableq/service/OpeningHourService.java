@@ -3,11 +3,13 @@ package com.itschool.tableq.service;
 import com.itschool.tableq.domain.OpeningHour;
 import com.itschool.tableq.domain.Restaurant;
 import com.itschool.tableq.domain.Review;
+import com.itschool.tableq.domain.User;
 import com.itschool.tableq.network.Header;
 import com.itschool.tableq.network.Pagination;
 import com.itschool.tableq.network.request.OpeningHourRequest;
 import com.itschool.tableq.network.response.OpeningHourResponse;
 import com.itschool.tableq.network.response.ReviewResponse;
+import com.itschool.tableq.network.response.UserResponse;
 import com.itschool.tableq.repository.OpeningHoursRepository;
 import com.itschool.tableq.repository.RestaurantRepository;
 import com.itschool.tableq.repository.ReviewRepository;
@@ -51,7 +53,20 @@ public class OpeningHourService extends BaseService<OpeningHourRequest, OpeningH
 
     @Override
     public Header<List<OpeningHourResponse>> getPaginatedList(Pageable pageable) {
-        return null;
+        Page<OpeningHour> entities =  baseRepository.findAll(pageable);
+
+        List<OpeningHourResponse> openingHourResponsesList = entities.stream()
+                .map(entity -> response(entity))
+                .collect(Collectors.toList());
+
+        Pagination pagination = Pagination.builder()
+                .totalPages(entities.getTotalPages())
+                .totalElements(entities.getTotalElements())
+                .currentPage(entities.getNumber())
+                .currentElements(entities.getNumberOfElements())
+                .build();
+
+        return Header.OK(openingHourResponsesList, pagination);
     }
 
     @Override

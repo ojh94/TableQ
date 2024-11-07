@@ -2,18 +2,23 @@ package com.itschool.tableq.service;
 
 import com.itschool.tableq.domain.Restaurant;
 import com.itschool.tableq.domain.RestaurantImage;
+import com.itschool.tableq.domain.User;
 import com.itschool.tableq.network.Header;
+import com.itschool.tableq.network.Pagination;
 import com.itschool.tableq.network.request.RestaurantImageRequest;
 import com.itschool.tableq.network.response.RestaurantImageResponse;
+import com.itschool.tableq.network.response.UserResponse;
 import com.itschool.tableq.repository.RestaurantImageRepository;
 import com.itschool.tableq.repository.RestaurantRepository;
 import com.itschool.tableq.service.base.BaseService;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class RestaurantImageService extends
         BaseService<RestaurantImageRequest, RestaurantImageResponse, RestaurantImage> {
@@ -22,7 +27,20 @@ public class RestaurantImageService extends
 
     @Override
     public Header<List<RestaurantImageResponse>> getPaginatedList(Pageable pageable) {
-        return null;
+        Page<RestaurantImage> entities =  baseRepository.findAll(pageable);
+
+        List<RestaurantImageResponse> restaurantImageResponsesList = entities.stream()
+                .map(entity -> response(entity))
+                .collect(Collectors.toList());
+
+        Pagination pagination = Pagination.builder()
+                .totalPages(entities.getTotalPages())
+                .totalElements(entities.getTotalElements())
+                .currentPage(entities.getNumber())
+                .currentElements(entities.getNumberOfElements())
+                .build();
+
+        return Header.OK(restaurantImageResponsesList, pagination);
     }
 
     @Override
