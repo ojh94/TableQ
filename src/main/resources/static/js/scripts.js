@@ -4,6 +4,7 @@ $(document).ready(function() {
         requestRestaurantApi();
         requestReviewApi();
         requestMenuApi();
+        requestOpeningHourApi();
 
         // 수정 버튼 클릭시
         document.getElementById("modify-button").onclick = function() {
@@ -365,46 +366,40 @@ function requestMenuApi() {
 
             menus.forEach((menu) => {
 
-                if (menu.recommendation === null) {
-
-                    const menuHtml = `
-                        <div class="menu-item mb-4" style="display: flex; align-items: center;">
-                            <div class="item-info">
-                                <div style="display: flex; align-items: center; margin-bottom: 12px;">
-                                    <h4 class="m-0">${menu.name}</h4>
-                                </div>
-                                <h5 class="price" style="margin-bottom: 0px;">${menu.price}원</h5>
-                                <!--<p class="item-text">
-                                    ${menu.description}
-                                </p>-->
-                            </div>
-                            <img class="photo menu-img" src="${menu.imageUrl}" alt="메뉴" onerror="this.src='https://placehold.jp/150x150.png'"/>
-                        </div>
+                let menuHtml =
+                    `
+                    <div class="menu-item mb-4" style="display: flex; align-items: center;">
+                        <div class="item-info">
+                            <div style="display: flex; align-items: center; margin-bottom: 12px;">
+                               <h4 class="m-0">${menu.name}</h4>
                     `;
 
-                    // menu-list 요소의 끝에 새로운 메뉴 항목을 추가
-                    $('#menu-list').append(menuHtml);
-
-                } else if (menu.recommendation === true) {
-                    const menuHtml = `
-                        <div class="menu-item mb-4" style="display: flex; align-items: center;">
-                            <div class="item-info">
-                                <div style="display: flex; align-items: center; margin-bottom: 12px;">
-                                    <h4 class="m-0">${menu.name}</h4>
+                if (menu.recommendation) {
+                    menuHtml +=
+                        `
                                     <span class="badge ms-2" style="background-color: rgba(237, 125, 49, 1); font-size: 13px;">추천</span>
-                                </div>
-                                <h5 class="price" style="margin-bottom: 0px;">${menu.price}원</h5>
-                                <!--<p class="item-text">
-                                    ${menu.description}
-                                </p>-->
+                        `;
+                }
+
+                menuHtml +=
+                    `
                             </div>
-                            <img class="photo menu-img" src="${menu.imageUrl}" alt="메뉴" onerror="this.src='https://placehold.jp/150x150.png'"/>
+                            <h5 class="price" style="margin-bottom: 0px;">${menu.price}원</h5>
                         </div>
+                        <img class="photo menu-img" src="
                     `;
 
-                    // menu-list 요소의 끝에 새로운 메뉴 항목을 추가
-                    $('#menu-list').append(menuHtml);
+                if (menu.imageUrl !== null) {
+                    menuHtml += `${menu.imageUrl}`;
                 }
+
+                menuHtml +=
+                    `" alt="메뉴" onerror="this.src='https://placehold.jp/150x150.png'"/>
+                    </div>
+                    `;
+
+                // menu-list 요소의 끝에 새로운 메뉴 항목을 추가
+                $('#menu-list').append(menuHtml);
             });
 
             console.log('메뉴 set 완료');
@@ -543,7 +538,6 @@ function requestOpeningHourApi() {
             // 요청 성공 시 동작
             const opens = response.data; // 운영시간 데이터 배열
 
-            // 현재 시간(초 제외)
             const today = new Date();
             const currentTime
                 = today.getHours().toString().padStart(2, '0') + ":" + today.getMinutes().toString().padStart(2, '0');
@@ -559,9 +553,9 @@ function requestOpeningHourApi() {
                         $('#monday-open')[0].textContent = formattedOpenTime + ' ~ ' + formattedCloseTime;
 
                         if(today.getDay() === 1) {
-                            $('today-open-2').html('<i class="fas fa-clock"></i>&nbsp;원격줄서기 시간 :&nbsp;&nbsp;' + formattedOpenTime + ' - ' + formattedCloseTime);
-                            $('today-week')[0].textContent = '오늘 (월요일)';
-                            $('today-open-4')[0].textContent = formattedOpenTime + ' ~ ' + formattedCloseTime;
+                            $('#today-open-2').html('<i class="fas fa-clock"></i> 원격줄서기 시간 :&nbsp;&nbsp;오늘 ' + formattedOpenTime + ' - ' + formattedCloseTime);
+                            $('#today-week')[0].textContent = '오늘 (월요일)';
+                            $('#today-open-4')[0].textContent = formattedOpenTime + ' ~ ' + formattedCloseTime;
                         }
                         break;
                     case 'tuesday' :
@@ -571,9 +565,9 @@ function requestOpeningHourApi() {
                         $('#tuesday-open')[0].textContent = formattedOpenTime + ' ~ ' + formattedCloseTime;
 
                         if(today.getDay() === 2) {
-                            $('today-open-2').html('<i class="fas fa-clock"></i>&nbsp;원격줄서기 시간 :&nbsp;&nbsp;' + formattedOpenTime + ' - ' + formattedCloseTime);
-                            $('today-week')[0].textContent = '오늘 (화요일)';
-                            $('today-open-4')[0].textContent = formattedOpenTime + ' ~ ' + formattedCloseTime;
+                            $('#today-open-2').html('<i class="fas fa-clock"></i> 원격줄서기 시간 :&nbsp;&nbsp;오늘 ' + formattedOpenTime + ' - ' + formattedCloseTime);
+                            $('#today-week')[0].textContent = '오늘 (화요일)';
+                            $('#today-open-4')[0].textContent = formattedOpenTime + ' ~ ' + formattedCloseTime;
                         }
                         break;
                     case 'wednesday' :
@@ -583,9 +577,9 @@ function requestOpeningHourApi() {
                         $('#wednesday-open')[0].textContent = formattedOpenTime + ' ~ ' + formattedCloseTime;
 
                         if(today.getDay() === 3) {
-                            $('today-open-2').html('<i class="fas fa-clock"></i>&nbsp;원격줄서기 시간 :&nbsp;&nbsp;' + formattedOpenTime + ' - ' + formattedCloseTime);
-                            $('today-week')[0].textContent = '오늘 (수요일)';
-                            $('today-open-4')[0].textContent = formattedOpenTime + ' ~ ' + formattedCloseTime;
+                            $('#today-open-2').html('<i class="fas fa-clock"></i> 원격줄서기 시간 :&nbsp;&nbsp;오늘 ' + formattedOpenTime + ' - ' + formattedCloseTime);
+                            $('#today-week')[0].textContent = '오늘 (수요일)';
+                            $('#today-open-4')[0].textContent = formattedOpenTime + ' ~ ' + formattedCloseTime;
                         }
                         break;
                     case 'thursday' :
@@ -595,9 +589,9 @@ function requestOpeningHourApi() {
                         $('#thursday-open')[0].textContent = formattedOpenTime + ' ~ ' + formattedCloseTime;
 
                         if(today.getDay() === 4) {
-                            $('today-open-2').html('<i class="fas fa-clock"></i>&nbsp;원격줄서기 시간 :&nbsp;&nbsp;' + formattedOpenTime + ' - ' + formattedCloseTime);
-                            $('today-week')[0].textContent = '오늘 (목요일)';
-                            $('today-open-4')[0].textContent = formattedOpenTime + ' ~ ' + formattedCloseTime;
+                            $('#today-open-2').html('<i class="fas fa-clock"></i> 원격줄서기 시간 :&nbsp;&nbsp;오늘 ' + formattedOpenTime + ' - ' + formattedCloseTime);
+                            $('#today-week')[0].textContent = '오늘 (목요일)';
+                            $('#today-open-4')[0].textContent = formattedOpenTime + ' ~ ' + formattedCloseTime;
                         }
                         break;
                     case 'friday' :
@@ -607,9 +601,9 @@ function requestOpeningHourApi() {
                         $('#friday-open')[0].textContent = formattedOpenTime + ' ~ ' + formattedCloseTime;
 
                         if(today.getDay() === 5) {
-                            $('today-open-2').html('<i class="fas fa-clock"></i>&nbsp;원격줄서기 시간 :&nbsp;&nbsp;' + formattedOpenTime + ' - ' + formattedCloseTime);
-                            $('today-week')[0].textContent = '오늘 (금요일)';
-                            $('today-open-4')[0].textContent = formattedOpenTime + ' ~ ' + formattedCloseTime;
+                            $('#today-open-2').html('<i class="fas fa-clock"></i> 원격줄서기 시간 :&nbsp;&nbsp;오늘 ' + formattedOpenTime + ' - ' + formattedCloseTime);
+                            $('#today-week')[0].textContent = '오늘 (금요일)';
+                            $('#today-open-4')[0].textContent = formattedOpenTime + ' ~ ' + formattedCloseTime;
                         }
                         break;
                     case 'saturday' :
@@ -619,9 +613,9 @@ function requestOpeningHourApi() {
                         $('#saturday-open')[0].textContent = formattedOpenTime + ' ~ ' + formattedCloseTime;
 
                         if(today.getDay() === 6) {
-                            $('today-open-2').html('<i class="fas fa-clock"></i>&nbsp;원격줄서기 시간 :&nbsp;&nbsp;' + formattedOpenTime + ' - ' + formattedCloseTime);
-                            $('today-week')[0].textContent = '오늘 (토요일)';
-                            $('today-open-4')[0].textContent = formattedOpenTime + ' ~ ' + formattedCloseTime;
+                            $('#today-open-2').html('<i class="fas fa-clock"></i> 원격줄서기 시간 :&nbsp;&nbsp;오늘 ' + formattedOpenTime + ' - ' + formattedCloseTime);
+                            $('#today-week')[0].textContent = '오늘 (토요일)';
+                            $('#today-open-4')[0].textContent = formattedOpenTime + ' ~ ' + formattedCloseTime;
                         }
                         break;
                     case 'sunday' :
@@ -631,9 +625,9 @@ function requestOpeningHourApi() {
                         $('#sunday-open')[0].textContent = formattedOpenTime + ' ~ ' + formattedCloseTime;
 
                         if(today.getDay() === 0) {
-                            $('today-open-2').html('<i class="fas fa-clock"></i>&nbsp;원격줄서기 시간 :&nbsp;&nbsp;' + formattedOpenTime + ' - ' + formattedCloseTime);
-                            $('today-week')[0].textContent = '오늘 (일요일)';
-                            $('today-open-4')[0].textContent = formattedOpenTime + ' ~ ' + formattedCloseTime;
+                            $('#today-open-2').html('<i class="fas fa-clock"></i> 원격줄서기 시간 :&nbsp;&nbsp;오늘 ' + formattedOpenTime + ' - ' + formattedCloseTime);
+                            $('#today-week')[0].textContent = '오늘 (일요일)';
+                            $('#today-open-4')[0].textContent = formattedOpenTime + ' ~ ' + formattedCloseTime;
                         }
                         break;
                 }
