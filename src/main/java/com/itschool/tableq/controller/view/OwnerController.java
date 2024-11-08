@@ -28,6 +28,6 @@ public class OwnerController {
 
     @GetMapping("/owner-auth")
     public String auth() {
-        return "";
+        return "owner-auth";
     }
 }

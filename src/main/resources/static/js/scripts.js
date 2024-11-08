@@ -5,6 +5,7 @@ $(document).ready(function() {
         requestReviewApi();
         requestMenuApi();
         requestOpeningHourApi();
+        requestBreakHourApi();
 
         // 수정 버튼 클릭시
         document.getElementById("modify-button").onclick = function() {
@@ -18,6 +19,8 @@ $(document).ready(function() {
         requestRestaurantModifyApi();
         requestReviewApi();
         requestMenuModifyApi();
+        requestOpeningHourModifyApi();
+        requestBreakHourModifyApi();
 
         // 페이지를 이전 페이지로 이동
         document.getElementById('cancel').addEventListener('click', function() {
@@ -554,7 +557,11 @@ function requestOpeningHourApi() {
                         $('#monday-open')[0].textContent = formattedOpenTime + ' ~ ' + formattedCloseTime;
 
                         if(today.getDay() === 1) {
-                            $('#today-open-2').html('<i class="fas fa-clock"></i> 원격줄서기 시간 :&nbsp;&nbsp;오늘 ' + formattedOpenTime + ' - ' + formattedCloseTime);
+                            if (currentTime >= formattedOpenTime && currentTime < formattedCloseTime) {
+                                $('#today-open-1').html('<i class="fas fa-clock"></i> <strong>영업중</strong> : 오늘 ' +  formattedOpenTime + ' ~ ' + formattedCloseTime);
+                            }
+                            $('#today-open-2').html('<i class="fas fa-clock"></i> 원격줄서기 시간 :&nbsp;&nbsp;오늘 ' + formattedOpenTime + ' ~ ' + formattedCloseTime);
+                            $('#today-open-3').html('오늘 ' + formattedOpenTime + ' ~ ' + formattedCloseTime);
                             $('#today-week')[0].textContent = '오늘 (월요일)';
                             $('#today-open-4')[0].textContent = formattedOpenTime + ' ~ ' + formattedCloseTime;
                         }
@@ -566,7 +573,11 @@ function requestOpeningHourApi() {
                         $('#tuesday-open')[0].textContent = formattedOpenTime + ' ~ ' + formattedCloseTime;
 
                         if(today.getDay() === 2) {
-                            $('#today-open-2').html('<i class="fas fa-clock"></i> 원격줄서기 시간 :&nbsp;&nbsp;오늘 ' + formattedOpenTime + ' - ' + formattedCloseTime);
+                            if (currentTime >= formattedOpenTime && currentTime < formattedCloseTime) {
+                                $('#today-open-1').html('<i class="fas fa-clock"></i> <strong>영업중</strong> : 오늘 ' +  formattedOpenTime + ' ~ ' + formattedCloseTime);
+                            }
+                            $('#today-open-2').html('<i class="fas fa-clock"></i> 원격줄서기 시간 :&nbsp;&nbsp;오늘 ' + formattedOpenTime + ' ~ ' + formattedCloseTime);
+                            $('#today-open-3').html('오늘 ' + formattedOpenTime + ' ~ ' + formattedCloseTime);
                             $('#today-week')[0].textContent = '오늘 (화요일)';
                             $('#today-open-4')[0].textContent = formattedOpenTime + ' ~ ' + formattedCloseTime;
                         }
@@ -578,7 +589,11 @@ function requestOpeningHourApi() {
                         $('#wednesday-open')[0].textContent = formattedOpenTime + ' ~ ' + formattedCloseTime;
 
                         if(today.getDay() === 3) {
-                            $('#today-open-2').html('<i class="fas fa-clock"></i> 원격줄서기 시간 :&nbsp;&nbsp;오늘 ' + formattedOpenTime + ' - ' + formattedCloseTime);
+                            if (currentTime >= formattedOpenTime && currentTime < formattedCloseTime) {
+                                $('#today-open-1').html('<i class="fas fa-clock"></i> <strong>영업중</strong> : 오늘 ' +  formattedOpenTime + ' ~ ' + formattedCloseTime);
+                            }
+                            $('#today-open-2').html('<i class="fas fa-clock"></i> 원격줄서기 시간 :&nbsp;&nbsp;오늘 ' + formattedOpenTime + ' ~ ' + formattedCloseTime);
+                            $('#today-open-3').html('오늘 ' + formattedOpenTime + ' ~ ' + formattedCloseTime);
                             $('#today-week')[0].textContent = '오늘 (수요일)';
                             $('#today-open-4')[0].textContent = formattedOpenTime + ' ~ ' + formattedCloseTime;
                         }
@@ -590,7 +605,11 @@ function requestOpeningHourApi() {
                         $('#thursday-open')[0].textContent = formattedOpenTime + ' ~ ' + formattedCloseTime;
 
                         if(today.getDay() === 4) {
-                            $('#today-open-2').html('<i class="fas fa-clock"></i> 원격줄서기 시간 :&nbsp;&nbsp;오늘 ' + formattedOpenTime + ' - ' + formattedCloseTime);
+                            if (currentTime >= formattedOpenTime && currentTime < formattedCloseTime) {
+                                $('#today-open-1').html('<i class="fas fa-clock"></i> <strong>영업중</strong> : 오늘 ' +  formattedOpenTime + ' ~ ' + formattedCloseTime);
+                            }
+                            $('#today-open-2').html('<i class="fas fa-clock"></i> 원격줄서기 시간 :&nbsp;&nbsp;오늘 ' + formattedOpenTime + ' ~ ' + formattedCloseTime);
+                            $('#today-open-3').html('오늘 ' + formattedOpenTime + ' ~ ' + formattedCloseTime);
                             $('#today-week')[0].textContent = '오늘 (목요일)';
                             $('#today-open-4')[0].textContent = formattedOpenTime + ' ~ ' + formattedCloseTime;
                         }
@@ -602,7 +621,11 @@ function requestOpeningHourApi() {
                         $('#friday-open')[0].textContent = formattedOpenTime + ' ~ ' + formattedCloseTime;
 
                         if(today.getDay() === 5) {
-                            $('#today-open-2').html('<i class="fas fa-clock"></i> 원격줄서기 시간 :&nbsp;&nbsp;오늘 ' + formattedOpenTime + ' - ' + formattedCloseTime);
+                            if (currentTime >= formattedOpenTime && currentTime < formattedCloseTime) {
+                                $('#today-open-1').html('<i class="fas fa-clock"></i> <strong>영업중</strong> : 오늘 ' +  formattedOpenTime + ' ~ ' + formattedCloseTime);
+                            }
+                            $('#today-open-2').html('<i class="fas fa-clock"></i> 원격줄서기 시간 :&nbsp;&nbsp;오늘 ' + formattedOpenTime + ' ~ ' + formattedCloseTime);
+                            $('#today-open-3').html('오늘 ' + formattedOpenTime + ' ~ ' + formattedCloseTime);
                             $('#today-week')[0].textContent = '오늘 (금요일)';
                             $('#today-open-4')[0].textContent = formattedOpenTime + ' ~ ' + formattedCloseTime;
                         }
@@ -614,7 +637,11 @@ function requestOpeningHourApi() {
                         $('#saturday-open')[0].textContent = formattedOpenTime + ' ~ ' + formattedCloseTime;
 
                         if(today.getDay() === 6) {
-                            $('#today-open-2').html('<i class="fas fa-clock"></i> 원격줄서기 시간 :&nbsp;&nbsp;오늘 ' + formattedOpenTime + ' - ' + formattedCloseTime);
+                            if (currentTime >= formattedOpenTime && currentTime < formattedCloseTime) {
+                                $('#today-open-1').html('<i class="fas fa-clock"></i> <strong>영업중</strong> : 오늘 ' +  formattedOpenTime + ' ~ ' + formattedCloseTime);
+                            }
+                            $('#today-open-2').html('<i class="fas fa-clock"></i> 원격줄서기 시간 :&nbsp;&nbsp;오늘 ' + formattedOpenTime + ' ~ ' + formattedCloseTime);
+                            $('#today-open-3').html('오늘 ' + formattedOpenTime + ' ~ ' + formattedCloseTime);
                             $('#today-week')[0].textContent = '오늘 (토요일)';
                             $('#today-open-4')[0].textContent = formattedOpenTime + ' ~ ' + formattedCloseTime;
                         }
@@ -626,7 +653,11 @@ function requestOpeningHourApi() {
                         $('#sunday-open')[0].textContent = formattedOpenTime + ' ~ ' + formattedCloseTime;
 
                         if(today.getDay() === 0) {
-                            $('#today-open-2').html('<i class="fas fa-clock"></i> 원격줄서기 시간 :&nbsp;&nbsp;오늘 ' + formattedOpenTime + ' - ' + formattedCloseTime);
+                            if (currentTime >= formattedOpenTime && currentTime < formattedCloseTime) {
+                                $('#today-open-1').html('<i class="fas fa-clock"></i> <strong>영업중</strong> : 오늘 ' +  formattedOpenTime + ' ~ ' + formattedCloseTime);
+                            }
+                            $('#today-open-2').html('<i class="fas fa-clock"></i> 원격줄서기 시간 :&nbsp;&nbsp;오늘 ' + formattedOpenTime + ' ~ ' + formattedCloseTime);
+                            $('#today-open-3').html('오늘 ' + formattedOpenTime + ' ~ ' + formattedCloseTime);
                             $('#today-week')[0].textContent = '오늘 (일요일)';
                             $('#today-open-4')[0].textContent = formattedOpenTime + ' ~ ' + formattedCloseTime;
                         }
@@ -661,35 +692,111 @@ function requestOpeningHourModifyApi() {
             // 요청 성공 시 동작
             const opens = response.data; // 운영시간 데이터 배열
 
+            const today = new Date();
+            const currentTime
+                = today.getHours().toString().padStart(2, '0') + ":" + today.getMinutes().toString().padStart(2, '0');
+            let formattedOpenTime;
+            let formattedCloseTime;
+
             opens.forEach((open) => {
                 switch (open.dayOfWeek) {
                     case 'monday' :
                         $('#monday-open').val(open.openAt);
                         $('#monday-close').val(open.closeAt);
+
+                        formattedOpenTime = open.openAt.substring(0, 5);
+                        formattedCloseTime = open.closeAt.substring(0, 5);
+
+                        if(today.getDay() === 1) {
+                            if (currentTime >= formattedOpenTime && currentTime < formattedCloseTime) {
+                                $('#today-open-1').html('<i class="fas fa-clock"></i> <strong>영업중</strong> : 오늘 ' +  formattedOpenTime + ' ~ ' + formattedCloseTime);
+                            }
+                            $('#today-open-2').html('<i class="fas fa-clock"></i> 원격줄서기 시간 :&nbsp;&nbsp;오늘 ' + formattedOpenTime + ' ~ ' + formattedCloseTime);
+                        }
                         break;
                     case 'tuesday' :
                         $('#tuesday-open').val(open.openAt);
                         $('#tuesday-close').val(open.closeAt);
+
+                        formattedOpenTime = open.openAt.substring(0, 5);
+                        formattedCloseTime = open.closeAt.substring(0, 5);
+
+                        if(today.getDay() === 2) {
+                            if (currentTime >= formattedOpenTime && currentTime < formattedCloseTime) {
+                                $('#today-open-1').html('<i class="fas fa-clock"></i> <strong>영업중</strong> : 오늘 ' +  formattedOpenTime + ' ~ ' + formattedCloseTime);
+                            }
+                            $('#today-open-2').html('<i class="fas fa-clock"></i> 원격줄서기 시간 :&nbsp;&nbsp;오늘 ' + formattedOpenTime + ' ~ ' + formattedCloseTime);
+                        }
                         break;
                     case 'wednesday' :
                         $('#wednesday-open').val(open.openAt);
                         $('#wednesday-close').val(open.closeAt);
+
+                        formattedOpenTime = open.openAt.substring(0, 5);
+                        formattedCloseTime = open.closeAt.substring(0, 5);
+
+                        if(today.getDay() === 3) {
+                            if (currentTime >= formattedOpenTime && currentTime < formattedCloseTime) {
+                                $('#today-open-1').html('<i class="fas fa-clock"></i> <strong>영업중</strong> : 오늘 ' +  formattedOpenTime + ' ~ ' + formattedCloseTime);
+                            }
+                            $('#today-open-2').html('<i class="fas fa-clock"></i> 원격줄서기 시간 :&nbsp;&nbsp;오늘 ' + formattedOpenTime + ' ~ ' + formattedCloseTime);
+                        }
                         break;
                     case 'thursday' :
                         $('#thursday-open').val(open.openAt);
                         $('#thursday-close').val(open.closeAt);
+
+                        formattedOpenTime = open.openAt.substring(0, 5);
+                        formattedCloseTime = open.closeAt.substring(0, 5);
+
+                        if(today.getDay() === 4) {
+                            if (currentTime >= formattedOpenTime && currentTime < formattedCloseTime) {
+                                $('#today-open-1').html('<i class="fas fa-clock"></i> <strong>영업중</strong> : 오늘 ' +  formattedOpenTime + ' ~ ' + formattedCloseTime);
+                            }
+                            $('#today-open-2').html('<i class="fas fa-clock"></i> 원격줄서기 시간 :&nbsp;&nbsp;오늘 ' + formattedOpenTime + ' ~ ' + formattedCloseTime);
+                        }
                         break;
                     case 'friday' :
                         $('#friday-open').val(open.openAt);
                         $('#friday-close').val(open.closeAt);
+
+                        formattedOpenTime = open.openAt.substring(0, 5);
+                        formattedCloseTime = open.closeAt.substring(0, 5);
+
+                        if(today.getDay() === 5) {
+                            if (currentTime >= formattedOpenTime && currentTime < formattedCloseTime) {
+                                $('#today-open-1').html('<i class="fas fa-clock"></i> <strong>영업중</strong> : 오늘 ' +  formattedOpenTime + ' ~ ' + formattedCloseTime);
+                            }
+                            $('#today-open-2').html('<i class="fas fa-clock"></i> 원격줄서기 시간 :&nbsp;&nbsp;오늘 ' + formattedOpenTime + ' ~ ' + formattedCloseTime);
+                        }
                         break;
                     case 'saturday' :
                         $('#saturday-open').val(open.openAt);
                         $('#saturday-close').val(open.closeAt);
+
+                        formattedOpenTime = open.openAt.substring(0, 5);
+                        formattedCloseTime = open.closeAt.substring(0, 5);
+
+                        if(today.getDay() === 6) {
+                            if (currentTime >= formattedOpenTime && currentTime < formattedCloseTime) {
+                                $('#today-open-1').html('<i class="fas fa-clock"></i> <strong>영업중</strong> : 오늘 ' +  formattedOpenTime + ' ~ ' + formattedCloseTime);
+                            }
+                            $('#today-open-2').html('<i class="fas fa-clock"></i> 원격줄서기 시간 :&nbsp;&nbsp;오늘 ' + formattedOpenTime + ' ~ ' + formattedCloseTime);
+                        }
                         break;
                     case 'sunday' :
                         $('#sunday-open').val(open.openAt);
                         $('#sunday-close').val(open.closeAt);
+
+                        formattedOpenTime = open.openAt.substring(0, 5);
+                        formattedCloseTime = open.closeAt.substring(0, 5);
+
+                        if(today.getDay() === 0) {
+                            if (currentTime >= formattedOpenTime && currentTime < formattedCloseTime) {
+                                $('#today-open-1').html('<i class="fas fa-clock"></i> <strong>영업중</strong> : 오늘 ' +  formattedOpenTime + ' ~ ' + formattedCloseTime);
+                            }
+                            $('#today-open-2').html('<i class="fas fa-clock"></i> 원격줄서기 시간 :&nbsp;&nbsp;오늘 ' + formattedOpenTime + ' ~ ' + formattedCloseTime);
+                        }
                         break;
                 }
             });
@@ -701,6 +808,272 @@ function requestOpeningHourModifyApi() {
          console.error('운영시간 수정 set 실패:', error);
          alert('운영시간 수정 set 중 오류가 발생했습니다.');
          }
+    });
+}
+
+// 상세 페이지 break-hour API
+function requestBreakHourApi() {
+
+    const id = document.getElementById("restaurant-id").value;
+
+    $.ajax({
+        url: `/api/breakhour/restaurant/${id}`,
+        type: 'GET', // 필요한 HTTP 메서드로 변경
+        contentType: 'application/json', // JSON 형식으로 데이터 전송
+        data: {
+               "page" : 0,
+               "size" : 10
+              },
+        success: function(response) {
+            // 요청 성공 시 동작
+            const breaks = response.data; // 브레이크타임 데이터 배열
+
+            const today = new Date();
+            const currentTime
+                = today.getHours().toString().padStart(2, '0') + ":" + today.getMinutes().toString().padStart(2, '0');
+            let formattedStartTime;
+            let formattedEndTime;
+
+            breaks.forEach((breaking) => {
+                switch (breaking.dayOfWeek) {
+                    case 'monday' :
+                        formattedStartTime = breaking.breakStart.substring(0, 5);
+                        formattedEndTime = breaking.breakEnd.substring(0, 5);
+
+                        $('#monday-break')[0].textContent = formattedStartTime + ' ~ ' + formattedEndTime;
+
+                        if(today.getDay() === 1) {
+                            if (currentTime >= formattedStartTime && currentTime < formattedEndTime) {
+                                $('#today-open-1').html('<i class="fas fa-clock"></i> <strong>브레이크 타임</strong> : ' +  formattedStartTime + ' ~ ' + formattedEndTime);
+                                $('#today-open-2').html('<i class="fas fa-clock"></i> 원격줄서기 시간 :&nbsp;&nbsp;<strong>브레이크 타임</strong> ' + formattedStartTime + ' ~ ' + formattedEndTime);
+                            }
+                            $('#today-break')[0].textContent = formattedStartTime + ' ~ ' + formattedEndTime;
+                        }
+                        break;
+                    case 'tuesday' :
+                        formattedStartTime = breaking.breakStart.substring(0, 5);
+                        formattedEndTime = breaking.breakEnd.substring(0, 5);
+
+                        $('#monday-break')[0].textContent = formattedStartTime + ' ~ ' + formattedEndTime;
+
+                        if(today.getDay() === 2) {
+                            if (currentTime >= formattedStartTime && currentTime < formattedEndTime) {
+                                $('#today-open-1').html('<i class="fas fa-clock"></i> <strong>브레이크 타임</strong> : ' +  formattedStartTime + ' ~ ' + formattedEndTime);
+                                $('#today-open-2').html('<i class="fas fa-clock"></i> 원격줄서기 시간 :&nbsp;&nbsp;<strong>브레이크 타임</strong> ' + formattedStartTime + ' ~ ' + formattedEndTime);
+                            }
+                            $('#today-break')[0].textContent = formattedStartTime + ' ~ ' + formattedEndTime;
+                        }
+                        break;
+                    case 'wednesday' :
+                        formattedStartTime = breaking.breakStart.substring(0, 5);
+                        formattedEndTime = breaking.breakEnd.substring(0, 5);
+
+                        $('#monday-break')[0].textContent = formattedStartTime + ' ~ ' + formattedEndTime;
+
+                        if(today.getDay() === 3) {
+                            if (currentTime >= formattedStartTime && currentTime < formattedEndTime) {
+                                $('#today-open-1').html('<i class="fas fa-clock"></i> <strong>브레이크 타임</strong> : ' +  formattedStartTime + ' ~ ' + formattedEndTime);
+                                $('#today-open-2').html('<i class="fas fa-clock"></i> 원격줄서기 시간 :&nbsp;&nbsp;<strong>브레이크 타임</strong> ' + formattedStartTime + ' ~ ' + formattedEndTime);
+                            }
+                            $('#today-break')[0].textContent = formattedStartTime + ' ~ ' + formattedEndTime;
+                        }
+                        break;
+                    case 'thursday' :
+                        formattedStartTime = breaking.breakStart.substring(0, 5);
+                        formattedEndTime = breaking.breakEnd.substring(0, 5);
+
+                        $('#monday-break')[0].textContent = formattedStartTime + ' ~ ' + formattedEndTime;
+
+                        if(today.getDay() === 4) {
+                            if (currentTime >= formattedStartTime && currentTime < formattedEndTime) {
+                                $('#today-open-1').html('<i class="fas fa-clock"></i> <strong>브레이크 타임</strong> : ' +  formattedStartTime + ' ~ ' + formattedEndTime);
+                                $('#today-open-2').html('<i class="fas fa-clock"></i> 원격줄서기 시간 :&nbsp;&nbsp;<strong>브레이크 타임</strong> ' + formattedStartTime + ' ~ ' + formattedEndTime);
+                            }
+                            $('#today-break')[0].textContent = formattedStartTime + ' ~ ' + formattedEndTime;
+                        }
+                        break;
+                    case 'friday' :
+                        formattedStartTime = breaking.breakStart.substring(0, 5);
+                        formattedEndTime = breaking.breakEnd.substring(0, 5);
+
+                        $('#monday-break')[0].textContent = formattedStartTime + ' ~ ' + formattedEndTime;
+
+                        if(today.getDay() === 5) {
+                            if (currentTime >= formattedStartTime && currentTime < formattedEndTime) {
+                                $('#today-open-1').html('<i class="fas fa-clock"></i> <strong>브레이크 타임</strong> : ' +  formattedStartTime + ' ~ ' + formattedEndTime);
+                                $('#today-open-2').html('<i class="fas fa-clock"></i> 원격줄서기 시간 :&nbsp;&nbsp;<strong>브레이크 타임</strong> ' + formattedStartTime + ' ~ ' + formattedEndTime);
+                            }
+                            $('#today-break')[0].textContent = formattedStartTime + ' ~ ' + formattedEndTime;
+                        }
+                        break;
+                    case 'saturday' :
+                        formattedStartTime = breaking.breakStart.substring(0, 5);
+                        formattedEndTime = breaking.breakEnd.substring(0, 5);
+
+                        $('#monday-break')[0].textContent = formattedStartTime + ' ~ ' + formattedEndTime;
+
+                        if(today.getDay() === 6) {
+                            if (currentTime >= formattedStartTime && currentTime < formattedEndTime) {
+                                $('#today-open-1').html('<i class="fas fa-clock"></i> <strong>브레이크 타임</strong> : ' +  formattedStartTime + ' ~ ' + formattedEndTime);
+                                $('#today-open-2').html('<i class="fas fa-clock"></i> 원격줄서기 시간 :&nbsp;&nbsp;<strong>브레이크 타임</strong> ' + formattedStartTime + ' ~ ' + formattedEndTime);
+                            }
+                            $('#today-break')[0].textContent = formattedStartTime + ' ~ ' + formattedEndTime;
+                        }
+                        break;
+                    case 'sunday' :
+                        formattedStartTime = breaking.breakStart.substring(0, 5);
+                        formattedEndTime = breaking.breakEnd.substring(0, 5);
+
+                        $('#monday-break')[0].textContent = formattedStartTime + ' ~ ' + formattedEndTime;
+
+                        if(today.getDay() === 0) {
+                            if (currentTime >= formattedStartTime && currentTime < formattedEndTime) {
+                                $('#today-open-1').html('<i class="fas fa-clock"></i> <strong>브레이크 타임</strong> : ' +  formattedStartTime + ' ~ ' + formattedEndTime);
+                                $('#today-open-2').html('<i class="fas fa-clock"></i> 원격줄서기 시간 :&nbsp;&nbsp;<strong>브레이크 타임</strong> ' + formattedStartTime + ' ~ ' + formattedEndTime);
+                            }
+                            $('#today-break')[0].textContent = formattedStartTime + ' ~ ' + formattedEndTime;
+                        }
+                        break;
+                }
+            });
+
+            console.log('브레이크 타임 set 완료');
+        },
+        error: function(xhr, status, error) {
+        // 요청 실패 시 동작
+        console.error('브레이크 타임 set 실패:', error);
+        alert('브레이크 타임 set 중 오류가 발생했습니다.');
+        }
+    });
+}
+
+// 상세 수정 페이지 break-hour API
+function requestBreakHourModifyApi() {
+
+    const id = document.getElementById("restaurant-id").value;
+
+    $.ajax({
+        url: `/api/breakhour/restaurant/${id}`,
+        type: 'GET', // 필요한 HTTP 메서드로 변경
+        contentType: 'application/json', // JSON 형식으로 데이터 전송
+        data: {
+               "page" : 0,
+               "size" : 10
+              },
+        success: function(response) {
+            // 요청 성공 시 동작
+            const breaks = response.data; // 브레이크타임 데이터 배열
+
+            const today = new Date();
+            const currentTime
+                = today.getHours().toString().padStart(2, '0') + ":" + today.getMinutes().toString().padStart(2, '0');
+            let formattedStartTime;
+            let formattedEndTime;
+
+            breaks.forEach((breaking) => {
+                switch (breaking.dayOfWeek) {
+                    case 'monday' :
+                        $('#monday-break-start').val(breaking.breakStart);
+                        $('#monday-break-end').val(breaking.breakEnd);
+
+                        formattedStartTime = breaking.breakStart.substring(0, 5);
+                        formattedEndTime = breaking.breakEnd.substring(0, 5);
+
+                        if(today.getDay() === 1) {
+                            if (currentTime >= formattedStartTime && currentTime < formattedEndTime) {
+                                $('#today-open-1').html('<i class="fas fa-clock"></i> <strong>브레이크 타임</strong> : ' +  formattedStartTime + ' ~ ' + formattedEndTime);
+                                $('#today-open-2').html('<i class="fas fa-clock"></i> 원격줄서기 시간 :&nbsp;&nbsp;<strong>브레이크 타임</strong> ' + formattedStartTime + ' ~ ' + formattedEndTime);
+                            }
+                        }
+                        break;
+                    case 'tuesday' :
+                        formattedStartTime = breaking.breakStart.substring(0, 5);
+                        formattedEndTime = breaking.breakEnd.substring(0, 5);
+
+                        $('#monday-break')[0].textContent = formattedStartTime + ' ~ ' + formattedEndTime;
+
+                        if(today.getDay() === 2) {
+                            if (currentTime >= formattedStartTime && currentTime < formattedEndTime) {
+                                $('#today-open-1').html('<i class="fas fa-clock"></i> <strong>브레이크 타임</strong> : ' +  formattedStartTime + ' ~ ' + formattedEndTime);
+                                $('#today-open-2').html('<i class="fas fa-clock"></i> 원격줄서기 시간 :&nbsp;&nbsp;<strong>브레이크 타임</strong> ' + formattedStartTime + ' ~ ' + formattedEndTime);
+                            }
+                        }
+                        break;
+                    case 'wednesday' :
+                        formattedStartTime = breaking.breakStart.substring(0, 5);
+                        formattedEndTime = breaking.breakEnd.substring(0, 5);
+
+                        $('#monday-break')[0].textContent = formattedStartTime + ' ~ ' + formattedEndTime;
+
+                        if(today.getDay() === 3) {
+                            if (currentTime >= formattedStartTime && currentTime < formattedEndTime) {
+                                $('#today-open-1').html('<i class="fas fa-clock"></i> <strong>브레이크 타임</strong> : ' +  formattedStartTime + ' ~ ' + formattedEndTime);
+                                $('#today-open-2').html('<i class="fas fa-clock"></i> 원격줄서기 시간 :&nbsp;&nbsp;<strong>브레이크 타임</strong> ' + formattedStartTime + ' ~ ' + formattedEndTime);
+                            }
+                        }
+                        break;
+                    case 'thursday' :
+                        formattedStartTime = breaking.breakStart.substring(0, 5);
+                        formattedEndTime = breaking.breakEnd.substring(0, 5);
+
+                        $('#monday-break')[0].textContent = formattedStartTime + ' ~ ' + formattedEndTime;
+
+                        if(today.getDay() === 4) {
+                            if (currentTime >= formattedStartTime && currentTime < formattedEndTime) {
+                                $('#today-open-1').html('<i class="fas fa-clock"></i> <strong>브레이크 타임</strong> : ' +  formattedStartTime + ' ~ ' + formattedEndTime);
+                                $('#today-open-2').html('<i class="fas fa-clock"></i> 원격줄서기 시간 :&nbsp;&nbsp;<strong>브레이크 타임</strong> ' + formattedStartTime + ' ~ ' + formattedEndTime);
+                            }
+                        }
+                        break;
+                    case 'friday' :
+                        formattedStartTime = breaking.breakStart.substring(0, 5);
+                        formattedEndTime = breaking.breakEnd.substring(0, 5);
+
+                        $('#monday-break')[0].textContent = formattedStartTime + ' ~ ' + formattedEndTime;
+
+                        if(today.getDay() === 5) {
+                            if (currentTime >= formattedStartTime && currentTime < formattedEndTime) {
+                                $('#today-open-1').html('<i class="fas fa-clock"></i> <strong>브레이크 타임</strong> : ' +  formattedStartTime + ' ~ ' + formattedEndTime);
+                                $('#today-open-2').html('<i class="fas fa-clock"></i> 원격줄서기 시간 :&nbsp;&nbsp;<strong>브레이크 타임</strong> ' + formattedStartTime + ' ~ ' + formattedEndTime);
+                            }
+                        }
+                        break;
+                    case 'saturday' :
+                        formattedStartTime = breaking.breakStart.substring(0, 5);
+                        formattedEndTime = breaking.breakEnd.substring(0, 5);
+
+                        $('#monday-break')[0].textContent = formattedStartTime + ' ~ ' + formattedEndTime;
+
+                        if(today.getDay() === 6) {
+                            if (currentTime >= formattedStartTime && currentTime < formattedEndTime) {
+                                $('#today-open-1').html('<i class="fas fa-clock"></i> <strong>브레이크 타임</strong> : ' +  formattedStartTime + ' ~ ' + formattedEndTime);
+                                $('#today-open-2').html('<i class="fas fa-clock"></i> 원격줄서기 시간 :&nbsp;&nbsp;<strong>브레이크 타임</strong> ' + formattedStartTime + ' ~ ' + formattedEndTime);
+                            }
+                        }
+                        break;
+                    case 'sunday' :
+                        formattedStartTime = breaking.breakStart.substring(0, 5);
+                        formattedEndTime = breaking.breakEnd.substring(0, 5);
+
+                        $('#monday-break')[0].textContent = formattedStartTime + ' ~ ' + formattedEndTime;
+
+                        if(today.getDay() === 0) {
+                            if (currentTime >= formattedStartTime && currentTime < formattedEndTime) {
+                                $('#today-open-1').html('<i class="fas fa-clock"></i> <strong>브레이크 타임</strong> : ' +  formattedStartTime + ' ~ ' + formattedEndTime);
+                                $('#today-open-2').html('<i class="fas fa-clock"></i> 원격줄서기 시간 :&nbsp;&nbsp;<strong>브레이크 타임</strong> ' + formattedStartTime + ' ~ ' + formattedEndTime);
+                            }
+                        }
+                        break;
+                }
+            });
+
+            console.log('브레이크 타임 수정 set 완료');
+        },
+        error: function(xhr, status, error) {
+        // 요청 실패 시 동작
+        console.error('브레이크 타임 수정 set 실패:', error);
+        alert('브레이크 타임 수정 set 중 오류가 발생했습니다.');
+        }
     });
 }
 
