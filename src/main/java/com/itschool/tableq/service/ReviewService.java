@@ -122,7 +122,7 @@ public class ReviewService extends BaseService<ReviewRequest, ReviewResponse, Re
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new EntityNotFoundException("유저를 찾을 수 없습니다. ID: " + userId));
 
-        List<Review> reviewList = ((ReviewRepository)baseRepository).findByUser(user);
+        List<Review> reviewList = ((ReviewRepository)baseRepository).findByUser(user).orElse(null);
 
         return Header.OK(responseList(reviewList));
     }
