@@ -2,5 +2,6 @@
     <div class="logo">
         <a href="#"><span>Biz</span></a>
     </div>
+    <button th:if="${nickname == null}" class="btn btn-success" onclick="location.href='/owner/login'" aria-label="로그인">로그인</button>
     <button class="btn btn-success" onclick="location.href='/owner/owner-auth'" aria-label="입점 문의">입점 문의</button>
 </header>

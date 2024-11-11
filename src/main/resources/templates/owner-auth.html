@@ -56,7 +56,7 @@
 
         .certification {
             position: relative;
-            display: flex; /* 얜 뭐지? */
+            display: flex;
         }
 
         .certification button {
@@ -110,7 +110,7 @@
                 <form class="validation-form" id="signupForm" method="post" action="/owner" novalidate>
                     <div class="mb-3">
                         <label for="buisnessName">점주 이름</label>
-                        <input type="text" class="form-control" id="buisnessName" name="buisnessName" placeholder="" required>
+                        <input type="text" class="form-control" id="buisnessName" name="name" placeholder="" required>
                         <div class="invalid-feedback">
                             이름을 입력해주세요.
                         </div>
@@ -154,16 +154,6 @@
                             </div>
                         </div>
                         <span id="pwConfirm" class="col-md-6" style="font-size: 90%;"></span>
-                    </div>
-
-                    <div class="mb-3">
-                        <label for="buisnessNum">사업자 번호</label>
-                        <div class="certification">
-                            <input type="number" class="form-control" id="buisnessNum" name="buisnessNumber" placeholder="숫자만 입력해주세요." required>
-                        </div>
-                        <div class="invalid-feedback">
-                            사업자 번호를 입력해주세요.
-                        </div>
                     </div>
 
                     <hr class="mb-4">
