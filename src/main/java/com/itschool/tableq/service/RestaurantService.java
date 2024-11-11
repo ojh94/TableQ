@@ -1,15 +1,18 @@
 package com.itschool.tableq.service;
 
 import com.itschool.tableq.domain.Restaurant;
-import com.itschool.tableq.domain.User;
 import com.itschool.tableq.network.Header;
 import com.itschool.tableq.network.Pagination;
 import com.itschool.tableq.network.response.RestaurantResponse;
 import com.itschool.tableq.network.request.RestaurantRequest;
-import com.itschool.tableq.network.response.UserResponse;
+import com.itschool.tableq.repository.RestaurantRepository;
 import com.itschool.tableq.service.base.BaseService;
+import jakarta.validation.constraints.Positive;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -22,6 +25,8 @@ import java.util.stream.Collectors;
 @Service
 public class RestaurantService extends BaseService<RestaurantRequest, RestaurantResponse, Restaurant> {
 
+    @Autowired
+    private RestaurantRepository restaurantRepository;
 
     @Override
     public Header<List<RestaurantResponse>> getPaginatedList(Pageable pageable) {
@@ -86,5 +91,13 @@ public class RestaurantService extends BaseService<RestaurantRequest, Restaurant
                     baseRepository.delete(restaurant);
                     return Header.OK(response(restaurant));
                 }).orElseThrow(() -> new RuntimeException("Restaurant delete fail"));
+    }
+
+    public List<Restaurant> searchByName(String keyword) {
+        return restaurantRepository.searchByName(keyword);
+    }
+
+    public List<Restaurant> findAll() {
+        return restaurantRepository.findAll();
     }
 }
