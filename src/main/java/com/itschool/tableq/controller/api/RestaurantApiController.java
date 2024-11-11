@@ -6,6 +6,7 @@ import com.itschool.tableq.network.response.RestaurantResponse;
 import com.itschool.tableq.network.request.RestaurantRequest;
 import com.itschool.tableq.service.RestaurantService;
 import groovy.util.logging.Slf4j;
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.constraints.Positive;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +28,7 @@ public class RestaurantApiController extends CrudController<RestaurantRequest, R
     @Autowired
     private RestaurantService restaurantService;
 
+    @Operation(summary = "레스토랑별 키워드 검색", description = "레스토랑 이름 일부분으로 검색가능")
     @GetMapping("/search")
     public List<Restaurant> searchRestaurants(@RequestParam("arg0") String keyword) {
         return restaurantService.searchByName(keyword);
