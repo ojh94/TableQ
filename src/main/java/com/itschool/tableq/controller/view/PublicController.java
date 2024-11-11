@@ -2,8 +2,11 @@ package com.itschool.tableq.controller.view;
 
 import com.itschool.tableq.domain.User;
 import com.itschool.tableq.network.Header;
+import com.itschool.tableq.network.request.OwnerRequest;
 import com.itschool.tableq.network.request.UserRequest;
+import com.itschool.tableq.network.response.OwnerResponse;
 import com.itschool.tableq.network.response.UserResponse;
+import com.itschool.tableq.service.OwnerService;
 import com.itschool.tableq.service.RestaurantService;
 import com.itschool.tableq.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +22,9 @@ public class PublicController {
 
     @Autowired
     UserService userService;
+
+    @Autowired
+    OwnerService ownerService;
 
     // 홈
     @GetMapping("/")
@@ -55,6 +61,16 @@ public class PublicController {
             return "redirect:/login";   
         }
         
+        throw new NullPointerException("생성된 유저가 없음");
+    }
+    @PostMapping("/owner")
+    public String signup(@ModelAttribute OwnerRequest ownerRequest) { // BindingResult bindingResult
+        Header<OwnerResponse> ownerResponse = ownerService.create(Header.OK(ownerRequest));
+
+        if(ownerResponse != null) {
+            return "redirect:/ownerwelcome";
+        }
+
         throw new NullPointerException("생성된 유저가 없음");
     }
 }
