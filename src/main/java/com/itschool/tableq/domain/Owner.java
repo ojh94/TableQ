@@ -7,7 +7,6 @@ import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.List;
 
@@ -17,14 +16,13 @@ import java.util.List;
 @Setter
 @Entity
 public class Owner extends AuditableEntity implements UserDetails {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", updatable = false)
     private Long id;
 
     @Column(nullable = false)
-    private String username;
+    private String email;
 
     @Column(nullable = false)
     private String password;
@@ -42,20 +40,20 @@ public class Owner extends AuditableEntity implements UserDetails {
 
     @Override
     public String getUsername() {
-        return username;
+        return this.email;
     }
 
     @Builder
-    public Owner(Long id, String username, String password, String name, String phoneNumber) {
+    public Owner(Long id, String email, String password, String name, String phoneNumber) {
         this.id = id;
-        this.username = username;
+        this.email = email;
         this.password = password;
         this.name = name;
         this.phoneNumber = phoneNumber;
     }
 
     public void update(OwnerRequest dto){
-        this.username = dto.getUsername() == null? this.username: dto.getUsername();
+        this.email = dto.getEmail() == null? this.email : dto.getEmail();
         this.password = dto.getPassword() == null? this.password: dto.getPassword();
         this.name = dto.getName() == null? this.name: dto.getName();
         this.phoneNumber = dto.getPhoneNumber() == null? this.phoneNumber: dto.getPhoneNumber();

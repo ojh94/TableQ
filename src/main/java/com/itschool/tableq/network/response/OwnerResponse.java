@@ -13,7 +13,7 @@ public class OwnerResponse {
     private Long id;
 
     @NotBlank
-    private String username;
+    private String email;
 
     @NotBlank
     private String name;
@@ -25,7 +25,7 @@ public class OwnerResponse {
 
     public OwnerResponse(Owner owner) {
         this.id = owner.getId();
-        this.username = owner.getUsername();
+        this.email = owner.getEmail();
         this.name = owner.getName();
         this.phoneNumber = owner.getPhoneNumber();
         this.lastLoginAt = LocalDateTime.now();

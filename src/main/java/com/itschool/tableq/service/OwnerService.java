@@ -60,7 +60,7 @@ public class OwnerService extends BaseService<OwnerRequest, OwnerResponse, Owner
         OwnerRequest ownerRequest = request.getData();
 
         Owner owner = Owner.builder()
-                .username(ownerRequest.getUsername())
+                .email(ownerRequest.getEmail())
                 .password(bCryptPasswordEncoder.encode(ownerRequest.getPassword()))
                 .name(ownerRequest.getName())
                 .phoneNumber(ownerRequest.getPhoneNumber())
