@@ -68,11 +68,9 @@ public class PublicController {
         Header<OwnerResponse> ownerResponse = ownerService.create(Header.OK(ownerRequest));
 
         if(ownerResponse != null) {
-            return "redirect:/ownerwelcome";
+            return "redirect:/owner/login";
         }
 
         throw new NullPointerException("생성된 유저가 없음");
     }
-
-
 }
