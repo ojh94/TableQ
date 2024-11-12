@@ -10,12 +10,12 @@ import lombok.NoArgsConstructor;
 @Getter
 public class RestaurantKeywordResponse {
     private Long id;
-    private Restaurant restaurant;
+    private Long restaurantId;
     private Keyword keyword;
 
     public RestaurantKeywordResponse(RestaurantKeyword restaurantKeyword) {
         this.id = restaurantKeyword.getId();
-        this.restaurant = restaurantKeyword.getRestaurant();
+        this.restaurantId = restaurantKeyword.getRestaurant().getId();
         this.keyword = restaurantKeyword.getKeyword();
     }
 }

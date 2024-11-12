@@ -1,9 +1,26 @@
+ // 예약 기능
+  function bookRestaurant(restaurantId) {
+    console.log('Booking restaurant:', restaurantId);
+    sessionStorage.setItem('restaurantId', restaurantId);
+    const detailPageUrl = `/restaurant/${restaurantId}`;
+    window.location.href = detailPageUrl;
+  }
+
+  // '예약하기' 버튼 클릭 시 이벤트 핸들러
+  document.querySelectorAll(".btn-reserve").forEach(button => {
+    button.addEventListener("click", () => {
+      alert("예약이 완료되었습니다!");
+    });
+  });
+
 document.addEventListener('DOMContentLoaded', () => {
   const searchForm = document.getElementById('searchForm');
   const searchInput = document.getElementById('searchInput');
   const sortSelect = document.getElementById('sortSelect');
   const restaurantGrid = document.getElementById('restaurantGrid');
   const restaurantGrid2 = document.getElementById('restaurantGrid2');
+
+
 
   // 모든 레스토랑 데이터를 가져오는 함수
   function fetchAllRestaurants() {
@@ -105,20 +122,7 @@ document.addEventListener('DOMContentLoaded', () => {
     })
     .catch(error => console.error('Error fetching restaurant data:', error));
 
-  // 예약 기능
-  function bookRestaurant(restaurantId) {
-    console.log('Booking restaurant:', restaurantId);
-    sessionStorage.setItem('restaurantId', restaurantId);
-    const detailPageUrl = `/restaurant/${restaurantId}`;
-    window.location.href = detailPageUrl;
-  }
 
-  // '예약하기' 버튼 클릭 시 이벤트 핸들러
-  document.querySelectorAll(".btn-reserve").forEach(button => {
-    button.addEventListener("click", () => {
-      alert("예약이 완료되었습니다!");
-    });
-  });
 
   // 특정 레스토랑 정보 표시
   const selectedRestaurantId = '1';
@@ -138,5 +142,65 @@ document.addEventListener('DOMContentLoaded', () => {
       </div>
     `;
   }
+
+    // 검색 요청 함수
+    function searchRestaurants(query) {
+      return fetch(`/api/restaurant/keywordSearch?arg0=${encodeURIComponent(query)}`)
+        .then(response => {
+          if (!response.ok) {
+            throw new Error('Failed to search restaurants');
+          }
+          return response.json();
+        })
+        .then(data => Array.isArray(data) ? data : data.data);
+    }
+
+    // 검색 결과 렌더링 함수
+    function renderRestaurants(restaurants, rating = 0, reviewsCount = 0) {
+      restaurantGrid.innerHTML = ''; // 기존 결과 지우기
+      restaurants.forEach(restaurant => {
+        const card = document.createElement('div');
+        card.className = 'card';
+        card.innerHTML = `
+          <div class="card-header">
+            <button class="favorite-btn" onclick="toggleFavorite(${restaurant.id})">
+              <i data-lucide="heart"></i>
+            </button>
+            <h4 class="card-title">${restaurant.name}</h4>
+
+          </div>
+          <div class="card-content">
+            <img src="/img/test-img/텐동.jpg" alt="${restaurant.name}" class="card-image">
+            <div class="rating">
+              <i data-lucide="star" class="rating-star"></i>
+              <span class="rating-value">${rating.toFixed(1)}</span>
+              <span class="rating-count">(${reviewsCount}+ 리뷰)</span>
+            </div>
+            <div class="location">
+              <i data-lucide="map-pin" class="location-icon"></i>
+              <span>${restaurant.address}</span>
+            </div>
+          </div>
+          <div class="card-footer">
+            <button class="book-btn" onclick="bookRestaurant(${restaurant.id})">
+              <i data-lucide="calendar"></i> 예약하기
+            </button>
+          </div>
+        `;
+        restaurantGrid.appendChild(card);
+      });
+      lucide.createIcons();
+    }
+
+    // 검색 폼 이벤트 리스너
+    searchForm.addEventListener('submit', (event) => {
+      event.preventDefault();
+      const query = searchInput.value.trim();
+      if (query) {
+        searchRestaurants(query)
+          .then(renderRestaurants)
+          .catch(error => console.error('Error searching restaurants:', error));
+      }
+    });
 });
 

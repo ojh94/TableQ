@@ -11,12 +11,11 @@ import java.time.LocalDateTime;
 @Setter
 public class ReservationRequest {
     private Long id;
-    private String contactNumber;
     private Integer reservationNumber;
     private boolean isEntered;
     private LocalDateTime createdAt;
     private LocalDateTime lastModifiedAt;
     private Integer people;
-    private Restaurant restaurant;
-    private User user;
+    private Long restaurantId;
+    private Long userId;
 }

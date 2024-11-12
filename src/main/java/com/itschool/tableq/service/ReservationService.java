@@ -20,8 +20,13 @@ import org.springframework.transaction.annotation.Transactional;
 import org.webjars.NotFoundException;
 
 import org.springframework.data.domain.Pageable;
+
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -57,15 +62,22 @@ public class ReservationService extends
 
     public Integer count(Restaurant restaurant){
         // 대기번호를 계산하는 메소드
-        int number = 0;
+        int number = 1;
+
+        LocalDate today = LocalDate.now();
+
         List<Reservation> reservationList = ((ReservationRepository)baseRepository)
                 .findByRestaurant(restaurant).orElse(null);
 
         for(Reservation reservation : reservationList){
+            LocalDate reservationTime = reservation.getCreatedAt().toLocalDate();
 
+            if(reservationTime.isEqual(today)){
+                number+=1;
+            }
+
+            else continue;
         }
-
-        number = reservationList.size()+1;
 
         return number;
     }
@@ -75,10 +87,10 @@ public class ReservationService extends
         ReservationRequest reservationRequest = request.getData();
 
         Reservation reservation = Reservation.builder()
-                .reservationNumber(count(reservationRequest.getRestaurant()))
+                .reservationNumber(count(restaurantRepository.findById(reservationRequest.getRestaurantId()).orElse(null)))
                 .people(reservationRequest.getPeople())
-                .restaurant(reservationRequest.getRestaurant())
-                .user(reservationRequest.getUser())
+                .restaurant(restaurantRepository.findById(reservationRequest.getRestaurantId()).orElse(null))
+                .user(userRepository.findById(reservationRequest.getUserId()).orElse(null))
                 .build();
 
         baseRepository.save(reservation);
