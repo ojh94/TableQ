@@ -6,12 +6,19 @@ $(document).ready(function() {
         requestMenuApi();
         requestOpeningHourApi();
         requestBreakHourApi();
+        requestKeywordApi();
 
         // 수정 버튼 클릭시
         document.getElementById("modify-button").onclick = function() {
             const id = document.getElementById("restaurant-id").value;
             location.href = '/restaurant/modify/' + id;
         };
+
+        // 리뷰탭 속 별점 주기
+        $('.star_rating > .star').click(function() {
+          $(this).parent().children('span').removeClass('on');
+          $(this).addClass('on').prevAll('span').addClass('on');
+        });
     }
 
     if (window.location.pathname
@@ -58,7 +65,6 @@ $(document).ready(function() {
         reviewTab.show();
     });
 });
-
 
 // 주소 복사 기능
 function copyText() {
@@ -340,7 +346,7 @@ function requestReviewApi() {
                     </div>
                 `;
 
-                // 리뷰 출력할 위치
+                // review-form 요소(외부) 바로 뒤에 추가
                 $('#review-form').after(reviewHtml);
             });
 
@@ -402,7 +408,7 @@ function requestMenuApi() {
                     </div>
                     `;
 
-                // menu-list 요소의 끝에 새로운 메뉴 항목을 추가
+                // menu-list 요소(내부) 끝에 추가
                 $('#menu-list').append(menuHtml);
             });
 
@@ -453,7 +459,7 @@ function requestMenuModifyApi() {
                         </div>
                     `;
 
-                    // menu-list 요소의 끝에 새로운 메뉴 항목을 추가
+                    // menu-list 요소(내부) 끝에 추가
                     $('#menu-list').append(menuModifyHtml);
 
                 } else if (menu.recommendation === true) {
@@ -489,38 +495,6 @@ function requestMenuModifyApi() {
         // 요청 실패 시 동작
         console.error('메뉴 수정 set 실패:', error);
         alert('메뉴 수정 set 중 오류가 발생했습니다.');
-        }
-    });
-}
-
-// 상세 수정 페이지 keyword API
-function requestKeywordModifyApi() {
-
-    const id = document.getElementById("restaurant-id").value;
-
-    $.ajax({
-        url: `/api//${id}`,
-        type: 'GET', // 필요한 HTTP 메서드로 변경
-        contentType: 'application/json', // JSON 형식으로 데이터 전송
-        success: function(response) {
-
-        }
-    });
-}
-
-// 점주 정보 API
-function requestOwnerInformationApi() {
-
-    const id = document.getElementById("restaurant-id").value;
-
-    $.ajax({
-        url: `/api//${id}`,
-        type: 'GET', // 필요한 HTTP 메서드로 변경
-        contentType: 'application/json', // JSON 형식으로 데이터 전송
-        success: function(response) {
-
-
-
         }
     });
 }
@@ -982,7 +956,6 @@ function requestBreakHourModifyApi() {
                         if(today.getDay() === 1) {
                             if (currentTime >= formattedStartTime && currentTime < formattedEndTime) {
                                 $('#today-open-1').html('<i class="fas fa-clock"></i> <strong>브레이크 타임</strong> : ' +  formattedStartTime + ' ~ ' + formattedEndTime);
-                                $('#today-open-2').html('<i class="fas fa-clock"></i> 원격줄서기 시간 :&nbsp;&nbsp;<strong>브레이크 타임</strong> ' + formattedStartTime + ' ~ ' + formattedEndTime);
                             }
                         }
                         break;
@@ -995,7 +968,6 @@ function requestBreakHourModifyApi() {
                         if(today.getDay() === 2) {
                             if (currentTime >= formattedStartTime && currentTime < formattedEndTime) {
                                 $('#today-open-1').html('<i class="fas fa-clock"></i> <strong>브레이크 타임</strong> : ' +  formattedStartTime + ' ~ ' + formattedEndTime);
-                                $('#today-open-2').html('<i class="fas fa-clock"></i> 원격줄서기 시간 :&nbsp;&nbsp;<strong>브레이크 타임</strong> ' + formattedStartTime + ' ~ ' + formattedEndTime);
                             }
                         }
                         break;
@@ -1008,7 +980,6 @@ function requestBreakHourModifyApi() {
                         if(today.getDay() === 3) {
                             if (currentTime >= formattedStartTime && currentTime < formattedEndTime) {
                                 $('#today-open-1').html('<i class="fas fa-clock"></i> <strong>브레이크 타임</strong> : ' +  formattedStartTime + ' ~ ' + formattedEndTime);
-                                $('#today-open-2').html('<i class="fas fa-clock"></i> 원격줄서기 시간 :&nbsp;&nbsp;<strong>브레이크 타임</strong> ' + formattedStartTime + ' ~ ' + formattedEndTime);
                             }
                         }
                         break;
@@ -1021,7 +992,6 @@ function requestBreakHourModifyApi() {
                         if(today.getDay() === 4) {
                             if (currentTime >= formattedStartTime && currentTime < formattedEndTime) {
                                 $('#today-open-1').html('<i class="fas fa-clock"></i> <strong>브레이크 타임</strong> : ' +  formattedStartTime + ' ~ ' + formattedEndTime);
-                                $('#today-open-2').html('<i class="fas fa-clock"></i> 원격줄서기 시간 :&nbsp;&nbsp;<strong>브레이크 타임</strong> ' + formattedStartTime + ' ~ ' + formattedEndTime);
                             }
                         }
                         break;
@@ -1034,7 +1004,6 @@ function requestBreakHourModifyApi() {
                         if(today.getDay() === 5) {
                             if (currentTime >= formattedStartTime && currentTime < formattedEndTime) {
                                 $('#today-open-1').html('<i class="fas fa-clock"></i> <strong>브레이크 타임</strong> : ' +  formattedStartTime + ' ~ ' + formattedEndTime);
-                                $('#today-open-2').html('<i class="fas fa-clock"></i> 원격줄서기 시간 :&nbsp;&nbsp;<strong>브레이크 타임</strong> ' + formattedStartTime + ' ~ ' + formattedEndTime);
                             }
                         }
                         break;
@@ -1047,7 +1016,6 @@ function requestBreakHourModifyApi() {
                         if(today.getDay() === 6) {
                             if (currentTime >= formattedStartTime && currentTime < formattedEndTime) {
                                 $('#today-open-1').html('<i class="fas fa-clock"></i> <strong>브레이크 타임</strong> : ' +  formattedStartTime + ' ~ ' + formattedEndTime);
-                                $('#today-open-2').html('<i class="fas fa-clock"></i> 원격줄서기 시간 :&nbsp;&nbsp;<strong>브레이크 타임</strong> ' + formattedStartTime + ' ~ ' + formattedEndTime);
                             }
                         }
                         break;
@@ -1060,7 +1028,6 @@ function requestBreakHourModifyApi() {
                         if(today.getDay() === 0) {
                             if (currentTime >= formattedStartTime && currentTime < formattedEndTime) {
                                 $('#today-open-1').html('<i class="fas fa-clock"></i> <strong>브레이크 타임</strong> : ' +  formattedStartTime + ' ~ ' + formattedEndTime);
-                                $('#today-open-2').html('<i class="fas fa-clock"></i> 원격줄서기 시간 :&nbsp;&nbsp;<strong>브레이크 타임</strong> ' + formattedStartTime + ' ~ ' + formattedEndTime);
                             }
                         }
                         break;
@@ -1077,18 +1044,50 @@ function requestBreakHourModifyApi() {
     });
 }
 
-/*
+// 상세 페이지 keyword API
+function requestKeywordApi() {
 
-// 키워드 조회 (DB 속 키워드 개수 만큼 for문을 돌린다)
-// 대상 요소를 선택
-const targetElement = document.querySelector('#home > h4:nth-child(12)');
+    const id = document.getElementById("restaurant-id").value;
 
-// 새 요소 생성
-const newElement = document.createElement('a');
-newElement.className = 'pick-outline mb-2';
-newElement.textContent = response.data.name;
+    $.ajax({
+        url: `/api/restaurantkeyword/restaurant/${id}`,
+        type: 'GET', // 필요한 HTTP 메서드로 변경
+        contentType: 'application/json', // JSON 형식으로 데이터 전송
+        success: function(response) {
+            // 요청 성공 시 동작
+            const restaurantKeyword = response.data; // 키워드 데이터 배열
 
-// 대상 요소 바로 아래에 새 요소 삽입
-targetElement.insertAdjacentElement('afterend', newElement);
+            restaurantKeyword.forEach((keywords) => {
+                let keywordHtml =
+                    `
+                    <a class="pick-outline mb-2">${keywords.keyword.name}</a>
+                    `;
+                // keyword 요소(내부) 끝에 추가
+                $('#keyword').append(keywordHtml);
+            });
 
-*/
+            console.log('키워드 set 완료');
+        },
+        error: function(xhr, status, error) {
+        // 요청 실패 시 동작
+        console.error('키워드 set 실패:', error);
+        alert('키워드 set 중 오류가 발생했습니다.');
+        }
+    });
+}
+
+// 상세 수정 페이지 keyword API
+function requestKeywordModifyApi() {
+
+    const id = document.getElementById("restaurant-id").value;
+
+    $.ajax({
+        url: `/api/restaurantkeyword/restaurant/${id}`,
+        type: 'GET', // 필요한 HTTP 메서드로 변경
+        contentType: 'application/json', // JSON 형식으로 데이터 전송
+        success: function(response) {
+            // 요청 성공 시 동작
+
+        }
+    });
+}
