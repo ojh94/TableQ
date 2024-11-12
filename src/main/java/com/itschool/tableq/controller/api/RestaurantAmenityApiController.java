@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @Slf4j
-@Tag(name = "점표편의시설", description = "점포 편의시설 관련 API")
+@Tag(name = "점포 편의시설", description = "점포 편의시설 관련 API")
 @RestController
 @RequestMapping("/api/restaurantamenity")
 public class RestaurantAmenityApiController extends CrudController<RestaurantAmenityRequest, RestaurantAmenityResponse, RestaurantAmenity> {
