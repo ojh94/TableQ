@@ -29,4 +29,10 @@ public class ReviewApiController extends CrudController<ReviewRequest, ReviewRes
         log.info("{}","{}","{}", "read: ", restaurantId, pageable);
         return ((ReviewService)baseService).readByRestaurantId(restaurantId, pageable);
     }
+
+    @Operation(summary = "사용자별 리뷰 조회", description = "User ID 및 pageable로 엔티티 목록을 조회")
+    @GetMapping("/user/{userId}")
+    public Header<List<ReviewResponse>> readByUserId(@PathVariable(name = "userId") Long UserId){
+        return ((ReviewService)baseService).readByUserId(UserId);
+    }
 }
