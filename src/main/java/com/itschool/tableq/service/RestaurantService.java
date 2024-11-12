@@ -97,7 +97,9 @@ public class RestaurantService extends BaseService<RestaurantRequest, Restaurant
         return restaurantRepository.searchByName(keyword);
     }
 
-    public List<Restaurant> findAll() {
-        return restaurantRepository.findAll();
+    public List<Restaurant> searchByAddress(String address) {
+        return restaurantRepository.searchByAddress(address);
     }
+
+
 }
