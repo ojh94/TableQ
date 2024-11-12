@@ -30,4 +30,9 @@ public class OwnerController {
     public String auth() {
         return "owner-auth";
     }
+
+    @GetMapping("/password")
+    public String getOwnerPassword() {
+        return "owner-password";
+    }
 }

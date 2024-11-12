@@ -56,7 +56,7 @@
 
             .certification {
                 position: relative;
-                display: flex; /* 얜 뭐지? */
+                display: flex;
             }
 
             .certification button {
@@ -141,14 +141,14 @@
                             <div class="row">
                                 <div class="col-md-6 mb-3">
                                     <label for="pass1">비밀번호</label>
-                                    <input type="password" class="form-control" id="pass1" name="password" placeholder="Password" oninput="pwCheck()" required>
+                                    <input type="password" class="form-control" id="pass1" name="password" placeholder="숫자, 영문, 특수문자 8~16자 입력" oninput="pwCheck()" required>
                                     <div class="invalid-feedback">
                                         비밀번호를 입력해주세요.
                                     </div>
                                 </div>
                                 <div class="col-md-6 mb-3">
                                     <label for="pass2" oninput="pwCheck()">비밀번호 확인</label>
-                                    <input type="password" class="form-control" id="pass2" placeholder="Re-enter password" oninput="pwCheck()" required>
+                                    <input type="password" class="form-control" id="pass2" placeholder="비밀번호 확인" oninput="pwCheck()" required>
                                     <div class="invalid-feedback">
                                         비밀번호를 재입력해주세요.
                                     </div>
