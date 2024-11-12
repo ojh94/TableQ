@@ -3,14 +3,12 @@ package com.itschool.tableq.domain;
 import com.itschool.tableq.domain.base.AuditableEntity;
 import com.itschool.tableq.network.request.AmenityRequest;
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Table(name = "amenities")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
+@Setter
 @Entity
 public class Amenity extends AuditableEntity {
     @Id
