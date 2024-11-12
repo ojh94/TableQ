@@ -13,6 +13,12 @@ $(document).ready(function() {
             const id = document.getElementById("restaurant-id").value;
             location.href = '/restaurant/modify/' + id;
         };
+
+        // 리뷰탭 속 별점 주기
+        $('.star_rating > .star').click(function() {
+          $(this).parent().children('span').removeClass('on');
+          $(this).addClass('on').prevAll('span').addClass('on');
+        });
     }
 
     if (window.location.pathname
@@ -59,7 +65,6 @@ $(document).ready(function() {
         reviewTab.show();
     });
 });
-
 
 // 주소 복사 기능
 function copyText() {
@@ -1045,15 +1050,23 @@ function requestKeywordApi() {
     const id = document.getElementById("restaurant-id").value;
 
     $.ajax({
-        url: `/api/restaurantkeyword/${id}`,
+        url: `/api/restaurantkeyword/restaurant/${id}`,
         type: 'GET', // 필요한 HTTP 메서드로 변경
         contentType: 'application/json', // JSON 형식으로 데이터 전송
         success: function(response) {
             // 요청 성공 시 동작
-            const breaks = response.data; // 키워드 데이터 배열
+            const restaurantKeyword = response.data; // 키워드 데이터 배열
 
-            console.log(breaks);
-            /*$('#keyword').append();*/
+            restaurantKeyword.forEach((keywords) => {
+                let keywordHtml =
+                    `
+                    <a class="pick-outline mb-2">${keywords.keyword.name}</a>
+                    `;
+                // keyword 요소(내부) 끝에 추가
+                $('#keyword').append(keywordHtml);
+            });
+
+            console.log('키워드 set 완료');
         },
         error: function(xhr, status, error) {
         // 요청 실패 시 동작
@@ -1069,7 +1082,7 @@ function requestKeywordModifyApi() {
     const id = document.getElementById("restaurant-id").value;
 
     $.ajax({
-        url: `/api/restaurantkeyword/${id}`,
+        url: `/api/restaurantkeyword/restaurant/${id}`,
         type: 'GET', // 필요한 HTTP 메서드로 변경
         contentType: 'application/json', // JSON 형식으로 데이터 전송
         success: function(response) {
