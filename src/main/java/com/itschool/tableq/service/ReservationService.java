@@ -91,7 +91,7 @@ public class ReservationService extends
         return Header.OK(response(baseRepository.findById(id).orElse(null)));
     }
 
-    public Header<List<ReservationResponse>> readByRestaurantId(Long restaurantId){
+    public Header<List<ReservationResponse>> readByRestaurantId(Long restaurantId, Pageable pageable){
         // 식당을 예약한 손님 조회
         // --> 필요한 정보 : reservationNumber(대기번호), people(인원), User.contactNumber(예약자 전화번호)
         Restaurant restaurant = restaurantRepository.findById(restaurantId).get();
@@ -101,7 +101,7 @@ public class ReservationService extends
         return Header.OK(responseList(reservationList));
     }
 
-    public Header<List<ReservationResponse>> readByUserId(Long userId){
+    public Header<List<ReservationResponse>> readByUserId(Long userId, Pageable pageable){
         // 유저가 예약했던 정보 조회
         // --> 유저가 예약했던 식당을 조회하는 방식으로 변경 건의
         User user = userRepository.findById(userId).get();
