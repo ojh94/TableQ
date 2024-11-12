@@ -11,7 +11,6 @@ import java.time.LocalDateTime;
 @Setter
 public class ReservationRequest {
     private Long id;
-    private String contactNumber;
     private Integer reservationNumber;
     private boolean isEntered;
     private LocalDateTime createdAt;
