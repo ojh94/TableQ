@@ -21,16 +21,16 @@ public class ReservationResponse {
     private LocalDateTime createdAt;
     private LocalDateTime lastModifiedAt;
     private Integer people;
-    private Restaurant restaurant;
-    private User user;
+    private Long restaurantId;
+    private Long userId;
 
     public ReservationResponse(Reservation reservation) {
         this.id = reservation.getId();
         this.reservationNumber = reservation.getReservationNumber();
         this.isEntered = reservation.isEntered();
         this.people = reservation.getPeople();
-        this.restaurant = reservation.getRestaurant();
-        this.user = reservation.getUser();
+        this.restaurantId = reservation.getRestaurant().getId();
+        this.userId = reservation.getUser().getId();
         this.createdAt = reservation.getCreatedAt();
         this.lastModifiedAt = reservation.getLastModifiedAt();
     }

@@ -35,7 +35,7 @@ public class Reservation extends AuditableEntity {
     private Integer people;
 
     @ManyToOne
-    @JoinColumn(name = "store_id",updatable = false)
+    @JoinColumn(name = "restaurant_id",updatable = false)
     private Restaurant restaurant;
 
     @ManyToOne
