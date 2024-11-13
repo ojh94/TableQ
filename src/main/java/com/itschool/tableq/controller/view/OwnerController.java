@@ -1,7 +1,9 @@
 package com.itschool.tableq.controller.view;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
@@ -18,8 +20,9 @@ public class OwnerController {
         return "ownerLogin";
     }
 
-    @GetMapping("/mypage")
-    public String ownerMypage() {
+    @GetMapping("/mypage/{id}")
+    public String getOwnerMypage(@PathVariable Long id, Model model) {
+        model.addAttribute("id", id);
         return "owner-mypage";
     }
 
@@ -31,8 +34,9 @@ public class OwnerController {
         return "owner-auth";
     }
 
-    @GetMapping("/password")
-    public String getOwnerPassword() {
+    @GetMapping("/password/{id}")
+    public String getOwnerPassword(@PathVariable Long id, Model model) {
+        model.addAttribute("id", id);
         return "owner-password";
     }
 }

@@ -9,7 +9,7 @@ $(document).ready(function() {
         requestKeywordApi();
         requestAmenityApi();
 
-        // 수정 버튼 클릭시
+        // 수정 버튼 클릭 시
         document.getElementById("modify-button").onclick = function() {
             const id = document.getElementById("restaurant-id").value;
             location.href = '/restaurant/modify/' + id;
