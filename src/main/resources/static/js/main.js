@@ -19,8 +19,14 @@ document.addEventListener('DOMContentLoaded', () => {
   const sortSelect = document.getElementById('sortSelect');
   const restaurantGrid = document.getElementById('restaurantGrid');
   const restaurantGrid2 = document.getElementById('restaurantGrid2');
+  const userId = window.userId;
+  console.log('User ID:', userId);  // userId 값 출력
 
-
+//  fetchUserReviewedRestaurants(userId)
+//    .then(restaurantIds => {
+//        console.log(restaurantIds);
+//    })
+//    .catch(error = console.error('Error fetching user reviewed restaurants:', error));
 
    // 모든 레스토랑 데이터를 가져오는 함수
    function fetchAllRestaurants() {
@@ -51,6 +57,40 @@ document.addEventListener('DOMContentLoaded', () => {
   //    { id: 1, name: '레스토랑 1',img:"/img/ramen.jpg", type: '한식', location: '서울시 강남구', rating: 4.5, reviews: 120 },
   //
   //];
+
+   // 유저가 작성한 리뷰를 기반으로 레스토랑 가져오기
+        function fetchUserReviewedRestaurants(userId) {
+          return fetch(`/api/review/user/${userId}`)
+            .then(response => {
+            console.log('API Response:', response); //응답 로그 확인
+              if (!response.ok) throw new Error('Failed to fetch user reviews');
+              return response.json();
+            })
+            .then(data => {
+                console.log('Data:', data);
+                return data.data.map(review => review.restaurantId);
+            })
+            .catch(function(error) {
+                    console.error('Error fetching user reviews:', error); //오류 처리
+                });
+        }
+
+        fetchUserReviewedRestaurants(userId)
+            .then(restaurantIds => {
+                console.log(restaurantIds); // 예약한 레스토랑 ID 출력
+            })
+            .catch(function(error) {
+                console.error('Error in main.js', error);
+            });
+
+        // 특정 레스토랑 데이터를 가져오는 함수
+        function fetchRestaurantById(restaurantId) {
+          return fetch(`/api/restaurant/${restaurantId}`)
+            .then(response => {
+              if (!response.ok) throw new Error(`Failed to fetch restaurant with ID ${restaurantId}`);
+              return response.json();
+            });
+        }
 
   // 레스토랑 카드 생성 함수
   function createRestaurantCard(restaurant, rating = 0, reviewsCount = 0) {
@@ -84,6 +124,8 @@ document.addEventListener('DOMContentLoaded', () => {
     return card;
   }
 
+
+
   // 전체 레스토랑 데이터 가져와서 렌더링
   fetchAllRestaurants()
     .then(data => {
@@ -101,37 +143,68 @@ document.addEventListener('DOMContentLoaded', () => {
           .catch(error => console.error('Error fetching review data:', error));
       });
 
-      restaurants2.forEach(restaurant => {
-        fetchReviewData(restaurant.id)
-        .then(({ rating, reviewsCount }) => {
-                    restaurantGrid2.appendChild(createRestaurantCard(restaurant, rating, reviewsCount));
-                    lucide.createIcons();
-                  })
-          .catch(error => console.error('Error fetching review data:', error));
-      });
+//      restaurants2.forEach(restaurant => {
+//        fetchReviewData(restaurant.id)
+//        .then(({ rating, reviewsCount }) => {
+//                    restaurantGrid2.appendChild(createRestaurantCard(restaurant, rating, reviewsCount));
+//                    lucide.createIcons();
+//                  })
+//          .catch(error => console.error('Error fetching review data:', error));
+//      });
     })
     .catch(error => console.error('Error fetching restaurant data:', error));
 
 
 
-  // 특정 레스토랑 정보 표시
-  const selectedRestaurantId = '1';
-  const selectedRestaurant = document.querySelector(`.restaurant-item[data-id="${selectedRestaurantId}"]`);
+   // 전체 레스토랑 데이터 가져와서 렌더링
+    fetchAllRestaurants()
+      .then(data => {
+        const restaurants = data.filter(restaurant => !restaurant.visited);
+        const restaurants2 = data.filter(restaurant => restaurant.visited);
 
-  if (selectedRestaurant) {
-    const restaurantName = selectedRestaurant.getAttribute('data-name');
-    const restaurantRating = selectedRestaurant.getAttribute('data-rating');
-    const restaurantReviews = selectedRestaurant.getAttribute('data-reviews');
+        // restaurants2 (유저가 리뷰를 남긴 레스토랑들만) 표시
+        fetchUserReviewedRestaurants(userId)
+          .then(restaurantIds => {
+            console.log(restaurantIds); //유저가 리뷰한 레스토랑 ID 출력
+//            restaurantGrid2.innerHTML = ''; // 기존 내용 초기화
+            restaurantIds.forEach(id => {
+              fetchRestaurantById(id)
+                .then(restaurant => {
+                  fetchReviewData(restaurant.id)
+                    .then(reviewData => {
+                      const rating = reviewData.rating || 0;
+                      const reviewsCount = reviewData.reviewsCount || 0;
+                      restaurantGrid2.appendChild(createRestaurantCard(restaurant, rating, reviewsCount));
+                      lucide.createIcons(); // 아이콘 초기화
+                    })
+                    .catch(error => console.error('Error fetching review data:', error));
+                })
+                .catch(error => console.error('Error fetching restaurant data:', error));
+            });
+          })
+          .catch(error => console.error('Error fetching user reviewed restaurants:', error));
+      })
+      .catch(error => console.error('Error fetching restaurant data:', error));
 
-    // 헤더 정보 업데이트
-    const header = document.querySelector('header');
-    header.innerHTML += `
-      <div class="restaurant-info">
-        <h1>${restaurantName} (ID: ${selectedRestaurantId})</h1>
-        <p>별점: ${restaurantRating} (리뷰: ${restaurantReviews}개)</p>
-      </div>
-    `;
-  }
+
+//  // 특정 레스토랑 정보 표시
+//  const selectedRestaurantId = '1';
+//  const selectedRestaurant = document.querySelector(`.restaurant-item[data-id="${selectedRestaurantId}"]`);
+//
+//  if (selectedRestaurant) {
+//    const restaurantName = selectedRestaurant.getAttribute('data-name');
+//    const restaurantRating = selectedRestaurant.getAttribute('data-rating');
+//    const restaurantReviews = selectedRestaurant.getAttribute('data-reviews');
+//
+//    // 헤더 정보 업데이트
+//    const header = document.querySelector('header');
+//    header.innerHTML += `
+//      <div class="restaurant-info">
+//        <h1>${restaurantName} (ID: ${selectedRestaurantId})</h1>
+//        <p>별점: ${restaurantRating} (리뷰: ${restaurantReviews}개)</p>
+//      </div>
+//    `;
+//  }
 
    // 검색 요청 함수
     function searchRestaurants(query) {
