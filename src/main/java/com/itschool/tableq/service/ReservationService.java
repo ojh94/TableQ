@@ -13,6 +13,7 @@ import com.itschool.tableq.repository.RestaurantRepository;
 import com.itschool.tableq.repository.ReviewRepository;
 import com.itschool.tableq.repository.UserRepository;
 import com.itschool.tableq.service.base.BaseService;
+import com.itschool.tableq.util.DateUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -60,6 +61,22 @@ public class ReservationService extends
         return responseList;
     }
 
+    public Boolean isExist(User user, Restaurant restaurant){
+        // 대기중인 예약이 존재한다면 true 반환
+        // 그 이미 완료된 줄서기라면 대기중이 아닌 것으로 판단하여 false 반환
+        List<Reservation> reservations = ((ReservationRepository)baseRepository)
+                .findByUserAndRestaurantAndCreatedAtBetween(
+                        user, restaurant, DateUtil.getStartOfDay(), DateUtil.getEndOfDay()
+                );
+        if(reservations != null){
+            for(Reservation entity : reservations){
+                if (entity.getIsEntered() == null) return true;
+            }
+        }
+
+        return false;
+    }
+
     public Integer count(Restaurant restaurant){
         // 대기번호를 계산하는 메소드
         int number = 1;
@@ -86,15 +103,22 @@ public class ReservationService extends
     public Header<ReservationResponse> create(Header<ReservationRequest> request) {
         ReservationRequest reservationRequest = request.getData();
 
-        Reservation reservation = Reservation.builder()
-                .reservationNumber(count(restaurantRepository.findById(reservationRequest.getRestaurantId()).orElse(null)))
-                .people(reservationRequest.getPeople())
-                .restaurant(restaurantRepository.findById(reservationRequest.getRestaurantId()).orElse(null))
-                .user(userRepository.findById(reservationRequest.getUserId()).orElse(null))
-                .build();
+        User user = userRepository.findById(reservationRequest.getUserId()).orElseThrow();
+        Restaurant restaurant = restaurantRepository.findById(reservationRequest.getRestaurantId()).orElseThrow();
 
-        baseRepository.save(reservation);
-        return Header.OK(response(reservation));
+        if(isExist(user, restaurant)) {
+            throw new RuntimeException("Already Reserved User");
+        } else {
+            Reservation reservation = Reservation.builder()
+                    .reservationNumber(count(restaurantRepository.findById(reservationRequest.getRestaurantId()).orElse(null)))
+                    .people(reservationRequest.getPeople())
+                    .restaurant(restaurantRepository.findById(reservationRequest.getRestaurantId()).orElse(null))
+                    .user(userRepository.findById(reservationRequest.getUserId()).orElse(null))
+                    .build();
+
+            baseRepository.save(reservation);
+            return Header.OK(response(reservation));
+        }
     }
 
     @Override

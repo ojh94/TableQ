@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 public class ReservationRequest {
     private Long id;
     private Integer reservationNumber;
-    private boolean isEntered;
+    private Boolean isEntered;
     private LocalDateTime createdAt;
     private LocalDateTime lastModifiedAt;
     private Integer people;
