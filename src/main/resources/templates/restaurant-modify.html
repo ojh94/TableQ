@@ -121,7 +121,7 @@
                             </div>
 
                             <h4 class="fw-bolder mb-4 mt-5">매장소개</h4>
-                            <textarea style="width: 100%; height: 200px;"></textarea>
+                            <textarea id="introduction" style="width: 100%; height: 200px;"></textarea>
 
                             <h4 class="fw-bolder mb-4 mt-5">매장 Pick</h4>
                             <div style="text-align: center;">
@@ -133,73 +133,7 @@
 
                         <div class="tab-pane fade" id="menu" role="tabpanel" aria-labelledby="menu-tab">
                             <h4 class="fw-bolder mb-4 mt-5">메뉴</h4>
-
-                            <div id="menu-list">
-                                <div class="menu-item mb-4" style="display: flex; align-items: center;">
-                                    <div class="item-info">
-                                        <h4 style="display: flex; align-items: center;">
-                                            <input value="스페셜텐동" placeholder="메뉴명">&nbsp;
-                                            <span class="badge" style="background-color: rgba(237, 125, 49, 1); font-size: 13px; display: flex; align-items: center;">추천
-                                                <input type="checkbox" style="margin-left: 6px;">
-                                            </span>
-                                        </h4>
-                                        <h5 class="price" style="margin-bottom: 0px;"><input value="16,500원" placeholder="가격"></h5>
-                                    <!--<p class="item-text">
-                                        새우가 포함된 텐동
-                                        </p>-->
-                                    </div>
-                                    <img class="photo menu-img-modify" src="/img/test-img/텐동.jpg" alt="#" onclick="triggerFileInput(this)"/>
-                                    <input type="file" style="display: none;" accept="image/*" onchange="updateImage(event, this)" />
-                                    <i class="bi bi-x-square px-4" style="font-size: 25px; cursor: pointer;" onclick="deleteMenuItem(this)"></i>
-                                </div>
-
-                                <div class="menu-item mb-4" style="display: flex; align-items: center;">
-                                    <div class="item-info">
-                                        <div>
-                                            <h4 style="display: flex; align-items: center;">
-                                                <input value="아나고텐동" placeholder="메뉴명">&nbsp;
-                                                <span class="badge" style="background-color: rgba(237, 125, 49, 1); font-size: 13px; display: flex; align-items: center;">추천
-                                                    <input type="checkbox" style="margin-left: 6px;">
-                                                </span>
-                                            </h4>
-                                            <h5 class="price" style="margin-bottom: 0px;"><input value="15,500원" placeholder="가격"></h5>
-                                        </div>
-                                        <!--<p class="item-text">
-                                            새우가 포함된 텐동
-                                        </p>-->
-                                    </div>
-                                    <img class="photo menu-img-modify" src="/img/test-img/텐동.jpg" alt="#" onclick="triggerFileInput(this)"/>
-                                    <input type="file" style="display: none;" accept="image/*" onchange="updateImage(event, this)" />
-                                    <i class="bi bi-x-square px-4" style="font-size: 25px; cursor: pointer;" onclick="deleteMenuItem(this)"></i>
-                                </div>
-
-                                <!--<div id="addMenu" class="d-grid mt-5">
-                                    <button id="addMenuButton" class="btn btn-primary btn-menu" type="button"><i class="bi bi-plus-circle-dotted"></i></button>
-                                </div>-->
-
-                                <!--<hr class="mb-5 mt-5"/>-->
-
-                                <div class="menu-item mb-4" style="display: flex; align-items: center;">
-                                    <div class="item-info">
-                                        <div>
-                                            <h4 style="display: flex; align-items: center;">
-                                                <input value="콜라" placeholder="메뉴명">&nbsp;
-                                                <span class="badge" style="background-color: rgba(237, 125, 49, 1); font-size: 13px; display: flex; align-items: center;">추천
-                                                    <input type="checkbox" style="margin-left: 6px;">
-                                                </span>
-                                            </h4>
-                                            <h5 class="price" style="margin-bottom: 0px;"><input value="2,000원" placeholder="가격"></h5>
-                                        </div>
-                                        <!--<p class="item-text">
-                                            새우가 포함된 텐동
-                                        </p>-->
-                                    </div>
-                                    <img class="photo menu-img-modify" src="/img/test-img/텐동.jpg" alt="#" onclick="triggerFileInput(this)"/>
-                                    <input type="file" style="display: none;" accept="image/*" onchange="updateImage(event, this)" />
-                                    <i class="bi bi-x-square px-4" style="font-size: 25px; cursor: pointer;" onclick="deleteMenuItem(this)"></i>
-                                </div>
-                            </div>
-
+                            <div id="menu-list"></div>
                             <div id="addMenu" class="d-grid mt-5">
                                 <button id="addMenuButton" class="btn btn-primary btn-menu" type="button"><i class="bi bi-plus-circle-dotted"></i></button>
                             </div>
@@ -303,22 +237,64 @@
                     <h5 class="modal-title" id="amenitiesLabel">편의시설</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <div class="modal-body">
+                <div id="amenity" class="modal-body">
                     <div class="form-check">
                         <input class="form-check-input" type="checkbox" value="" id="amenities-1">
                         <label class="form-check-label" for="amenities-1">
-                            주차 이용 가능
+                            와이파이
                         </label>
                     </div>
                     <div class="form-check">
-                        <input class="form-check-input" type="checkbox" value="" id="amenities-2" checked>
+                        <input class="form-check-input" type="checkbox" value="" id="amenities-2">
                         <label class="form-check-label" for="amenities-2">
-                            화장실 남녀 구분
+                            주차장
+                        </label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" value="" id="amenities-3">
+                        <label class="form-check-label" for="amenities-3">
+                            반려동물
+                        </label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" value="" id="amenities-4">
+                        <label class="form-check-label" for="amenities-4">
+                            콜키지
+                        </label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" value="" id="amenities-5">
+                        <label class="form-check-label" for="amenities-5">
+                            단체석 구비
+                        </label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" value="" id="amenities-6">
+                        <label class="form-check-label" for="amenities-6">
+                            대관 여부
+                        </label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" value="" id="amenities-7">
+                        <label class="form-check-label" for="amenities-7">
+                            테라스 여부
+                        </label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" value="" id="amenities-8">
+                        <label class="form-check-label" for="amenities-8">
+                            남녀 화장실 구분
+                        </label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" value="" id="amenities-9">
+                        <label class="form-check-label" for="amenities-9">
+                            유아용 의자
                         </label>
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
+                    <button id="amenity-cancel" type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
                     <button type="button" class="btn btn-primary">선택완료</button>
                 </div>
             </div>
