@@ -86,7 +86,7 @@ public class BusinessInformationService
         BusinessInformation businessInformation = baseRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("not found" + id));
 
-        businessInformation.update(businessInformation);
+        businessInformation.update(businessInformationRequest);
         return Header.OK(response(businessInformation));
     }
 
