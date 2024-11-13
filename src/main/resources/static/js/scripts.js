@@ -7,6 +7,7 @@ $(document).ready(function() {
         requestOpeningHourApi();
         requestBreakHourApi();
         requestKeywordApi();
+        requestAmenityApi();
 
         // 수정 버튼 클릭시
         document.getElementById("modify-button").onclick = function() {
@@ -29,6 +30,7 @@ $(document).ready(function() {
         requestOpeningHourModifyApi();
         requestBreakHourModifyApi();
         requestKeywordModifyApi();
+        requestAmenityModifyApi();
 
         // 페이지를 이전 페이지로 이동
         document.getElementById('cancel').addEventListener('click', function() {
@@ -62,6 +64,13 @@ $(document).ready(function() {
         // keyword 취소 버튼 클릭 시 초기 상태로 복원
         document.getElementById('keyword-cancel').addEventListener('click', function() {
             document.querySelectorAll('#keyword input[type="checkbox"]').forEach(checkbox => {
+                checkbox.checked = checkbox.getAttribute('data-initial-checked') === 'true';
+            });
+        });
+
+        // amenity 취소 버튼 클릭 시 초기 상태로 복원
+        document.getElementById('amenity-cancel').addEventListener('click', function() {
+            document.querySelectorAll('#amenity input[type="checkbox"]').forEach(checkbox => {
                 checkbox.checked = checkbox.getAttribute('data-initial-checked') === 'true';
             });
         });
@@ -151,7 +160,7 @@ function requestRestaurantApi() {
             // 요청 성공 시 동작
             const rName = $('body > div > div.container.mt-5 > div > div > article:nth-child(1) > header > h1');
             const rAddress = $('#home > p:nth-child(4)');
-            const rIntroduction = $('#home > p:nth-child(11)');
+            const rIntroduction = $('#introduction');
             const rContactNumber = $('#home > table > tbody > tr:nth-child(4) > td:nth-child(2)');
 
             rName[0].textContent = response.data.name;
@@ -192,7 +201,7 @@ function requestRestaurantModifyApi() {
             // 요청 성공 시 동작
             const rName = $('body > div > div.container.mt-5 > div > div > article:nth-child(1) > header > h1 > input');
             const rAddress = $('#home > div:nth-child(4) > input');
-            const rIntroduction = $('#home > textarea');
+            const rIntroduction = $('#introduction');
             const rContactNumber = $('#times-modal > div > div > div.modal-body > div.card.mb-3 > div > table > tbody > tr:nth-child(1) > td:nth-child(2) > input');
 
             rName.val(response.data.name);
@@ -379,7 +388,9 @@ function requestMenuApi() {
         contentType: 'application/json', // JSON 형식으로 데이터 전송
         success: function(response) {
             // 요청 성공 시 동작
-            const menus = response.data; // 메뉴 데이터 배열
+            const menus = (response.data).sort((a, b) => a.id - b.id); // 메뉴 데이터 배열(오름차순)
+
+            console.log(menus);
 
             menus.forEach((menu) => {
 
@@ -441,11 +452,11 @@ function requestMenuModifyApi() {
         contentType: 'application/json', // JSON 형식으로 데이터 전송
         success: function(response) {
             // 요청 성공 시 동작
-            const menus = response.data; // 메뉴 데이터 배열
+            const menus = (response.data).sort((a, b) => a.id - b.id); // 메뉴 데이터 배열(오름차순)
 
             menus.forEach((menu) => {
 
-                if (menu.recommendation === null) {
+                if (menu.recommendation !== true) {
 
                     const menuModifyHtml = `
                         <div class="menu-item mb-4" style="display: flex; align-items: center;">
@@ -1115,6 +1126,73 @@ function requestKeywordModifyApi() {
         // 요청 실패 시 동작
         console.error('키워드 수정 set 실패:', error);
         alert('키워드 수정 set 중 오류가 발생했습니다.');
+        }
+    });
+}
+
+// 상세 페이지 편의시설 API
+function requestAmenityApi() {
+
+    const id = document.getElementById("restaurant-id").value;
+
+    $.ajax({
+        url: `/api/restaurantamenity/restaurant/${id}`,
+        type: 'GET', // 필요한 HTTP 메서드로 변경
+        contentType: 'application/json', // JSON 형식으로 데이터 전송
+        success: function(response) {
+            // 요청 성공 시 동작
+            const restaurantAmenity = response.data; // 키워드 데이터 배열
+
+            restaurantAmenity.forEach((amenitys) => {
+                let amenityHtml =
+                    `
+                    <p>${amenitys.amenity.name}</p>
+                    `;
+                // keyword 요소(내부) 끝에 추가
+                $('#amenity').append(amenityHtml);
+            });
+
+            console.log('편의시설 set 완료');
+        },
+        error: function(xhr, status, error) {
+        // 요청 실패 시 동작
+        console.error('편의시설 set 실패:', error);
+        alert('편의시설 set 중 오류가 발생했습니다.');
+        }
+    });
+}
+
+// 상세 수정 페이지 편의시설 API
+function requestAmenityModifyApi() {
+
+    const id = document.getElementById("restaurant-id").value;
+
+    $.ajax({
+        url: `/api/restaurantamenity/restaurant/${id}`,
+        type: 'GET', // 필요한 HTTP 메서드로 변경
+        contentType: 'application/json', // JSON 형식으로 데이터 전송
+        success: function(response) {
+            // 요청 성공 시 동작
+            const restaurantAmenity = response.data; // 키워드 데이터 배열
+            const labels = document.querySelectorAll("#amenity .form-check-label");
+
+            restaurantAmenity.forEach((amenitys) => {
+                labels.forEach((label) => {
+                    if (label.textContent.trim() === amenitys.amenity.name) {
+                        label.previousElementSibling.checked = true; // 해당 라벨의 체크박스를 체크
+
+                        // 초기 상태 저장
+                        label.previousElementSibling.setAttribute('data-initial-checked', 'true');
+                    }
+                });
+            });
+
+            console.log('편의시설 수정 set 완료');
+        },
+        error: function(xhr, status, error) {
+        // 요청 실패 시 동작
+        console.error('편의시설 수정 set 실패:', error);
+        alert('편의시설 수정 set 중 오류가 발생했습니다.');
         }
     });
 }
