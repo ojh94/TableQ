@@ -14,10 +14,11 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
+
 public class ReservationResponse {
     private Long id;
     private Integer reservationNumber;
-    private boolean isEntered;
+    private Boolean isEntered;
     private LocalDateTime createdAt;
     private LocalDateTime lastModifiedAt;
     private Integer people;
@@ -27,7 +28,7 @@ public class ReservationResponse {
     public ReservationResponse(Reservation reservation) {
         this.id = reservation.getId();
         this.reservationNumber = reservation.getReservationNumber();
-        this.isEntered = reservation.isEntered();
+        this.isEntered = reservation.getIsEntered();
         this.people = reservation.getPeople();
         this.restaurantId = reservation.getRestaurant().getId();
         this.userId = reservation.getUser().getId();
