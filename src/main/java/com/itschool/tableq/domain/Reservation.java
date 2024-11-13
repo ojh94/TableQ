@@ -28,9 +28,7 @@ public class Reservation extends AuditableEntity {
     @Column(nullable = false, updatable = false)
     private Integer reservationNumber;
 
-    @Column(nullable = false)
-    @ColumnDefault("false")
-    private boolean isEntered;
+    private Boolean isEntered;
 
     private Integer people;
 
@@ -51,6 +49,6 @@ public class Reservation extends AuditableEntity {
     }
 
     public void update(ReservationRequest dto){
-        this.isEntered = dto.isEntered();
+        this.isEntered = !dto.getIsEntered();
     }
 }
