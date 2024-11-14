@@ -10,12 +10,12 @@ jobs:
   build:
     runs-on: amazonlinux-2
 
-    env:
-      JASYPT_PASSWORD: ${{ secrets.JASYPT_PASSWORD }}
+    # env:
+      # JASYPT_PASSWORD: ${{ secrets.JASYPT_PASSWORD }}
 
     steps:
       - name: 테스트
-        run: echo "$JASYPT_PASSWORD 입니다."
+        run: echo "test" # "$JASYPT_PASSWORD 입니다."
 
       - name: 체크아웃 Github Action
         uses: actions/checkout@v3
