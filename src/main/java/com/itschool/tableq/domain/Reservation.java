@@ -49,6 +49,6 @@ public class Reservation extends AuditableEntity {
     }
 
     public void update(ReservationRequest dto){
-        this.isEntered = !dto.getIsEntered();
+        this.isEntered = dto.getIsEntered();
     }
 }

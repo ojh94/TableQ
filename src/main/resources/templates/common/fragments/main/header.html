@@ -1,4 +1,7 @@
 <header th:fragment="HeaderFragment" class="toolbar-top">
+
+    <input type="hidden" th:value="${user.id}" id="userId">
+
     <div class="logo">
     </div>
 
@@ -10,5 +13,6 @@
         <!-- 로그인 한 경우 -->
         <a href="/mypage" th:if="${user != null}" th:text="${user.nickname != null ? user.nickname + '님' : user.name + '님'}"></a>
         <a th:if="${user != null}" class="btn btn-light" href="/logout" aria-label="로그아웃">로그아웃</a>
+
     </nav>
 </header>

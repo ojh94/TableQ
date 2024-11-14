@@ -118,13 +118,24 @@ public class ReviewService extends BaseService<ReviewRequest, ReviewResponse, Re
     }
 
     // ID에 해당하는 유저가 남긴 리뷰 조회
-    public Header<List<ReviewResponse>> readByUserId(Long userId){
+    public Header<List<ReviewResponse>> readByUserId(Long userId, Pageable pageable){
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new EntityNotFoundException("유저를 찾을 수 없습니다. ID: " + userId));
 
-        List<Review> reviewList = ((ReviewRepository)baseRepository).findByUser(user).orElse(null);
+        Page<Review> entities = ((ReviewRepository)baseRepository).findByUser(user, pageable);
 
-        return Header.OK(responseList(reviewList));
+        List<ReviewResponse> reviewList = entities.stream()
+                .map(entity -> response(entity))
+                .collect(Collectors.toList());
+
+        Pagination pagination = Pagination.builder()
+                .totalPages(entities.getTotalPages())
+                .totalElements(entities.getTotalElements())
+                .currentPage(entities.getNumber())
+                .currentElements(entities.getNumberOfElements())
+                .build();
+
+        return Header.OK(reviewList, pagination);
     }
 
     @Override

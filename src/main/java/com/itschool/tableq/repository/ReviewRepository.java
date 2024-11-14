@@ -14,7 +14,7 @@ public interface ReviewRepository extends JpaRepository<Review, Long> {
     // 레스토랑에 해당하는 리뷰를 페이지를 지원하여 조회
     Page<Review> findByRestaurant(Restaurant restaurant, Pageable pageable);
 
-    Optional<List<Review>> findByUser(User user);
+    Page<Review> findByUser(User user, Pageable pageable);
 
     Optional<Review> getFirstByOrderByIdDesc();
 

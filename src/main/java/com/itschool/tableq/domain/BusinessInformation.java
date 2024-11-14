@@ -1,6 +1,7 @@
 package com.itschool.tableq.domain;
 
 import com.itschool.tableq.domain.base.AuditableEntity;
+import com.itschool.tableq.network.request.BusinessInformationRequest;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -36,9 +37,9 @@ public class BusinessInformation extends AuditableEntity {
         this.owner = owner;
     }
 
-    public void update(BusinessInformation businessInformation) {
-        this.businessNumber = businessInformation.getBusinessNumber() == null? this.businessNumber : businessInformation.getBusinessNumber();
-        this.businessName = businessInformation.getBusinessName() == null? this.businessName : businessInformation.getBusinessName();
-        this.contactNumber = businessInformation.getContactNumber() == null? this.contactNumber : businessInformation.getContactNumber();
+    public void update(BusinessInformationRequest businessInformationRequest) {
+        this.businessNumber = businessInformationRequest.getBusinessNumber() == null? this.businessNumber : businessInformationRequest.getBusinessNumber();
+        this.businessName = businessInformationRequest.getBusinessName() == null? this.businessName : businessInformationRequest.getBusinessName();
+        this.contactNumber = businessInformationRequest.getContactNumber() == null? this.contactNumber : businessInformationRequest.getContactNumber();
     }
 }
