@@ -77,7 +77,7 @@ public class ReservationService extends
         return false;
     }
 
-    public Integer count(Restaurant restaurant){
+    public Integer getWaitingNubmer(Restaurant restaurant){
         // 대기번호를 계산하는 메소드
         int number = 1;
 
@@ -103,17 +103,20 @@ public class ReservationService extends
     public Header<ReservationResponse> create(Header<ReservationRequest> request) {
         ReservationRequest reservationRequest = request.getData();
 
-        User user = userRepository.findById(reservationRequest.getUserId()).orElseThrow();
-        Restaurant restaurant = restaurantRepository.findById(reservationRequest.getRestaurantId()).orElseThrow();
+        User user = userRepository.findById(reservationRequest.getUserId())
+                .orElseThrow(()-> new RuntimeException("None Exist User ID"));
+
+        Restaurant restaurant = restaurantRepository.findById(reservationRequest.getRestaurantId())
+                .orElseThrow(()-> new RuntimeException("None Exist Restaurant ID"));
 
         if(isExist(user, restaurant)) {
             throw new RuntimeException("Already Reserved User");
         } else {
             Reservation reservation = Reservation.builder()
-                    .reservationNumber(count(restaurantRepository.findById(reservationRequest.getRestaurantId()).orElse(null)))
+                    .reservationNumber(getWaitingNubmer(restaurant))
                     .people(reservationRequest.getPeople())
-                    .restaurant(restaurantRepository.findById(reservationRequest.getRestaurantId()).orElse(null))
-                    .user(userRepository.findById(reservationRequest.getUserId()).orElse(null))
+                    .restaurant(restaurant)
+                    .user(user)
                     .build();
 
             baseRepository.save(reservation);
