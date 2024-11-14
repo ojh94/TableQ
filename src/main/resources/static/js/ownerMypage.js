@@ -8,6 +8,12 @@ $(document).ready(function() {
             const id = document.getElementById("owner-id").value;
             location.href = '/owner/password/' + id;
         };
+
+        // nav 속 마이페이지 클릭 시
+        document.getElementById("nav-mypage").onclick = function() {
+            const id = document.getElementById("owner-id").value;
+            location.href = '/owner/mypage/' + id;
+        }
     }
 });
 

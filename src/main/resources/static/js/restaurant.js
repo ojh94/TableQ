@@ -177,6 +177,11 @@ function requestRestaurantApi() {
                 .text("원격줄서기, 현장대기 모두 가능");
             }
 
+            // nav 속 마이페이지 클릭 시
+            document.getElementById("nav-mypage").onclick = function() {
+                location.href = '/owner/mypage/' + response.data.businessInformation.owner.id;
+            }
+
             console.log('가게 set 완료');
 
         },
@@ -216,6 +221,11 @@ function requestRestaurantModifyApi() {
             } else {
                 $("body > div > div.container.mt-5 > div > div > article:nth-child(1) > table > tbody > tr:nth-child(1) > td:nth-child(2)")
                 .text("원격줄서기, 현장대기 모두 가능");
+            }
+
+            // nav 속 마이페이지 클릭 시
+            document.getElementById("nav-mypage").onclick = function() {
+                location.href = '/owner/mypage/' + response.data.businessInformation.owner.id;
             }
 
             console.log('가게 수정 set 완료');
@@ -389,8 +399,6 @@ function requestMenuApi() {
         success: function(response) {
             // 요청 성공 시 동작
             const menus = (response.data).sort((a, b) => a.id - b.id); // 메뉴 데이터 배열(오름차순)
-
-            console.log(menus);
 
             menus.forEach((menu) => {
 
