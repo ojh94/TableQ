@@ -1,0 +1,9 @@
+server:
+  port: 80
+
+# Choose Environment
+spring:
+  profiles:
+    active: prod
+  # config:
+  # location: classpath:/application-dev.yml
