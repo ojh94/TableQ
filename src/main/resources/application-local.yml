@@ -1,0 +1,72 @@
+# local 환경
+spring:
+  config:
+    activate:
+      on-profile: local  # local 프로파일에서만 적용
+  h2:
+    console:
+      enabled: true  # /h2-console 접속 가능
+  datasource:
+    url: jdbc:h2:mem:testdb  # H2 인메모리 데이터베이스
+  jpa:
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true  # SQL 포맷팅
+        ddl-auto: create  # 매번 스키마 생성 (개발/로컬 환경에 적합)
+        dialect: org.hibernate.dialect.H2Dialect  # H2 방언 사용
+    defer-datasource-initialization: true  # 데이터 소스 초기화를 지연
+  devtools:
+    livereload:
+      enabled: true
+    restart:
+      enabled: false
+  thymeleaf:
+    cache: false
+
+springdoc:
+  swagger-ui:
+    # swagger-ui 접근 경로
+    # 기본값은 /swagger-ui/index.html
+    path: /swagger-ui
+
+    # 각 API의 그룹 표시 순서
+    # path, query, body, response 순으로 출력
+    group-order: DESC
+
+    # 태그 정렬 순서
+    # alpha: 알파벳 순 정렬
+    # method: openAPI specification file에 원하는 태그 정렬 방식 직접 기재
+    tags-sorter: alpha
+
+    # 컨트롤러 정렬 순서
+    # method는 delete - get - patch - post - put 순으로 정렬된다
+    # alpha를 사용해 알파벳 순으로 정렬할 수 있다.
+    operations-sorter: method
+
+    # swagger-ui default url인 petstore.html의 비활성화 설정
+    disable-swagger-default-url: true
+
+    # swagger-ui에서 try 했을 때 request duration을 알려주는 설정
+    display-request-duration: true
+
+    # 문서 접힌 상태로 시작
+    doc-expansion: none
+
+  # openAPI 접근 경로
+  # default 값은 http://{server}:{port}/{context-path}/v3/api-docs
+  api-docs:
+    path: /api-docs
+
+  # Spring Actuator의 endpoint까지 보여줄 것인지?
+  show-actuator: true
+
+  # request media type의 기본값
+  default-consumes-media-type: application/json
+
+  # response media type의 기본값
+  default-produces-media-type: application/json
+
+  # 해당 패턴에 매칭되는 controller만 swagger-ui에 노출한다.
+  paths-to-match:
+    - /api/**

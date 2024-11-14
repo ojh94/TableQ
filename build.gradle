@@ -7,6 +7,10 @@ plugins {
 group = 'com.itschool'
 version = '1.0.1-SNAPSHOT'
 
+jar {
+    enabled = false
+}
+
 repositories {
     mavenCentral()
 }

@@ -341,8 +341,6 @@ gradle-app.setting
 *.hprof
 
 # 추가
-application-dev.yml
-application-local.yml
 application-prod.yml
 
 # End of https://www.toptal.com/developers/gitignore/api/windows,macos,intellij,eclipse,java,gradle
