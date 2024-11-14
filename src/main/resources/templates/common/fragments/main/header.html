@@ -1,11 +1,6 @@
 <header th:fragment="HeaderFragment" class="toolbar-top">
 
-    <script th:inline="javascript">
-        /*<![CDATA[*/
-        var userId = [[${user.id}]];  // Thymeleaf에서 user.id 값을 userId 변수에 할당
-        console.log("User ID: ", userId);
-        /*]]>*/
-    </script>
+    <input type="hidden" th:value="${user.id}" id="userId">
 
     <div class="logo">
     </div>
@@ -18,7 +13,6 @@
         <!-- 로그인 한 경우 -->
         <a href="/mypage" th:if="${user != null}" th:text="${user.nickname != null ? user.nickname + '님' : user.name + '님'}"></a>
         <a th:if="${user != null}" class="btn btn-light" href="/logout" aria-label="로그아웃">로그아웃</a>
-
 
     </nav>
 </header>
