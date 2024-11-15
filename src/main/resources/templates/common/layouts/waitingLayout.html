@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head th:replace="~{common/fragments/waiting/config :: ConfigFragment}"></head>
+<body>
+    <header th:replace="~{common/fragments/waiting/header :: HeaderFragment}">
+    </header>
+    <main layout:fragment="Content">
+        <!-- Content will be injected here from content.html -->
+    </main>
+</body>
+</html>

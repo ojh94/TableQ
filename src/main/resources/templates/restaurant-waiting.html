@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!--<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -71,7 +71,10 @@
         box-shadow: 0 0 0 5px rgba(237, 125, 49, 0.5); /* 클릭 시 그림자 효과 */
     }
 </style>
-<body>
+<body>-->
+<div layout:decorate="~{common/layouts/waitingLayout}"
+     layout:fragment="Content">
+
     <input type="hidden" id="waiting-id" th:value="${id}">
 
     <div class="container">
@@ -162,7 +165,9 @@
         document.getElementById('total-count').textContent = totalCount + '명';
     }
     </script>
+</div>
     <!--<script src="/js/waiting.js"></script>-->
+<!--
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
 </body>
-</html>
+</html>-->

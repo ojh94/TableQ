@@ -22,9 +22,9 @@ public class RestaurantController {
         return "restaurant-modify";
     }
 
-    @GetMapping("/waiting")
+    @GetMapping("/waiting/{id}")
     public String waitingDetail(@PathVariable Long id, Model model) {
         model.addAttribute("id", id);
-        return "";
+        return "restaurant-waiting";
     }
 }
