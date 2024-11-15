@@ -77,26 +77,40 @@ public class ReservationService extends
         return false;
     }
 
-    public Integer getWaitingNubmer(Restaurant restaurant){
+    public Integer getWaitingNubmer(Restaurant restaurant) {
         // 대기번호를 계산하는 메소드
         int number = 1;
 
         LocalDate today = LocalDate.now();
 
-        List<Reservation> reservationList = ((ReservationRepository)baseRepository)
+        List<Reservation> reservationList = ((ReservationRepository) baseRepository)
                 .findByRestaurant(restaurant).orElse(null);
 
-        for(Reservation reservation : reservationList){
+        for (Reservation reservation : reservationList) {
             LocalDate reservationTime = reservation.getCreatedAt().toLocalDate();
 
-            if(reservationTime.isEqual(today)){
-                number+=1;
-            }
+            if (reservationTime.isEqual(today)) {
+                number += 1;
+            } else continue;
+        }
+        return number;
+    }
 
-            else continue;
+    public Header<Integer> getUserQueue(Long restaurantId, Long reservationId) {
+        int userTurn = 0;
+        Restaurant restaurant = restaurantRepository.findById(restaurantId)
+                .orElseThrow(() -> new RuntimeException("Not Found Restaurant ID : " + restaurantId));
+
+        List<Reservation> allReservation = ((ReservationRepository) baseRepository)
+                .findByRestaurantAndCreatedAtBetweenOrderByIdAsc(restaurant, DateUtil.getStartOfDay(), DateUtil.getEndOfDay());
+
+        for (Reservation reservation : allReservation) {
+            if (reservation.getIsEntered() == null)
+                userTurn += 1;
+            if (reservation.getId() == reservationId) break;
         }
 
-        return number;
+        return Header.OK(userTurn);
     }
 
     @Override

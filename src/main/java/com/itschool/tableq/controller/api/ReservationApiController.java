@@ -30,11 +30,20 @@ public class ReservationApiController extends
         log.info("{}","{}","{}","read: ",restaurantId, pageable);
         return ((ReservationService)baseService).readByRestaurantId(restaurantId,pageable);
     }
+
     @Operation(summary = "유저 예약 조회", description = "User ID로 손님이 예약했던 기록 조회")
     @GetMapping("/user/{userId}")
     public Header<List<ReservationResponse>> readByUserId(@PathVariable(name="userId") Long userId,
                                                                 @PageableDefault(sort = "id", direction = Sort.Direction.DESC)Pageable pageable){
         log.info("{}","{}","{}","read: ",userId, pageable);
         return ((ReservationService)baseService).readByUserId(userId,pageable);
+    }
+
+    @Operation(summary = "유저 순번 조회", description = "Restaurant ID 와 Reservation ID로 대기열 조회")
+    @GetMapping("/user/{restaurantId}/{reservationId}")
+    public Header<Integer> readQueue(@PathVariable(name = "restaurantId") Long restaurantId,
+                                     @PathVariable(name = "reservationId") Long reservationId){
+        log.info("{}","{}","{}","read: ",restaurantId, reservationId);
+        return ((ReservationService)baseService).getUserQueue(restaurantId, reservationId);
     }
 }

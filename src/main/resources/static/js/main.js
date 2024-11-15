@@ -5,7 +5,9 @@ $(document).ready(function () {
     const restaurantGrid = document.getElementById('restaurantGrid');
     const restaurantGrid2 = document.getElementById('restaurantGrid2');
     const userId = document.getElementById('userId').value;
+//    const restaurantId = document.getElementById('restaurantId').value;
     console.log('User ID:', userId); // userId 값 출력
+
 
     // '예약하기' 버튼 클릭 시 이벤트 핸들러
     document.querySelectorAll(".btn-reserve").forEach(button => {
@@ -88,7 +90,8 @@ $(document).ready(function () {
             fetchUserReviewedRestaurants(userId)
                 .then(restaurantIds => {
                     console.log(restaurantIds); // 유저가 리뷰한 레스토랑 ID 출력
-                    // restaurantGrid2.innerHTML = ''; // 기존 내용 초기화
+                    restaurantGrid2.innerHTML = ''; // 기존 내용 초기화
+
                     restaurantIds.forEach(id => {
                         fetchRestaurantById(id)
                             .then(restaurant => {
