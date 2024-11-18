@@ -19,7 +19,9 @@ public interface ReservationRepository extends JpaRepository<Reservation, Long> 
     List<Reservation> findByRestaurantAndCreatedAtBetweenOrderByIdAsc(
             Restaurant restaurant, LocalDateTime startOfDay, LocalDateTime endOfDay
     );
-
+    List<Reservation> findByIsEnteredAndRestaurantAndCreatedAtBetweenOrderByIdAsc(
+            Boolean isEntered, Restaurant restaurant, LocalDateTime startOfDay, LocalDateTime endOfDay
+    );
     Optional<Reservation> getFirstByOrderByIdDesc();
 
     Optional<Long> countBy();
