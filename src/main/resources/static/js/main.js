@@ -27,89 +27,112 @@ $(document).ready(function () {
         }
     });
 
-    //  fetchUserReviewedRestaurants(userId)
-    //    .then(restaurantIds => {
-    //        console.log(restaurantIds);
-    //    })
-    //    .catch(error => console.error('Error fetching user reviewed restaurants:', error));
 
-    // 레스토랑 데이터 (실제로는 API에서 가져올 것입니다)
-    // const restaurants = [
-    //     { id: 1, name: '레스토랑 1', img: "/img/ramen.jpg", type: '한식', location: '서울시 강남구', rating: 4.5, reviews: 120 },
-    //     { id: 2, name: '레스토랑 2', img: "/img/ramen.jpg", type: '일식', location: '서울시 마포구', rating: 4.2, reviews: 85 },
-    //     { id: 3, name: '레스토랑 3', img: "/img/ramen.jpg", type: '양식', location: '서울시 종로구', rating: 4.7, reviews: 150 },
-    // ];
-    // 방문했던 레스토랑 데이터
-    // const restaurants2 = [
-    //     { id: 1, name: '레스토랑 1', img: "/img/ramen.jpg", type: '한식', location: '서울시 강남구', rating: 4.5, reviews: 120 },
-    // ];
+//     레스토랑 데이터 (실제로는 API에서 가져올 것입니다)
+//     const restaurants = [
+//         { id: 1, name: '레스토랑 1', img: "/img/ramen.jpg", type: '한식', location: '서울시 강남구', rating: 4.5, reviews: 120 },
+//         { id: 2, name: '레스토랑 2', img: "/img/ramen.jpg", type: '일식', location: '서울시 마포구', rating: 4.2, reviews: 85 },
+//         { id: 3, name: '레스토랑 3', img: "/img/ramen.jpg", type: '양식', location: '서울시 종로구', rating: 4.7, reviews: 150 },
+//     ];
+//     방문했던 레스토랑 데이터
+//     const restaurants2 = [
+//         { id: 1, name: '레스토랑 1', img: "/img/ramen.jpg", type: '한식', location: '서울시 강남구', rating: 4.5, reviews: 120 },
+//     ];
 
-    fetchUserReviewedRestaurants(userId)
-        .then(restaurantIds => {
-            console.log(restaurantIds); // 예약한 레스토랑 ID 출력
-        })
-        .catch(function (error) {
-            console.error('Error in main.js', error);
-        });
+    // 데이터 가져오기 및 렌더링
+        fetchRestaurantsWithVisitedStatus(userId)
+            .then(restaurants => {
+                // 방문 여부에 따라 데이터 분리
+                const restaurantsNotVisited = restaurants.filter(restaurant => !restaurant.visited);
+                const restaurantsVisited = restaurants.filter(restaurant => restaurant.visited);
 
-    // 전체 레스토랑 데이터 가져와서 렌더링
-    fetchAllRestaurants()
+                // 방문하지 않은 레스토랑 렌더링
+                restaurantsNotVisited.forEach(restaurant => {
+                    fetchReviewData(restaurant.id)
+                        .then(({ rating, reviewsCount }) => {
+                            restaurantGrid.appendChild(createRestaurantCard(restaurant, rating, reviewsCount));
+                            lucide.createIcons();
+
+                        })
+                        .catch(error => console.error('Error fetching review data:', error));
+                });
+
+//                // 방문한 레스토랑 렌더링
+//                restaurantsVisited.forEach(restaurant => {
+//                    if (restaurant.isEntered === true) {
+//                        fetchReviewData(restaurant.id)
+//                            .then(({ rating, reviewsCount }) => {
+//                                restaurantGrid.appendChild(createRestaurantCard(restaurant, rating, reviewsCount));
+//                                lucide.createIcons();
+//                                console.log('Appending to Grid2:', card); // 확인용
+//                                console.log('Rating:', rating, 'Reviews:', reviewsCount); // 확인용
+//                                restaurantGrid2.appendChild(card);
+//                                })
+//                               .catch(error => console.error('Error fetching review data:', error));
+//                    }
+//                });
+            })
+            .catch(error => console.error('Error during restaurant rendering:', error));
+
+    // 데이터 가져오기 및 렌더링
+    fetch(`/api/reservation/user/${userId}`)
+        .then(response => response.json())
         .then(data => {
-            const restaurants = data.filter(restaurant => !restaurant.visited);
-            const restaurants2 = data.filter(restaurant => restaurant.visited);
+            // isEntered가 true인 예약만 필터링
+            const enteredReservations = data.data.filter(reservation => reservation.isEntered === true);
 
-            restaurants.forEach(restaurant => {
-                fetchReviewData(restaurant.id)
-                    .then(reviewData => {
-                        const rating = reviewData.rating || 0;
-                        const reviewsCount = reviewData.reviews || 0;
-                        restaurantGrid.appendChild(createRestaurantCard(restaurant, rating, reviewsCount));
-                        lucide.createIcons();
-                    })
-                    .catch(error => console.error('Error fetching review data:', error));
-            });
+            // 레스토랑 ID 추출 (예약된 레스토랑만)
+            const restaurantIds = enteredReservations.map(reservation => reservation.restaurantId);
 
-            // restaurants2.forEach(restaurant => {
-            //     fetchReviewData(restaurant.id)
-            //         .then(({ rating, reviewsCount }) => {
-            //             restaurantGrid2.appendChild(createRestaurantCard(restaurant, rating, reviewsCount));
-            //             lucide.createIcons();
-            //         })
-            //         .catch(error => console.error('Error fetching review data:', error));
-            // });
-        })
-        .catch(error => console.error('Error fetching restaurant data:', error));
+             // **초기화 코드**
+             restaurantGrid2.innerHTML = ''; // 이전 내용을 초기화
 
-    // 전체 레스토랑 데이터 가져와서 렌더링
-    fetchAllRestaurants()
-        .then(data => {
-            const restaurants = data.filter(restaurant => !restaurant.visited);
-            const restaurants2 = data.filter(restaurant => restaurant.visited);
+            // 필터링된 레스토랑 ID를 기반으로 레스토랑 정보 가져오기
+            Promise.all(
+                restaurantIds.map(restaurantId =>
+                    fetchRestaurantById(restaurantId).then(restaurant => ({
+                        restaurantId,
+                        restaurant, // null일 수도 있음
+                    }))
+                )
+            )
+                .then(results => {
+                     // 중복 데이터 제거
+                    const uniqueResults = results.filter((value, index, self) =>
+                        index === self.findIndex((t) => t.restaurantId === value.restaurantId)
+                    );
 
-            // restaurants2 (유저가 리뷰를 남긴 레스토랑들만) 표시
-            fetchUserReviewedRestaurants(userId)
-                .then(restaurantIds => {
-                    console.log(restaurantIds); // 유저가 리뷰한 레스토랑 ID 출력
-                    restaurantGrid2.innerHTML = ''; // 기존 내용 초기화
+                    uniqueResults.forEach(({ restaurantId, restaurant }) => {
+                        if (!restaurant) {
+                            console.warn(`Restaurant data not available for ID: ${restaurantId}`);
+                            return; // 유효하지 않은 데이터는 무시
+                        }
 
-                    restaurantIds.forEach(id => {
-                        fetchRestaurantById(id)
-                            .then(restaurant => {
-                                fetchReviewData(restaurant.id)
-                                    .then(reviewData => {
-                                        const rating = reviewData.rating || 0;
-                                        const reviewsCount = reviewData.reviewsCount || 0;
-                                        restaurantGrid2.appendChild(createRestaurantCard(restaurant, rating, reviewsCount));
-                                        lucide.createIcons(); // 아이콘 초기화
-                                    })
-                                    .catch(error => console.error('Error fetching review data:', error));
+                        const restaurantData = restaurant.data;
+
+                        fetchReviewData(restaurantData.id)
+                            .then(({ rating = 0, reviewsCount = 0 }) => {
+                                restaurantGrid2.appendChild(
+                                    createRestaurantCard(restaurantData, rating, reviewsCount)
+                                );
+                                lucide.createIcons();
                             })
-                            .catch(error => console.error('Error fetching restaurant data:', error));
+                            .catch(error => {
+                                console.error(
+                                    `Error fetching review data for restaurant ID: ${restaurantData.id}`,
+                                    error
+                                );
+                            });
                     });
                 })
-                .catch(error => console.error('Error fetching user reviewed restaurants:', error));
+                .catch(error => {
+                    console.error('Error processing restaurant data:', error);
+                });
+
         })
-        .catch(error => console.error('Error fetching restaurant data:', error));
+        .catch(error => console.error('Error fetching reservations:', error));
+
+
 
     // 특정 레스토랑 정보 표시
     // const selectedRestaurantId = '1';
@@ -131,6 +154,24 @@ $(document).ready(function () {
     // }
 });
 
+function fetchRestaurantsWithVisitedStatus(userId) {
+    return Promise.all([
+        fetchAllRestaurants(),               // 모든 레스토랑 데이터
+        fetchUserReviewedRestaurants(userId) // 사용자가 리뷰한 레스토랑 ID 목록
+    ])
+    .then(([restaurants, reviewedRestaurantIds]) => {
+        // visited 상태를 설정
+        restaurants.forEach(restaurant => {
+            restaurant.visited = reviewedRestaurantIds.includes(Number(restaurant.id));
+        });
+        return restaurants; // visited 상태가 포함된 레스토랑 데이터 반환
+    })
+    .catch(error => {
+        console.error('Error fetching data:', error);
+    });
+}
+
+
 // 예약 기능
 function bookRestaurant(restaurantId) {
     console.log('Booking restaurant:', restaurantId);
@@ -149,7 +190,7 @@ function fetchUserReviewedRestaurants(userId) {
         })
         .then(data => {
             console.log('Data:', data);
-            return data.data.map(review => review.restaurantId);
+            return data.data.map(review => review.restaurantId) || [];
         })
         .catch(function (error) {
             console.error('Error fetching user reviews:', error); // 오류 처리
@@ -160,10 +201,26 @@ function fetchUserReviewedRestaurants(userId) {
 function fetchRestaurantById(restaurantId) {
     return fetch(`/api/restaurant/${restaurantId}`)
         .then(response => {
-            if (!response.ok) throw new Error(`Failed to fetch restaurant with ID ${restaurantId}`);
+            if (!response.ok) {
+                console.error(`Failed to fetch restaurant with ID ${restaurantId}:`, response.status);
+                throw new Error(`Failed to fetch restaurant with ID ${restaurantId}`);
+            }
             return response.json();
+        })
+        .then(data => {
+            // 반환된 데이터 검증
+            if (!data || !data.data || !data.data.id) {
+                console.warn(`Invalid restaurant data for ID ${restaurantId}:`, data);
+                return null; // 유효하지 않은 데이터를 null로 반환
+            }
+            return data;
+        })
+        .catch(error => {
+            console.error(`Error fetching restaurant with ID ${restaurantId}:`, error);
+            return null; // 에러가 발생했을 때도 null로 반환
         });
 }
+
 
 // 레스토랑 카드 생성 함수
 function createRestaurantCard(restaurant, rating = 0, reviewsCount = 0) {
@@ -235,3 +292,16 @@ function fetchReviewData(restaurantId) {
      }))
      .catch(error => console.error('Error fetching review data:', error));
 }
+
+
+let initialized = false;
+document.addEventListener('DOMContentLoaded', () => {
+    if (initialized) return; // 이미 초기화된 경우 종료
+    initialized = true;
+
+    // 여기에서 이벤트 리스너 추가 및 초기화 작업 수행
+});
+
+console.log('restaurantGrid2:', restaurantGrid2); // 확인용
+console.log('restaurantGrid2 before appending:', restaurantGrid2.innerHTML);
+

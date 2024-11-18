@@ -47,3 +47,45 @@ $(document).ready(function() {
     });
 });
 
+document.addEventListener("DOMContentLoaded", function() {
+    const userId = 3; // 현재 로그인된 사용자의 ID (동적으로 처리 필요)
+    const reservationInfoContainer = document.querySelector('.reservation-info');
+
+    fetch(`/api/reservation/user/${userId}?page=0&size=10&sort=createdAt`)
+        .then(response => response.json())
+        .then(data => {
+            const reservations = data.data;
+
+            // 예약 정보가 있을 경우 이모지 및 텍스트 변경
+            const pendingReservations = reservations.filter(reservation => reservation.isEntered === null);
+
+            if (pendingReservations.length > 0) {
+                // 예약이 있을 경우
+                reservationInfoContainer.innerHTML = `
+                    <p>이용 예정 내역이 있어요!</p>
+                    <ul>
+                        ${pendingReservations.map(reservation => `
+                            <li>
+                                예약 번호: ${reservation.reservationNumber}<br>
+                                예약 날짜: ${new Date(reservation.createdAt).toLocaleString()}<br>
+                                인원: ${reservation.people}명<br>
+                            </li>
+                        `).join('')}
+                    </ul>
+                `;
+            } else {
+                // 예약이 없을 경우
+                reservationInfoContainer.innerHTML = `
+                    <div class="no-reservation">
+                        <p class="emoji">😢</p>
+                        <p>이용 예정인 내역이 없어요!</p>
+                    </div>
+                `;
+            }
+        })
+        .catch(error => {
+            console.error('예약 정보를 불러오는 중 오류가 발생했습니다.', error);
+        });
+});
+
+
