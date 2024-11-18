@@ -1,5 +1,6 @@
 package com.itschool.tableq.config;
 
+import com.itschool.tableq.config.handler.CustomAuthenticationSuccessHandler;
 import com.itschool.tableq.service.UserDetailService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -21,6 +22,8 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 public class WebSecurityConfig {
 
     private final UserDetailService userDetailService;
+
+    private final CustomAuthenticationSuccessHandler customSuccessHandler;
 
     // 스프링 시큐리티 기능 비활성화 : 인증과 인가를 적용하지 않는 곳 명시
     @Bean
@@ -58,6 +61,7 @@ public class WebSecurityConfig {
                         .loginPage("/login")
                         .usernameParameter("email")
                         .defaultSuccessUrl("/")
+                        .successHandler(customSuccessHandler)
                 )
                 .logout(logout -> logout // 로그아웃 설정
                         .logoutUrl("/logout")
