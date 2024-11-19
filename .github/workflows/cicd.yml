@@ -69,9 +69,9 @@ jobs:
 
       - name: CodeDeploy 배포
         run: aws deploy create-deployment
-          --application-name TableQ
+          --application-name tableq-product
           --deployment-config-name CodeDeployDefault.AllAtOnce
-          --deployment-group-name TableQ-group
+          --deployment-group-name tableq-product-group
           --s3-location bucket=${{ secrets.S3_BUCKET_NAME }},bundleType=zip,key=$GITHUB_SHA.zip
 
 #
