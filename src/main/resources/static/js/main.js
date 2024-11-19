@@ -6,7 +6,7 @@ $(document).ready(function () {
     const restaurantGrid2 = document.getElementById('restaurantGrid2');
     const userId = document.getElementById('userId').value;
 //    const restaurantId = document.getElementById('restaurantId').value;
-    console.log('User ID:', userId); // userId 값 출력
+//    console.log('User ID:', userId); // userId 값 출력
 
 
     // '예약하기' 버튼 클릭 시 이벤트 핸들러
@@ -73,6 +73,30 @@ $(document).ready(function () {
 //                });
             })
             .catch(error => console.error('Error during restaurant rendering:', error));
+
+     //찜 버튼 구현
+     fetch(`/api/bookmark/user/${userId}`)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.resultCode === 'OK' && data.data.length > 0) {
+                        const bookmarkedRestaurants = data.data.map(item => item.restaurant_id);
+
+                        // 찜한 레스토랑에 대한 버튼 스타일 변경
+                        bookmarkedRestaurants.forEach(restaurantId => {
+                            const button = document.getElementById(`favorite-btn-${restaurantId}`);
+                            if (button) {
+                                const icon = button.querySelector('i');
+                                if (icon) {
+                                    icon.setAttribute('data-lucide', 'heart-fill');  // 채워진 하트로 변경
+                                    button.setAttribute('data-favorite', 'true');
+                                }
+                            }
+                        });
+                    }
+                })
+                .catch(error => {
+                    console.error('Error fetching bookmarked restaurants:', error);
+                });
 
     // 데이터 가져오기 및 렌더링
     fetch(`/api/reservation/user/${userId}`)
@@ -154,6 +178,19 @@ $(document).ready(function () {
     // }
 });
 
+document.addEventListener('DOMContentLoaded', () => {
+    // 찜하기 버튼 클릭 이벤트 처리
+    document.querySelectorAll('.favorite-btn').forEach(button => {
+        button.addEventListener('click', () => {
+            const restaurantId = button.getAttribute('data-id');
+            console.log(`Toggled favorite for restaurant: ${restaurantId}`);  // 여기로 이동
+            toggleFavorite(restaurantId);
+        });
+    });
+});
+
+
+
 function fetchRestaurantsWithVisitedStatus(userId) {
     return Promise.all([
         fetchAllRestaurants(),               // 모든 레스토랑 데이터
@@ -228,7 +265,7 @@ function createRestaurantCard(restaurant, rating = 0, reviewsCount = 0) {
     card.className = 'card';
     card.innerHTML = `
         <div class="card-header">
-            <button class="favorite-btn" onclick="toggleFavorite(${restaurant.id})">
+            <button id="favorite-btn-${restaurant.id}" class="favorite-btn" data-id="${restaurant.id}" data-favorite="true" onclick="toggleFavorite(${restaurant.id})" >
                 <i data-lucide="heart"></i>
             </button>
             <h4 class="card-title">${restaurant.name}</h4>

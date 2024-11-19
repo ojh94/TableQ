@@ -256,6 +256,15 @@ header, .toolbar-top, .toolbar {
   color: var(--color-orange-500);
   cursor: pointer;
 }
+.favorite-btn.active {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+  background: none;
+  border: none;
+  color: var(--color-orange-500);
+  cursor: pointer;
+}
 
 .card-content {
   padding: 1rem;
