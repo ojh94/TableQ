@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.security.core.parameters.P;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -31,6 +32,13 @@ public class ReservationApiController extends
         return ((ReservationService)baseService).readByRestaurantId(restaurantId,pageable);
     }
 
+    @Operation(summary = "레스토랑 대기 순서 조회", description = "Restaurant ID로 식당 현재 대기 순서 조회")
+    @GetMapping("/restaurant/queue/{restaurantId}")
+    public Header<Integer> readNowQueue(@PathVariable(name="restaurantId")Long restaurantId){
+        log.info("{}","{}","{}","read: ",restaurantId);
+        return ((ReservationService)baseService).getQueue(restaurantId);
+    }
+
     @Operation(summary = "유저 예약 조회", description = "User ID로 손님이 예약했던 기록 조회")
     @GetMapping("/user/{userId}")
     public Header<List<ReservationResponse>> readByUserId(@PathVariable(name="userId") Long userId,
@@ -41,7 +49,7 @@ public class ReservationApiController extends
 
     @Operation(summary = "유저 순번 조회", description = "Restaurant ID 와 Reservation ID로 대기열 조회")
     @GetMapping("/user/{restaurantId}/{reservationId}")
-    public Header<Integer> readQueue(@PathVariable(name = "restaurantId") Long restaurantId,
+    public Header<Integer> readMyQueue(@PathVariable(name = "restaurantId") Long restaurantId,
                                      @PathVariable(name = "reservationId") Long reservationId){
         log.info("{}","{}","{}","read: ",restaurantId, reservationId);
         return ((ReservationService)baseService).getUserQueue(restaurantId, reservationId);

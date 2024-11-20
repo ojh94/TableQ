@@ -4,6 +4,7 @@ import com.itschool.tableq.domain.Reservation;
 import com.itschool.tableq.domain.Restaurant;
 import com.itschool.tableq.domain.User;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -16,13 +17,20 @@ public interface ReservationRepository extends JpaRepository<Reservation, Long> 
     // userId, RestaurantId, LocalDateTime
     List<Reservation> findByUserAndRestaurantAndCreatedAtBetween(User user, Restaurant restaurant,
                                                                  LocalDateTime startOfDay, LocalDateTime endOfDay);
+
     List<Reservation> findByRestaurantAndCreatedAtBetweenOrderByIdAsc(
             Restaurant restaurant, LocalDateTime startOfDay, LocalDateTime endOfDay
     );
+
+    // 예약 후 나의 순서 조회를 위한 Repository
     List<Reservation> findByIsEnteredAndRestaurantAndCreatedAtBetweenOrderByIdAsc(
             Boolean isEntered, Restaurant restaurant, LocalDateTime startOfDay, LocalDateTime endOfDay
     );
-    Optional<Reservation> getFirstByOrderByIdDesc();
 
-    Optional<Long> countBy();
+    // 예약 전 대기열 조회를 위한 countBy
+    Integer countByRestaurantIdAndIsEnteredAndCreatedAtBetween(
+            Long restaurantId, Boolean isEntered, LocalDateTime startOfDay, LocalDateTime endOfDay
+    );
+
+    Optional<Reservation> getFirstByOrderByIdDesc();
 }

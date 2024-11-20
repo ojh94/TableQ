@@ -96,19 +96,28 @@ public class ReservationService extends
         return number;
     }
 
+    public Header<Integer> getQueue(Long retaurantId){
+        Integer queue = 0;
+        queue = ((ReservationRepository)baseRepository).countByRestaurantIdAndIsEnteredAndCreatedAtBetween(
+                retaurantId, null, DateUtil.getStartOfDay(), DateUtil.getEndOfDay()
+        );
+        return Header.OK(queue);
+    }
+
     public Header<Integer> getUserQueue(Long restaurantId, Long reservationId) {
-        int userTurn = 0;
+        int userTurn = 1;
         Restaurant restaurant = restaurantRepository.findById(restaurantId)
                 .orElseThrow(() -> new RuntimeException("Not Found Restaurant ID : " + restaurantId));
 
         List<Reservation> allReservation = ((ReservationRepository) baseRepository)
-                .findByRestaurantAndCreatedAtBetweenOrderByIdAsc(restaurant, DateUtil.getStartOfDay(), DateUtil.getEndOfDay());
+                .findByIsEnteredAndRestaurantAndCreatedAtBetweenOrderByIdAsc(null, restaurant, DateUtil.getStartOfDay(), DateUtil.getEndOfDay());
 
         for (Reservation reservation : allReservation) {
-            if (reservation.getIsEntered() == null)
-                userTurn += 1;
             if (reservation.getId() == reservationId) break;
+            else userTurn++;
         }
+
+        if(userTurn > allReservation.size()) throw new RuntimeException("현재 대기중이 아닙니다.");
 
         return Header.OK(userTurn);
     }
