@@ -51,9 +51,9 @@ h1, h2, h3 {
     cursor: pointer; /* 마우스 커서 스타일 */
     transition: box-shadow 0.1s ease; /* box-shadow 변화에 부드러운 전환 효과 */
     width: 90%; /* 상위 요소 기준 폭 */
-    height: 90%; /* 상위 요소 기준 높이 */
     padding: 15px;
-    margin-top: 60px;
+    margin-top: 20px;
+    display: inline-block !important; /* inline-block으로 변경 */
 }
 
 .btn-orange:active {

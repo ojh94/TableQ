@@ -72,26 +72,26 @@
     }
 </style>
 <body>-->
-<div layout:decorate="~{common/layouts/waitingLayout}"
+<div layout:decorate="~{common/layouts/restaurantWaitingLayout}"
      layout:fragment="Content">
 
     <input type="hidden" id="waiting-id" th:value="${id}">
 
-    <div class="container">
+    <!--<div class="container">-->
         <div class="row">
             <div class="col-lg-5 my-3" style="margin: auto;">
-                <i class="bi bi-chevron-left" style="font-size: 28px;"></i>
+                <i id="cancel" class="bi bi-chevron-left" style="font-size: 28px; cursor: pointer;"></i>
             </div>
         </div>
         <div class="row">
             <div class="col-lg-5" style="margin: auto;">
-                <h1>현재 <span id="team" style="color: #0080FF;">5팀</span> 대기 중</h1>
+                <h1>현재 <span id="team" style="color: #0080FF;"></span> 대기 중</h1>
                 <p style="color: gray;">메뉴 주문 금액을 현장에서 결제하는 매장입니다.</p>
                 <div class="particular">
                     <table>
                         <tr>
                             <td class="left-align">매장명</td>
-                            <td class="right-align">강릉짬뽕순두부 동화가든 본점</td>
+                            <td id="restaurant-name" class="right-align"></td>
                         </tr>
                         <tr>
                             <td class="left-align">인원</td>
@@ -100,7 +100,7 @@
                     </table>
                 </div>
                 <div>
-                    <h3 style="margin: 70px 0; text-align: center;">방문 인원을 선택하세요</h3>
+                    <h3 style="margin: 50px 0; text-align: center;">방문 인원을 선택하세요</h3>
                     <div class="d-flex justify-content-between align-items-center people">
                         <label>성인</label>
                         <div class="count">
@@ -119,55 +119,16 @@
                     </div>
                 </div>
                 <div class="d-flex justify-content-center">
-                    <button type="button" class="btn-orange">신청하기</button>
+                    <form id="apply-form">
+                        <button id="apply" class="btn-orange">신청하기</button>
+                    </form>
                 </div>
             </div>
         </div>
     </div>
-    <script>
-    // 성인 및 아동의 버튼 클릭 이벤트
-    document.getElementById('adult-plus').addEventListener('click', function() {
-        updateCount('adult', 1);
-    });
+<!--</div>-->
 
-    document.getElementById('adult-minus').addEventListener('click', function() {
-        updateCount('adult', -1);
-    });
-
-    document.getElementById('child-plus').addEventListener('click', function() {
-        updateCount('child', 1);
-    });
-
-    document.getElementById('child-minus').addEventListener('click', function() {
-        updateCount('child', -1);
-    });
-
-    // 성인, 아동 카운트 업데이트 함수
-    function updateCount(type, change) {
-        const countElement = document.getElementById(type + '-count');
-        let currentCount = parseInt(countElement.textContent);
-
-        // 성인과 아동 모두 0보다 적을 수 없도록
-        if (currentCount + change >= 0) {
-            currentCount += change;
-            countElement.textContent = currentCount;
-        }
-
-        updateTotalCount();
-    }
-
-    // 총 인원 업데이트 함수
-    function updateTotalCount() {
-        const adultCount = parseInt(document.getElementById('adult-count').textContent);
-        const childCount = parseInt(document.getElementById('child-count').textContent);
-
-        const totalCount = adultCount + childCount;
-        document.getElementById('total-count').textContent = totalCount + '명';
-    }
-    </script>
-</div>
-    <!--<script src="/js/waiting.js"></script>-->
-<!--
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+<!--<script src="/js/waiting.js"></script>-->
+    <!--<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
 </body>
 </html>-->
