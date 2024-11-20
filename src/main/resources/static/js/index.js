@@ -1,78 +1,159 @@
-document.addEventListener("DOMContentLoaded", function() {
+// 루시드 초기화 금지
+document.body.addEventListener('click', (event) => {
+    if (event.target.classList.contains('favorite-btn')) {
+        handleFavoriteClick(event);
+    }
+});
+
+document.addEventListener("DOMContentLoaded", function () {
     console.log("DOM fully loaded.");
 
-    // lucide.js가 이미 로드된 경우 바로 replace()
-    if (typeof lucide !== "undefined") {
-        console.log("Lucide object found:", lucide);
-        if (typeof lucide.replace === 'function') {
-            lucide.replace();  // 아이콘 교체
-            console.log("Lucide icons replaced immediately.");
-        } else {
-            console.error("lucide.replace is not available yet.");
-        }
-    } else {
-        // Lucide.js가 로드되지 않았다면, 미리 로드하기
-        const script = document.createElement("script");
-        script.src = "https://unpkg.com/lucide@0.46.0/dist/umd/lucide.min.js";  // 특정 버전 지정
-        script.async = true;  // 비동기적으로 로드
-
-        // 스크립트 로드가 완료되면 replace() 호출
-        script.onload = () => {
-            console.log("Lucide.js loaded successfully.");
-            console.log("Lucide object:", lucide);  // lucide 객체가 정상적으로 로드되었는지 확인
-
-            // lucide 객체가 올바르게 로드된 후 메서드가 존재하는지 확인
-            if (lucide && typeof lucide.replace === 'function') {
-                lucide.replace();  // 아이콘 교체
-                console.log("Lucide icons replaced after script load.");
-            } else {
-                console.error("Lucide.replace() is still unavailable.");
-            }
-        };
-
-        // 로드 실패 처리
-        script.onerror = () => {
-            console.error("Lucide.js script failed to load.");
-        };
-
-        // head에 스크립트 추가
-        document.head.appendChild(script);
-    }
     // 사용자 ID 가져오기
     const userId = document.getElementById("userId")?.value;
     console.log("User ID:", userId);
+
+     if (!window.LucideInitialized) {
+            lucide.createIcons();
+            window.LucideInitialized = true;
+        }
+
+    const container = document.querySelector(".card-header");
+    if (!container) {
+        console.error("Container for buttons not found!");
+        return;
+    }
+
+    const buttons = container.querySelectorAll('.favorite-btn');
+    if (buttons.length === 0) {
+        console.error('Favorite buttons not found. Check if the grid is rendered correctly.');
+    } else {
+        buttons.forEach(button => {
+            button.addEventListener('click', handleFavoriteClick);
+        });
+    }
+
+    buttons.forEach(button => {
+        button.addEventListener('click', () => {
+            const restaurantId = button.getAttribute('data-id');
+            const icon = button.querySelector('i');
+
+            if (button.getAttribute('data-favorite') === 'true') {
+                icon.classList.remove("fa-solid", "fa-heart");
+                icon.classList.add("fa-regular", "fa-heart");
+                button.setAttribute('data-favorite', 'false');
+            } else {
+                icon.classList.remove("fa-regular", "fa-heart");
+                icon.classList.add("fa-solid", "fa-heart");
+                button.setAttribute('data-favorite', 'true');
+            }
+
+            toggleFavorite(restaurantId);
+        });
+    });
+
+    // Event delegation을 사용하여 버튼 클릭 처리
+    container.addEventListener('click', function(event) {
+        if (event.target && event.target.matches('.favorite-btn')) {
+            const button = event.target;
+            const restaurantId = button.getAttribute('data-id');
+            const icon = button.querySelector('i');
+
+            if (button.getAttribute('data-favorite') === 'true') {
+                icon.classList.remove("fa-solid", "fa-heart");
+                icon.classList.add("fa-regular", "fa-heart");
+                button.setAttribute('data-favorite', 'false');
+            } else {
+                icon.classList.remove("fa-regular", "fa-heart");
+                icon.classList.add("fa-solid", "fa-heart");
+                button.setAttribute('data-favorite', 'true');
+            }
+
+            toggleFavorite(restaurantId);
+        }
+    });
 
     // 즐겨찾기 데이터 가져오기
     fetch(`/api/bookmark/user/${userId}`)
         .then((response) => response.json())
         .then((data) => {
-            console.log("Favorite restaurants data:", data);
             const favoriteRestaurants = data.data;
+            console.log("Favorite restaurants data:", favoriteRestaurants);
 
-            // 즐겨찾기 상태 업데이트
-            document.querySelectorAll(".favorite-btn").forEach((button) => {
-                const restaurantId = button.dataset.id;
-                const icon = button.querySelector("i");
-                const isFavorited = favoriteRestaurants.some((item) => item.restaurantId == restaurantId);
-
-                if (isFavorited) {
+            favoriteRestaurants.forEach((item) => {
+                const button = document.querySelector(`.favorite-btn[data-id="${item.restaurantId}"]`);
+                const icon = button?.querySelector("i");
+                if (button) {
                     button.setAttribute("data-favorite", "true");
-                    icon.setAttribute("data-lucide", "heart-fill"); // 하트 채워짐
-                } else {
-                    button.setAttribute("data-favorite", "false");
-                    icon.setAttribute("data-lucide", "heart"); // 하트 비어 있음
+                    if (icon) {
+                        icon.classList.remove("fa-regular");
+                        icon.classList.add("fa-solid"); // 채워진 하트
+                    }
                 }
             });
-
-            // Lucide 아이콘 다시 렌더링
-            if (typeof lucide !== 'undefined' && lucide.replace) {
-                lucide.replace();  // 다른 아이콘 초기화하지 않도록 리플레이스
-                console.log("Lucide icons replaced after favorite update.");
-            }
-        })
-        .catch((error) => {
-            console.error("Error fetching favorite restaurants:", error);
         });
+
+    // 이벤트 위임: 클릭 이벤트 처리
+    container.addEventListener("click", (event) => {
+        const button = event.target.closest(".favorite-btn");
+        if (!button) return; // 클릭한 대상이 버튼이 아니면 무시
+
+        const restaurantId = button.dataset.id;
+        const icon = button.querySelector("i");
+        const isFavorite = button.getAttribute("data-favorite") === "true";
+
+        if (isFavorite) {
+            removeFavorite(restaurantId, button, icon);
+        } else {
+            addFavorite(restaurantId, button, icon, userId);
+        }
+    });
+
+    // 즐겨찾기 추가
+    function addFavorite(restaurantId, button, icon, userId) {
+        fetch(`/api/bookmark`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                userId: userId,
+                restaurantId: restaurantId,
+            }),
+        })
+            .then((response) => response.json())
+            .then((data) => {
+                if (data.resultCode === "OK") {
+                    button.setAttribute("data-favorite", "true");
+                    icon.classList.remove("fa-regular");
+                    icon.classList.add("fa-solid"); // 채워진 하트
+                    console.log("Favorite added:", restaurantId);
+                } else {
+                    console.error("Failed to add favorite:", data.description);
+                }
+            })
+            .catch((error) => {
+                console.error("Error adding favorite:", error);
+            });
+    }
+
+    // 즐겨찾기 삭제
+    function removeFavorite(restaurantId, button, icon) {
+        fetch(`/api/bookmark/${restaurantId}`, {
+            method: "DELETE",
+        })
+            .then((response) => response.json())
+            .then((data) => {
+                if (data.resultCode === "OK") {
+                    button.setAttribute("data-favorite", "false");
+                    icon.classList.remove("fa-solid");
+                    icon.classList.add("fa-regular"); // 비어있는 하트
+                    console.log("Favorite removed:", restaurantId);
+                } else {
+                    console.error("Failed to remove favorite:", data.description);
+                }
+            })
+            .catch((error) => console.error("Error removing favorite:", error));
+    }
 
     // 검색 및 정렬 기능은 여기서 계속 처리
     const searchForm = document.getElementById("searchForm");
@@ -88,4 +169,4 @@ document.addEventListener("DOMContentLoaded", function() {
         console.log("Sorting by:", sortSelect.value);
         // 여기에 실제 정렬 로직 구현
     });
-});
+}); // DOMContentLoaded 이벤트 핸들러 닫기

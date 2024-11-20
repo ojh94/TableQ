@@ -87,7 +87,8 @@ $(document).ready(function () {
                             if (button) {
                                 const icon = button.querySelector('i');
                                 if (icon) {
-                                    icon.setAttribute('data-lucide', 'heart-fill');  // 채워진 하트로 변경
+                                    icon.classList.remove("fa-regular", "fa-heart"); // 기존 스타일 제거
+                                    icon.classList.add("fa-solid", "fa-heart"); // 채워진 하트 스타일 추가
                                     button.setAttribute('data-favorite', 'true');
                                 }
                             }
@@ -178,18 +179,74 @@ $(document).ready(function () {
     // }
 });
 
-document.addEventListener('DOMContentLoaded', () => {
-    // 찜하기 버튼 클릭 이벤트 처리
-    document.querySelectorAll('.favorite-btn').forEach(button => {
-        button.addEventListener('click', () => {
-            const restaurantId = button.getAttribute('data-id');
-            console.log(`Toggled favorite for restaurant: ${restaurantId}`);  // 여기로 이동
-            toggleFavorite(restaurantId);
-        });
+document.querySelectorAll('.favorite-btn').forEach(button => {
+    button.addEventListener('click', () => {
+        const restaurantId = button.getAttribute('data-id');
+        const icon = button.querySelector('i');
+        const isFavorite = button.getAttribute('data-favorite') === 'true';
+
+        // 찜 상태 변경 (하트 아이콘)
+        if (isFavorite) {
+            icon.classList.remove("fa-solid", "fa-heart");
+            icon.classList.add("fa-regular", "fa-heart");
+            button.setAttribute('data-favorite', 'false');
+        } else {
+            icon.classList.remove("fa-regular", "fa-heart");
+            icon.classList.add("fa-solid", "fa-heart");
+            button.setAttribute('data-favorite', 'true');
+        }
+
+        // 여기에서 서버에 즐겨찾기 상태를 업데이트하는 코드 추가 가능
+        toggleFavorite(restaurantId);
     });
 });
 
+// 동적으로 버튼이 추가될 때마다 호출
+function addFavoriteButtonListener() {
+    const buttons = document.querySelectorAll('.favorite-btn');
+    buttons.forEach(button => {
+        button.addEventListener('click', () => {
+            const restaurantId = button.getAttribute('data-id');
+            const icon = button.querySelector('i');
 
+            if (button.getAttribute('data-favorite') === 'true') {
+                icon.classList.remove("fa-solid", "fa-heart");
+                icon.classList.add("fa-regular", "fa-heart");
+                button.setAttribute('data-favorite', 'false');
+            } else {
+                icon.classList.remove("fa-regular", "fa-heart");
+                icon.classList.add("fa-solid", "fa-heart");
+                button.setAttribute('data-favorite', 'true');
+            }
+
+            toggleFavorite(restaurantId);
+        });
+    });
+}
+
+// 예시: 버튼이 추가된 후에 호출
+addFavoriteButtonListener();
+
+function toggleFavorite(restaurantId) {
+    const isFavorite = document.querySelector(`#favorite-btn-${restaurantId}`).getAttribute('data-favorite') === 'true';
+    fetch(`/api/restaurant/favorite/${restaurantId}`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ isFavorite })
+    }).then(response => {
+        if (!response.ok) {
+            alert("찜 상태 변경에 실패했습니다.");
+        }
+        return response.json();
+    })
+    .then(data => {
+        console.log("찜 상태 업데이트 성공", data);
+    })
+    .catch(err => {
+        console.error("Error while updating favorite:", err);
+        alert("네트워크 오류가 발생했습니다.");
+    });
+}
 
 function fetchRestaurantsWithVisitedStatus(userId) {
     return Promise.all([
@@ -265,8 +322,8 @@ function createRestaurantCard(restaurant, rating = 0, reviewsCount = 0) {
     card.className = 'card';
     card.innerHTML = `
         <div class="card-header">
-            <button id="favorite-btn-${restaurant.id}" class="favorite-btn" data-id="${restaurant.id}" data-favorite="true" onclick="toggleFavorite(${restaurant.id})" >
-                <i data-lucide="heart"></i>
+            <button id="favorite-btn-${restaurant.id}" class="favorite-btn" data-id="${restaurant.id}" data-favorite="true"  >
+                <i class="fa-regular fa-heart"></i>
             </button>
             <h4 class="card-title">${restaurant.name}</h4>
         </div>
