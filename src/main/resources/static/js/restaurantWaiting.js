@@ -25,9 +25,10 @@ $(document).ready(function() {
     });
 
     // 신청하기 버튼 클릭 시
-    document.getElementById("apply").addEventListener("click", function() {
-        if (confirm("신청하시겠습니까?")) {
-            document.getElementById("apply-form").submit();
+    document.getElementById('apply').addEventListener('click', function(event) {
+        var isConfirmed = confirm('신청하시겠습니까?');
+        if (isConfirmed) {
+            document.getElementById('apply-form').submit(); // 폼 제출
         }
     });
 });
