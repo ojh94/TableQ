@@ -8,127 +8,60 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <link rel="stylesheet" href="/css/waiting.css" />
 </head>
-<style>
-    .particular {
-        background-color: #FAFAFA;
-        border: 1px solid #E5E5E5;
-        border-radius: 20px;
-        padding: 15px 30px;
-        margin-top: 30px;
-    }
-
-    .particular table {
-        width: 100%; /* 테이블을 div 너비에 맞춤 */
-        border-collapse: separate;
-        border-spacing: 0px 15px;
-    }
-
-    h1, h2, h3 {
-        font-weight: 700;
-    }
-
-    .left-align {
-        text-align: left;
-        color: #777777;
-    }
-
-    .right-align {
-        text-align: right;
-    }
-
-    .count {
-        border: 2px solid #E5E5E5;
-        border-radius: 50px;
-        padding: 10px;
-        font-size: 170%;
-    }
-
-    .people {
-        margin: 30px 60px;
-        font-weight: 700;
-    }
-
-    .people label {
-        font-size: 130%;
-    }
-
-    .btn-orange {
-        background-color: rgba(237, 125, 49, 1); /* 버튼 배경색 */
-        border: none; /* 테두리 없음 */
-        border-radius: 15px; /* 모서리 둥글게 */
-        color: white; /* 텍스트 색상 흰색 */
-        font-size: 25px; /* 폰트 크기 */
-        font-weight: bold; /* 텍스트 두께 */
-        cursor: pointer; /* 마우스 커서 스타일 */
-        transition: box-shadow 0.1s ease; /* box-shadow 변화에 부드러운 전환 효과 */
-        width: 90%; /* 상위 요소 기준 폭 */
-        height: 90%; /* 상위 요소 기준 높이 */
-        padding: 15px;
-        margin-top: 60px;
-    }
-
-    .btn-orange:active {
-        box-shadow: 0 0 0 5px rgba(237, 125, 49, 0.5); /* 클릭 시 그림자 효과 */
-    }
-</style>
 <body>-->
 <div layout:decorate="~{common/layouts/restaurantWaitingLayout}"
      layout:fragment="Content">
 
-    <input type="hidden" id="waiting-id" th:value="${id}">
+    <input type="hidden" id="restaurant-id" th:value="${id}">
+    <input type="hidden" id="user-id" th:value="${user.id}">
 
     <!--<div class="container">-->
-        <div class="row">
-            <div class="col-lg-5 my-3" style="margin: auto;">
+    <div class="row">
+        <div class="col-lg-5 bg-white pb-4" style="margin: auto;">
+            <div class="bg-white py-4">
                 <i id="cancel" class="bi bi-chevron-left" style="font-size: 28px; cursor: pointer;"></i>
             </div>
-        </div>
-        <div class="row">
-            <div class="col-lg-5" style="margin: auto;">
-                <h1>현재 <span id="team" style="color: #0080FF;"></span> 대기 중</h1>
-                <p style="color: gray;">메뉴 주문 금액을 현장에서 결제하는 매장입니다.</p>
-                <div class="particular">
-                    <table>
-                        <tr>
-                            <td class="left-align">매장명</td>
-                            <td id="restaurant-name" class="right-align"></td>
-                        </tr>
-                        <tr>
-                            <td class="left-align">인원</td>
-                            <td id="total-count" class="right-align">0명</td>
-                        </tr>
-                    </table>
-                </div>
-                <div>
-                    <h3 style="margin: 50px 0; text-align: center;">방문 인원을 선택하세요</h3>
-                    <div class="d-flex justify-content-between align-items-center people">
-                        <label>성인</label>
-                        <div class="count">
-                            <i id="adult-minus" class="bi bi-dash"></i>
-                            <span id="adult-count">0</span>
-                            <i id="adult-plus" class="bi bi-plus"></i>
-                        </div>
-                    </div>
-                    <div class="d-flex justify-content-between align-items-center people">
-                        <label>아동</label>
-                        <div class="count">
-                            <i id="child-minus" class="bi bi-dash"></i>
-                            <span id="child-count">0</span>
-                            <i id="child-plus" class="bi bi-plus"></i>
-                        </div>
-                    </div>
-                </div>
-                <form id="apply-form">
-                    <div class="d-flex justify-content-center">
-                        <button id="apply" type="button" class="btn-orange">신청하기</button>
-                    </div>
-                </form>
+            <h1>현재 <span id="team" style="color: #0080FF;"></span> 대기 중</h1>
+            <p style="color: gray;">메뉴 주문 금액을 현장에서 결제하는 매장입니다.</p>
+            <div class="particular">
+                <table>
+                    <tr>
+                        <td class="left-align">매장명</td>
+                        <td id="restaurant-name" class="right-align"></td>
+                    </tr>
+                    <tr>
+                        <td class="left-align">인원</td>
+                        <td id="total-count" class="right-align">0명</td>
+                    </tr>
+                </table>
             </div>
+            <div>
+                <h3 style="margin: 50px 0; text-align: center;">방문 인원을 선택하세요</h3>
+                <div class="d-flex justify-content-between align-items-center people">
+                    <label>성인</label>
+                    <div class="count">
+                        <i id="adult-minus" class="bi bi-dash"></i>
+                        <span id="adult-count">0</span>
+                        <i id="adult-plus" class="bi bi-plus"></i>
+                    </div>
+                </div>
+                <div class="d-flex justify-content-between align-items-center people">
+                    <label>아동</label>
+                    <div class="count">
+                        <i id="child-minus" class="bi bi-dash"></i>
+                        <span id="child-count">0</span>
+                        <i id="child-plus" class="bi bi-plus"></i>
+                    </div>
+                </div>
+            </div>
+            <form id="apply-form">
+                <div class="d-flex justify-content-center">
+                    <button id="apply" type="submit" class="btn-orange">신청하기</button>
+                </div>
+            </form>
         </div>
     </div>
-<!--</div>-->
-
-<!--<script src="/js/waiting.js"></script>-->
-    <!--<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+</div>
+<!--<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
 </body>
 </html>-->

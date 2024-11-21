@@ -9,10 +9,10 @@ $(document).ready(function() {
         requestKeywordApi();
         requestAmenityApi();
 
-        // 수정 버튼 클릭 시
-        document.getElementById("modify-button").onclick = function() {
+        // 원격줄서기 버튼 클릭 시
+        document.getElementById("apply").onclick = function() {
             const id = document.getElementById("restaurant-id").value;
-            location.href = '/restaurant/modify/' + id;
+            location.href = '/restaurant/waiting/' + id;
         };
 
         // 리뷰탭 속 별점 주기
@@ -31,11 +31,6 @@ $(document).ready(function() {
         requestBreakHourModifyApi();
         requestKeywordModifyApi();
         requestAmenityModifyApi();
-
-        // 페이지를 이전 페이지로 이동
-        document.getElementById('cancel').addEventListener('click', function() {
-            window.history.back();
-        });
 
         // 새로운 메뉴 추가
         document.getElementById('addMenuButton').addEventListener('click', function() {

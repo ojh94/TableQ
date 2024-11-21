@@ -13,8 +13,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class RestaurantController {
 
     @GetMapping("/{id}")
-    public String restaurant(@PathVariable Long id, Model model) {
+    public String restaurant(@PathVariable Long id, @AuthenticationPrincipal User user, Model model) {
         model.addAttribute("id", id);
+        model.addAttribute("user", user);
         return "restaurant";
     }
 
