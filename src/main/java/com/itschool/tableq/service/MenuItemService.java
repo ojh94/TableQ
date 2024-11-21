@@ -50,7 +50,7 @@ public class MenuItemService extends BaseServiceWithS3<MenuItemRequest, MenuItem
 
     @Override
     protected MenuItemResponse response(MenuItem menuItem) {
-        return new MenuItemResponse(menuItem);
+        return MenuItemResponse.of(menuItem);
     }
 
     public List<MenuItemResponse> responseList(List<MenuItem> menuList) {
@@ -87,7 +87,9 @@ public class MenuItemService extends BaseServiceWithS3<MenuItemRequest, MenuItem
 
             menuItem.updateFileUrl(fileUrl);
 
-            return Header.OK(response(menuItem));
+            MenuItemResponse menuItemResponse = response(menuItem);
+
+            return Header.OK(menuItemResponse);
         } catch (Exception e){
             throw new RuntimeException("MenuItemService의 create 메소드 실패");
         }

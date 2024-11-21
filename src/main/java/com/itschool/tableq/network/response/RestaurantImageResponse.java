@@ -1,17 +1,17 @@
 package com.itschool.tableq.network.response;
 
 import com.itschool.tableq.domain.RestaurantImage;
+import com.itschool.tableq.domain.ReviewImage;
 import com.itschool.tableq.network.response.base.FileResponse;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.experimental.SuperBuilder;
 
 import java.time.LocalDateTime;
 
-@Builder
-@NoArgsConstructor
-@AllArgsConstructor
+@SuperBuilder
 @Getter
 public class RestaurantImageResponse extends FileResponse {
     private Long id;
@@ -20,9 +20,12 @@ public class RestaurantImageResponse extends FileResponse {
 
     private Long restaurantId;
 
-    public RestaurantImageResponse(RestaurantImage restaurantImage){
-        this.id = restaurantImage.getId();
-        this.fileUrl = restaurantImage.getFileUrl();
-        this.restaurantId = restaurantImage.getRestaurant().getId();
+    // 정적 팩토리 메서드 추가
+    public static RestaurantImageResponse of(RestaurantImage restaurantImage) {
+        return RestaurantImageResponse.builder()
+                .id(restaurantImage.getId())
+                .fileUrl(restaurantImage.getFileUrl())
+                .restaurantId(restaurantImage.getRestaurant().getId())
+                .build();
     }
 }

@@ -42,7 +42,7 @@ public class ReviewImageService
 
     @Override
     protected ReviewImageResponse response(ReviewImage reviewImage) {
-        return new ReviewImageResponse(reviewImage);
+        return ReviewImageResponse.of(reviewImage);
     }
 
     protected List<ReviewImageResponse> responseList(List<ReviewImage> reviewImages){

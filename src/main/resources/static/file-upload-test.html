@@ -65,9 +65,9 @@
             return;
         }
 
-        // 파일 크기 확인 (100MB 이하)
-        if (file && file.size > 100 * 1024 * 1024) {
-            alert('파일 크기가 100MB를 초과합니다.');
+        // 파일 크기 확인 (10MB 이하)
+        if (file && file.size > 10 * 1024 * 1024) {
+            alert('파일 크기가 10MB를 초과합니다.');
             return;
         }
 
@@ -79,7 +79,16 @@
             processData: false, // FormData를 자동으로 처리하지 않도록 설정
             contentType: false, // Content-Type 헤더를 자동으로 설정하지 않도록 설정
             success: function(data) {
-                $('#createMenuResult').html('<div class="response">성공: ' + JSON.stringify(data, null, 2) + '</div>');
+                const responseData = data.data;
+                const resultHtml = `
+                    <div class="response">
+                        <p><strong>성공:</strong></p>
+                        <pre>${JSON.stringify(data, null, 2)}</pre>
+                        <p><strong>이미지:</strong></p>
+                        <img src="${responseData.fileUrl}" alt="Uploaded Menu Image" style="max-width: 300px; max-height: 300px;">
+                    </div>
+                `;
+                $('#createMenuResult').html(resultHtml);
             },
             error: function(xhr, status, error) {
                 $('#createMenuResult').html('<div class="error">오류 발생: ' + error + '</div>');
