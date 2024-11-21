@@ -2,26 +2,23 @@ package com.itschool.tableq.service;
 
 import com.itschool.tableq.domain.Review;
 import com.itschool.tableq.domain.ReviewImage;
-import com.itschool.tableq.domain.User;
 import com.itschool.tableq.network.Header;
 import com.itschool.tableq.network.Pagination;
 import com.itschool.tableq.network.request.ReviewImageRequest;
 import com.itschool.tableq.network.response.ReviewImageResponse;
-import com.itschool.tableq.network.response.UserResponse;
 import com.itschool.tableq.repository.ReviewImageRespository;
 import com.itschool.tableq.repository.ReviewRepository;
-import com.itschool.tableq.service.base.BaseService;
+import com.itschool.tableq.service.base.BaseServiceWithS3;
 import org.springframework.beans.factory.annotation.Autowired;
-
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import java.time.LocalDateTime;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
 public class ReviewImageService
-        extends BaseService<ReviewImageRequest, ReviewImageResponse, ReviewImage> {
+        extends BaseServiceWithS3<ReviewImageRequest, ReviewImageResponse, ReviewImage> {
     @Autowired
     ReviewRepository reviewRepository;
 
@@ -62,8 +59,7 @@ public class ReviewImageService
     public Header<ReviewImageResponse> create(Header<ReviewImageRequest> request) {
         ReviewImageRequest imageRequest = request.getData();
         ReviewImage reviewImage = ReviewImage.builder()
-                .filename(imageRequest.getFilename())
-                .path(imageRequest.getPath())
+                .fileUrl(imageRequest.getFile().getName())
                 .review(imageRequest.getReview())
                 .build();
 

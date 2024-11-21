@@ -2,6 +2,7 @@ package com.itschool.tableq.network.response;
 
 import com.itschool.tableq.domain.Review;
 import com.itschool.tableq.domain.ReviewImage;
+import com.itschool.tableq.network.response.base.FileResponse;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -13,18 +14,13 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
-public class ReviewImageResponse {
+public class ReviewImageResponse extends FileResponse {
     private Long id;
-
-    private String filename;
-
-    private String path;
 
     private Long reviewId;
 
     public ReviewImageResponse(ReviewImage reviewImage){
-        this.filename = reviewImage.getFilename();
-        this.path = reviewImage.getPath();
+        this.fileUrl = reviewImage.getFileUrl();
         this.reviewId = reviewImage.getReview().getId();
     }
 }

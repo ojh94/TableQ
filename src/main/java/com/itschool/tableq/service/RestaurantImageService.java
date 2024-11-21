@@ -11,6 +11,7 @@ import com.itschool.tableq.network.response.UserResponse;
 import com.itschool.tableq.repository.RestaurantImageRepository;
 import com.itschool.tableq.repository.RestaurantRepository;
 import com.itschool.tableq.service.base.BaseService;
+import com.itschool.tableq.service.base.BaseServiceWithS3;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.data.domain.Page;
@@ -21,7 +22,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class RestaurantImageService extends
-        BaseService<RestaurantImageRequest, RestaurantImageResponse, RestaurantImage> {
+        BaseServiceWithS3<RestaurantImageRequest, RestaurantImageResponse, RestaurantImage> {
     @Autowired
     RestaurantRepository restaurantRepository;
 
@@ -61,8 +62,7 @@ public class RestaurantImageService extends
     public Header<RestaurantImageResponse> create(Header<RestaurantImageRequest> request) {
         RestaurantImageRequest imageRequest = request.getData();
         RestaurantImage restaurantImage = RestaurantImage.builder()
-                .filename(imageRequest.getFilename())
-                .path(imageRequest.getPath())
+                .fileUrl(imageRequest.getFile().getName())
                 .restaurant(imageRequest.getRestaurant())
                 .build();
 
@@ -88,7 +88,7 @@ public class RestaurantImageService extends
 
         RestaurantImage restaurantImage = baseRepository.findById(id).orElse(null);
 
-        restaurantImage.update(restaurantImageRequest);
+        restaurantImage.update(restaurantImage.getFileUrl());
 
         return Header.OK(response(restaurantImage));
     }

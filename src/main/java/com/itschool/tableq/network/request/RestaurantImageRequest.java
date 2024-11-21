@@ -1,6 +1,7 @@
 package com.itschool.tableq.network.request;
 
 import com.itschool.tableq.domain.Restaurant;
+import com.itschool.tableq.network.request.base.FileRequest;
 import lombok.*;
 
 import java.time.LocalDateTime;
@@ -10,13 +11,8 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 @Builder
-public class RestaurantImageRequest {
+public class RestaurantImageRequest extends FileRequest {
     private Long id;
-
-    private String filename;
-
-    private String path;
-
     private Restaurant restaurant;
 }
 

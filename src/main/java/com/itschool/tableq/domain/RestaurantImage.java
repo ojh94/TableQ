@@ -1,6 +1,7 @@
 package com.itschool.tableq.domain;
 
 import com.itschool.tableq.domain.base.AuditableEntity;
+import com.itschool.tableq.domain.base.IncludeFileUrl;
 import com.itschool.tableq.network.request.RestaurantImageRequest;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
@@ -14,31 +15,23 @@ import java.time.LocalDateTime;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 @Entity
-public class RestaurantImage extends AuditableEntity {
+public class RestaurantImage extends IncludeFileUrl {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(updatable = false, nullable = false)
     private Long id;
-
-    @Column(nullable = false)
-    private String filename;
-
-    @Column(nullable = false)
-    private String path;
 
     @ManyToOne
     @JoinColumn(name = "restaurant_id", updatable = false)
     private Restaurant restaurant;
 
     @Builder
-    public RestaurantImage(String filename, String path, Restaurant restaurant){
-        this.filename = filename;
-        this.path = path;
+    public RestaurantImage(String fileUrl, Restaurant restaurant){
+        this.fileUrl = fileUrl;
         this.restaurant = restaurant;
     }
 
-    public void update(RestaurantImageRequest dto){
-        this.filename = dto.getFilename();
-        this.path = dto.getPath();
+    public void update(String fileUrl){
+        this.fileUrl = fileUrl;
     }
 }

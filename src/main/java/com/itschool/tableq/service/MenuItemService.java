@@ -2,19 +2,13 @@ package com.itschool.tableq.service;
 
 import com.itschool.tableq.domain.MenuItem;
 import com.itschool.tableq.domain.Restaurant;
-import com.itschool.tableq.domain.Review;
-import com.itschool.tableq.domain.User;
 import com.itschool.tableq.network.Header;
 import com.itschool.tableq.network.Pagination;
 import com.itschool.tableq.network.request.MenuItemRequest;
-import com.itschool.tableq.network.request.RestaurantRequest;
 import com.itschool.tableq.network.response.MenuItemResponse;
-import com.itschool.tableq.network.response.RestaurantResponse;
-import com.itschool.tableq.network.response.ReviewResponse;
-import com.itschool.tableq.network.response.UserResponse;
 import com.itschool.tableq.repository.MenuItemRepository;
 import com.itschool.tableq.repository.RestaurantRepository;
-import com.itschool.tableq.service.base.BaseService;
+import com.itschool.tableq.service.base.BaseServiceWithS3;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -22,17 +16,19 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import org.springframework.data.domain.Pageable;
-import java.time.LocalDateTime;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
-public class MenuItemService extends BaseService<MenuItemRequest, MenuItemResponse, MenuItem> {
+public class MenuItemService extends BaseServiceWithS3<MenuItemRequest, MenuItemResponse, MenuItem> {
 
     @Autowired
     RestaurantRepository restaurantRepository;
+
+    private static final String DIRECTORY_NAME = "menu";
 
     @Override
     public Header<List<MenuItemResponse>> getPaginatedList(Pageable pageable) {
@@ -67,21 +63,34 @@ public class MenuItemService extends BaseService<MenuItemRequest, MenuItemRespon
         return responseList;
     }
 
+    @Transactional
     @Override
     public Header<MenuItemResponse> create(Header<MenuItemRequest> request) {
-        MenuItemRequest menuItemRequest = request.getData();
+        try {
+            MenuItemRequest menuItemRequest = request.getData();
 
-        MenuItem menuItem = MenuItem.builder()
-                .name(menuItemRequest.getName())
-                .price(menuItemRequest.getPrice())
-                .description(menuItemRequest.getDescription())
-                .imageUrl(menuItemRequest.getDescription())
-                .restaurant(restaurantRepository.findById(menuItemRequest.getRestaurantId())
-                        .orElseThrow(() -> new IllegalArgumentException("not found")))
-                .build();
+            MenuItem menuItem = MenuItem.builder()
+                    .name(menuItemRequest.getName())
+                    .price(menuItemRequest.getPrice())
+                    .description(menuItemRequest.getDescription())
+                    .recommendation(menuItemRequest.getRecommendation())
+                    .restaurant(restaurantRepository.findById(menuItemRequest.getRestaurantId())
+                            .orElseThrow(() -> new IllegalArgumentException("not found")))
+                    .build();
 
-        baseRepository.save(menuItem);
-        return Header.OK(response(menuItem));
+            menuItem = baseRepository.save(menuItem);
+
+            String originalFilename = menuItemRequest.getFile().getOriginalFilename();
+            String fileExtension = originalFilename.substring(originalFilename.lastIndexOf((".")+1));
+
+            String fileUrl = uploadFile(menuItemRequest.getFile(), DIRECTORY_NAME, menuItem.getId() + fileExtension);
+
+            menuItem.updateFileUrl(fileUrl);
+
+            return Header.OK(response(menuItem));
+        } catch (Exception e){
+            throw new RuntimeException("MenuItemService의 create 메소드 실패");
+        }
     }
 
     @Override

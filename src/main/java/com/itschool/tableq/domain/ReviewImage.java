@@ -1,6 +1,7 @@
 package com.itschool.tableq.domain;
 
 import com.itschool.tableq.domain.base.AuditableEntity;
+import com.itschool.tableq.domain.base.IncludeFileUrl;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -13,26 +14,19 @@ import java.time.LocalDateTime;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 @Entity
-public class ReviewImage extends AuditableEntity {
+public class ReviewImage extends IncludeFileUrl {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(updatable = false, nullable = false)
     private Long id;
-
-    @Column(nullable = false)
-    private String filename;
-
-    @Column(nullable = false)
-    private String path;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "review_id", updatable = false)
     private Review review;
 
     @Builder
-    public ReviewImage(String filename, String path, Review review){
-        this.filename = filename;
-        this.path = path;
+    public ReviewImage(String fileUrl, Review review){
+        this.fileUrl = fileUrl;
         this.review = review;
     }
 }
