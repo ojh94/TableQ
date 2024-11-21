@@ -57,3 +57,60 @@ h1, h2, h3 {
 .btn-orange:active {
     box-shadow: 0 0 0 5px rgba(237, 125, 49, 0.5); /* 클릭 시 그림자 효과 */
 }
+
+
+
+
+
+/* waiting-detail css */
+
+.flex-container {
+    margin: 8px 0;
+    display: flex;
+    justify-content: space-between; /* 좌우로 정렬 */
+    align-items: center; /* 세로 가운데 정렬 */
+}
+
+.right-items {
+    display: flex;
+    gap: 8px; /* 두 번째 h3와 아이콘 사이 간격 */
+    align-items: center; /* 세로 가운데 정렬 */
+}
+
+.particular-detail {
+    background-color: #FAFAFA;
+    border: 1px solid #E5E5E5;
+    border-radius: 20px;
+    padding: 25px 30px;
+    margin-top: 15px;
+}
+
+.h4-orange {
+    margin: 0;
+    font-size: 1.3rem; /* 글자 크기 (h4 수준, 약 20px) */
+    font-weight: bold; /* 글자 굵기 */
+    color: rgba(237, 125, 49, 1); /* 글자 색상 */
+}
+
+.h4-black {
+    margin: 0;
+    font-size: 1.3rem; /* 글자 크기 (h4 수준, 약 20px) */
+    font-weight: bold; /* 글자 굵기 */
+    color: black; /* 글자 색상 */
+}
+
+.p-gray {
+    font-size: 1.2rem; /* 글자 크기 */
+    color: gray; /* 글자 색상 */
+}
+
+.p-dark-gray {
+    font-size: 1.2rem; /* 글자 크기 */
+    color: #333333; /* 글자 색상 */
+}
+
+hr {
+    margin: 1rem 0 1.5rem 0;
+    color: gray; /* 글자 색상 */
+}
+
