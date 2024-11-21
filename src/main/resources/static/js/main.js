@@ -1,82 +1,52 @@
-function doMainProcess() {
+$(document).ready(function () {
     const userId = $('#userId').val();
-    const restaurantGrid = $('#restaurantGrid');
-    const restaurantGrid2 = $('#restaurantGrid2');
+    let restaurantGrid = $('#restaurantGrid');
+    let restaurantGrid2 = $('#restaurantGrid2');
 
-    function fetchRestaurantsWithVisitedStatus(userId) {
+    // 페이지 로드 시 즐겨찾기 목록 불러오기
+    fetchFavoriteRestaurants(userId);
+
+    // 찜 버튼 클릭 시 처리
+    $(document).on('click', '.favorite-btn', function (event) {
+        const button = $(this);
+        const restaurantId = button.data('id');
+        const icon = button.find('i');
+
+        // 찜 상태 토글
+        if (button.data('favorite') === true) {
+            icon.removeClass("fa-solid fa-heart").addClass("fa-regular fa-heart");
+            button.data('favorite', false);
+        } else {
+            icon.removeClass("fa-regular fa-heart").addClass("fa-solid fa-heart");
+            button.data('favorite', true);
+        }
+
+        // 즐겨찾기 상태 업데이트
+        toggleFavorite(restaurantId);
+    });
+
+    // 즐겨찾기 목록 불러오기
+    function fetchFavoriteRestaurants(userId) {
         return $.ajax({
-            url: '/api/restaurant',
-            type: 'GET',
-             async: false,
+            url: `/api/bookmark/user/${userId}`,
+            method: 'GET',
+            async: false,
             dataType: 'json'
         })
-            .then(restaurants => {
-                return $.ajax({
-                    url: `/api/review/user/${userId}`,
-                    type: 'GET',
-                    async: false,
-                    dataType: 'json'
-                }).then(response => {
-                    const reviewedRestaurantIds = response.data.map(review => review.restaurantId);
-                    restaurants.forEach(restaurant => {
-                        restaurant.visited = reviewedRestaurantIds.includes(Number(restaurant.id));
-                    });
-                    return restaurants;
-                });
+            .done(function (response) {
+                if (response.data && response.data.length > 0) {
+                    console.log('즐겨찾기 데이터:', response.data);
+                    renderFavoriteRestaurants(response.data);
+                } else {
+                    console.log('즐겨찾기 데이터가 없습니다.');
+                }
             })
-            .catch(error => {
-                console.error('Error fetching restaurants or user reviews:', error);
-                return [];
+            .fail(function (error) {
+                console.error('API 요청 중 오류가 발생했습니다:', error);
             });
     }
 
-
-
-//    // 레스토랑 방문 여부 가져오기
-//    function fetchRestaurantsWithVisitedStatus(userId) {
-//        return $.get('/api/restaurant')
-//            .then(restaurants => {
-//                return $.get(`/api/review/user/${userId}`)
-//                    .then(response => {
-//                        const reviewedRestaurantIds = response.data.map(review => review.restaurantId);
-//                        restaurants.forEach(restaurant => {
-//                            restaurant.visited = reviewedRestaurantIds.includes(Number(restaurant.id));
-//                        });
-//                        return restaurants;
-//                    });
-//            })
-//            .catch(error => {
-//                console.error('Error fetching restaurants or user reviews:', error);
-//                return [];
-//            });
-//    }
-
-    // 특정 레스토랑 정보 가져오기
-    function fetchRestaurantById(restaurantId) {
-        return $.get(`/api/restaurant/${restaurantId}`)
-            .then(response => response.data)
-            .catch(error => {
-                console.error(`Error fetching restaurant by ID ${restaurantId}:`, error);
-                return null;
-            });
-    }
-
-
-
-    // 특정 레스토랑의 리뷰 데이터 가져오기
-    function fetchReviewData(restaurantId) {
-        return $.get(`/api/review/restaurant/${restaurantId}`)
-            .then(data => ({
-                rating: data.rating || 0,
-                reviewsCount: data.reviewsCount || 0
-            }))
-            .catch(error => {
-                console.error('Error fetching review data:', error);
-                return { rating: 0, reviewsCount: 0 };
-            });
-    }
-
-    // 유저의 예약 정보 가져오기
+    // 예약 정보 가져오기
     function fetchReservationData(userId) {
         return $.ajax({
             url: `/api/reservation/user/${userId}`,
@@ -84,17 +54,17 @@ function doMainProcess() {
             async: false,
             dataType: 'json'
         })
-            .then(response => {
+            .done(function (response) {
                 const enteredReservations = response.data.filter(reservation => reservation.isEntered === true);
                 return enteredReservations.map(reservation => reservation.restaurantId);
             })
-            .catch(error => {
+            .fail(function (error) {
                 console.error('Error fetching reservation data:', error);
                 return [];
             });
     }
 
-    // 레스토랑 카드 생성 함수
+    // 레스토랑 카드 생성
     function createRestaurantCard(restaurant, rating = 0, reviewsCount = 0) {
         const card = $(`
             <div class="card">
@@ -126,113 +96,10 @@ function doMainProcess() {
         return card;
     }
 
-    // 예약하기 버튼 동작
+    // 예약하기 동작
     function bookRestaurant(restaurantId) {
         console.log('Booking restaurant:', restaurantId);
         sessionStorage.setItem('restaurantId', restaurantId);
         window.location.href = `/restaurant/${restaurantId}`;
     }
-
-//    // 유저의 찜한 레스토랑 불러오기
-//        function fetchBookmarkedRestaurants(userId) {
-//            return $.get(`/api/bookmark/user/${userId}`)
-//                .then(data => {
-//                    if (data.resultCode === 'OK' && data.data.length > 0) {
-//                        const bookmarkedRestaurants = data.data.map(item => item.restaurant_id);
-//                        bookmarkedRestaurants.forEach(restaurantId => {
-//                            const button = $(`#favorite-btn-${restaurantId}`);
-//                            const icon = button.find('i');
-//                            if (button.length > 0) {
-//                                icon.removeClass('fa-regular fa-heart').addClass('fa-solid fa-heart');
-//                                button.attr('data-favorite', 'true');
-//                            }
-//                        });
-//                    }
-//                })
-//                .catch(error => console.error('Error fetching bookmarked restaurants:', error));
-//        }
-
-    // 즐겨찾기 목록 불러오기
-        function getFavorites(userId) {
-            $.ajax({
-                url: `/api/bookmark/user/${userId}`,
-                type: 'GET',
-                success: function(data) {
-                    const favoriteRestaurants = data.data;
-                    console.log("Favorite restaurants data:", favoriteRestaurants);
-
-                    favoriteRestaurants.forEach((item) => {
-                        const button = document.querySelector(`.favorite-btn[data-id="${item.restaurantId}"]`);
-                        const icon = button?.querySelector("i");
-                        if (button) {
-                            button.setAttribute("data-favorite", "true");
-                            if (icon) {
-                                icon.classList.remove("fa-regular");
-                                icon.classList.add("fa-solid"); // 채워진 하트
-                            }
-                        }
-                    });
-                },
-                error: function(error) {
-                    console.error("Error fetching favorite restaurants:", error);
-                }
-            });
-        }
-
-            // 즐겨찾기 추가
-            function addFavorite(restaurantId, button, icon, userId) {
-                $.ajax({
-                    url: '/api/bookmark',
-                    type: 'POST',
-                    contentType: 'application/json',
-                    data: JSON.stringify({
-                        userId: userId,
-                        restaurantId: restaurantId,
-                    }),
-                    success: function(data) {
-                        if (data.resultCode === "OK") {
-                            button.setAttribute("data-favorite", "true");
-                            icon.classList.remove("fa-regular");
-                            icon.classList.add("fa-solid"); // 채워진 하트
-                            console.log("Favorite added:", restaurantId);
-                        } else {
-                            console.error("Failed to add favorite:", data.description);
-                        }
-                    },
-                    error: function(error) {
-                        console.error("Error adding favorite:", error);
-                    }
-                });
-            }
-
-            // 즐겨찾기 삭제
-            function removeFavorite(restaurantId, button, icon) {
-                $.ajax({
-                    url: `/api/bookmark/${restaurantId}`,
-                    type: 'DELETE',
-                    success: function(data) {
-                        if (data.resultCode === "OK") {
-                            button.setAttribute("data-favorite", "false");
-                            icon.classList.remove("fa-solid");
-                            icon.classList.add("fa-regular"); // 비어있는 하트
-                            console.log("Favorite removed:", restaurantId);
-                        } else {
-                            console.error("Failed to remove favorite:", data.description);
-                        }
-                    },
-                    error: function(error) {
-                        console.error("Error removing favorite:", error);
-                    }
-                });
-            }
-
-}
-
-
-
-
-
-
-
-
-
+});
