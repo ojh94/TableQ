@@ -1,5 +1,6 @@
 package com.itschool.tableq.network.request;
 
+import com.itschool.tableq.network.request.base.FileRequest;
 import lombok.*;
 import org.hibernate.validator.constraints.URL;
 
@@ -10,7 +11,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @Getter
 @Setter
-public class MenuItemRequest {
+public class MenuItemRequest extends FileRequest {
     private Long id;
 
     private String name;
@@ -18,9 +19,6 @@ public class MenuItemRequest {
     private String price;
 
     private String description;
-
-    @URL
-    private String imageUrl;
 
     private Boolean recommendation;
 
