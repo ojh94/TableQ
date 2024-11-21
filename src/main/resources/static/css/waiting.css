@@ -58,3 +58,75 @@ h1, h2, h3 {
     box-shadow: 0 0 0 5px rgba(237, 125, 49, 0.5); /* 클릭 시 그림자 효과 */
 }
 
+.btn-gray {
+    background-color: gray; /* 버튼 배경색 */
+    border: none; /* 테두리 없음 */
+    border-radius: 15px; /* 모서리 둥글게 */
+    color: white; /* 텍스트 색상 흰색 */
+    font-size: 25px; /* 폰트 크기 */
+    font-weight: bold; /* 텍스트 두께 */
+    transition: box-shadow 0.1s ease; /* box-shadow 변화에 부드러운 전환 효과 */
+    width: 35%; /* 상위 요소 기준 폭 */
+    padding: 15px;
+    margin: 20px 15px 0 0;
+}
+
+.btn-gray:active {
+    box-shadow: 0 0 0 5px rgba(0, 0, 0, 0.15); /* 클릭 시 그림자 효과 */
+}
+
+
+
+
+/* waiting-detail.html CSS */
+
+.flex-container {
+    margin: 8px 0;
+    display: flex;
+    justify-content: space-between; /* 좌우로 정렬 */
+    align-items: center; /* 세로 가운데 정렬 */
+}
+
+.right-items {
+    display: flex;
+    gap: 5px; /* 아이콘 사이 간격 */
+    align-items: center; /* 세로 가운데 정렬 */
+}
+
+.particular-detail {
+    background-color: #FAFAFA;
+    border: 1px solid #E5E5E5;
+    border-radius: 20px;
+    padding: 25px 30px;
+    margin-top: 15px;
+}
+
+.h4-orange {
+    margin: 0;
+    font-size: 1.4rem; /* 글자 크기 */
+    font-weight: bold; /* 글자 굵기 */
+    color: rgba(237, 125, 49, 1); /* 글자 색상 */
+}
+
+.h4-black {
+    margin: 0;
+    font-size: 1.3rem; /* 글자 크기 */
+    font-weight: bold; /* 글자 굵기 */
+    color: black; /* 글자 색상 */
+}
+
+.p-gray {
+    font-size: 1.2rem; /* 글자 크기 */
+    color: gray; /* 글자 색상 */
+}
+
+.p-dark-gray {
+    font-size: 1.2rem; /* 글자 크기 */
+    color: #333333; /* 글자 색상 */
+}
+
+hr {
+    margin: 1rem 0 1.5rem 0;
+    color: gray; /* 글자 색상 */
+}
+

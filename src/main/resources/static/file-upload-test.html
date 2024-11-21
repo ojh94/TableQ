@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Menu Item API Test</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+<h1>Menu Item API Test</h1>
+<div>
+    <h2>메뉴 추가</h2>
+    <label for="menuName">메뉴 이름:</label>
+    <input type="text" id="menuName" required><br><br>
+
+    <label for="menuPrice">가격:</label>
+    <input type="text" id="menuPrice" required><br><br>
+
+    <label for="menuDescription">설명:</label>
+    <input type="text" id="menuDescription"><br><br>
+
+    <label for="menuRecommendation">추천 여부:</label>
+    <input type="checkbox" id="menuRecommendation"><br><br>
+
+    <label for="menuImage">이미지 파일:</label>
+    <input type="file" id="menuImage" accept="image/*"><br><br>
+
+    <label for="restaurantIdCreate">레스토랑 ID:</label>
+    <input type="text" id="restaurantIdCreate" required><br><br>
+
+    <button id="createMenuBtn">메뉴 추가</button>
+
+    <div id="createMenuResult"></div>
+</div>
+
+<script>
+    // 메뉴 추가 요청
+    $('#createMenuBtn').on('click', function() {
+        const formData = new FormData();
+
+        // request 파트 (메뉴 이름, 가격, 설명 등)
+        const request = {
+            'name': $('#menuName').val(),
+            'price': $('#menuPrice').val(),
+            'description': $('#menuDescription').val(),
+            'recommendation': $('#menuRecommendation').is(':checked') ? true : false,
+            'restaurantId': $('#restaurantIdCreate').val()
+        };
+
+        // request 파트 추가
+        formData.append('data', JSON.stringify(request));  // JSON.stringify로 request 데이터를 문자열로 변환하여 추가
+
+        // 파일 파트
+        const file = $('#menuImage')[0].files[0];  // 선택된 파일
+        if (file) {
+            formData.append('file', file);
+        } else {
+            alert('이미지 파일을 선택해주세요.');
+            return;
+        }
+
+        // 파일 타입 확인 (이미지 파일만 허용)
+        if (file && !file.type.startsWith('image/')) {
+            alert('이미지 파일만 업로드할 수 있습니다.');
+            return;
+        }
+
+        // 파일 크기 확인 (10MB 이하)
+        if (file && file.size > 10 * 1024 * 1024) {
+            alert('파일 크기가 10MB를 초과합니다.');
+            return;
+        }
+
+        // Ajax 요청
+        $.ajax({
+            url: '/api/menu-item', // 서버의 API 경로 (환경에 맞게 수정)
+            method: 'POST',
+            data: formData,
+            processData: false, // FormData를 자동으로 처리하지 않도록 설정
+            contentType: false, // Content-Type 헤더를 자동으로 설정하지 않도록 설정
+            success: function(data) {
+                const responseData = data.data;
+                const resultHtml = `
+                    <div class="response">
+                        <p><strong>성공:</strong></p>
+                        <pre>${JSON.stringify(data, null, 2)}</pre>
+                        <p><strong>이미지:</strong></p>
+                        <img src="${responseData.fileUrl}" alt="Uploaded Menu Image" style="max-width: 300px; max-height: 300px;">
+                    </div>
+                `;
+                $('#createMenuResult').html(resultHtml);
+            },
+            error: function(xhr, status, error) {
+                $('#createMenuResult').html('<div class="error">오류 발생: ' + error + '</div>');
+            }
+        });
+    });
+</script>
+</body>
+</html>

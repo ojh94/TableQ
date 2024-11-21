@@ -46,7 +46,7 @@ public class RestaurantImageService extends
 
     @Override
     protected RestaurantImageResponse response(RestaurantImage restaurantImage) {
-        return new RestaurantImageResponse(restaurantImage);
+        return RestaurantImageResponse.of(restaurantImage);
     }
 
     protected List<RestaurantImageResponse> responseList(List<RestaurantImage> restaurantImageList){

@@ -50,7 +50,7 @@ public class MenuItem extends IncludeFileUrl {
         this.recommendation = menuItemRequest.getRecommendation();
     }
 
-    public void updateFileUrl(String url){
-        this.fileUrl = url;
+    public void updateFileUrl(String fileUrl){
+        this.fileUrl = fileUrl;
     }
 }
