@@ -32,7 +32,7 @@ public class MenuItemService extends BaseServiceWithS3<MenuItemRequest, MenuItem
 
     @Override
     public Header<List<MenuItemResponse>> getPaginatedList(Pageable pageable) {
-        Page<MenuItem> entities =  baseRepository.findAll(pageable);
+        Page<MenuItem> entities = baseRepository.findAll(pageable);
 
         List<MenuItemResponse> menuItemResponsesList = entities.stream()
                 .map(entity -> response(entity))
@@ -81,7 +81,7 @@ public class MenuItemService extends BaseServiceWithS3<MenuItemRequest, MenuItem
             menuItem = baseRepository.save(menuItem);
 
             String originalFilename = menuItemRequest.getFile().getOriginalFilename();
-            String fileExtension = originalFilename.substring(originalFilename.lastIndexOf((".")+1));
+            String fileExtension = "." + originalFilename.substring(originalFilename.lastIndexOf(".") + 1);
 
             String fileUrl = uploadFile(menuItemRequest.getFile(), DIRECTORY_NAME, menuItem.getId() + fileExtension);
 
@@ -93,6 +93,7 @@ public class MenuItemService extends BaseServiceWithS3<MenuItemRequest, MenuItem
         }
     }
 
+
     @Override
     public Header<MenuItemResponse> read(Long id) {
         return Header.OK(response(baseRepository.findById(id).orElse(null)));
@@ -101,21 +102,34 @@ public class MenuItemService extends BaseServiceWithS3<MenuItemRequest, MenuItem
     @Override
     @Transactional
     public Header<MenuItemResponse> update(Long id, Header<MenuItemRequest> request) {
-        MenuItemRequest menuItemRequest = request.getData();
+        try {
+            MenuItemRequest menuItemRequest = request.getData();
 
-        MenuItem menuItem = baseRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("not found"));
-        menuItem.update(menuItemRequest);
+            MenuItem menuItem = baseRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("not found"));
 
-        return Header.OK(response(menuItem));
+            updateFile(menuItem, request.getData().getFile(), DIRECTORY_NAME, "" + menuItem.getId());
+
+            menuItem.update(menuItemRequest);
+
+            return Header.OK(response(menuItem));
+        } catch (Exception e){
+            throw new RuntimeException("MenuItemService의 update 메소드 실패");
+        }
     }
 
+    @Transactional
     @Override
     public Header delete(Long id) {
-        return baseRepository.findById(id)
-                .map(restaurant -> {
-                    baseRepository.delete(restaurant);
-                    return Header.OK(response(restaurant));
-                }).orElseThrow(() -> new RuntimeException("Restaurant delete fail"));
+        try {
+            MenuItem menuItem = baseRepository.findById(id)
+                    .orElseThrow(() -> new RuntimeException("MenuItem delete fail"));
+
+            deleteFile(menuItem);
+
+            return Header.OK(response(menuItem));
+        } catch (Exception e){
+            throw new RuntimeException("MenuItemService의 delete 메소드 실패");
+        }
     }
 
     public Header<List<MenuItemResponse>> readByRestaurantId(Long restaurantId) {
