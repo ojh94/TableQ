@@ -26,10 +26,45 @@ $(document).ready(function() {
 
     // 신청하기 버튼 클릭 시
     document.getElementById('apply').addEventListener('click', function(event) {
-        var isConfirmed = confirm('신청하시겠습니까?');
-        if (isConfirmed) {
-            document.getElementById('apply-form').submit(); // 폼 제출
+        event.preventDefault();
+
+        const restaurantId = parseInt(document.getElementById("restaurant-id").value);
+        const userId = parseInt(document.getElementById("user-id").value);
+        const totalCount = document.getElementById('total-count').value;
+
+        if(totalCount == null || totalCount === 0) {
+            alert("인원을 입력해주세요.");
+            return;
         }
+
+        const formData = {
+            "data": {
+                "people" : totalCount,
+                "restaurantId" : restaurantId,
+                "userId" : userId
+            }
+        };
+
+        debugger;
+
+        // AJAX 요청 보내기
+        $.ajax({
+            url: `/api/reservation`,
+            type: 'POST', // 필요한 HTTP 메서드로 변경 (PUT 또는 PATCH 등도 가능)
+            contentType: 'application/json', // JSON 형식으로 데이터 전송
+            data: JSON.stringify(formData), // 데이터를 JSON 문자열로 변환
+            success: function(response) {
+                // 요청 성공 시 동작
+                console.log(response);
+                alert('정보가 성공적으로 생성되었습니다.');
+
+            },
+            error: function(xhr, status, error) {
+                // 요청 실패 시 동작
+                console.error('생성 실패:', error);
+                alert('생성 중 오류가 발생했습니다.');
+            }
+        });
     });
 });
 
@@ -54,12 +89,13 @@ function updateTotalCount() {
 
     const totalCount = adultCount + childCount;
     document.getElementById('total-count').textContent = totalCount + '명';
+    document.getElementById('total-count').value = totalCount;
 }
 
 // 가게 별 이름 조회
 function requestWaitingApi() {
 
-    const id = document.getElementById("waiting-id").value;
+    const id = document.getElementById("restaurant-id").value;
 
     $.ajax({
         url: `/api/restaurant/${id}`,
@@ -82,7 +118,7 @@ function requestWaitingApi() {
 // 가게 별 대기 순서 조회
 function requestWaitingNumApi() {
 
-    const restaurantId = document.getElementById("waiting-id").value;
+    const restaurantId = document.getElementById("restaurant-id").value;
 
     $.ajax({
         url: `/api/reservation/restaurant/queue/${restaurantId}`,

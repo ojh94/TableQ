@@ -75,7 +75,8 @@
 <div layout:decorate="~{common/layouts/restaurantWaitingLayout}"
      layout:fragment="Content">
 
-    <input type="hidden" id="waiting-id" th:value="${id}">
+    <input type="hidden" id="restaurant-id" th:value="${id}">
+    <input type="hidden" id="user-id" th:value="${user.id}">
 
     <!--<div class="container">-->
         <div class="row">
@@ -120,7 +121,7 @@
                 </div>
                 <form id="apply-form">
                     <div class="d-flex justify-content-center">
-                        <button id="apply" type="button" class="btn-orange">신청하기</button>
+                        <button id="apply" type="submit" class="btn-orange">신청하기</button>
                     </div>
                 </form>
             </div>
