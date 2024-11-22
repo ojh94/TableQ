@@ -459,56 +459,52 @@ function requestMenuModifyApi() {
 
             menus.forEach((menu) => {
 
-                if (menu.recommendation !== true) {
-
-                    const menuModifyHtml = `
-                        <div class="menu-item mb-4" style="display: flex; align-items: center;">
-                            <div class="item-info">
-                                <h4 style="display: flex; align-items: center;">
-                                    <input value="${menu.name}" placeholder="메뉴명">&nbsp;
-                                    <span class="badge" style="background-color: rgba(237, 125, 49, 1); font-size: 13px; display: flex; align-items: center;">추천
-                                        <input type="checkbox" style="margin-left: 6px;">
-                                    </span>
-                                </h4>
-                                <h5 class="price" style="margin-bottom: 0px;"><input value="${menu.price}원" placeholder="가격"></h5>
-                            <!--<p class="item-text">
-                                새우가 포함된 텐동
-                                </p>-->
-                            </div>
-                            <img class="photo menu-img-modify" src="${menu.fileUrl}" alt="메뉴" onerror="this.src='https://placehold.jp/150x150.png'" onclick="triggerFileInput(this)"/>
-                            <input type="file" style="display: none;" accept="image/*" onchange="updateImage(event, this)" />
-                            <i class="bi bi-x-square px-4" style="font-size: 25px; cursor: pointer;" onclick="deleteMenuItem(this)"></i>
-                        </div>
+                let menuModifyHtml =
+                    `
+                    <div class="menu-item mb-4" style="display: flex; align-items: center;">
+                        <div class="item-info">
+                            <h4 style="display: flex; align-items: center;">
+                                <input value="${menu.name}" placeholder="메뉴명">&nbsp;
                     `;
 
-                    // menu-list 요소(내부) 끝에 추가
-                    $('#menu-list').append(menuModifyHtml);
-
-                } else if (menu.recommendation === true) {
-
-                    const menuModifyHtml = `
-                        <div class="menu-item mb-4" style="display: flex; align-items: center;">
-                            <div class="item-info">
-                                <h4 style="display: flex; align-items: center;">
-                                    <input value="${menu.name}" placeholder="메뉴명">&nbsp;
+                if (menu.recommendation) {
+                    menuModifyHtml +=
+                        `
                                     <span class="badge" style="background-color: rgba(237, 125, 49, 1); font-size: 13px; display: flex; align-items: center;">추천
                                         <input type="checkbox" style="margin-left: 6px;" checked>
                                     </span>
-                                </h4>
-                                <h5 class="price" style="margin-bottom: 0px;"><input value="${menu.price}원" placeholder="가격"></h5>
-                            <!--<p class="item-text">
-                                새우가 포함된 텐동
-                                </p>-->
-                            </div>
-                            <img class="photo menu-img-modify" src="${menu.fileUrl}" alt="메뉴" onerror="this.src='https://placehold.jp/150x150.png'" onclick="triggerFileInput(this)"/>
-                            <input type="file" style="display: none;" accept="image/*" onchange="updateImage(event, this)" />
-                            <i class="bi bi-x-square px-4" style="font-size: 25px; cursor: pointer;" onclick="deleteMenuItem(this)"></i>
+                        `;
+                } else {
+                    menuModifyHtml +=
+                        `
+                                    <span class="badge" style="background-color: rgba(237, 125, 49, 1); font-size: 13px; display: flex; align-items: center;">추천
+                                        <input type="checkbox" style="margin-left: 6px;">
+                                    </span>
+                        `;
+                }
+
+                menuModifyHtml +=
+                    `
+                            </h4>
+                            <h5 class="price" style="margin-bottom: 0px;"><input value="${menu.price}원" placeholder="가격"></h5>
                         </div>
+                        <img class="photo menu-img-modify" src="
                     `;
 
-                    // menu-list 요소의 끝에 새로운 메뉴 항목을 추가
-                    $('#menu-list').append(menuModifyHtml);
+                if (menu.fileUrl !== null) {
+                    menuModifyHtml += `${menu.fileUrl}`;
                 }
+
+                menuModifyHtml +=
+                    `" alt="메뉴" onerror="this.src='https://placehold.jp/150x150.png'" onclick="triggerFileInput(this)"
+                    />
+                         <input type="file" style="display: none;" accept="image/*" onchange="updateImage(event, this)" />
+                         <i class="bi bi-x-square px-4" style="font-size: 25px; cursor: pointer;" onclick="deleteMenuItem(this)"></i>
+                     </div>
+                    `;
+
+                // menu-list 요소(내부) 끝에 추가
+                $('#menu-list').append(menuModifyHtml);
             });
 
             console.log('메뉴 수정 set 완료');
