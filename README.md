@@ -1,4 +1,6 @@
-### TableQ ![example workflow](https://github.com/ojh94/TableQ/actions/workflows/ci.yml/badge.svg)
+# TableQ ![example workflow](https://github.com/ojh94/TableQ/actions/workflows/ci.yml/badge.svg)
+
+
 
 # Publishing Domain : http://www.tableq.click/
 
