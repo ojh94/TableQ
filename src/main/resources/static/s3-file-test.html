@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Menu Item API Test</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+<h1>Menu Item API Test</h1>
+
+<!-- 메뉴 추가 (생성) -->
+<div>
+    <h2>메뉴 추가</h2>
+    <label for="menuName">메뉴 이름:</label>
+    <input type="text" id="menuName" required><br><br>
+
+    <label for="menuPrice">가격:</label>
+    <input type="text" id="menuPrice" required><br><br>
+
+    <label for="menuDescription">설명:</label>
+    <input type="text" id="menuDescription"><br><br>
+
+    <label for="menuRecommendation">추천 여부:</label>
+    <input type="checkbox" id="menuRecommendation"><br><br>
+
+    <label for="menuImage">이미지 파일:</label>
+    <input type="file" id="menuImage" accept="image/*"><br><br>
+
+    <label for="restaurantIdCreate">레스토랑 ID:</label>
+    <input type="text" id="restaurantIdCreate" required><br><br>
+
+    <button id="createMenuBtn">메뉴 추가</button>
+
+    <div id="createMenuResult"></div>
+</div>
+
+<!-- 메뉴 조회 -->
+<div>
+    <h2>메뉴 조회</h2>
+    <label for="menuId">메뉴 ID:</label>
+    <input type="text" id="menuId" required><br><br>
+
+    <button id="fetchMenuBtn">메뉴 조회</button><br><br>
+
+    <div id="menuDetails">
+        <p><strong>조회된 메뉴:</strong></p>
+        <div id="menuDetailsContent"></div><br><br>
+    </div>
+</div>
+
+<!-- 메뉴 수정 -->
+<div>
+    <h2>메뉴 수정</h2>
+    <h3>수정할 항목</h3>
+
+    <label for="menuNameUpdate">메뉴 이름:</label>
+    <input type="text" id="menuNameUpdate"><br><br>
+
+    <label for="menuPriceUpdate">가격:</label>
+    <input type="text" id="menuPriceUpdate"><br><br>
+
+    <label for="menuDescriptionUpdate">설명:</label>
+    <input type="text" id="menuDescriptionUpdate"><br><br>
+
+    <label for="menuRecommendationUpdate">추천 여부:</label>
+    <input type="checkbox" id="menuRecommendationUpdate"><br><br>
+
+    <label for="menuImageUpdate">이미지 파일:</label>
+    <input type="file" id="menuImageUpdate" accept="image/*"><br><br>
+
+    <button id="updateMenuBtn">메뉴 수정</button>
+
+    <div id="updateMenuResult"></div>
+</div>
+
+<!-- 메뉴 삭제 -->
+<div>
+    <h2>메뉴 삭제</h2>
+    <label for="menuIdDelete">삭제할 메뉴 ID:</label>
+    <input type="text" id="menuIdDelete" required><br><br>
+
+    <button id="deleteMenuBtn">메뉴 삭제</button>
+
+    <div id="deleteMenuResult"></div>
+</div>
+
+<script>
+    // 메뉴 추가 요청
+    $('#createMenuBtn').on('click', function() {
+        const formData = new FormData();
+
+        const request = {
+            'name': $('#menuName').val(),
+            'price': $('#menuPrice').val(),
+            'description': $('#menuDescription').val(),
+            'recommendation': $('#menuRecommendation').is(':checked') ? true : false,
+            'restaurantId': $('#restaurantIdCreate').val()
+        };
+
+        formData.append('data', JSON.stringify(request));
+
+        const file = $('#menuImage')[0].files[0];
+        if (file) {
+            formData.append('file', file);
+        } else {
+            alert('이미지 파일을 선택해주세요.');
+            return;
+        }
+
+        if (file && !file.type.startsWith('image/')) {
+            alert('이미지 파일만 업로드할 수 있습니다.');
+            return;
+        }
+
+        if (file && file.size > 10 * 1024 * 1024) {
+            alert('파일 크기가 10MB를 초과합니다.');
+            return;
+        }
+
+        $.ajax({
+            url: '/api/menu-item',
+            method: 'POST',
+            data: formData,
+            processData: false,
+            contentType: false,
+            success: function(data) {
+                const responseData = data.data;
+                const resultHtml = `
+                    <div class="response">
+                        <p><strong>성공:</strong></p>
+                        <pre>${JSON.stringify(data, null, 2)}</pre>
+                        <p><strong>이미지:</strong></p>
+                        <img src="${responseData.fileUrl}" alt="Uploaded Menu Image" style="max-width: 300px; max-height: 300px;">
+                    </div>
+                `;
+                $('#createMenuResult').html(resultHtml);
+            },
+            error: function(xhr, status, error) {
+                $('#createMenuResult').html('<div class="error">오류 발생: ' + error + '</div>');
+            }
+        });
+    });
+
+    // 메뉴 조회 요청
+    $('#fetchMenuBtn').on('click', function() {
+        const menuId = $('#menuId').val();
+        if (!menuId) {
+            alert('메뉴 ID를 입력해주세요.');
+            return;
+        }
+
+        $.ajax({
+            url: `/api/menu-item/${menuId}`,
+            method: 'GET',
+            success: function(data) {
+                const menuData = data.data;
+                const resultHtml = `
+                    <p><strong>메뉴 이름:</strong> ${menuData.name}</p>
+                    <p><strong>가격:</strong> ${menuData.price}</p>
+                    <p><strong>설명:</strong> ${menuData.description}</p>
+                    <p><strong>추천 여부:</strong> ${menuData.recommendation ? '추천' : '비추천'}</p>
+                    <p><strong>이미지:</strong></p>
+                    <img src="${menuData.fileUrl}" alt="Menu Image" style="max-width: 300px; max-height: 300px;">
+                `;
+                $('#menuDetailsContent').html(resultHtml);
+
+                // 수정할 수 있도록 기본 값 설정
+                $('#menuNameUpdate').val(menuData.name);
+                $('#menuPriceUpdate').val(menuData.price);
+                $('#menuDescriptionUpdate').val(menuData.description);
+                $('#menuRecommendationUpdate').prop('checked', menuData.recommendation);
+            },
+            error: function(xhr, status, error) {
+                $('#menuDetailsContent').html('<div class="error">오류 발생: ' + error + '</div>');
+            }
+        });
+    });
+
+    // 메뉴 수정 요청
+    $('#updateMenuBtn').on('click', function() {
+        const formData = new FormData();
+        const menuId = $('#menuId').val();
+        if (!menuId) {
+            alert('메뉴 ID를 입력해주세요.');
+            return;
+        }
+
+        const request = {
+            'name': $('#menuNameUpdate').val(),
+            'price': $('#menuPriceUpdate').val(),
+            'description': $('#menuDescriptionUpdate').val(),
+            'recommendation': $('#menuRecommendationUpdate').is(':checked') ? true : false,
+            'needFileChange': $('#menuImageUpdate')[0].files.length > 0 // 파일이 있으면 true, 없으면 false
+        };
+
+        formData.append('data', JSON.stringify(request));
+
+        const file = $('#menuImageUpdate')[0].files[0];
+
+        if (file) {
+            formData.append('file', file);
+        }
+
+        $.ajax({
+            url: `/api/menu-item/${menuId}`,
+            method: 'PUT',
+            data: formData,
+            processData: false,
+            contentType: false,
+            success: function(data) {
+                const responseData = data.data;
+                const resultHtml = `
+                    <div class="response">
+                        <p><strong>성공:</strong></p>
+                        <pre>${JSON.stringify(data, null, 2)}</pre>
+                        <p><strong>이미지:</strong></p>
+                        <img src="${responseData.fileUrl}" alt="Updated Menu Image" style="max-width: 300px; max-height: 300px;">
+                    </div>
+                `;
+                $('#updateMenuResult').html(resultHtml);
+            },
+            error: function(xhr, status, error) {
+                $('#updateMenuResult').html('<div class="error">오류 발생: ' + error + '</div>');
+            }
+        });
+    });
+
+    // 메뉴 삭제 요청
+    $('#deleteMenuBtn').on('click', function() {
+        const menuId = $('#menuIdDelete').val();
+        if (!menuId) {
+            alert('메뉴 ID를 입력해주세요.');
+            return;
+        }
+
+        $.ajax({
+            url: `/api/menu-item/${menuId}`,
+            method: 'DELETE',
+            success: function(data) {
+                const resultHtml = `
+                    <div class="response">
+                        <p><strong>성공:</strong></p>
+                        <pre>${JSON.stringify(data, null, 2)}</pre>
+                    </div>
+                `;
+                $('#deleteMenuResult').html(resultHtml);
+            },
+            error: function(xhr, status, error) {
+                $('#deleteMenuResult').html('<div class="error">오류 발생: ' + error + '</div>');
+            }
+        });
+    });
+</script>
+
+</body>
+</html>

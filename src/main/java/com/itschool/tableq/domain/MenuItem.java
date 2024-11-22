@@ -1,6 +1,5 @@
 package com.itschool.tableq.domain;
 
-import com.itschool.tableq.domain.base.AuditableEntity;
 import com.itschool.tableq.domain.base.IncludeFileUrl;
 import com.itschool.tableq.network.request.MenuItemRequest;
 import jakarta.persistence.*;
@@ -42,11 +41,11 @@ public class MenuItem extends IncludeFileUrl {
         this.fileUrl = fileUrl;
     }
 
-    public void update(MenuItemRequest menuItemRequest) {
+    public void updateWithoutFileUrl(MenuItemRequest menuItemRequest) {
         this.name = menuItemRequest.getName();
         this.price = menuItemRequest.getPrice();
         this.description = menuItemRequest.getDescription();
-        this.fileUrl = menuItemRequest.getFile().getName();
+        // this.fileUrl = menuItemRequest.getFile().getName();
         this.recommendation = menuItemRequest.getRecommendation();
     }
 

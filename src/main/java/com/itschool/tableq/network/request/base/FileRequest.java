@@ -8,4 +8,6 @@ import org.springframework.web.multipart.MultipartFile;
 @Setter
 public class FileRequest {
     protected MultipartFile file;
+
+    protected boolean needFileChange = false;
 }

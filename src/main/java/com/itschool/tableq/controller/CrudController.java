@@ -89,9 +89,9 @@ public abstract class CrudController<Req, Res, Entity> implements CrudInterface<
     }
 
     // 예외 처리 핸들러 추가
-    @ExceptionHandler(Exception.class)
+    /*@ExceptionHandler(Exception.class)
     public Header handleException(Exception e) {
         log.error("예기치 않은 오류 발생: ", e);
         return Header.ERROR("예기치 않은 오류가 발생했습니다. 500 : Internal Server Error");
-    }
+    }*/
 }
