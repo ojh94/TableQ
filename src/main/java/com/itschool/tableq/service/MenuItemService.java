@@ -9,6 +9,7 @@ import com.itschool.tableq.network.response.MenuItemResponse;
 import com.itschool.tableq.repository.MenuItemRepository;
 import com.itschool.tableq.repository.RestaurantRepository;
 import com.itschool.tableq.service.base.BaseServiceWithS3;
+import com.itschool.tableq.util.FileUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -16,6 +17,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import org.springframework.data.domain.Pageable;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -69,7 +71,7 @@ public class MenuItemService extends BaseServiceWithS3<MenuItemRequest, MenuItem
         try {
             MenuItemRequest menuItemRequest = request.getData();
 
-            MenuItem menuItem = MenuItem.builder()
+            MenuItem entity = MenuItem.builder()
                     .name(menuItemRequest.getName())
                     .price(menuItemRequest.getPrice())
                     .description(menuItemRequest.getDescription())
@@ -78,27 +80,25 @@ public class MenuItemService extends BaseServiceWithS3<MenuItemRequest, MenuItem
                             .orElseThrow(() -> new IllegalArgumentException("not found")))
                     .build();
 
-            menuItem = baseRepository.save(menuItem);
+            entity = baseRepository.save(entity);
 
-            String originalFilename = menuItemRequest.getFile().getOriginalFilename();
-            String fileExtension = "." + originalFilename.substring(originalFilename.lastIndexOf(".") + 1);
+            String fileUrl = uploadFile(menuItemRequest.getFile(), DIRECTORY_NAME,
+                    String.valueOf(entity.getId()) + FileUtil.getFileExtension(request.getData().getFile()));
 
-            String fileUrl = uploadFile(menuItemRequest.getFile(), DIRECTORY_NAME, menuItem.getId() + fileExtension);
+            entity.updateFileUrl(fileUrl);
 
-            menuItem.updateFileUrl(fileUrl);
-
-            MenuItemResponse menuItemResponse = response(menuItem);
+            MenuItemResponse menuItemResponse = response(entity);
 
             return Header.OK(menuItemResponse);
         } catch (Exception e){
-            throw new RuntimeException("MenuItemService의 create 메소드 실패");
+            throw new RuntimeException(this.getClass() + "의 create 메소드 실패", e);
         }
     }
 
 
     @Override
     public Header<MenuItemResponse> read(Long id) {
-        return Header.OK(response(baseRepository.findById(id).orElse(null)));
+        return Header.OK(response(baseRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("not found"))));
     }
 
     @Override
@@ -107,15 +107,28 @@ public class MenuItemService extends BaseServiceWithS3<MenuItemRequest, MenuItem
         try {
             MenuItemRequest menuItemRequest = request.getData();
 
-            MenuItem menuItem = baseRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("not found"));
+            MultipartFile file = menuItemRequest.getFile();
 
-            updateFile(menuItem, request.getData().getFile(), DIRECTORY_NAME, "" + menuItem.getId());
+            MenuItem findEntity = baseRepository.findById(id)
+                    .orElseThrow(() -> new IllegalArgumentException("not found"));
 
-            menuItem.update(menuItemRequest);
+            String existingUrl = findEntity.getFileUrl();
 
-            return Header.OK(response(menuItem));
+            if (menuItemRequest.isNeedFileChange()) { // 프론트에서 파일 변경이 필요하다 한 경우
+                if (file.isEmpty() && existingUrl != null) { // 대체 파일이 없고 기존 url이 있는 경우
+                    deleteFile(existingUrl); // 기존 파일 삭제
+                    findEntity.updateFileUrl(null); // 파일 URL 삭제
+                } else if (!file.isEmpty()) { // 대체 파일이 있는 경우
+                    String newUrl = updateFile(existingUrl, file); // 새 파일 업로드
+                    findEntity.updateFileUrl(newUrl); // 새 파일 URL 설정
+                }     
+            }
+
+            findEntity.updateWithoutFileUrl(menuItemRequest);
+
+            return Header.OK(response(findEntity));
         } catch (Exception e){
-            throw new RuntimeException("MenuItemService의 update 메소드 실패");
+            throw new RuntimeException(this.getClass() + "의 update 메소드 실패", e);
         }
     }
 
@@ -123,14 +136,17 @@ public class MenuItemService extends BaseServiceWithS3<MenuItemRequest, MenuItem
     @Override
     public Header delete(Long id) {
         try {
-            MenuItem menuItem = baseRepository.findById(id)
-                    .orElseThrow(() -> new RuntimeException("MenuItem delete fail"));
+            MenuItem entity = baseRepository.findById(id)
+                    .orElseThrow(() -> new IllegalArgumentException("not found"));
 
-            deleteFile(menuItem);
+            if(entity.getFileUrl() != null)
+                deleteFile(entity.getFileUrl());
 
-            return Header.OK(response(menuItem));
+            baseRepository.delete(entity);
+
+            return Header.OK(response(entity));
         } catch (Exception e){
-            throw new RuntimeException("MenuItemService의 delete 메소드 실패");
+            throw new RuntimeException(this.getClass() + "의 delete 메소드 실패", e);
         }
     }
 
