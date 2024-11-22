@@ -4,6 +4,6 @@ server:
 # Choose Environment
 spring:
   profiles:
-    active: prod
+    active: dev #prod
   # config:
   # location: classpath:/application-dev.yml
