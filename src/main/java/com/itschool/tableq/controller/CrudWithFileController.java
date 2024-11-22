@@ -73,7 +73,7 @@ public abstract class CrudWithFileController<Req extends FileRequest, Res, Entit
     @Operation(summary = "파일 및 엔티티 생성", description = "새로운 엔티티를 생성하고 파일을 S3에 저장")
     @PostMapping("")
     public Header<Res> create(@RequestPart("data") String requestJson,  // JSON을 String으로 받기
-                              @RequestPart("file") MultipartFile file) {
+                              @RequestPart(value = "file", required = false) MultipartFile file) {
 
         log.info("create: {}", requestJson);
 
