@@ -2,10 +2,10 @@ $(document).ready(function() {
     let restaurantId = (document.getElementById("restaurant-id")) ? document.getElementById("restaurant-id").value : '';
 
     if (window.location.pathname
-    === '/restaurant/waiting/' + restaurantId) {
+    === '/restaurant/reservation/apply/' + restaurantId) {
 
-        requestWaitingApi();
-        requestWaitingNumApi();
+        requestReservationApi();
+        requestReservationNumApi();
 
         // 성인 및 아동의 버튼 클릭 이벤트
         document.getElementById('adult-plus').addEventListener('click', function() {
@@ -54,7 +54,7 @@ $(document).ready(function() {
                 success: function(response) {
                     // 요청 성공 시 동작
                     alert('원격줄서기 신청이 완료되었습니다.');
-                    location.href = '/restaurant/waiting/detail/' + userId;
+                    location.href = '/restaurant/reservation/detail/' + userId;
                 },
                 error: function(xhr, status, error) {
                     // 요청 실패 시 동작
@@ -66,7 +66,7 @@ $(document).ready(function() {
     }
 
     if (window.location.pathname
-    === '/restaurant/waiting/detail/' + document.getElementById("reservation-id").value) {
+    === '/restaurant/reservation/detail/' + document.getElementById("reservation-id").value) {
         requestReservationDetailApi();
     }
 
@@ -101,12 +101,12 @@ function updateTotalCount() {
 }
 
 // 가게 이름 조회
-function requestWaitingApi() {
+function requestReservationApi() {
 
-    const id = document.getElementById("restaurant-id").value;
+    const restaurantId = document.getElementById("restaurant-id").value;
 
     $.ajax({
-        url: `/api/restaurant/${id}`,
+        url: `/api/restaurant/${restaurantId}`,
         type: 'GET', // 필요한 HTTP 메서드로 변경
         contentType: 'application/json', // JSON 형식으로 데이터 전송
         success: function(response) {
@@ -124,7 +124,7 @@ function requestWaitingApi() {
 }
 
 // 가게 대기 순서 조회
-function requestWaitingNumApi() {
+function requestReservationNumApi() {
 
     const restaurantId = document.getElementById("restaurant-id").value;
 
@@ -206,7 +206,7 @@ function requestWaitingNumApi() {
     });
 }*/
 
-// waiting-detail 속 이용날짜 형식 변경
+// reservation-detail 속 이용날짜 형식 변경
 function formatDate(dateString) {
     // 문자열을 Date 객체로 변환
     const date = new Date(dateString);
@@ -263,34 +263,34 @@ function requestReservationDetailApi() {
             // 요청 성공 시 동작
             reservation = response.data;
 
-            $('#waiting-name')[0].textContent = reservation.restaurantId;
-            $('.waiting-time')[0].textContent = '접수일시: ' + formatDate(reservation.createdAt);
-            $('.waiting-time')[1].textContent = formatDate(reservation.createdAt);
-            $('#waiting-number')[0].textContent = reservation.reservationNumber + '번';
-            $('#waiting-people')[0].textContent = reservation.people + '명';
+            $('#reservation-name')[0].textContent = reservation.restaurantId;
+            $('.reservation-time')[0].textContent = '접수일시: ' + formatDate(reservation.createdAt);
+            $('.reservation-time')[1].textContent = formatDate(reservation.createdAt);
+            $('#reservation-number')[0].textContent = reservation.reservationNumber + '번';
+            $('#reservation-people')[0].textContent = reservation.people + '명';
 
             if(reservation.lastModifiedAt === null && reservation.isEntered === null) {
-                $('.waiting-information')[0].classList.add('badge', 'bg-secondary', 'text-decoration-none', 'link-light');
+                $('.reservation-information')[0].classList.add('badge', 'bg-secondary', 'text-decoration-none', 'link-light');
 
-                $('.waiting-information')[0].textContent = '이용예정';
-                $('.waiting-information')[1].textContent = '이용예정';
+                $('.reservation-information')[0].textContent = '이용예정';
+                $('.reservation-information')[1].textContent = '이용예정';
 
             } else if(reservation.lastModifiedAt !== null && reservation.isEntered === null) {
-                $('.waiting-information')[0].classList.add('badge', 'bg-secondary', 'text-decoration-none', 'link-light');
+                $('.reservation-information')[0].classList.add('badge', 'bg-secondary', 'text-decoration-none', 'link-light');
 
-                $('.waiting-information')[0].textContent = '이용완료';
-                $('.waiting-information')[1].textContent = '이용완료';
+                $('.reservation-information')[0].textContent = '이용완료';
+                $('.reservation-information')[1].textContent = '이용완료';
 
             } else if(reservation.isEntered === null) {
-                $('.waiting-information')[0].classList.add('badge', 'bg-secondary', 'text-decoration-none', 'link-light');
+                $('.reservation-information')[0].classList.add('badge', 'bg-secondary', 'text-decoration-none', 'link-light');
 
-                $('.waiting-information')[0].textContent = '취소';
-                $('.waiting-information')[1].textContent = '취소';
+                $('.reservation-information')[0].textContent = '취소';
+                $('.reservation-information')[1].textContent = '취소';
             }
 
             // restaurant-detail 클릭 시
             document.getElementById("restaurant-detail").onclick = function() {
-                location.href = '/restaurant/' + restaurantId;
+                location.href = '/restaurant/' + reservation.restaurantId;
             };
 
             console.log('이용내역 set 완료');

@@ -11,8 +11,8 @@ $(document).ready(function() {
 
         // 원격줄서기 버튼 클릭 시
         document.getElementById("apply").onclick = function() {
-            const id = document.getElementById("restaurant-id").value;
-            location.href = '/restaurant/waiting/' + id;
+            const restaurantId = document.getElementById("restaurant-id").value;
+            location.href = '/restaurant/reservation/apply/' + restaurantId;
         };
 
         // 리뷰탭 속 별점 주기

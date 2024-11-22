@@ -9,10 +9,10 @@
     <link rel="stylesheet" href="/css/waiting.css" />
 </head>
 <body>-->
-<div layout:decorate="~{common/layouts/restaurantWaitingLayout}"
+<div layout:decorate="~{common/layouts/restaurantReservationLayout}"
      layout:fragment="Content">
 
-    <input type="hidden" id="restaurant-id" th:value="${id}">
+    <input type="hidden" id="restaurant-id" th:value="${restaurantId}">
     <input type="hidden" id="user-id" th:value="${user.id}">
 
     <!--<div class="container">-->

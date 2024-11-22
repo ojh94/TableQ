@@ -26,17 +26,17 @@ public class RestaurantController {
         return "restaurant-modify";
     }
 
-    @GetMapping("/waiting/{id}")
-    public String waiting(@PathVariable Long id, @AuthenticationPrincipal User user, Model model) {
-        model.addAttribute("id", id);
+    @GetMapping("/reservation/apply/{restaurantId}")
+    public String reservationApply(@PathVariable Long restaurantId, @AuthenticationPrincipal User user, Model model) {
+        model.addAttribute("restaurantId", restaurantId);
         model.addAttribute("user", user);
-        return "restaurant-waiting";
+        return "restaurant-reservation-apply";
     }
 
-    @GetMapping("/waiting/detail/{reservationId}")
-    public String waitingDetail(@PathVariable Long reservationId, @AuthenticationPrincipal User user, Model model) {
+    @GetMapping("/reservation/detail/{reservationId}")
+    public String reservationDetail(@PathVariable Long reservationId, @AuthenticationPrincipal User user, Model model) {
         model.addAttribute("reservationId", reservationId);
         model.addAttribute("user", user);
-        return "restaurant-waiting-detail";
+        return "restaurant-reservation-detail";
     }
 }
