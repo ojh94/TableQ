@@ -1,5 +1,6 @@
 package com.itschool.tableq.controller.view;
 
+import com.itschool.tableq.domain.Reservation;
 import com.itschool.tableq.domain.User;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
@@ -32,9 +33,9 @@ public class RestaurantController {
         return "restaurant-waiting";
     }
 
-    @GetMapping("/waiting/detail/{id}")
-    public String waitingDetail(@PathVariable Long id, @AuthenticationPrincipal User user, Model model) {
-        model.addAttribute("id", id);
+    @GetMapping("/waiting/detail/{reservationId}")
+    public String waitingDetail(@PathVariable Long reservationId, @AuthenticationPrincipal User user, Model model) {
+        model.addAttribute("reservationId", reservationId);
         model.addAttribute("user", user);
         return "restaurant-waiting-detail";
     }
