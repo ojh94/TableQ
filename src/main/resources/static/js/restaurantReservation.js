@@ -1,77 +1,23 @@
 $(document).ready(function() {
+
     let restaurantId = (document.getElementById("restaurant-id")) ? document.getElementById("restaurant-id").value : '';
+    let reservationId = (document.getElementById("reservation-id")) ? document.getElementById("reservation-id").value : '';
 
     if (window.location.pathname
     === '/restaurant/reservation/apply/' + restaurantId) {
 
         requestReservationApi();
         requestReservationNumApi();
-
-        // 성인 및 아동의 버튼 클릭 이벤트
-        document.getElementById('adult-plus').addEventListener('click', function() {
-            updateCount('adult', 1);
-        });
-
-        document.getElementById('adult-minus').addEventListener('click', function() {
-            updateCount('adult', -1);
-        });
-
-        document.getElementById('child-plus').addEventListener('click', function() {
-            updateCount('child', 1);
-        });
-
-        document.getElementById('child-minus').addEventListener('click', function() {
-            updateCount('child', -1);
-        });
-
-        // 신청하기 버튼 클릭 시
-        document.getElementById('apply').addEventListener('click', function(event) {
-            event.preventDefault();
-
-            const restaurantId = parseInt(document.getElementById("restaurant-id").value);
-            const userId = parseInt(document.getElementById("user-id").value);
-            const totalCount = document.getElementById('total-count').value;
-
-            if(totalCount == null || totalCount === 0) {
-                alert("인원을 입력해주세요.");
-                return;
-            }
-
-            const formData = {
-                "data": {
-                    "people" : totalCount,
-                    "restaurantId" : restaurantId,
-                    "userId" : userId
-                }
-            };
-
-            // AJAX 요청 보내기
-            $.ajax({
-                url: `/api/reservation`,
-                type: 'POST', // 필요한 HTTP 메서드로 변경 (PUT 또는 PATCH 등도 가능)
-                contentType: 'application/json', // JSON 형식으로 데이터 전송
-                data: JSON.stringify(formData), // 데이터를 JSON 문자열로 변환
-                success: function(response) {
-                    // 요청 성공 시 동작
-                    alert('원격줄서기 신청이 완료되었습니다.');
-                    location.href = '/restaurant/reservation/detail/' + userId;
-                },
-                error: function(xhr, status, error) {
-                    // 요청 실패 시 동작
-                    console.error('생성 실패:', error);
-                    alert('생성 중 오류가 발생했습니다.');
-                }
-            });
-        });
+        foo();
     }
 
     if (window.location.pathname
-    === '/restaurant/reservation/detail/' + document.getElementById("reservation-id").value) {
+    === '/restaurant/reservation/detail/' + reservationId) {
         requestReservationDetailApi();
     }
 
     // 이전 페이지로 이동
-    document.querySelector('.cancel').addEventListener('click', function () {
+    document.querySelector('.cancel').addEventListener('click', function() {
         window.history.back();
     });
 });
@@ -185,6 +131,8 @@ function requestReservationDetailApi() {
             // 요청 성공 시 동작
             reservation = response.data;
 
+            $('#restaurant-id').val(reservation.restaurantId);
+
             $('#reservation-name')[0].textContent = reservation.restaurantId;
             $('.reservation-time')[0].textContent = '접수일시: ' + formatDate(reservation.createdAt);
             $('.reservation-time')[1].textContent = formatDate(reservation.createdAt);
@@ -215,6 +163,9 @@ function requestReservationDetailApi() {
                 location.href = '/restaurant/' + reservation.restaurantId;
             };
 
+            requestReservationDetailNumApi();
+            setInterval(requestReservationDetailNumApi, 10000); // 10초
+
             console.log('이용내역 set 완료');
         },
         error: function(xhr, status, error) {
@@ -226,7 +177,7 @@ function requestReservationDetailApi() {
 }
 
 // 예약 대기순서 조회
-/*function requestReservationDetailNumApi() {
+function requestReservationDetailNumApi() {
 
     const userId = document.getElementById("user-id").value;
     const restaurantId = document.getElementById("restaurant-id").value;
@@ -238,6 +189,7 @@ function requestReservationDetailApi() {
         contentType: 'application/json', // JSON 형식으로 데이터 전송
         success: function(response) {
             // 요청 성공 시 동작
+            $('#reservation-order')[0].textContent = response.data + '번째';
 
             console.log('대기 순서 set 완료');
         },
@@ -247,4 +199,63 @@ function requestReservationDetailApi() {
         alert('대기 순서 set 중 오류가 발생했습니다.');
         }
     });
-}*/
+}
+
+function foo() {
+    // 성인 및 아동의 버튼 클릭 이벤트
+    document.getElementById('adult-plus').addEventListener('click', function() {
+        updateCount('adult', 1);
+    });
+
+    document.getElementById('adult-minus').addEventListener('click', function() {
+        updateCount('adult', -1);
+    });
+
+    document.getElementById('child-plus').addEventListener('click', function() {
+        updateCount('child', 1);
+    });
+
+    document.getElementById('child-minus').addEventListener('click', function() {
+        updateCount('child', -1);
+    });
+
+    // 신청하기 버튼 클릭 시
+    document.getElementById('apply').addEventListener('click', function(event) {
+        event.preventDefault();
+
+        const restaurantId = parseInt(document.getElementById("restaurant-id").value);
+        const userId = parseInt(document.getElementById("user-id").value);
+        const totalCount = document.getElementById('total-count').value;
+
+        if(totalCount == null || totalCount === 0) {
+            alert("인원을 입력해주세요.");
+            return;
+        }
+
+        const formData = {
+            "data": {
+                "people" : totalCount,
+                "restaurantId" : restaurantId,
+                "userId" : userId
+            }
+        };
+
+        // AJAX 요청 보내기
+        $.ajax({
+            url: `/api/reservation`,
+            type: 'POST', // 필요한 HTTP 메서드로 변경 (PUT 또는 PATCH 등도 가능)
+            contentType: 'application/json', // JSON 형식으로 데이터 전송
+            data: JSON.stringify(formData), // 데이터를 JSON 문자열로 변환
+            success: function(response) {
+                // 요청 성공 시 동작
+                alert('원격줄서기 신청이 완료되었습니다.');
+                location.href = '/restaurant/reservation/detail/' + response.data.id;
+            },
+            error: function(xhr, status, error) {
+                // 요청 실패 시 동작
+                console.error('생성 실패:', error);
+                alert('생성 중 오류가 발생했습니다.');
+            }
+        });
+    });
+}

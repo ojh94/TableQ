@@ -13,6 +13,7 @@
      layout:fragment="Content">
 
     <input type="hidden" id="user-id" th:value="${user.id}">
+    <input type="hidden" id="restaurant-id">
     <input type="hidden" id="reservation-id" th:value="${reservationId}">
 
     <!--<div class="container">-->
@@ -23,7 +24,7 @@
                     <a class="reservation-information"></a>
                 </div>
                 <div id="restaurant-detail" class="flex-container pointer">
-                    <h1 id="reservation-name">강릉짬뽕순두부 동화가든 본점</h1>
+                    <h1 id="reservation-name"></h1>
                     <i class="bi bi-chevron-right fs-4"></i>
                 </div>
                 <p class="reservation-time p-gray"></p>
@@ -33,7 +34,7 @@
                     <div class="flex-container">
                         <p class="h4-black">현재 내 순서</p>
                         <div class="right-items">
-                            <p id="reservation-order" class="h4-orange">6번째</p>
+                            <p id="reservation-order" class="h4-orange"></p>
                             <i class="bi bi-arrow-clockwise fs-4 pointer"></i>
                         </div>
                     </div>
