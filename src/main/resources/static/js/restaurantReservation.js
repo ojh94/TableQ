@@ -76,6 +76,9 @@ $(document).ready(function() {
     });
 });
 
+
+/* reservation-apply 함수 */
+
 // 성인, 아동 카운트 업데이트 함수
 function updateCount(type, change) {
     const countElement = document.getElementById(type + '-count');
@@ -100,7 +103,7 @@ function updateTotalCount() {
     document.getElementById('total-count').value = totalCount;
 }
 
-// 가게 이름 조회
+// 예약 할 가게 이름 조회
 function requestReservationApi() {
 
     const restaurantId = document.getElementById("restaurant-id").value;
@@ -123,7 +126,7 @@ function requestReservationApi() {
     });
 }
 
-// 가게 대기 순서 조회
+// 예약 할 가게 대기 순서 조회
 function requestReservationNumApi() {
 
     const restaurantId = document.getElementById("restaurant-id").value;
@@ -147,66 +150,9 @@ function requestReservationNumApi() {
 }
 
 
-// 유저의 가게별 이용내역 조회
-/*function requestWaitingDetailApi() {
+/* reservation-detail 함수 */
 
-    const userId = document.getElementById("user-id").value;
-    const restaurantId = 1;
-
-    $.ajax({
-        url: `/api/reservation/user/${userId}`,
-        type: 'GET', // 필요한 HTTP 메서드로 변경
-        contentType: 'application/json', // JSON 형식으로 데이터 전송
-        success: function(response) {
-            // 요청 성공 시 동작
-            reservations = response.data;
-
-            reservations.forEach((reservation) => {
-                if(reservation.restaurantId === restaurantId) {
-
-                    $('#waiting-name')[0].textContent = reservation.restaurantId;
-                    $('.waiting-time')[0].textContent = '접수일시: ' + formatDate(reservation.createdAt);
-                    $('.waiting-time')[1].textContent = formatDate(reservation.createdAt);
-                    $('#waiting-number')[0].textContent = reservation.reservationNumber + '번';
-                    $('#waiting-people')[0].textContent = reservation.people + '명';
-
-                    if(reservation.lastModifiedAt === null && reservation.isEntered === null) {
-                        $('.waiting-information')[0].classList.add('badge', 'bg-secondary', 'text-decoration-none', 'link-light');
-
-                        $('.waiting-information')[0].textContent = '이용예정';
-                        $('.waiting-information')[1].textContent = '이용예정';
-
-                    } else if(reservation.lastModifiedAt !== null && reservation.isEntered === null) {
-                        $('.waiting-information')[0].classList.add('badge', 'bg-secondary', 'text-decoration-none', 'link-light');
-
-                        $('.waiting-information')[0].textContent = '이용완료';
-                        $('.waiting-information')[1].textContent = '이용완료';
-
-                    } else if(reservation.isEntered === null) {
-                        $('.waiting-information')[0].classList.add('badge', 'bg-secondary', 'text-decoration-none', 'link-light');
-
-                        $('.waiting-information')[0].textContent = '취소';
-                        $('.waiting-information')[1].textContent = '취소';
-                    }
-
-                    // restaurant-detail 클릭 시
-                    document.getElementById("restaurant-detail").onclick = function() {
-                        location.href = '/restaurant/' + restaurantId;
-                    };
-                }
-            });
-
-            console.log('이용내역 set 완료');
-        },
-        error: function(xhr, status, error) {
-        // 요청 실패 시 동작
-        console.error('이용내역 set 실패:', error);
-        alert('이용내역 set 중 오류가 발생했습니다.');
-        }
-    });
-}*/
-
-// reservation-detail 속 이용날짜 형식 변경
+// 예약 이용날짜 형식 변경
 function formatDate(dateString) {
     // 문자열을 Date 객체로 변환
     const date = new Date(dateString);
@@ -225,30 +171,6 @@ function formatDate(dateString) {
     // 원하는 형식으로 조합
     return `${year}.${month}.${day} (${weekday}) ${hours}:${minutes}`;
 }
-
-// 유저의 가게별 대기 순서 조회
-/*function requestWaitingDetailNumApi() {
-
-    const userId = document.getElementById("user-id").value;
-    const restaurantId = document.getElementById("restaurant-id").value;
-    const reservationId = document.getElementById("reservation-id").value;
-
-    $.ajax({
-        url: `/api/reservation/user/${restaurantId}/${reservationId}`,
-        type: 'GET', // 필요한 HTTP 메서드로 변경
-        contentType: 'application/json', // JSON 형식으로 데이터 전송
-        success: function(response) {
-            // 요청 성공 시 동작
-
-            console.log('대기 순서 set 완료');
-        },
-        error: function(xhr, status, error) {
-        // 요청 실패 시 동작
-        console.error('대기 순서 set 실패:', error);
-        alert('대기 순서 set 중 오류가 발생했습니다.');
-        }
-    });
-}*/
 
 // 예약 상세내역 조회
 function requestReservationDetailApi() {
@@ -302,3 +224,27 @@ function requestReservationDetailApi() {
         }
     });
 }
+
+// 예약 대기순서 조회
+/*function requestReservationDetailNumApi() {
+
+    const userId = document.getElementById("user-id").value;
+    const restaurantId = document.getElementById("restaurant-id").value;
+    const reservationId = document.getElementById("reservation-id").value;
+
+    $.ajax({
+        url: `/api/reservation/user/${restaurantId}/${reservationId}`,
+        type: 'GET', // 필요한 HTTP 메서드로 변경
+        contentType: 'application/json', // JSON 형식으로 데이터 전송
+        success: function(response) {
+            // 요청 성공 시 동작
+
+            console.log('대기 순서 set 완료');
+        },
+        error: function(xhr, status, error) {
+        // 요청 실패 시 동작
+        console.error('대기 순서 set 실패:', error);
+        alert('대기 순서 set 중 오류가 발생했습니다.');
+        }
+    });
+}*/
