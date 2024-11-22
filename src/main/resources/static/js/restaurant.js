@@ -420,8 +420,8 @@ function requestMenuApi() {
                         <img class="photo menu-img" src="
                     `;
 
-                if (menu.imageUrl !== null) {
-                    menuHtml += `${menu.imageUrl}`;
+                if (menu.fileUrl !== null) {
+                    menuHtml += `${menu.fileUrl}`;
                 }
 
                 menuHtml +=
@@ -475,7 +475,7 @@ function requestMenuModifyApi() {
                                 새우가 포함된 텐동
                                 </p>-->
                             </div>
-                            <img class="photo menu-img-modify" src="${menu.imageUrl}" alt="메뉴" onerror="this.src='https://placehold.jp/150x150.png'" onclick="triggerFileInput(this)"/>
+                            <img class="photo menu-img-modify" src="${menu.fileUrl}" alt="메뉴" onerror="this.src='https://placehold.jp/150x150.png'" onclick="triggerFileInput(this)"/>
                             <input type="file" style="display: none;" accept="image/*" onchange="updateImage(event, this)" />
                             <i class="bi bi-x-square px-4" style="font-size: 25px; cursor: pointer;" onclick="deleteMenuItem(this)"></i>
                         </div>
@@ -500,7 +500,7 @@ function requestMenuModifyApi() {
                                 새우가 포함된 텐동
                                 </p>-->
                             </div>
-                            <img class="photo menu-img-modify" src="${menu.imageUrl}" alt="메뉴" onerror="this.src='https://placehold.jp/150x150.png'" onclick="triggerFileInput(this)"/>
+                            <img class="photo menu-img-modify" src="${menu.fileUrl}" alt="메뉴" onerror="this.src='https://placehold.jp/150x150.png'" onclick="triggerFileInput(this)"/>
                             <input type="file" style="display: none;" accept="image/*" onchange="updateImage(event, this)" />
                             <i class="bi bi-x-square px-4" style="font-size: 25px; cursor: pointer;" onclick="deleteMenuItem(this)"></i>
                         </div>
