@@ -3,6 +3,8 @@ server:
 
 # Choose Environment
 spring:
+  jackson:
+    default-property-inclusion: non_null
   profiles:
     active: prod
   # config:
