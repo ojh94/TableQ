@@ -2,11 +2,15 @@ package com.itschool.tableq.network.response;
 
 import com.itschool.tableq.domain.Owner;
 import jakarta.validation.constraints.NotBlank;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 
+@Builder
+@AllArgsConstructor
 @NoArgsConstructor
 @Getter
 public class OwnerResponse {
@@ -21,13 +25,12 @@ public class OwnerResponse {
     @NotBlank
     private String phoneNumber;
 
-    private LocalDateTime lastLoginAt;
-
-    public OwnerResponse(Owner owner) {
-        this.id = owner.getId();
-        this.email = owner.getEmail();
-        this.name = owner.getName();
-        this.phoneNumber = owner.getPhoneNumber();
-        this.lastLoginAt = LocalDateTime.now();
+    public static OwnerResponse of(Owner owner) {
+        return OwnerResponse.builder()
+                .id(owner.getId())
+                .email(owner.getEmail())
+                .name(owner.getName())
+                .phoneNumber(owner.getPhoneNumber())
+                .build();
     }
 }

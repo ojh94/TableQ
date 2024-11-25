@@ -52,7 +52,7 @@ public class OwnerService extends BaseService<OwnerRequest, OwnerResponse, Owner
 
     @Override
     protected OwnerResponse response(Owner owner) {
-        return new OwnerResponse(owner);
+        return OwnerResponse.of(owner);
     }
 
     @Override

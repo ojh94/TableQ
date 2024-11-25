@@ -18,11 +18,11 @@ public class RestaurantAmenity extends AuditableEntity {
     @Column(updatable = false,nullable = false)
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "restaurant_id", updatable = false)
     private Restaurant restaurant;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "amenity_id",updatable = false)
     private Amenity amenity;
 

@@ -40,7 +40,7 @@ public class AmenityService extends BaseService<AmenityRequest, AmenityResponse,
 
     @Override
     protected AmenityResponse response(Amenity amenity) {
-        return new AmenityResponse(amenity);
+        return AmenityResponse.of(amenity);
     }
 
     @Override

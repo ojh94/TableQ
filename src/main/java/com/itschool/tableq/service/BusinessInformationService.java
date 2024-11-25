@@ -35,7 +35,7 @@ public class BusinessInformationService
 
     @Override
     protected BusinessInformationResponse response(BusinessInformation businessInformation) {
-        return new BusinessInformationResponse(businessInformation);
+        return BusinessInformationResponse.of(businessInformation);
     }
 
     protected List<BusinessInformationResponse> responseList(List<BusinessInformation> businessInformations){

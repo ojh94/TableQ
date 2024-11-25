@@ -48,7 +48,7 @@ public class ReservationService extends
 
     @Override
     protected ReservationResponse response(Reservation reservation) {
-        return new ReservationResponse(reservation);
+        return ReservationResponse.of(reservation);
     }
 
     protected List<ReservationResponse> responseList(List<Reservation> reservationList) {

@@ -6,14 +6,18 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+@Builder
+@AllArgsConstructor
 @NoArgsConstructor
 @Getter
 public class KeywordResponse {
     private Long id;
     private String name;
 
-    public KeywordResponse(Keyword keyword) {
-        this.id = keyword.getId();
-        this.name = keyword.getName();
+    public static KeywordResponse of(Keyword keyword) {
+        return KeywordResponse.builder()
+                .id(keyword.getId())
+                .name(keyword.getName())
+                .build();
     }
 }

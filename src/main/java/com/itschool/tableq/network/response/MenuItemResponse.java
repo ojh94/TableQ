@@ -2,6 +2,8 @@ package com.itschool.tableq.network.response;
 
 import com.itschool.tableq.domain.MenuItem;
 import com.itschool.tableq.network.response.base.FileResponse;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.experimental.SuperBuilder;
 

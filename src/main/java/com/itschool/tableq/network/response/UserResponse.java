@@ -40,14 +40,16 @@ public class UserResponse {
     @Email
     private String email;
 
-    public UserResponse(User user) {
-        this.id = user.getId();
-        this.nickname = user.getNickname();
-        this.phoneNumber = user.getPhoneNumber();
-        this.lastLoginAt = user.getLastLoginAt();
-        this.address = user.getAddress();
-        this.name = user.getName();
-        this.socialType = user.getSocialType();
-        this.socialId = user.getSocialId();
+    public static UserResponse of(User user) {
+        return UserResponse.builder()
+            .id(user.getId())
+            .nickname(user.getNickname())
+            .phoneNumber(user.getPhoneNumber())
+            .lastLoginAt(user.getLastLoginAt())
+            .address(user.getAddress())
+            .name(user.getName())
+            .socialType(user.getSocialType())
+            .socialId(user.getSocialId())
+            .build();
     }
 }

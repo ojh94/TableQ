@@ -44,7 +44,7 @@ public class UserService extends BaseService<UserRequest, UserResponse, User> {
 
     @Override
     protected UserResponse response(User user) {
-        return new UserResponse(user);
+        return UserResponse.of(user);
     }
 
     @Override

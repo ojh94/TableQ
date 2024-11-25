@@ -48,7 +48,7 @@ public class RestaurantService extends BaseService<RestaurantRequest, Restaurant
 
     @Override
     protected RestaurantResponse response(Restaurant restaurant) {
-        return new RestaurantResponse(restaurant);
+        return RestaurantResponse.of(restaurant);
     }
 
     @Override

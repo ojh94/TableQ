@@ -51,7 +51,7 @@ public class RestaurantKeywordService extends BaseService<RestaurantKeywordReque
 
     @Override
     protected RestaurantKeywordResponse response(RestaurantKeyword restaurantKeyword) {
-        return new RestaurantKeywordResponse(restaurantKeyword);
+        return RestaurantKeywordResponse.of(restaurantKeyword);
     }
 
     protected List<RestaurantKeywordResponse> responseList(List<RestaurantKeyword> keywordList) {

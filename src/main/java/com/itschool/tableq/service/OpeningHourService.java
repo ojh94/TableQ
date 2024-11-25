@@ -71,7 +71,7 @@ public class OpeningHourService extends BaseService<OpeningHourRequest, OpeningH
 
     @Override
     protected OpeningHourResponse response(OpeningHour openingHour) {
-        return new OpeningHourResponse(openingHour);
+        return OpeningHourResponse.of(openingHour);
     }
 
     @Override
