@@ -52,6 +52,10 @@ public class ReservationApiController extends
     public Header<Integer> readMyQueue(@PathVariable(name = "restaurantId") Long restaurantId,
                                      @PathVariable(name = "reservationId") Long reservationId){
         log.info("{}","{}","{}","read: ",restaurantId, reservationId);
-        return ((ReservationService)baseService).getUserQueue(restaurantId, reservationId);
+        try {
+            return ((ReservationService)baseService).getUserQueue(restaurantId, reservationId);
+        } catch (Exception e) {
+            return Header.ERROR(e.getMessage());
+        }
     }
 }
