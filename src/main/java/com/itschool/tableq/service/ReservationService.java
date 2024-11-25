@@ -116,8 +116,13 @@ public class ReservationService extends
             if (reservation.getId() == reservationId) break;
             else userTurn++;
         }
-
-        if(userTurn > allReservation.size()) throw new RuntimeException("현재 대기중이 아닙니다.");
+        // 현재 해당 레스토랑에 유효한 예약이 하나도 없는 경우 + 못 찾았을 경우
+        if(userTurn > allReservation.size()) {
+            if(allReservation.size() == 0)
+                throw new RuntimeException("EMPTY_RESERVATION_IN_RESTAURANT");
+            else
+                throw new RuntimeException("NO_RESERVATION_YOURS");
+        }
 
         return Header.OK(userTurn);
     }
