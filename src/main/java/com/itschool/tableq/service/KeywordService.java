@@ -48,7 +48,7 @@ public class KeywordService extends BaseService<KeywordRequest, KeywordResponse,
 
     @Override
     protected KeywordResponse response(Keyword keyword) {
-        return new KeywordResponse(keyword);
+        return KeywordResponse.of(keyword);
     }
 
     @Override

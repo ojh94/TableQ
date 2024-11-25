@@ -2,6 +2,7 @@ package com.itschool.tableq.network.response;
 
 import com.itschool.tableq.domain.Reservation;
 import com.itschool.tableq.domain.Restaurant;
+import com.itschool.tableq.domain.User;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -21,24 +22,30 @@ public class ReservationResponse {
     private LocalDateTime lastModifiedAt;
     private Integer people;
     private RestaurantResponse restaurant;
-    private Long userId;
+    private UserResponse user;
 
-    public ReservationResponse(Reservation reservation) {
-        this.id = reservation.getId();
-        this.reservationNumber = reservation.getReservationNumber();
-        this.isEntered = reservation.getIsEntered();
-        this.people = reservation.getPeople();
+    public static ReservationResponse of(Reservation reservation) {
         Restaurant restaurant = reservation.getRestaurant();
-        this.restaurant = RestaurantResponse.builder()
-                .id(restaurant.getId())
-                .name(restaurant.getName())
-                .address(restaurant.getAddress())
-                .information(restaurant.getInformation())
-                .contactNumber(restaurant.getInformation())
-                .isAvailable(restaurant.isAvailable())
+        User user = reservation.getUser();
+
+        return ReservationResponse.builder()
+                .id(reservation.getId())
+                .reservationNumber(reservation.getReservationNumber())
+                .isEntered(reservation.getIsEntered())
+                .people(reservation.getPeople())
+                .createdAt(reservation.getCreatedAt())
+                .lastModifiedAt(reservation.getLastModifiedAt())
+                .user(UserResponse.builder()
+                        .id(user.getId())
+                        .build())
+                .restaurant(RestaurantResponse.builder()
+                        .id(restaurant.getId())
+                        .name(restaurant.getName())
+                        .address(restaurant.getAddress())
+                        .information(restaurant.getInformation())
+                        .contactNumber(restaurant.getInformation())
+                        .isAvailable(restaurant.isAvailable())
+                        .build())
                 .build();
-        this.userId = reservation.getUser().getId();
-        this.createdAt = reservation.getCreatedAt();
-        this.lastModifiedAt = reservation.getLastModifiedAt();
     }
 }

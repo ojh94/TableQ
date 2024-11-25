@@ -18,25 +18,21 @@ public class RestaurantResponse {
     private String information;
     private String contactNumber;
     private boolean isAvailable;
-    private BusinessInformation businessInformation;
+    private BusinessInformationResponse businessInformation;
 
-    public RestaurantResponse(Long id, String name, String address, String information, String contactNumber,
-                              boolean isAvailable) {
-        this.id = id;
-        this.name = name;
-        this.address = address;
-        this.information = information;
-        this.contactNumber = contactNumber;
-        this.isAvailable = isAvailable;
-    }
+    public static RestaurantResponse of(Restaurant restaurant) {
+        BusinessInformation businessInformation = restaurant.getBusinessInformation();
 
-    public RestaurantResponse(Restaurant restaurant) {
-        this.id = restaurant.getId();
-        this.name = restaurant.getName();
-        this.address = restaurant.getAddress();
-        this.information = restaurant.getInformation();
-        this.contactNumber = restaurant.getContactNumber();
-        this.isAvailable = restaurant.isAvailable();
-        this.businessInformation = restaurant.getBusinessInformation();
+        return RestaurantResponse.builder()
+                .id(restaurant.getId())
+                .name(restaurant.getName())
+                .address(restaurant.getAddress())
+                .information(restaurant.getInformation())
+                .contactNumber(restaurant.getContactNumber())
+                .isAvailable(restaurant.isAvailable())
+                .businessInformation(BusinessInformationResponse.builder()
+                        .id(businessInformation.getId())
+                        .build())
+                .build();
     }
 }

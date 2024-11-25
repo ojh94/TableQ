@@ -54,7 +54,7 @@ public class ReviewService extends BaseService<ReviewRequest, ReviewResponse, Re
 
     @Override
     protected ReviewResponse response(Review review) {
-        return new ReviewResponse(review);
+        return ReviewResponse.of(review);
     }
 
     protected List<ReviewResponse> responseList(List<Review> reviewList) {

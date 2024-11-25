@@ -51,7 +51,7 @@ public class RestaurantAmenityService extends BaseService<RestaurantAmenityReque
 
     @Override
     protected RestaurantAmenityResponse response(RestaurantAmenity restaurantAmenity) {
-        return new RestaurantAmenityResponse(restaurantAmenity);
+        return RestaurantAmenityResponse.of(restaurantAmenity);
     }
 
     @Override

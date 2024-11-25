@@ -1,12 +1,11 @@
 package com.itschool.tableq.network.response;
 
 import com.itschool.tableq.domain.BusinessInformation;
+import com.itschool.tableq.domain.Owner;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-
-import java.time.LocalDateTime;
 
 @Builder
 @NoArgsConstructor
@@ -21,13 +20,19 @@ public class BusinessInformationResponse {
 
     private String contactNumber;
 
-    private Long ownerId;
+    private OwnerResponse owner;
 
-    public BusinessInformationResponse(BusinessInformation businessInformation) {
-        this.id = businessInformation.getId();
-        this.businessNumber = businessInformation.getBusinessNumber();
-        this.businessName = businessInformation.getBusinessName();
-        this.contactNumber = businessInformation.getContactNumber();
-        this.ownerId = businessInformation.getOwner().getId();
+    public static BusinessInformationResponse of (BusinessInformation businessInformation) {
+        Owner owner = businessInformation.getOwner();
+
+        return BusinessInformationResponse.builder()
+                .id(businessInformation.getId())
+                .businessNumber(businessInformation.getBusinessNumber())
+                .businessName(businessInformation.getBusinessName())
+                .contactNumber(businessInformation.getContactNumber())
+                .owner(OwnerResponse.builder()
+                        .id(owner.getId())
+                        .build())
+                .build();
     }
 }

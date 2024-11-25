@@ -51,7 +51,7 @@ public class BreakHourService extends BaseService<BreakHourRequest, BreakHourRes
 
     @Override
     protected BreakHourResponse response(BreakHour breakHour) {
-        return new BreakHourResponse(breakHour);
+        return BreakHourResponse.of(breakHour);
     }
 
     @Override

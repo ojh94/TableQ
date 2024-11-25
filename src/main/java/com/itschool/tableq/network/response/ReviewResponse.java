@@ -28,12 +28,18 @@ public class ReviewResponse {
 
     private LocalDateTime lastModifiedAt;
 
-    public ReviewResponse(Review review){
-        this.id = review.getId();
-        this.content = review.getContent();
-        this.starRating = review.getStarRating();
-        this.user = new UserResponse(review.getUser());
-        this.createdAt = review.getCreatedAt();
-        this.lastModifiedAt = review.getLastModifiedAt();
+    public static ReviewResponse of(Review review){
+        User user = review.getUser();
+        
+        return ReviewResponse.builder()
+                .id(review.getId())
+                .content(review.getContent())
+                .starRating(review.getStarRating())
+                .user(UserResponse.builder()
+                        .id(user.getId())
+                        .build())
+                .createdAt(review.getCreatedAt())
+                .lastModifiedAt(review.getLastModifiedAt())
+                .build();
     }
 }

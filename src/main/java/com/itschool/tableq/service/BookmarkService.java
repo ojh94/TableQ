@@ -52,7 +52,7 @@ public class BookmarkService extends
 
     @Override
     protected BookmarkResponse response(Bookmark bookmark) {
-        return new BookmarkResponse(bookmark);
+        return BookmarkResponse.of(bookmark);
     }
 
     protected List<BookmarkResponse> responseList(List<Bookmark> bookmarkList){
