@@ -22,7 +22,7 @@ public class ReservationResponse {
     private LocalDateTime createdAt;
     private LocalDateTime lastModifiedAt;
     private Integer people;
-    private Long restaurantId;
+    private Restaurant restaurant;
     private Long userId;
 
     public ReservationResponse(Reservation reservation) {
@@ -30,7 +30,7 @@ public class ReservationResponse {
         this.reservationNumber = reservation.getReservationNumber();
         this.isEntered = reservation.getIsEntered();
         this.people = reservation.getPeople();
-        this.restaurantId = reservation.getRestaurant().getId();
+        this.restaurant = reservation.getRestaurant();
         this.userId = reservation.getUser().getId();
         this.createdAt = reservation.getCreatedAt();
         this.lastModifiedAt = reservation.getLastModifiedAt();
