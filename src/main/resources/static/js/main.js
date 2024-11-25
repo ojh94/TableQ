@@ -32,22 +32,6 @@ function createRestaurantCard(restaurant, rating, reviewsCount) {
     return card;
 }
 
-//// 추천 레스토랑 및 "내가 픽한 레스토랑"을 동적으로 로드하는 함수
-//function renderRestaurants(userId, data) {
-//    const grid = document.getElementById('restaurantGrid2');
-//    grid.innerHTML = ''; // 기존 콘텐츠 지우기
-//
-//    if (Array.isArray(data)) {
-//        data.forEach(restaurant => {
-//            // 카드 생성
-//            const card = createRestaurantCard(restaurant, restaurant.starRating, restaurant.reviewsCount);
-//            grid.appendChild(card);
-//        });
-//    } else {
-//        console.error("Data is not an array:", data);
-//    }
-//}
-
 // 추천 레스토랑 데이터를 가져오는 API 요청
 function requestRecommendedRestaurants(page = 0, size = 6) {
     const url = `http://localhost/api/restaurants?page=${page}&size=${size}`;
@@ -64,49 +48,25 @@ function requestRecommendedRestaurants(page = 0, size = 6) {
         });
 }
 
-// 내가 픽한 레스토랑 데이터를 가져오는 API 요청
-function requestPickedRestaurants() {
+// 예약 정보 가져오기 (동기식 요청)
+function requestReservationData(userId) {
+    let reservationData = null; // 데이터를 담을 변수
+    const url = `/api/reservation/user/${encodeURIComponent(userId)}?page=0&size=10&sort=string`;
     $.ajax({
-        url: 'http://localhost/api/reservation/user/'+userId.value,
+        url: url,
         type: 'GET',
         async: false,  // 동기식 요청
-        success: function(response) {
-            //리뷰 렌더링 필요
-            //debugger;
-            //renderRestaurants(userId.value, response.data);
+        success: function (data) {
+            console.log("Reservation data requested successfully:", data);
+            reservationData = data; // 데이터를 변수에 저장
         },
-        error: function(xhr, status, error) {
-            console.error('Error requesting picked restaurants:', error);
-        }
+        error: function (xhr) {
+            console.error("Error requesting reservation data:", xhr.responseText);
+        },
     });
+    return reservationData; // 외부로 반환
 }
 
-
-// 동기적으로 작성
-function requestReservationData() {
-    const userIdInput = document.getElementById("userId");
-    const userId = userIdInput ? userIdInput.value : null;  // userId 가져오기
-
-    if (!userId) {
-        console.error("User ID is missing");
-        return [];
-    }
-
-    let reservationData = [];
-    $.ajax({
-        url: `http://localhost/api/reservation/user/${userId}?page=0&size=10&sort=string`,
-        type: 'GET',
-        async: false,  // 동기식 요청
-        success: function(data) {
-            console.log('requested reservation data:', data);
-            reservationData = data.data || [];
-        },
-        error: function(xhr, status, error) {
-            console.error('Error requesting reservation data:', error);
-        }
-    });
-    return reservationData;
-}
 
 // 레스토랑 세부 데이터를 동기적으로 가져오는 함수 (AJAX로 동기화된 방식으로 변경)
 function requestRestaurantById(restaurantId) {
@@ -126,28 +86,28 @@ function requestRestaurantById(restaurantId) {
     return restaurantData;
 }
 
-// 레스토랑 리뷰 데이터를 동기적으로 가져오는 함수 (AJAX로 동기화된 방식으로 변경)
+// 레스토랑 리뷰 데이터 가져오기 (동기식 요청)
 function requestReviewData(restaurantId) {
- let reviewData = { rating: 0, reviewsCount: 0 };
- $.ajax({
-     url: `/api/review/restaurant/${restaurantId}`,
-     type: 'GET',
-     async: false,  // 동기식 요청
-     success: function(data) {
-         console.log(`Review data requested for restaurant ID: ${restaurantId}`, data);
-         reviewData = {
-             rating: data.averageRating || 0,
-             reviewsCount: data.totalReviews || 0,
-         };
-     },
-     error: function(xhr, status, error) {
-         console.error("Failed to request review data", error);
-     }
- });
- return reviewData;
+    let reviewData = { rating: 0, reviewsCount: 0 };
+    $.ajax({
+        url: `/api/review/restaurant/${restaurantId}`,
+        type: 'GET',
+        async: false,  // 동기식 요청
+        success: function (response) {
+            console.log(`responsed review data for restaurant ID: ${restaurantId}`, response);
+            reviewData = {
+                rating: 0 || response.data.reduce(function(acc, review) {
+                    return acc + review.starRating;
+                }, 0) / response.data.length,
+                reviewsCount: 0 || response.data.length,
+            };
+        },
+        error: function (xhr, status, error) {
+            console.error(`Error requesting review data for restaurant ID: ${restaurantId}`, error);
+        }
+    });
+    return reviewData;
 }
-
-
 
 // 예약 데이터를 화면에 표시하는 함수 (AJAX로 동기화된 방식으로 변경)
 function displayReservedRestaurants() {
@@ -191,6 +151,31 @@ document.addEventListener('DOMContentLoaded', () => {
           console.error("User ID 값이 비어 있습니다.");
           return;
       }
+
+      const reservationData = requestReservationData(userId);
+      if (!reservationData || reservationData.length === 0) {
+          console.error("No reservations found.");
+          restaurantGrid2.html('<p>예약된 레스토랑이 없습니다.</p>');
+          return;
+      }
+      const restaurantIds = [...new Set(reservationData.data.map((reservation) => reservation.restaurantId))];
+
+      // 중복된 ID 제거
+          const uniqueRestaurantIds = [...new Set(restaurantIds)];
+          const restaurantGrid = $('#restaurantGrid');
+          const restaurantGrid2 = $('#restaurantGrid2');
+          if (restaurantIds.length > 0) {
+              restaurantGrid2.empty();
+              for (const restaurantId of restaurantIds) {
+                  const restaurant = requestRestaurantById(restaurantId);
+                  if (restaurant) {
+                      const { rating, reviewsCount } = requestReviewData(restaurant.id);
+                      restaurantGrid2.append(createRestaurantCard(restaurant, rating, reviewsCount));
+                  }
+              }
+          } else {
+              restaurantGrid2.html('<p>예약된 레스토랑이 없습니다.</p>');
+          }
 
 //    function displayReservedRestaurants(userId) {
 //        const reservationData = requestReservationData(userId);
