@@ -24,7 +24,7 @@ function createRestaurantCard(restaurant, rating, reviewsCount) {
             </div>
         </div>
         <div class="card-footer">
-            <button class="book-btn" onclick="bookRestaurant(${restaurant.id})">
+            <button class="book-btn" onclick="window.location.href='/restaurant/${restaurant.id}'">
                 <i data-lucide="calendar"></i> 예약하기
             </button>
         </div>
@@ -32,21 +32,21 @@ function createRestaurantCard(restaurant, rating, reviewsCount) {
     return card;
 }
 
-// 추천 레스토랑 및 "내가 픽한 레스토랑"을 동적으로 로드하는 함수
-function renderRestaurants(userId, data) {
-    const grid = document.getElementById('restaurantGrid2');
-    grid.innerHTML = ''; // 기존 콘텐츠 지우기
-
-    if (Array.isArray(data)) {
-        data.forEach(restaurant => {
-            // 카드 생성
-            const card = createRestaurantCard(restaurant, restaurant.starRating, restaurant.reviewsCount);
-            grid.appendChild(card);
-        });
-    } else {
-        console.error("Data is not an array:", data);
-    }
-}
+//// 추천 레스토랑 및 "내가 픽한 레스토랑"을 동적으로 로드하는 함수
+//function renderRestaurants(userId, data) {
+//    const grid = document.getElementById('restaurantGrid2');
+//    grid.innerHTML = ''; // 기존 콘텐츠 지우기
+//
+//    if (Array.isArray(data)) {
+//        data.forEach(restaurant => {
+//            // 카드 생성
+//            const card = createRestaurantCard(restaurant, restaurant.starRating, restaurant.reviewsCount);
+//            grid.appendChild(card);
+//        });
+//    } else {
+//        console.error("Data is not an array:", data);
+//    }
+//}
 
 // 추천 레스토랑 데이터를 가져오는 API 요청
 function requestRecommendedRestaurants(page = 0, size = 6) {
@@ -169,12 +169,12 @@ function displayReservedRestaurants() {
     });
 }
 
-displayReservedRestaurants();
+//displayReservedRestaurants();
 
-// Expose functions to global scope
-window.requestReservationData = requestReservationData;
-window.requestRestaurantById = requestRestaurantById;
-window.requestReviewData = requestReviewData;
+//// Expose functions to global scope
+//window.requestReservationData = requestReservationData;
+//window.requestRestaurantById = requestRestaurantById;
+//window.requestReviewData = requestReviewData;
 
 
 
@@ -192,19 +192,19 @@ document.addEventListener('DOMContentLoaded', () => {
           return;
       }
 
-    function displayReservedRestaurants(userId) {
-        const reservationData = requestReservationData(userId);
-        reservationData.forEach(reservation => {
-            const restaurant = requestRestaurantById(reservation.restaurantId);
-            if (restaurant) {
-                const reviewData = requestReviewData(restaurant.id);
-                const card = createRestaurantCard(restaurant, reviewData.rating, reviewData.reviewsCount);
-                document.getElementById('reservedRestaurantGrid').appendChild(card);
-            }
-        });
-    }
+//    function displayReservedRestaurants(userId) {
+//        const reservationData = requestReservationData(userId);
+//        reservationData.forEach(reservation => {
+//            const restaurant = requestRestaurantById(reservation.restaurantId);
+//            if (restaurant) {
+//                const reviewData = requestReviewData(restaurant.id);
+//                const card = createRestaurantCard(restaurant, reviewData.rating, reviewData.reviewsCount);
+//                document.getElementById('reservedRestaurantGrid').appendChild(card);
+//            }
+//        });
+//    }
 
-  requestPickedRestaurants();
+//  requestPickedRestaurants();
   console.log("main.js DOMContentLoaded 완료");
 });
 

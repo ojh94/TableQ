@@ -28,6 +28,7 @@ $(document).ready(function() {
         $.ajax({
             url: `/api/user/${userId}`,
             type: 'PUT', // 필요한 HTTP 메서드로 변경 (PUT 또는 PATCH 등도 가능)
+            async: false,
             contentType: 'application/json', // JSON 형식으로 데이터 전송
             data: JSON.stringify(formData), // 데이터를 JSON 문자열로 변환
             success: function(response) {

@@ -47,7 +47,8 @@ public class MyPageController {
 
     // 이용 내역 페이지
     @GetMapping("/history")
-    public String getHistoryPage() {
+    public String getHistoryPage(@AuthenticationPrincipal User user, Model model) {
+        model.addAttribute("user", user);
         return "history";
     }
 
