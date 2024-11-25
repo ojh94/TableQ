@@ -1,5 +1,6 @@
 package com.itschool.tableq.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.itschool.tableq.domain.base.AuditableEntity;
 import com.itschool.tableq.network.request.RestaurantRequest;
 import jakarta.persistence.*;
@@ -30,8 +31,8 @@ public class Restaurant extends AuditableEntity {
 
     @Column(nullable = false)
     private boolean isAvailable;
-
-    @ManyToOne
+    
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "buisness_id", updatable = false)
     private BusinessInformation businessInformation;
 

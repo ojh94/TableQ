@@ -26,7 +26,7 @@ public class MenuItem extends IncludeFileUrl {
 
     private Boolean recommendation;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "restaurant_id")
     private Restaurant restaurant;
 

@@ -26,7 +26,7 @@ public class OpeningHour extends AuditableEntity {
     @Column(nullable = false)
     private String dayOfWeek;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="restaurant_id",updatable = false)
     private Restaurant restaurant;
 

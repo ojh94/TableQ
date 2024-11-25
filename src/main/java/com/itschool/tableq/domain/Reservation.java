@@ -32,11 +32,11 @@ public class Reservation extends AuditableEntity {
 
     private Integer people;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "restaurant_id",updatable = false)
     private Restaurant restaurant;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", updatable = false)
     private User user;
 

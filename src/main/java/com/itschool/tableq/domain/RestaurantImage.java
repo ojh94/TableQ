@@ -21,7 +21,7 @@ public class RestaurantImage extends IncludeFileUrl {
     @Column(updatable = false, nullable = false)
     private Long id;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "restaurant_id", updatable = false)
     private Restaurant restaurant;
 

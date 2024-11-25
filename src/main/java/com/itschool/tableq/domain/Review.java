@@ -29,7 +29,7 @@ public class Review extends AuditableEntity {
     @JoinColumn(name = "restaurant_id", updatable = false)
     private Restaurant restaurant;
 
-    @ManyToOne // (fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY) // (fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", updatable = false)
     private User user;
 

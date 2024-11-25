@@ -18,11 +18,11 @@ public class RestaurantKeyword extends AuditableEntity {
     @Column(nullable = false, updatable = false)
     private Long id;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "restaurant_id", updatable = false)
     private Restaurant restaurant;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "keyword_id", updatable = false)
     private Keyword keyword;
 
