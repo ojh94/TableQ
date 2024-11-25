@@ -6,7 +6,7 @@ function createRestaurantCard(restaurant, rating, reviewsCount) {
     card.className = 'card';
     card.innerHTML = `
         <div class="card-header">
-            <button id="favorite-btn-${restaurant.id}" class="favorite-btn" data-id="${restaurant.id}" data-favorite="true"  >
+            <button id="favorite-btn-${restaurant.id}" class="favorite-btn" data-id="${restaurant.id}" data-favorite="false"  >
                 <i class="fa-regular fa-heart"></i>
             </button>
             <h4 class="card-title">${restaurant.name}</h4>
@@ -32,6 +32,54 @@ function createRestaurantCard(restaurant, rating, reviewsCount) {
     return card;
 }
 
+// 그리드를 나누기 위한 함수
+function renderGrids() {
+    const userIdInput = document.getElementById("userId");
+    const userId = userIdInput ? userIdInput.value : null;
+
+    if (!userId) {
+        console.error("User ID 값이 비어 있습니다.");
+        return;
+    }
+
+    const reservationData = requestReservationData(userId);
+
+    // 예약이 없는 경우
+    const gridNoReservation = $('#gridNoReservation');
+    const gridReserved = $('#gridReserved');
+
+    if (!reservationData || reservationData.length === 0) {
+        gridNoReservation.html('<p>예약된 레스토랑이 없습니다.</p>');
+        return;
+    }
+
+    const enteredRestaurants = [];
+    const reservedRestaurants = [];
+
+    reservationData.forEach(reservation => {
+        const restaurant = requestRestaurantById(reservation.restaurantId);
+        if (restaurant) {
+            const reviewData = requestReviewData(restaurant.id);
+            const card = createRestaurantCard(restaurant, reviewData.rating, reviewData.reviewsCount);
+
+            // 예약 상태에 따라 그리드에 추가
+            if (reservation.isEntered) {
+                enteredRestaurants.push(card);
+            } else {
+                reservedRestaurants.push(card);
+            }
+        }
+    });
+
+     // 예약 상태에 따라 카드 배치
+    gridNoReservation.empty();
+    enteredRestaurants.forEach(card => gridNoReservation.append(card));
+
+    gridReserved.empty();
+    reservedRestaurants.forEach(card => gridReserved.append(card));
+}
+
+
 // 추천 레스토랑 데이터를 가져오는 API 요청
 function requestRecommendedRestaurants(page = 0, size = 6) {
     const url = `http://localhost/api/restaurants?page=${page}&size=${size}`;
@@ -56,9 +104,9 @@ function requestReservationData(userId) {
         url: url,
         type: 'GET',
         async: false,  // 동기식 요청
-        success: function (data) {
-            console.log("Reservation data requested successfully:", data);
-            reservationData = data; // 데이터를 변수에 저장
+        success: function (response) {
+            console.log("Reservation data requested successfully:", response.data);
+            reservationData = response.data; // 데이터를 변수에 저장
         },
         error: function (xhr) {
             console.error("Error requesting reservation data:", xhr.responseText);
@@ -109,6 +157,30 @@ function requestReviewData(restaurantId) {
     return reviewData;
 }
 
+// 레스토랑 카드 생성 및 추가 함수
+function addRestaurantsToGrid(restaurantGrid, restaurants) {
+    if (restaurants && restaurants.length > 0) {
+        restaurants.forEach((restaurant) => {
+            const { rating, reviewsCount } = requestReviewData(restaurant.id); // 리뷰 데이터 가져오기
+            restaurantGrid.append(createRestaurantCard(restaurant, rating, reviewsCount)); // 카드 추가
+        });
+    } else {
+        displayNoDataMessage(restaurantGrid, "표시할 레스토랑이 없습니다."); // 데이터 없을 경우 메시지
+    }
+}
+
+// 기본 메시지 출력 함수
+function displayNoDataMessage(grid, message) {
+    grid.html(`<p>${message}</p>`);
+}
+
+// 기본 그리드 생성 함수
+function displayDefaultRestaurants() {
+    const defaultRestaurants = requestRecommendedRestaurants(); // 추천 레스토랑 요청
+    const restaurantGrid = $('#restaurantGrid'); // 기본 그리드 선택
+    addRestaurantsToGrid(restaurantGrid, defaultRestaurants.data);
+}
+
 // 예약 데이터를 화면에 표시하는 함수 (AJAX로 동기화된 방식으로 변경)
 function displayReservedRestaurants() {
     const reservationData = requestReservationData();
@@ -120,7 +192,7 @@ function displayReservedRestaurants() {
 
     reservationData.forEach(reservation => {
         console.log("Displaying reservation:", reservation);
-        const restaurant = requestRestaurantById(reservation.restaurantId); // Assuming reservation has a restaurantId
+        const restaurant = requestRestaurantById(reservation.restaurantId);
         if (restaurant) {
             const reviewData = requestReviewData(restaurant.id);
             console.log("Review data:", reviewData);
@@ -129,28 +201,37 @@ function displayReservedRestaurants() {
     });
 }
 
-//displayReservedRestaurants();
+// 예약 데이터 기반 그리드 생성 함수
+function displayReservedRestaurants(userId) {
+    const reservationData = requestReservationData(userId);
+    const restaurantGrid2 = $('#restaurantGrid2'); // 예약 기반 그리드 선택
 
-//// Expose functions to global scope
-//window.requestReservationData = requestReservationData;
-//window.requestRestaurantById = requestRestaurantById;
-//window.requestReviewData = requestReviewData;
-
-
+    if (reservationData && reservationData.data.length > 0) {
+        const reservedRestaurantIds = [...new Set(reservationData.data.map((reservation) => reservation.restaurantId))];
+        const reservedRestaurants = reservedRestaurantIds.map((id) => requestRestaurantById(id)); // 레스토랑 데이터 요청
+        addRestaurantsToGrid(restaurantGrid2, reservedRestaurants);
+    } else {
+        displayNoDataMessage(restaurantGrid2, "예약된 레스토랑이 없습니다."); // 예약 데이터 없을 경우 메시지
+    }
+}
 
 // 초기화 시 데이터를 로드
 // DOMContentLoaded 이벤트에서 호출
 document.addEventListener('DOMContentLoaded', () => {
     const userIdInput = document.getElementById("userId");
+    const userId = userIdInput ? userIdInput.value : null;
+
+     renderGrids();
+
       if (!userIdInput) {
           console.error("User ID 요소를 찾을 수 없습니다.");
           return;
       }
-      const userId = userIdInput.value; // value 속성을 가져옵니다.
-      if (!userId) {
-          console.error("User ID 값이 비어 있습니다.");
-          return;
-      }
+//      const userId = userIdInput.value; // value 속성을 가져옵니다.
+//      if (!userId) {
+//          console.error("User ID 값이 비어 있습니다.");
+//          return;
+//      }
 
       const reservationData = requestReservationData(userId);
       if (!reservationData || reservationData.length === 0) {
@@ -158,7 +239,7 @@ document.addEventListener('DOMContentLoaded', () => {
           restaurantGrid2.html('<p>예약된 레스토랑이 없습니다.</p>');
           return;
       }
-      const restaurantIds = [...new Set(reservationData.data.map((reservation) => reservation.restaurantId))];
+      const restaurantIds = [...new Set(reservationData.map((reservation) => reservation.restaurantId))];
 
       // 중복된 ID 제거
           const uniqueRestaurantIds = [...new Set(restaurantIds)];
@@ -177,17 +258,7 @@ document.addEventListener('DOMContentLoaded', () => {
               restaurantGrid2.html('<p>예약된 레스토랑이 없습니다.</p>');
           }
 
-//    function displayReservedRestaurants(userId) {
-//        const reservationData = requestReservationData(userId);
-//        reservationData.forEach(reservation => {
-//            const restaurant = requestRestaurantById(reservation.restaurantId);
-//            if (restaurant) {
-//                const reviewData = requestReviewData(restaurant.id);
-//                const card = createRestaurantCard(restaurant, reviewData.rating, reviewData.reviewsCount);
-//                document.getElementById('reservedRestaurantGrid').appendChild(card);
-//            }
-//        });
-//    }
+
 
 //  requestPickedRestaurants();
   console.log("main.js DOMContentLoaded 완료");
