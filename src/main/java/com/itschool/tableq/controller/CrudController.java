@@ -23,7 +23,7 @@ public abstract class CrudController<Req, Res, Entity> implements CrudInterface<
 
     @GetMapping("")
     @Operation(summary = "페이지별 조회", description = "pageable로 엔티티 목록을 조회")
-    public Header getPaginatedList(@Parameter(name = "pageable", description = "페이징 설정 (page, size, sort)", example = "page=0&size=10&sort=id,asc")
+    public Header getPaginatedList(@Parameter(name = "pageable", description = "페이징 설정 (page, size, sort)")
             @PageableDefault(sort = "id", direction = Sort.Direction.DESC) Pageable pageable){
         log.info("{}","{}","getPaginatedList: ", pageable);
         try {
