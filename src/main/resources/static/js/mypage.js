@@ -8,6 +8,13 @@ document.getElementById('googleLogin').addEventListener('click', function() {
 
 
 $(document).ready(function() {
+    const userId = $('#userId').text().trim(); // userId를 가져오는 방법
+    const url = `/api/reservation/user/${userId}?page=0&size=10&sort=createdAt,desc`;
+    const upcomingReservationsContainer = document.getElementById("upcomingReservationsGrid");
+    const noReservationsMessage = document.getElementById("noReservationsMessage");
+    const upcomingReservations = reservations.filter((reservation) => reservation.isEntered === null);
+    console.log('필터링된 예약 목록:', upcomingReservations);  // 필터링된 결과 확인
+
     $('#signupForm').on('submit', function(event) {
         event.preventDefault(); // 폼의 기본 제출 동작을 막음
 
@@ -46,10 +53,60 @@ $(document).ready(function() {
             }
         });
     });
-});
 
-document.addEventListener("DOMContentLoaded", function() {
-    const userId = 3; // 현재 로그인된 사용자의 ID (동적으로 처리 필요)
+    // API 호출로 데이터 가져오기
+    $.ajax({
+        url: url,
+        type: 'GET',
+        dataType: 'json',
+        success: function(data) {
+            if (data.resultCode === "OK" && data.data) {
+                const reservations = data.data;
+
+                // isEntered가 null인 데이터만 필터링
+                const upcomingReservations = reservations.filter((reservation) => reservation.isEntered === null);
+
+                // 데이터가 있으면 그리드 표시, 없으면 메시지 표시
+                if (upcomingReservations.length > 0) {
+                    noReservationsMessage.style.display = "none"; // 메시지 숨기기
+                    upcomingReservationsContainer.style.display = "grid"; // 그리드 표시
+
+                    // 필터링된 데이터로 그리드 생성
+                    upcomingReservations.forEach((reservation) => {
+                        const gridItem = createGridItem(reservation);
+                        upcomingReservationsContainer.appendChild(gridItem);
+                    });
+                } else {
+                    upcomingReservationsContainer.style.display = "none"; // 그리드 숨기기
+                    noReservationsMessage.style.display = "block"; // 메시지 표시
+                }
+            } else {
+                console.error("예약 데이터를 가져오지 못했습니다.", data.description);
+            }
+        },
+        error: function(xhr, status, error) {
+            console.error("AJAX 요청 실패:", error);
+        }
+    });
+
+
+    // 그리드 항목 생성 함수
+    function createGridItem(reservation) {
+        const gridItem = document.createElement("div");
+        gridItem.className = "grid-item";
+
+        // 예약 정보 렌더링
+        gridItem.innerHTML =`
+            <div class="grid-content">
+                <h3>${reservation.restaurant.name}</h3>
+                <p>예약인원: ${reservation.people}명</p>
+                <p>주소: ${reservation.restaurant.address}</p>
+                <p>전화번호: ${reservation.restaurant.contactNumber}</p>
+            </div>
+        `;
+        return gridItem;
+    }
+
     const reservationInfoContainer = document.querySelector('.reservation-info');
 
     fetch(`/api/reservation/user/${userId}?page=0&size=10&sort=createdAt`)
@@ -88,5 +145,8 @@ document.addEventListener("DOMContentLoaded", function() {
             console.error('예약 정보를 불러오는 중 오류가 발생했습니다.', error);
         });
 });
+
+
+
 
 

@@ -221,8 +221,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const userIdInput = document.getElementById("userId");
     const userId = userIdInput ? userIdInput.value : null;
     const url = `/api/reservation/user/${userId}?page=0&size=10&sort=createdAt,desc`;
-    const upcomingReservationsContainer = document.getElementById("upcomingReservationsGrid");
-    const noReservationsMessage = document.getElementById("noReservationsMessage");
+
 
     fetch(url)
       .then(response => response.json())
@@ -294,57 +293,8 @@ document.addEventListener('DOMContentLoaded', () => {
          restaurantGrid2.html('<p>예약된 레스토랑이 없습니다.</p>');
      }
 
-    // API 호출로 데이터 가져오기
-    $.ajax({
-        url: url,
-        type: 'GET',
-        dataType: 'json',
-        success: function(data) {
-            if (data.resultCode === "OK" && data.data) {
-                const reservations = data.data;
 
-                // isEntered가 null인 데이터만 필터링
-                const upcomingReservations = reservations.filter((reservation) => reservation.isEntered === null);
 
-                // 데이터가 있으면 그리드 표시, 없으면 메시지 표시
-                if (upcomingReservations.length > 0) {
-                    noReservationsMessage.style.display = "none"; // 메시지 숨기기
-                    upcomingReservationsContainer.style.display = "grid"; // 그리드 표시
-
-                    // 필터링된 데이터로 그리드 생성
-                    upcomingReservations.forEach((reservation) => {
-                        const gridItem = createGridItem(reservation);
-                        upcomingReservationsContainer.appendChild(gridItem);
-                    });
-                } else {
-                    upcomingReservationsContainer.style.display = "none"; // 그리드 숨기기
-                    noReservationsMessage.style.display = "block"; // 메시지 표시
-                }
-            } else {
-                console.error("예약 데이터를 가져오지 못했습니다.", data.description);
-            }
-        },
-        error: function(xhr, status, error) {
-            console.error("AJAX 요청 실패:", error);
-        }
-    });
-
-            // 그리드 항목 생성 함수
-            function createGridItem(reservation) {
-                const gridItem = document.createElement("div");
-                gridItem.className = "grid-item";
-
-                // 예약 정보 렌더링
-                gridItem.innerHTML =`
-                    <div class="grid-content">
-                        <h3>${reservation.restaurant.name}</h3>
-                        <p>예약인원: ${reservation.people}명</p>
-                        <p>주소: ${reservation.restaurant.address}</p>
-                        <p>전화번호: ${reservation.restaurant.contactNumber}</p>
-                    </div>
-                `;
-                return gridItem;
-            }
 
 
 //  requestPickedRestaurants();
