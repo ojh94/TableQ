@@ -1215,3 +1215,23 @@ function requestAmenityModifyApi() {
         }
     });
 }
+
+// 수정 버튼 클릭 시
+/*document.getElementById('modify').addEventListener('click', function(event) {
+    const ownerConfirmed = confirm("정말로 수정하시겠습니까?");
+
+    if(!userConfirmed) {
+        return;
+    }
+
+    >> 점포 정보 수정 메소드 (이름, 위치, 전화번호, 매장소개) << ?
+    >> 운영시간 수정 또는 생성 메소드  <<
+    >> 점포 편의시설 삭제 후 생성 메소드  <<
+    >> 점포 키워드 삭제 후 생성 메소드 <<
+    >> 점포 메인 이미지 삭제 후 생성 메소드 << ?
+}*/
+
+// 상세 수정 페이지 수정 메소드
+/*function requestRestaurantUpdateApi() {
+
+}*/
