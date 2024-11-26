@@ -8,6 +8,7 @@ import com.itschool.tableq.network.request.RestaurantRequest;
 import com.itschool.tableq.service.RestaurantService;
 import groovy.util.logging.Slf4j;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.constraints.Positive;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,13 +35,17 @@ public class RestaurantApiController extends CrudController<RestaurantRequest, R
 
     @Operation(summary = "레스토랑 검색", description = "레스토랑 이름 일부분으로 검색가능")
     @GetMapping("/keywordSearch")
-    public Header<List<RestaurantResponse>> searchRestaurantsByName(@RequestParam("arg0") String keyword, @PageableDefault(sort = "id", direction = Sort.Direction.DESC) Pageable pageable) {
+    public Header<List<RestaurantResponse>> searchRestaurantsByName(@RequestParam("name") String keyword,
+                                                                    @Parameter(name = "pageable", description = "페이징 설정 (page, size, sort)", example = "page=0&size=10&sort=id,asc")
+                                                                    @PageableDefault(sort = "id", direction = Sort.Direction.ASC) Pageable pageable) {
         return restaurantService.searchByName(keyword, pageable);
     }
 
-    @Operation(summary = "레스토랑 지역 검색", description = "레스토랑 이름 일부분으로 검색가능")
+    @Operation(summary = "레스토랑 지역 검색", description = "레스토랑 지역 일부분으로 검색가능")
     @GetMapping("/addressSearch")
-    public Header<List<RestaurantResponse>> searchByRestaurantsAddress(@RequestParam("arg0") String keyword, @PageableDefault(sort = "id", direction = Sort.Direction.DESC) Pageable pageable) {
+    public Header<List<RestaurantResponse>> searchByRestaurantsAddress(@RequestParam("address") String keyword,
+                                                                       @Parameter(name = "pageable", description = "페이징 설정 (page, size, sort)", example = "page=0&size=10&sort=id,asc")
+                                                                       @PageableDefault(sort = "id", direction = Sort.Direction.ASC) Pageable pageable) {
         return restaurantService.searchByAddress(keyword, pageable);
     }
 
