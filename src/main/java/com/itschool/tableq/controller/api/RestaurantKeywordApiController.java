@@ -28,9 +28,9 @@ import java.util.List;
 public class RestaurantKeywordApiController extends CrudController<RestaurantKeywordRequest, RestaurantKeywordResponse, RestaurantKeyword>  {
     @Operation(summary = "레스토랑 키워드 조회", description = "Restaurant ID로 식당 관련 키워드 조회")
     @GetMapping("/restaurant/{restaurantId}")
-    public Header<List<RestaurantKeywordResponse>> readByRestaurantId(@PathVariable(name="restaurantId") Long restaurantId,
-                                                                @PageableDefault(sort = "id", direction = Sort.Direction.DESC) Pageable pageable){
-        log.info("{}","{}","{}","read: ",restaurantId, pageable);
-        return ((RestaurantKeywordService)baseService).readByRestaurantId(restaurantId,pageable);
+    public Header<List<RestaurantKeywordResponse>> readByRestaurantId(@PathVariable(name="restaurantId") Long restaurantId
+                                                                /*@PageableDefault(sort = "id", direction = Sort.Direction.DESC) Pageable pageable*/){
+        log.info("{}","{}","read: ",restaurantId);
+        return ((RestaurantKeywordService)baseService).readByRestaurantId(restaurantId);
     }
 }

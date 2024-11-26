@@ -9,5 +9,5 @@ import java.util.List;
 import java.util.Optional;
 
 public interface RestaurantKeywordsRepository extends JpaRepository<RestaurantKeyword, Long>{
-    Optional<List<RestaurantKeyword>> findByRestaurant(Restaurant restaurant);
+    List<RestaurantKeyword> findByRestaurant(Restaurant restaurant);
 }

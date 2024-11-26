@@ -8,6 +8,7 @@ import com.itschool.tableq.network.response.RestaurantKeywordResponse;
 import com.itschool.tableq.repository.RestaurantKeywordsRepository;
 import com.itschool.tableq.repository.RestaurantRepository;
 import com.itschool.tableq.service.base.BaseService;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
@@ -45,12 +46,13 @@ public class RestaurantKeywordService extends BaseService<RestaurantKeywordReque
         return Header.OK(response(baseRepository.findById(id).orElse(null)));
     }
 
-    public Header<List<RestaurantKeywordResponse>> readByRestaurantId(Long restaurantId, Pageable pageable){
+    public Header<List<RestaurantKeywordResponse>> readByRestaurantId(Long restaurantId){
         // 식당을 예약한 손님 조회
         // --> 필요한 정보 : reservationNumber(대기번호), people(인원), User.contactNumber(예약자 전화번호)
-        Restaurant restaurant = restaurantRepository.findById(restaurantId).get();
-        List<RestaurantKeyword> keywordList = ((RestaurantKeywordsRepository)baseRepository)
-                .findByRestaurant(restaurant).orElse(null);
+        Restaurant restaurant = restaurantRepository.findById(restaurantId)
+                .orElseThrow(() -> new EntityNotFoundException());
+
+        List<RestaurantKeyword> keywordList = ((RestaurantKeywordsRepository)baseRepository).findByRestaurant(restaurant);
 
         return Header.OK(responseList(keywordList));
     }
