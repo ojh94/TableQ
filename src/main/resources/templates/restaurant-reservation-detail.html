@@ -35,7 +35,7 @@
                         <p class="h4-black">현재 내 순서</p>
                         <div class="right-items">
                             <p id="reservation-order" class="h4-orange"></p>
-                            <i class="bi bi-arrow-clockwise fs-4 pointer"></i>
+                            <i id="refresh" class="bi bi-arrow-clockwise fs-4 pointer" style="display: none;"></i>
                         </div>
                     </div>
                     <hr/>
@@ -68,9 +68,9 @@
                 </div>
             </div>
             <form id="apply-form">
-                <div class="flex-container">
-                    <button type="button" class="btn-orange">대기 취소하기</button>
+                <div id="isEntered" class="flex-container">
                     <button type="button" class="cancel btn-gray">닫기</button>
+                    <button id="reservation-cancel" type="button" class="btn-orange" style="display: none;">대기 취소하기</button>
                 </div>
             </form>
         </div>
