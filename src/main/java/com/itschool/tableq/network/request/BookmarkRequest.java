@@ -8,7 +8,10 @@ import lombok.*;
 @Getter
 @Setter
 public class BookmarkRequest {
+
     private Long id;
-    private Long restaurantId;
-    private Long userId;
+
+    private RestaurantRequest restaurant;
+
+    private UserRequest user;
 }

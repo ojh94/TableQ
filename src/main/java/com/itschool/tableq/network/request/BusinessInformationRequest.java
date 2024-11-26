@@ -1,9 +1,6 @@
 package com.itschool.tableq.network.request;
 
-import com.itschool.tableq.domain.Owner;
 import lombok.*;
-
-import java.time.LocalDateTime;
 
 @Builder
 @NoArgsConstructor
@@ -11,6 +8,7 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 public class BusinessInformationRequest {
+
     private Long id;
 
     private String businessNumber;
@@ -19,5 +17,5 @@ public class BusinessInformationRequest {
 
     private String contactNumber;
 
-    private Owner owner;
+    private OwnerRequest owner;
 }

@@ -8,6 +8,7 @@ import com.itschool.tableq.network.response.BusinessInformationResponse;
 import com.itschool.tableq.repository.BusinessInformationRepository;
 import com.itschool.tableq.repository.OwnerRepository;
 import com.itschool.tableq.service.base.BaseService;
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,7 +39,8 @@ public class BusinessInformationService
                 .businessNumber(businessInformationRequest.getBusinessNumber())
                 .businessName(businessInformationRequest.getBusinessName())
                 .contactNumber(businessInformationRequest.getContactNumber())
-                .owner(businessInformationRequest.getOwner())
+                .owner(ownerRepository.findById(businessInformationRequest.getOwner().getId())
+                        .orElseThrow(()-> new EntityNotFoundException()))
                 .build();
 
         baseRepository.save(businessInformation);

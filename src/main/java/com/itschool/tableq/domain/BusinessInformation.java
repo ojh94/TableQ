@@ -5,16 +5,17 @@ import com.itschool.tableq.network.request.BusinessInformationRequest;
 import jakarta.persistence.*;
 import lombok.*;
 
-@Table(name = "business_informations")
+@Builder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor
 @Getter
-@ToString
 @Entity
+@Table(name = "business_informations")
 public class BusinessInformation extends AuditableEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(updatable = false)
-    private Long Id;
+    private Long id;
 
     @Column(nullable = false, unique = true)
     private String businessNumber;
@@ -28,14 +29,6 @@ public class BusinessInformation extends AuditableEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="owner_id",updatable = false)
     private Owner owner;
-
-    @Builder
-    public BusinessInformation(String businessNumber, String businessName, String contactNumber, Owner owner){
-        this.businessNumber = businessNumber;
-        this.businessName = businessName;
-        this.contactNumber = contactNumber;
-        this.owner = owner;
-    }
 
     public void update(BusinessInformationRequest businessInformationRequest) {
         this.businessNumber = businessInformationRequest.getBusinessNumber() == null? this.businessNumber : businessInformationRequest.getBusinessNumber();

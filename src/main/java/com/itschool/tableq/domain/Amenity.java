@@ -5,11 +5,12 @@ import com.itschool.tableq.network.request.AmenityRequest;
 import jakarta.persistence.*;
 import lombok.*;
 
-@Table(name = "amenities")
+@Builder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor
 @Getter
-@Setter
 @Entity
+@Table(name = "amenities")
 public class Amenity extends AuditableEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -19,12 +20,11 @@ public class Amenity extends AuditableEntity {
     @Column(nullable = false,unique = true)
     private String name;
 
-    @Builder
-    public Amenity(String name) {
-        this.name = name;
-    }
-
     public void update(AmenityRequest amenityRequest) {
         this.name = amenityRequest.getName() == null? this.name : amenityRequest.getName();
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 }

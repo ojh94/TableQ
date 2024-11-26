@@ -1,11 +1,15 @@
 package com.itschool.tableq.network.request;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 @Getter
 @Setter
 public class AmenityRequest {
+
     private Long id;
+
     private String name;
 }

@@ -5,11 +5,10 @@ import com.itschool.tableq.network.request.MenuItemRequest;
 import jakarta.persistence.*;
 import lombok.*;
 
-@Table(name = "menu_items")
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
-@AllArgsConstructor
+@Builder
 @Getter
 @Entity
+@Table(name = "menu_items")
 public class MenuItem extends IncludeFileUrl {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -30,26 +29,10 @@ public class MenuItem extends IncludeFileUrl {
     @JoinColumn(name = "restaurant_id")
     private Restaurant restaurant;
 
-    @Builder
-    public MenuItem(String name, String price, String description,
-                    Boolean recommendation, String fileUrl, Restaurant restaurant){
-        this.name = name;
-        this.price = price;
-        this.description = description;
-        this.recommendation = recommendation;
-        this.restaurant = restaurant;
-        this.fileUrl = fileUrl;
-    }
-
     public void updateWithoutFileUrl(MenuItemRequest menuItemRequest) {
         this.name = menuItemRequest.getName();
         this.price = menuItemRequest.getPrice();
         this.description = menuItemRequest.getDescription();
-        // this.fileUrl = menuItemRequest.getFile().getName();
         this.recommendation = menuItemRequest.getRecommendation();
-    }
-
-    public void updateFileUrl(String fileUrl){
-        this.fileUrl = fileUrl;
     }
 }

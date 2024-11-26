@@ -74,19 +74,6 @@ public class OpeningHourService extends BaseService<OpeningHourRequest, OpeningH
         Restaurant restaurant = restaurantRepository.findById(restaurantId)
                 .orElseThrow(() -> new EntityNotFoundException("레스토랑을 찾을 수 없습니다."));
 
-        Page<OpeningHour> entities = ((OpeningHoursRepository)baseRepository).findByRestaurant(restaurant, pageable);
-
-        List<OpeningHourResponse> OpeningHourList = entities.stream()
-                .map(entity -> response(entity))
-                .collect(Collectors.toList());
-
-        Pagination pagination = Pagination.builder()
-                .totalPages(entities.getTotalPages())
-                .totalElements(entities.getTotalElements())
-                .currentPage(entities.getNumber())
-                .currentElements(entities.getNumberOfElements())
-                .build();
-
-        return Header.OK(OpeningHourList, pagination);
+        return convertPageToList(((OpeningHoursRepository)baseRepository).findByRestaurant(restaurant, pageable));
     }
 }

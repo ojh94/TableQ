@@ -37,10 +37,10 @@ public class BookmarkService extends
     public Header<BookmarkResponse> create(Header<BookmarkRequest> request) {
         BookmarkRequest bookmarkRequest = request.getData();
 
-        Restaurant restaurant =restaurantRepository.findById(bookmarkRequest.getRestaurantId())
+        Restaurant restaurant = restaurantRepository.findById(bookmarkRequest.getRestaurant().getId())
                 .orElseThrow(() -> new RuntimeException("Not Found ID"));
 
-        User user = userRepository.findById(bookmarkRequest.getUserId())
+        User user = userRepository.findById(bookmarkRequest.getUser().getId())
                 .orElseThrow(() -> new RuntimeException("Not Found ID"));
 
         Bookmark bookmark = Bookmark.builder()

@@ -1,8 +1,7 @@
 package com.itschool.tableq.network.request;
 
-import com.itschool.tableq.domain.Restaurant;
-import com.itschool.tableq.domain.User;
 import lombok.*;
+
 import java.time.LocalDateTime;
 
 @Builder
@@ -17,11 +16,7 @@ public class ReviewRequest {
 
     private Integer starRating;
 
-    private LocalDateTime createdAt;
+    private RestaurantRequest restaurant;
 
-    private LocalDateTime lastModifiedAt;
-
-    private Restaurant restaurant;
-
-    private User user;
+    private UserRequest user;
 }

@@ -2,9 +2,6 @@ package com.itschool.tableq.network.request;
 
 import com.itschool.tableq.network.request.base.FileRequest;
 import lombok.*;
-import org.hibernate.validator.constraints.URL;
-
-import java.time.LocalDateTime;
 
 @Builder
 @NoArgsConstructor
@@ -12,6 +9,7 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 public class MenuItemRequest extends FileRequest {
+
     private Long id;
 
     private String name;
@@ -22,5 +20,5 @@ public class MenuItemRequest extends FileRequest {
 
     private Boolean recommendation;
 
-    private Long restaurantId;
+    private RestaurantRequest restaurant;
 }

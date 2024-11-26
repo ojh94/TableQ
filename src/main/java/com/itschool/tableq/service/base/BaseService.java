@@ -1,5 +1,6 @@
 package com.itschool.tableq.service.base;
 
+import com.itschool.tableq.domain.base.AuditableEntity;
 import com.itschool.tableq.ifs.CrudInterface;
 import com.itschool.tableq.network.Header;
 import com.itschool.tableq.network.Pagination;
@@ -14,7 +15,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Component
-public abstract class BaseService<Req, Res, Entity> implements CrudInterface<Req, Res> {
+public abstract class BaseService<Req, Res, Entity extends AuditableEntity> implements CrudInterface<Req, Res> {
     @Autowired(required = false)
     protected JpaRepository<Entity, Long> baseRepository;
 

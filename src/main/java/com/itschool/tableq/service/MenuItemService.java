@@ -9,6 +9,7 @@ import com.itschool.tableq.repository.MenuItemRepository;
 import com.itschool.tableq.repository.RestaurantRepository;
 import com.itschool.tableq.service.base.BaseServiceWithS3;
 import com.itschool.tableq.util.FileUtil;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -42,14 +43,14 @@ public class MenuItemService extends BaseServiceWithS3<MenuItemRequest, MenuItem
                     .price(menuItemRequest.getPrice())
                     .description(menuItemRequest.getDescription())
                     .recommendation(menuItemRequest.getRecommendation())
-                    .restaurant(restaurantRepository.findById(menuItemRequest.getRestaurantId())
-                            .orElseThrow(() -> new IllegalArgumentException("not found")))
+                    .restaurant(restaurantRepository.findById(menuItemRequest.getRestaurant().getId())
+                            .orElseThrow(() -> new EntityNotFoundException()))
                     .build();
 
             entity = baseRepository.save(entity);
 
             String fileUrl = uploadFile(menuItemRequest.getFile(), DIRECTORY_NAME,
-                    String.valueOf(entity.getId()) + FileUtil.getFileExtension(request.getData().getFile()));
+                    entity.getId() + FileUtil.getFileExtension(request.getData().getFile()));
 
             entity.updateFileUrl(fileUrl);
 
@@ -64,11 +65,12 @@ public class MenuItemService extends BaseServiceWithS3<MenuItemRequest, MenuItem
 
     @Override
     public Header<MenuItemResponse> read(Long id) {
-        return Header.OK(response(baseRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("not found"))));
+        return Header.OK(response(baseRepository.findById(id).
+                orElseThrow(() -> new EntityNotFoundException())));
     }
 
-    @Override
     @Transactional
+    @Override
     public Header<MenuItemResponse> update(Long id, Header<MenuItemRequest> request) {
         try {
             MenuItemRequest menuItemRequest = request.getData();

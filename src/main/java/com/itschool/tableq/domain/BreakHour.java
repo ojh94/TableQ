@@ -4,14 +4,16 @@ import com.itschool.tableq.domain.base.AuditableEntity;
 import com.itschool.tableq.network.request.BreakHourRequest;
 import jakarta.persistence.*;
 import lombok.*;
-import org.springframework.cglib.core.Local;
 
+import java.time.DayOfWeek;
 import java.time.LocalTime;
 
-@Table(name = "break_hours")
+@Builder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor
 @Getter
 @Entity
+@Table(name = "break_hours")
 public class BreakHour extends AuditableEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -22,15 +24,16 @@ public class BreakHour extends AuditableEntity {
 
     private LocalTime breakEnd;
 
+    @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private String dayOfWeek;
+    private DayOfWeek dayOfWeek;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="restaurant_id",updatable = false)
     private Restaurant restaurant;
 
     @Builder
-    public BreakHour(LocalTime breakStart, LocalTime breakEnd, String dayOfWeek){
+    public BreakHour(LocalTime breakStart, LocalTime breakEnd, DayOfWeek dayOfWeek){
         this.breakStart = breakStart;
         this.breakEnd = breakEnd;
         this.dayOfWeek = dayOfWeek;

@@ -53,9 +53,9 @@ public class ReservationService extends
         return false;
     }
 
-    public Integer getWaitingNubmer(Restaurant restaurant) {
+    public Long getWaitingNubmer(Restaurant restaurant) {
         // 대기번호를 계산하는 메소드
-        int number = 1;
+        Long number = 1L;
 
         LocalDate today = LocalDate.now();
 
@@ -80,8 +80,8 @@ public class ReservationService extends
         return Header.OK(queue);
     }
 
-    public Header<Integer> getUserQueue(Long reservationId) {
-        int userTurn = 1;
+    public Header<Long> getUserQueue(Long reservationId) {
+        Long userTurn = 1L;
 
         Reservation entity = ((ReservationRepository)baseRepository).findById(reservationId)
                 .orElseThrow(() -> new EntityNotFoundException());
@@ -109,11 +109,11 @@ public class ReservationService extends
     public Header<ReservationResponse> create(Header<ReservationRequest> request) {
         ReservationRequest reservationRequest = request.getData();
 
-        User user = userRepository.findById(reservationRequest.getUserId())
-                .orElseThrow(()-> new RuntimeException("None Exist User ID"));
+        User user = userRepository.findById(reservationRequest.getUser().getId())
+                .orElseThrow(()-> new EntityNotFoundException());
 
-        Restaurant restaurant = restaurantRepository.findById(reservationRequest.getRestaurantId())
-                .orElseThrow(()-> new RuntimeException("None Exist Restaurant ID"));
+        Restaurant restaurant = restaurantRepository.findById(reservationRequest.getRestaurant().getId())
+                .orElseThrow(()-> new EntityNotFoundException());
 
         if(isExist(user, restaurant)) {
             throw new RuntimeException("Already Reserved User");

@@ -1,27 +1,25 @@
 package com.itschool.tableq.network.request;
 
-import com.itschool.tableq.domain.BusinessInformation;
 import lombok.*;
-
-import java.time.LocalDateTime;
 
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Setter
 @Getter
+@Setter
 public class RestaurantRequest {
+
     private Long id;
 
     private String name;
 
     private String address;
 
-    private String introduction;
+    private String information;
 
     private String contact_number;
 
     private boolean isAvailable;
 
-    private BusinessInformation businessInformation;
+    private BusinessInformationRequest businessInformation;
 }

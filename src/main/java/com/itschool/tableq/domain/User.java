@@ -12,12 +12,12 @@ import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.List;
 
-@Table(name = "users")
+@Builder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor
 @Getter
-@Setter
-@ToString
 @Entity
+@Table(name = "users")
 public class User extends AuditableEntity implements UserDetails {
 
     @Id
@@ -49,28 +49,17 @@ public class User extends AuditableEntity implements UserDetails {
     @Column(nullable = false, unique = true)
     private String email;
 
-    @Builder
-    public User(Long id, String email, String password, String nickname, String phoneNumber, LocalDateTime lastLoginAt,
-                String address, String name, String socialType, String socialId) {
-        this.id = id;
-        this.password = password;
-        this.nickname = nickname;
-        this.phoneNumber = phoneNumber;
-        this.lastLoginAt = lastLoginAt;
-        this.address = address;
-        this.name = name;
-        this.socialType = socialType;
-        this.socialId = socialId;
-        this.email = email;
+    public void update(UserRequest userRequest) {
+        this.password = userRequest.getPassword() == null? this.password : userRequest.getPassword();
+        this.nickname = userRequest.getNickname() == null? this.nickname : userRequest.getNickname();
+        this.phoneNumber = userRequest.getPhoneNumber() == null? this.phoneNumber : userRequest.getPhoneNumber();
+        this.address = userRequest.getAddress() == null? this.address : userRequest.getAddress();
+        this.name = userRequest.getName() == null? this.name : userRequest.getName();
+        this.email = userRequest.getEmail() == null? this.email : userRequest.getEmail();
     }
 
-    public void update(UserRequest dto) {
-        this.password = dto.getPassword() == null? this.password : dto.getPassword();
-        this.nickname = dto.getNickname() == null? this.nickname : dto.getNickname();
-        this.phoneNumber = dto.getPhoneNumber() == null? this.phoneNumber : dto.getPhoneNumber();
-        this.address = dto.getAddress() == null? this.address : dto.getAddress();
-        this.name = dto.getName() == null? this.name : dto.getName();
-        this.email = dto.getEmail() == null? this.email : dto.getEmail();
+    public void setLastLoginAt(LocalDateTime lastLoginAt) {
+        this.lastLoginAt = lastLoginAt;
     }
 
     @Override
@@ -101,5 +90,9 @@ public class User extends AuditableEntity implements UserDetails {
     @Override
     public boolean isEnabled() {
         return true;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 }
