@@ -4,6 +4,7 @@ import com.itschool.tableq.ifs.CrudInterface;
 import com.itschool.tableq.network.Header;
 import com.itschool.tableq.service.base.BaseService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +23,8 @@ public abstract class CrudController<Req, Res, Entity> implements CrudInterface<
 
     @GetMapping("")
     @Operation(summary = "페이지별 조회", description = "pageable로 엔티티 목록을 조회")
-    public Header getPaginatedList(@PageableDefault(sort = "id", direction = Sort.Direction.DESC) Pageable pageable){
+    public Header getPaginatedList(@Parameter(name = "pageable", description = "페이징 설정 (page, size, sort)")
+            @PageableDefault(sort = "id", direction = Sort.Direction.DESC) Pageable pageable){
         log.info("{}","{}","getPaginatedList: ", pageable);
         try {
             return baseService.getPaginatedList(pageable);
