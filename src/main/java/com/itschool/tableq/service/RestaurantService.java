@@ -3,10 +3,12 @@ package com.itschool.tableq.service;
 import com.itschool.tableq.domain.Restaurant;
 import com.itschool.tableq.network.Header;
 import com.itschool.tableq.network.request.RestaurantRequest;
+import com.itschool.tableq.network.request.RestaurantUpdateAllRequest;
 import com.itschool.tableq.network.response.RestaurantResponse;
+import com.itschool.tableq.repository.BusinessInformationRepository;
 import com.itschool.tableq.repository.RestaurantRepository;
-import com.itschool.tableq.repository.ReviewRepository;
 import com.itschool.tableq.service.base.BaseService;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -20,8 +22,8 @@ import java.util.List;
 @Service
 public class RestaurantService extends BaseService<RestaurantRequest, RestaurantResponse, Restaurant> {
 
-    // @Autowired
-    // ReviewRepository reviewRepository;
+    @Autowired
+    BusinessInformationRepository businessInformationRepository;
     
     @Override
     protected RestaurantResponse response(Restaurant restaurant) {
@@ -35,10 +37,11 @@ public class RestaurantService extends BaseService<RestaurantRequest, Restaurant
         Restaurant restaurant = Restaurant.builder()
                 .name(restaurantRequest.getName())
                 .address(restaurantRequest.getAddress())
-                .information(restaurantRequest.getIntroduction())
+                .information(restaurantRequest.getInformation())
                 .contactNumber(restaurantRequest.getContact_number())
                 .isAvailable(restaurantRequest.isAvailable())
-                .businessInformation(restaurantRequest.getBusinessInformation())
+                .businessInformation(businessInformationRepository.findById(restaurantRequest.getBusinessInformation().getId())
+                        .orElseThrow(() -> new EntityNotFoundException()))
                 .build();
 
         baseRepository.save(restaurant);
@@ -90,5 +93,18 @@ public class RestaurantService extends BaseService<RestaurantRequest, Restaurant
         Page<Restaurant> searchedList = ((RestaurantRepository)baseRepository).searchByAddress(address, pageable);
 
         return convertPageToList(searchedList);
+    }
+
+    // @AuthorCheck // AuthorCheck를 위해서는 /*@CreatedBy @LastModifiedBy 필요*/
+    @Transactional
+    public Header<RestaurantResponse> updateAll(Long id, Header<RestaurantUpdateAllRequest> request) {
+        RestaurantUpdateAllRequest restaurantUpdateAllRequest = request.getData();
+
+        Restaurant restaurant = baseRepository.findById(id).orElseThrow(() -> new EntityNotFoundException());
+
+        // Restaurant restaurant = baseRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("not found"));
+        // restaurant.update(restaurantRequest);
+
+        return Header.OK(response(restaurant));
     }
 }

@@ -3,6 +3,9 @@ package com.itschool.tableq.controller.api;
 import com.itschool.tableq.controller.CrudController;
 import com.itschool.tableq.domain.Restaurant;
 import com.itschool.tableq.network.Header;
+import com.itschool.tableq.network.request.RestaurantKeywordRequest;
+import com.itschool.tableq.network.request.RestaurantUpdateAllRequest;
+import com.itschool.tableq.network.response.RestaurantKeywordResponse;
 import com.itschool.tableq.network.response.RestaurantResponse;
 import com.itschool.tableq.network.request.RestaurantRequest;
 import com.itschool.tableq.service.RestaurantService;
@@ -14,10 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -62,4 +62,16 @@ public class RestaurantApiController extends CrudController<RestaurantRequest, R
         return restaurantService.searchByAddress(keyword, pageable);
     }
 
+    @Operation(summary = "레스토랑 관련 내역 전체 수정", description = "레스토랑 관련 전체 수정")
+    @PutMapping("/all/{id}")
+    public Header<RestaurantResponse> updateAll(@PathVariable(name = "id") Long id,
+                                                      @RequestBody Header<RestaurantUpdateAllRequest> request) {
+        log.info("{}","{}","{}", "update All: ", id, request);
+        try {
+            return ((RestaurantService)baseService).updateAll(id, request);
+        } catch (Exception e) {
+            log.error("엔티티 업데이트 중 오류 발생:", "{}", e);
+            return Header.ERROR("엔티티 업데이트 오류 : " + e.getMessage());
+        }
+    }
 }
