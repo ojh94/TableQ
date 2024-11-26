@@ -43,7 +43,7 @@ public class ReservationResponse {
                         .name(restaurant.getName())
                         .address(restaurant.getAddress())
                         .information(restaurant.getInformation())
-                        .contactNumber(restaurant.getInformation())
+                        .contactNumber(restaurant.getContactNumber())
                         .isAvailable(restaurant.isAvailable())
                         .build())
                 .build();

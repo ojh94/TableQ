@@ -24,13 +24,16 @@ public class ReviewResponse {
 
     private UserResponse user;
 
+    private RestaurantResponse restaurant;
+
     private LocalDateTime createdAt;
 
     private LocalDateTime lastModifiedAt;
 
     public static ReviewResponse of(Review review){
         User user = review.getUser();
-        
+        Restaurant restaurant = review.getRestaurant();
+
         return ReviewResponse.builder()
                 .id(review.getId())
                 .content(review.getContent())
@@ -39,6 +42,9 @@ public class ReviewResponse {
                         .id(user.getId())
                         .nickname(user.getNickname())
                         .email(user.getEmail())
+                        .build())
+                .restaurant(RestaurantResponse.builder()
+                        .id(restaurant.getId())
                         .build())
                 .createdAt(review.getCreatedAt())
                 .lastModifiedAt(review.getLastModifiedAt())
