@@ -37,6 +37,8 @@ public class ReviewResponse {
                 .starRating(review.getStarRating())
                 .user(UserResponse.builder()
                         .id(user.getId())
+                        .nickname(user.getNickname())
+                        .email(user.getEmail())
                         .build())
                 .createdAt(review.getCreatedAt())
                 .lastModifiedAt(review.getLastModifiedAt())
