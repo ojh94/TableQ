@@ -20,10 +20,10 @@ public interface RestaurantRepository extends JpaRepository<Restaurant, Long> {
     @Query("SELECT r FROM Restaurant r WHERE LOWER(r.address) LIKE LOWER(CONCAT('%', :address, '%'))")
     Page<Restaurant> searchByAddress(@Param("address") String address, Pageable pageable); // 주소 검색 (페이징 지원)
 
-    @Query("SELECT r FROM Restaurant r")
+    @Query("SELECT r FROM Restaurant r LEFT JOIN Review rev on rev.restaurant.id = r.id GROUP BY r.id ORDER BY AVG(rev.starRating) asc")
     Page<Restaurant> findRestaurantsOrderByReservationCountDesc(Pageable pageable);
 
-    @Query("SELECT r FROM Restaurant r")
+    @Query("SELECT r FROM Restaurant r LEFT JOIN Review rev on rev.restaurant.id = r.id GROUP BY r.id ORDER BY SUM(rev.starRating) asc")
     Page<Restaurant> findTopRatedRestaurants(Pageable pageable);
 
     Optional<Long> countBy();
