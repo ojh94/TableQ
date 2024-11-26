@@ -290,7 +290,7 @@ function requestReservationCancelApi() {
 
         const formData = {
             "data": {
-                "isEntered" : true
+                "isEntered" : false
             }
         };
 
