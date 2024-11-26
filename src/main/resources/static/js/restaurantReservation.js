@@ -126,6 +126,12 @@ function requestReservationCreateApi() {
             return;
         }
 
+        const userConfirmed = confirm("원격줄서기를 신청하시겠습니까?");
+
+        if(!userConfirmed) {
+            return;
+        }
+
         const formData = {
             "data": {
                 "people" : totalCount,
@@ -204,7 +210,7 @@ function requestReservationDetailApi() {
             $('#reservation-number')[0].textContent = reservation.reservationNumber + '번';
             $('#reservation-people')[0].textContent = reservation.people + '명';
 
-            if(reservation.isEntered === null) {
+            if(reservation.isEntered === undefined) {
                 $('.reservation-information')[0].classList.add('badge', 'bg-secondary', 'text-decoration-none', 'link-light');
                 $('.reservation-information')[0].textContent = '이용예정';
                 $('.reservation-information')[1].textContent = '이용예정';
@@ -276,6 +282,12 @@ function requestReservationCancelApi() {
     document.getElementById('reservation-cancel').addEventListener('click', function(event) {
         event.preventDefault(); // 폼의 기본 제출 동작을 막음
 
+        const userConfirmed = confirm("정말로 취소하시겠습니까?");
+
+        if(!userConfirmed) {
+            return;
+        }
+
         const formData = {
             "data": {
                 "isEntered" : true
@@ -286,12 +298,13 @@ function requestReservationCancelApi() {
 
         $.ajax({
             url: `/api/reservation/${reservationId}`,
-            type: 'POST', // 필요한 HTTP 메서드로 변경 (PUT 또는 PATCH 등도 가능)
+            type: 'PUT', // 필요한 HTTP 메서드로 변경 (PUT 또는 PATCH 등도 가능)
             contentType: 'application/json', // JSON 형식으로 데이터 전송
             data: JSON.stringify(formData), // 데이터를 JSON 문자열로 변환
             success: function(response) {
                 // 요청 성공 시 동작
                 alert('예약이 취소되었습니다.');
+                location.reload();
             },
             error: function(xhr, status, error) {
                 // 요청 실패 시 동작
