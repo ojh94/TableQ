@@ -9,13 +9,17 @@
             </a>
         </div>
 
-        <!-- 이용 예정 내역 -->
+
         <div class="reservation-info">
+            <!-- 이용 예정 내역 -->
             <div class="no-reservation">
-                <p class="emoji">😢</p>
-                <p>이용 예정인 내역이 없어요.</p>
+                <p id="noReservationsMessage" class="emoji" style="display: none">😢<br><br>이용 예정인 <br> 내역이 없어요.</p>
             </div>
-<!--            <button type="button" class="btn btn-orange" onclick="location.href='/nearby'">내 주변 매장 보러가기</button>-->
+
+            <!-- 이용 예정 내역을 보여줄 그리드 -->
+            <div id="upcomingReservationsGrid" class="reservation-grid" style="display: none;">
+                <!-- JavaScript로 동적으로 콘텐츠가 추가됩니다 -->
+            </div>
         </div>
 
         <!-- 이용 정보 섹션 -->
