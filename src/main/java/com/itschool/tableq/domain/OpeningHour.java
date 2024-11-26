@@ -25,6 +25,7 @@ public class OpeningHour extends AuditableEntity {
     private LocalTime closeAt;
 
     @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
     private DayOfWeek dayOfWeek;
 
     @ManyToOne(fetch = FetchType.LAZY)
