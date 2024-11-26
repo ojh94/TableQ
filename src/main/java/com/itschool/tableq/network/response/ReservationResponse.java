@@ -15,13 +15,21 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @Getter
 public class ReservationResponse {
+
     private Long id;
-    private Integer reservationNumber;
+
+    private Long reservationNumber;
+
     private Boolean isEntered;
+
     private LocalDateTime createdAt;
+
     private LocalDateTime lastModifiedAt;
+
     private Integer people;
+
     private RestaurantResponse restaurant;
+
     private UserResponse user;
 
     public static ReservationResponse of(Reservation reservation) {

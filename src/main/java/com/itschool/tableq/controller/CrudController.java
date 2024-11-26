@@ -1,5 +1,6 @@
 package com.itschool.tableq.controller;
 
+import com.itschool.tableq.domain.base.AuditableEntity;
 import com.itschool.tableq.ifs.CrudInterface;
 import com.itschool.tableq.network.Header;
 import com.itschool.tableq.service.base.BaseService;
@@ -15,7 +16,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.*;
 
 @Component
-public abstract class CrudController<Req, Res, Entity> implements CrudInterface<Req, Res> {
+public abstract class CrudController<Req, Res, Entity extends AuditableEntity> implements CrudInterface<Req, Res> {
     @Autowired(required = false)
     protected BaseService<Req, Res, Entity> baseService;
 

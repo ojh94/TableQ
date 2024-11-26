@@ -5,9 +5,11 @@ import com.itschool.tableq.domain.RestaurantAmenity;
 import com.itschool.tableq.network.Header;
 import com.itschool.tableq.network.request.RestaurantAmenityRequest;
 import com.itschool.tableq.network.response.RestaurantAmenityResponse;
+import com.itschool.tableq.repository.AmenitiesRepository;
 import com.itschool.tableq.repository.RestaurantAmenityRepository;
 import com.itschool.tableq.repository.RestaurantRepository;
 import com.itschool.tableq.service.base.BaseService;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -21,6 +23,9 @@ public class RestaurantAmenityService extends BaseService<RestaurantAmenityReque
     @Autowired
     RestaurantRepository restaurantRepository;
 
+    @Autowired
+    AmenitiesRepository amenitiesRepository;
+
     @Override
     protected RestaurantAmenityResponse response(RestaurantAmenity restaurantAmenity) {
         return RestaurantAmenityResponse.of(restaurantAmenity);
@@ -31,8 +36,10 @@ public class RestaurantAmenityService extends BaseService<RestaurantAmenityReque
         RestaurantAmenityRequest restaurantAmenityRequest = request.getData();
 
         RestaurantAmenity restaurantAmenity = RestaurantAmenity.builder()
-                .restaurant(restaurantAmenityRequest.getRestaurant())
-                .amenity(restaurantAmenityRequest.getAmenity())
+                .restaurant(restaurantRepository.findById(restaurantAmenityRequest.getRestaurant().getId())
+                        .orElseThrow(() -> new EntityNotFoundException()))
+                .amenity(amenitiesRepository.findById(restaurantAmenityRequest.getAmenity().getId())
+                        .orElseThrow(() -> new EntityNotFoundException()))
                 .build();
         baseRepository.save(restaurantAmenity);
         return Header.OK(response(restaurantAmenity));
@@ -45,11 +52,14 @@ public class RestaurantAmenityService extends BaseService<RestaurantAmenityReque
 
     @Override
     public Header<RestaurantAmenityResponse> update(Long id, Header<RestaurantAmenityRequest> request) {
-        RestaurantAmenityRequest restaurantAmenityRequest = request.getData();
+        /*RestaurantAmenityRequest restaurantAmenityRequest = request.getData();
+
         RestaurantAmenity restaurantAmenity = baseRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("RestaurantAmenity not found"));
-        restaurantAmenity.update(restaurantAmenityRequest);
-        return Header.OK(response(restaurantAmenity));
+                .orElseThrow(() -> new EntityNotFoundException());
+
+        restaurantAmenity.update(restaurantAmenityRequest);*/
+
+        return Header.ERROR(this.getClass() + " : update is deprecated");
     }
 
     @Override
@@ -62,6 +72,7 @@ public class RestaurantAmenityService extends BaseService<RestaurantAmenityReque
 
         return Header.OK(
                 responseList(
-                        ((RestaurantAmenityRepository)baseRepository).findByRestaurant(restaurant).orElseThrow()));
+                        ((RestaurantAmenityRepository)baseRepository).findByRestaurant(restaurant)
+                                .orElseThrow(() -> new EntityNotFoundException())));
     }
 }

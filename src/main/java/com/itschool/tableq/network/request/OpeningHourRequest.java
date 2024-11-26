@@ -1,17 +1,24 @@
 package com.itschool.tableq.network.request;
 
-import com.itschool.tableq.domain.Restaurant;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
+import java.time.DayOfWeek;
 import java.time.LocalTime;
 
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 @Getter
 @Setter
 public class OpeningHourRequest {
+
     private Long id;
+
     private LocalTime openAt;
+
     private LocalTime closeAt;
-    private String dayOfWeek;
-    private Restaurant restaurant;
+
+    private DayOfWeek dayOfWeek;
+
+    private RestaurantRequest restaurant;
 }

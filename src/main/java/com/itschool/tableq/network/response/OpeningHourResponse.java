@@ -7,6 +7,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.time.DayOfWeek;
 import java.time.LocalTime;
 
 @Builder
@@ -17,7 +18,7 @@ public class OpeningHourResponse {
     private Long id;
     private LocalTime openAt;
     private LocalTime closeAt;
-    private String dayOfWeek;
+    private DayOfWeek dayOfWeek;
     private RestaurantResponse restaurant;
 
     public static OpeningHourResponse of(OpeningHour openingHour) {

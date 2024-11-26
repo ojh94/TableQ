@@ -1,21 +1,23 @@
 package com.itschool.tableq.network.request;
 
-import com.itschool.tableq.domain.Restaurant;
-import com.itschool.tableq.domain.User;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
-import java.time.LocalDateTime;
-
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 @Getter
 @Setter
 public class ReservationRequest {
+
     private Long id;
-    private Integer reservationNumber;
+
+    private Long reservationNumber;
+
     private Boolean isEntered;
-    private LocalDateTime createdAt;
-    private LocalDateTime lastModifiedAt;
+
     private Integer people;
-    private Long restaurantId;
-    private Long userId;
+
+    private RestaurantRequest restaurant;
+
+    private UserRequest user;
 }

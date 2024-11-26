@@ -27,15 +27,7 @@ public class UserDetailService implements UserDetailsService {
             User findUser = userRepository.findById(userId)
                     .orElseThrow(() -> new RuntimeException("User ID "+userId+" Not Found"));
 
-            if(findUser.getId() == ((User) userDetails).getId()){
-                return true;
-            } else if(userDetails instanceof Owner){
-                Owner findOwner = ownerRepository.findById(userId)
-                        .orElseThrow(() -> new RuntimeException("User ID "+userId+" Not Found"));
-
-                if (findOwner.getId() == ((Owner) userDetails).getId())
-                    return true;
-            }
+            if(findUser.getId() == ((User) userDetails).getId()) return true;
         }
         return false;
     }

@@ -1,16 +1,16 @@
 package com.itschool.tableq.domain;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.itschool.tableq.domain.base.AuditableEntity;
 import com.itschool.tableq.network.request.RestaurantRequest;
 import jakarta.persistence.*;
 import lombok.*;
 
-@Table(name = "restaurants")
+@Builder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor
 @Getter
-@ToString
 @Entity
+@Table(name = "restaurants")
 public class Restaurant extends AuditableEntity {
 
     @Id
@@ -36,20 +36,10 @@ public class Restaurant extends AuditableEntity {
     @JoinColumn(name = "buisness_id", updatable = false)
     private BusinessInformation businessInformation;
 
-    @Builder
-    public Restaurant(String name, String address, String information, String contactNumber, boolean isAvailable, BusinessInformation businessInformation) {
-        this.name = name;
-        this.address = address;
-        this.information = information;
-        this.contactNumber = contactNumber;
-        this.isAvailable = isAvailable;
-        this.businessInformation = businessInformation;
-    }
-
     public void update(RestaurantRequest restaurantRequest) {
         this.name = restaurantRequest.getName() == null ? this.name : restaurantRequest.getName();
         this.address = restaurantRequest.getAddress() == null ? this.address : restaurantRequest.getAddress();
-        this.information = restaurantRequest.getIntroduction() == null ? this.information : restaurantRequest.getIntroduction();
+        this.information = restaurantRequest.getInformation() == null ? this.information : restaurantRequest.getInformation();
         this.contactNumber = restaurantRequest.getContact_number() == null ? this.contactNumber : restaurantRequest.getContact_number();
     }
 }

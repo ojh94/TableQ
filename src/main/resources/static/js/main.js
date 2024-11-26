@@ -4,7 +4,7 @@ console.log("main.js 시작");
 function createRestaurantCard(restaurant, rating, reviewsCount) {
     const card = document.createElement('div');
     card.className = 'card';
-    card.innerHTML = `
+    card.innerHTML =`
         <div class="card-header">
             <button id="favorite-btn-${restaurant.id}" class="favorite-btn" data-id="${restaurant.id}" data-favorite="false"  >
                 <i class="fa-regular fa-heart"></i>
@@ -57,7 +57,7 @@ function renderGrids() {
     const reservedRestaurants = [];
 
     reservationData.forEach(reservation => {
-        const restaurant = requestRestaurantById(reservation.restaurantId);
+        const restaurant = requestRestaurantById(reservation.restaurant.id);
         if (restaurant) {
             const reviewData = requestReviewData(restaurant.id);
             const card = createRestaurantCard(restaurant, reviewData.rating, reviewData.reviewsCount);
@@ -220,44 +220,131 @@ function displayReservedRestaurants(userId) {
 document.addEventListener('DOMContentLoaded', () => {
     const userIdInput = document.getElementById("userId");
     const userId = userIdInput ? userIdInput.value : null;
+    const url = `/api/reservation/user/${userId}?page=0&size=10&sort=createdAt,desc`;
+    const upcomingReservationsContainer = document.getElementById("upcomingReservationsGrid");
+    const noReservationsMessage = document.getElementById("noReservationsMessage");
 
-     renderGrids();
+    fetch(url)
+      .then(response => response.json())
+      .then(data => {
+        console.log("Reservation data:", data);  // 데이터 확인
+        // 여기에 데이터를 처리하는 코드 추가
+      })
+      .catch(error => {
+        console.error("예약 데이터를 가져오지 못했습니다.", error);
+      });
 
-      if (!userIdInput) {
-          console.error("User ID 요소를 찾을 수 없습니다.");
-          return;
-      }
-//      const userId = userIdInput.value; // value 속성을 가져옵니다.
+     console.log("User ID (value):", userId); // userId 값 확인
+
+        if (userId) {
+            const requestURL = `/api/reservation/user/${userId}?page=0&size=10&sort=createdAt,desc`;
+            console.log("Request URL:", requestURL); // 요청 URL 확인
+
+            fetch(requestURL)
+                .then((response) => {
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    }
+                    return response.json();
+                })
+                .then((data) => {
+                    console.log("Reservation data:", data);
+                })
+                .catch((error) => {
+                    console.error("API 요청 중 오류 발생:", error);
+                });
+        } else {
+            console.error("userId를 찾을 수 없습니다.");
+        }
+
+    renderGrids();
+
+    if (!userIdInput) {
+        console.error("User ID 요소를 찾을 수 없습니다.");
+        return;
+    }
+//       const userId = userIdInput.value; // value 속성을 가져옵니다.
 //      if (!userId) {
 //          console.error("User ID 값이 비어 있습니다.");
 //          return;
 //      }
 
-      const reservationData = requestReservationData(userId);
-      if (!reservationData || reservationData.length === 0) {
-          console.error("No reservations found.");
-          restaurantGrid2.html('<p>예약된 레스토랑이 없습니다.</p>');
-          return;
-      }
-      const restaurantIds = [...new Set(reservationData.map((reservation) => reservation.restaurantId))];
+    const reservationData = requestReservationData(userId);
+    if (!reservationData || reservationData.length === 0) {
+        console.error("No reservations found.");
+        restaurantGrid2.html('<p>예약된 레스토랑이 없습니다.</p>');
+        return;
+    }
+    const restaurantIds = [...new Set(reservationData.map((reservation) => reservation.restaurant.id))];
 
-      // 중복된 ID 제거
-          const uniqueRestaurantIds = [...new Set(restaurantIds)];
-          const restaurantGrid = $('#restaurantGrid');
-          const restaurantGrid2 = $('#restaurantGrid2');
-          if (restaurantIds.length > 0) {
-              restaurantGrid2.empty();
-              for (const restaurantId of restaurantIds) {
-                  const restaurant = requestRestaurantById(restaurantId);
-                  if (restaurant) {
-                      const { rating, reviewsCount } = requestReviewData(restaurant.id);
-                      restaurantGrid2.append(createRestaurantCard(restaurant, rating, reviewsCount));
-                  }
-              }
-          } else {
-              restaurantGrid2.html('<p>예약된 레스토랑이 없습니다.</p>');
-          }
+    // 중복된 ID 제거
+    const uniqueRestaurantIds = [...new Set(restaurantIds)];
+    const restaurantGrid = $('#restaurantGrid');
+     const restaurantGrid2 = $('#restaurantGrid2');
+     if (restaurantIds.length > 0) {
+         restaurantGrid2.empty();
+         for (const restaurantId of restaurantIds) {
+             const restaurant = requestRestaurantById(restaurantId);
+             if (restaurant) {
+                 const { rating, reviewsCount } = requestReviewData(restaurant.id);
+                 restaurantGrid2.append(createRestaurantCard(restaurant, rating, reviewsCount));
+             }
+         }
+     } else {
+         restaurantGrid2.html('<p>예약된 레스토랑이 없습니다.</p>');
+     }
 
+    // API 호출로 데이터 가져오기
+    $.ajax({
+        url: url,
+        type: 'GET',
+        dataType: 'json',
+        success: function(data) {
+            if (data.resultCode === "OK" && data.data) {
+                const reservations = data.data;
+
+                // isEntered가 null인 데이터만 필터링
+                const upcomingReservations = reservations.filter((reservation) => reservation.isEntered === null);
+
+                // 데이터가 있으면 그리드 표시, 없으면 메시지 표시
+                if (upcomingReservations.length > 0) {
+                    noReservationsMessage.style.display = "none"; // 메시지 숨기기
+                    upcomingReservationsContainer.style.display = "grid"; // 그리드 표시
+
+                    // 필터링된 데이터로 그리드 생성
+                    upcomingReservations.forEach((reservation) => {
+                        const gridItem = createGridItem(reservation);
+                        upcomingReservationsContainer.appendChild(gridItem);
+                    });
+                } else {
+                    upcomingReservationsContainer.style.display = "none"; // 그리드 숨기기
+                    noReservationsMessage.style.display = "block"; // 메시지 표시
+                }
+            } else {
+                console.error("예약 데이터를 가져오지 못했습니다.", data.description);
+            }
+        },
+        error: function(xhr, status, error) {
+            console.error("AJAX 요청 실패:", error);
+        }
+    });
+
+            // 그리드 항목 생성 함수
+            function createGridItem(reservation) {
+                const gridItem = document.createElement("div");
+                gridItem.className = "grid-item";
+
+                // 예약 정보 렌더링
+                gridItem.innerHTML =`
+                    <div class="grid-content">
+                        <h3>${reservation.restaurant.name}</h3>
+                        <p>예약인원: ${reservation.people}명</p>
+                        <p>주소: ${reservation.restaurant.address}</p>
+                        <p>전화번호: ${reservation.restaurant.contactNumber}</p>
+                    </div>
+                `;
+                return gridItem;
+            }
 
 
 //  requestPickedRestaurants();

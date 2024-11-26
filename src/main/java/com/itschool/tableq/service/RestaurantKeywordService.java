@@ -5,13 +5,13 @@ import com.itschool.tableq.domain.RestaurantKeyword;
 import com.itschool.tableq.network.Header;
 import com.itschool.tableq.network.request.RestaurantKeywordRequest;
 import com.itschool.tableq.network.response.RestaurantKeywordResponse;
+import com.itschool.tableq.repository.KeywordRepository;
 import com.itschool.tableq.repository.RestaurantKeywordsRepository;
 import com.itschool.tableq.repository.RestaurantRepository;
 import com.itschool.tableq.service.base.BaseService;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -23,6 +23,9 @@ public class RestaurantKeywordService extends BaseService<RestaurantKeywordReque
     @Autowired
     RestaurantRepository restaurantRepository;
 
+    @Autowired
+    KeywordRepository keywordRepository;
+
     @Override
     protected RestaurantKeywordResponse response(RestaurantKeyword restaurantKeyword) {
         return RestaurantKeywordResponse.of(restaurantKeyword);
@@ -33,8 +36,10 @@ public class RestaurantKeywordService extends BaseService<RestaurantKeywordReque
         RestaurantKeywordRequest restaurantKeywordRequest = request.getData();
 
         RestaurantKeyword restaurantKeyword = RestaurantKeyword.builder()
-                .restaurant(restaurantKeywordRequest.getRestaurant())
-                .keyword(restaurantKeywordRequest.getKeyword())
+                .restaurant(restaurantRepository.findById(restaurantKeywordRequest.getRestaurant().getId())
+                        .orElseThrow(() -> new EntityNotFoundException()))
+                .keyword(keywordRepository.findById(restaurantKeywordRequest.getKeyword().getId())
+                        .orElseThrow(() -> new EntityNotFoundException()))
                 .build();
 
         baseRepository.save(restaurantKeyword);
@@ -59,10 +64,12 @@ public class RestaurantKeywordService extends BaseService<RestaurantKeywordReque
 
     @Override
     public Header<RestaurantKeywordResponse> update(Long id, Header<RestaurantKeywordRequest> request) {
-        RestaurantKeywordRequest restaurantKeywordRequest = request.getData();
+        /*RestaurantKeywordRequest restaurantKeywordRequest = request.getData();
         RestaurantKeyword restaurantKeyword = baseRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("not found"));
         restaurantKeyword.update(restaurantKeywordRequest);
-        return Header.OK(response(restaurantKeyword));
+        return Header.OK(response(restaurantKeyword));*/
+
+        return Header.ERROR(this.getClass() + " : update is deprecated");
     }
 
     @Override

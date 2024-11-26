@@ -3,15 +3,14 @@ package com.itschool.tableq.domain;
 import com.itschool.tableq.domain.base.AuditableEntity;
 import com.itschool.tableq.network.request.RestaurantKeywordRequest;
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
-@Table(name = "restaurant_keywords")
+@Builder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor
 @Getter
 @Entity
+@Table(name = "restaurant_keywords")
 public class RestaurantKeyword extends AuditableEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -25,16 +24,5 @@ public class RestaurantKeyword extends AuditableEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "keyword_id", updatable = false)
     private Keyword keyword;
-
-    @Builder
-    public RestaurantKeyword(Restaurant restaurant, Keyword keyword){
-        this.restaurant = restaurant;
-        this.keyword = keyword;
-    }
-
-    public void update(RestaurantKeywordRequest restaurantKeywordRequest) {
-        this.restaurant = restaurantKeywordRequest.getRestaurant();
-        this.keyword = restaurantKeywordRequest.getKeyword();
-    }
 }
 

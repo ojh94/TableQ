@@ -3,15 +3,14 @@ package com.itschool.tableq.domain;
 import com.itschool.tableq.domain.base.AuditableEntity;
 import com.itschool.tableq.network.request.RestaurantAmenityRequest;
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
-@Table(name = "restaurant_amenities")
+@Builder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor
 @Getter
 @Entity
+@Table(name = "restaurant_amenities")
 public class RestaurantAmenity extends AuditableEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -25,15 +24,4 @@ public class RestaurantAmenity extends AuditableEntity {
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "amenity_id",updatable = false)
     private Amenity amenity;
-
-    @Builder
-    public RestaurantAmenity(Restaurant restaurant, Amenity amenity){
-        this.restaurant = restaurant;
-        this.amenity = amenity;
-    }
-
-    public void update(RestaurantAmenityRequest restaurantAmenityRequest) {
-        this.restaurant = restaurantAmenityRequest.getRestaurant();
-        this.amenity = restaurantAmenityRequest.getAmenity();
-    }
 }

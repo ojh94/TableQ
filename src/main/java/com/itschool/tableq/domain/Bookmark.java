@@ -2,15 +2,14 @@ package com.itschool.tableq.domain;
 
 import com.itschool.tableq.domain.base.AuditableEntity;
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
-@Table(name = "bookmarks")
+@Builder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor
 @Getter
 @Entity
+@Table(name = "bookmarks")
 public class Bookmark extends AuditableEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -24,10 +23,4 @@ public class Bookmark extends AuditableEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", updatable = false)
     private User user;
-
-    @Builder
-    public Bookmark(Restaurant restaurant, User user){
-        this.restaurant = restaurant;
-        this.user = user;
-    }
 }

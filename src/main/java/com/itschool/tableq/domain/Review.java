@@ -1,18 +1,16 @@
 package com.itschool.tableq.domain;
 
 import com.itschool.tableq.domain.base.AuditableEntity;
+import com.itschool.tableq.network.request.ReviewRequest;
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
-import java.time.LocalDateTime;
-
-@Table(name = "reviews")
+@Builder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor
 @Getter
 @Entity
+@Table(name = "reviews")
 public class Review extends AuditableEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -39,5 +37,10 @@ public class Review extends AuditableEntity {
         this.starRating = starRating;
         this.restaurant = restaurant;
         this.user = user;
+    }
+
+    public void update(ReviewRequest reviewRequest) {
+        this.content = reviewRequest.getContent() == null? this.content : reviewRequest.getContent();;
+        this.starRating = reviewRequest.getStarRating() == null? this.starRating : reviewRequest.getStarRating();;
     }
 }
