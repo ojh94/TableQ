@@ -4,7 +4,6 @@ import com.itschool.tableq.domain.Bookmark;
 import com.itschool.tableq.domain.Restaurant;
 import com.itschool.tableq.domain.User;
 import com.itschool.tableq.network.Header;
-import com.itschool.tableq.network.Pagination;
 import com.itschool.tableq.network.request.BookmarkRequest;
 import com.itschool.tableq.network.response.BookmarkResponse;
 import com.itschool.tableq.repository.BookmarkRepository;
@@ -13,13 +12,10 @@ import com.itschool.tableq.repository.UserRepository;
 import com.itschool.tableq.service.base.BaseService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
@@ -33,36 +29,8 @@ public class BookmarkService extends
     UserRepository userRepository;
 
     @Override
-    public Header<List<BookmarkResponse>> getPaginatedList(Pageable pageable) {
-        Page<Bookmark> entities =  baseRepository.findAll(pageable);
-
-        List<BookmarkResponse> bookmarkResponseList = entities.stream()
-                .map(entity -> response(entity))
-                .collect(Collectors.toList());
-
-        Pagination pagination = Pagination.builder()
-                .totalPages(entities.getTotalPages())
-                .totalElements(entities.getTotalElements())
-                .currentPage(entities.getNumber())
-                .currentElements(entities.getNumberOfElements())
-                .build();
-
-        return Header.OK(bookmarkResponseList, pagination);
-    }
-
-    @Override
     protected BookmarkResponse response(Bookmark bookmark) {
         return BookmarkResponse.of(bookmark);
-    }
-
-    protected List<BookmarkResponse> responseList(List<Bookmark> bookmarkList){
-        List<BookmarkResponse> responseList = new ArrayList<>();
-
-        for(Bookmark bookmark : bookmarkList){
-            responseList.add(response(bookmark));
-        }
-
-        return responseList;
     }
 
     @Override

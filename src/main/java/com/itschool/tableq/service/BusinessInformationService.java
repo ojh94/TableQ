@@ -1,6 +1,5 @@
 package com.itschool.tableq.service;
 
-import com.itschool.tableq.controller.api.BusinessInformationApiController;
 import com.itschool.tableq.domain.BusinessInformation;
 import com.itschool.tableq.domain.Owner;
 import com.itschool.tableq.network.Header;
@@ -16,9 +15,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.webjars.NotFoundException;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @RequiredArgsConstructor
 @Service
@@ -29,23 +26,8 @@ public class BusinessInformationService
     OwnerRepository ownerRepository;
 
     @Override
-    public Header<List<BusinessInformationResponse>> getPaginatedList(Pageable pageable) {
-        return null;
-    }
-
-    @Override
     protected BusinessInformationResponse response(BusinessInformation businessInformation) {
         return BusinessInformationResponse.of(businessInformation);
-    }
-
-    protected List<BusinessInformationResponse> responseList(List<BusinessInformation> businessInformations){
-        List<BusinessInformationResponse> responseList = new ArrayList<>();
-
-        for(BusinessInformation businessInformation : businessInformations){
-            responseList.add(response(businessInformation));
-        }
-
-        return responseList;
     }
 
     @Override

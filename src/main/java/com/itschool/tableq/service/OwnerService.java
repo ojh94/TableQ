@@ -1,28 +1,18 @@
 package com.itschool.tableq.service;
 
-import com.itschool.tableq.domain.Bookmark;
 import com.itschool.tableq.domain.Owner;
-import com.itschool.tableq.domain.User;
 import com.itschool.tableq.network.Header;
-import com.itschool.tableq.network.Pagination;
-import com.itschool.tableq.network.response.BookmarkResponse;
-import com.itschool.tableq.network.response.OwnerResponse;
 import com.itschool.tableq.network.request.OwnerRequest;
-import com.itschool.tableq.network.response.UserResponse;
+import com.itschool.tableq.network.response.OwnerResponse;
 import com.itschool.tableq.repository.OwnerRepository;
 import com.itschool.tableq.service.base.BaseService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.webjars.NotFoundException;
 
-import org.springframework.data.domain.Pageable;
-import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
@@ -38,35 +28,6 @@ public class OwnerService extends BaseService<OwnerRequest, OwnerResponse, Owner
     @Override
     protected OwnerResponse response(Owner owner) {
         return OwnerResponse.of(owner);
-    }
-
-    @Override
-    protected List<OwnerResponse> responseList(List<Owner> owners) {
-        List<OwnerResponse> responseList = new ArrayList<>();
-
-        for(Owner owner : owners){
-            responseList.add(response(owner));
-        }
-
-        return responseList;
-    }
-
-    @Override
-    public Header<List<OwnerResponse>> getPaginatedList(Pageable pageable) {
-        Page<Owner> entities =  baseRepository.findAll(pageable);
-
-        List<OwnerResponse> ownerResponsesList = entities.stream()
-                .map(entity -> response(entity))
-                .collect(Collectors.toList());
-
-        Pagination pagination = Pagination.builder()
-                .totalPages(entities.getTotalPages())
-                .totalElements(entities.getTotalElements())
-                .currentPage(entities.getNumber())
-                .currentElements(entities.getNumberOfElements())
-                .build();
-
-        return Header.OK(ownerResponsesList, pagination);
     }
 
     @Override

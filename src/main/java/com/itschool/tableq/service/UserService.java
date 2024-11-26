@@ -1,25 +1,18 @@
 package com.itschool.tableq.service;
 
-import com.itschool.tableq.domain.Bookmark;
 import com.itschool.tableq.domain.User;
 import com.itschool.tableq.network.Header;
-import com.itschool.tableq.network.Pagination;
-import com.itschool.tableq.network.response.BookmarkResponse;
-import com.itschool.tableq.network.response.UserResponse;
 import com.itschool.tableq.network.request.UserRequest;
+import com.itschool.tableq.network.response.UserResponse;
 import com.itschool.tableq.repository.UserRepository;
 import com.itschool.tableq.service.base.BaseService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import org.springframework.data.domain.Pageable;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
@@ -30,35 +23,6 @@ public class UserService extends BaseService<UserRequest, UserResponse, User> {
     @Override
     protected UserResponse response(User user) {
         return UserResponse.of(user);
-    }
-
-    @Override
-    protected List<UserResponse> responseList(List<User> userList) {
-        List<UserResponse> responseList = new ArrayList<>();
-
-        for(User user : userList){
-            responseList.add(response(user));
-        }
-
-        return responseList;
-    }
-
-    @Override
-    public Header<List<UserResponse>> getPaginatedList(Pageable pageable) {
-        Page<User> entities =  baseRepository.findAll(pageable);
-
-        List<UserResponse> userResponsesList = entities.stream()
-                .map(entity -> response(entity))
-                .collect(Collectors.toList());
-
-        Pagination pagination = Pagination.builder()
-                .totalPages(entities.getTotalPages())
-                .totalElements(entities.getTotalElements())
-                .currentPage(entities.getNumber())
-                .currentElements(entities.getNumberOfElements())
-                .build();
-
-        return Header.OK(userResponsesList, pagination);
     }
 
     @Override

@@ -2,6 +2,7 @@ package com.itschool.tableq.controller.api;
 
 import com.itschool.tableq.controller.CrudController;
 import com.itschool.tableq.domain.Restaurant;
+import com.itschool.tableq.network.Header;
 import com.itschool.tableq.network.response.RestaurantResponse;
 import com.itschool.tableq.network.request.RestaurantRequest;
 import com.itschool.tableq.service.RestaurantService;
@@ -11,6 +12,9 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.constraints.Positive;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -30,14 +34,14 @@ public class RestaurantApiController extends CrudController<RestaurantRequest, R
 
     @Operation(summary = "레스토랑 검색", description = "레스토랑 이름 일부분으로 검색가능")
     @GetMapping("/keywordSearch")
-    public List<RestaurantResponse> searchRestaurantsByName(@RequestParam("arg0") String keyword) {
-        return restaurantService.searchByName(keyword);
+    public Header<List<RestaurantResponse>> searchRestaurantsByName(@RequestParam("arg0") String keyword, @PageableDefault(sort = "id", direction = Sort.Direction.DESC) Pageable pageable) {
+        return restaurantService.searchByName(keyword, pageable);
     }
 
     @Operation(summary = "레스토랑 지역 검색", description = "레스토랑 이름 일부분으로 검색가능")
     @GetMapping("/addressSearch")
-    public List<RestaurantResponse> searchByRestaurantsAddress(@RequestParam("arg0") String keyword) {
-        return restaurantService.searchByAddress(keyword);
+    public Header<List<RestaurantResponse>> searchByRestaurantsAddress(@RequestParam("arg0") String keyword, @PageableDefault(sort = "id", direction = Sort.Direction.DESC) Pageable pageable) {
+        return restaurantService.searchByAddress(keyword, pageable);
     }
 
 }

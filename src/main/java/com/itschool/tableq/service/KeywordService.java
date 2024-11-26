@@ -1,27 +1,16 @@
 package com.itschool.tableq.service;
 
-import com.itschool.tableq.domain.Bookmark;
 import com.itschool.tableq.domain.Keyword;
-import com.itschool.tableq.domain.User;
 import com.itschool.tableq.network.Header;
-import com.itschool.tableq.network.Pagination;
 import com.itschool.tableq.network.request.KeywordRequest;
-import com.itschool.tableq.network.response.BookmarkResponse;
 import com.itschool.tableq.network.response.KeywordResponse;
-import com.itschool.tableq.network.response.UserResponse;
 import com.itschool.tableq.repository.KeywordRepository;
 import com.itschool.tableq.service.base.BaseService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import org.springframework.data.domain.Pageable;
-import java.security.Key;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
@@ -34,35 +23,6 @@ public class KeywordService extends BaseService<KeywordRequest, KeywordResponse,
     @Override
     protected KeywordResponse response(Keyword keyword) {
         return KeywordResponse.of(keyword);
-    }
-
-    @Override
-    protected List<KeywordResponse> responseList(List<Keyword> keywords) {
-        List<KeywordResponse> responseList = new ArrayList<>();
-
-        for(Keyword keyword : keywords){
-            responseList.add(response(keyword));
-        }
-
-        return responseList;
-    }
-
-    @Override
-    public Header<List<KeywordResponse>> getPaginatedList(Pageable pageable) {
-        Page<Keyword> entities =  baseRepository.findAll(pageable);
-
-        List<KeywordResponse> keywordResponsesList = entities.stream()
-                .map(entity -> response(entity))
-                .collect(Collectors.toList());
-
-        Pagination pagination = Pagination.builder()
-                .totalPages(entities.getTotalPages())
-                .totalElements(entities.getTotalElements())
-                .currentPage(entities.getNumber())
-                .currentElements(entities.getNumberOfElements())
-                .build();
-
-        return Header.OK(keywordResponsesList, pagination);
     }
 
     @Override

@@ -2,24 +2,15 @@ package com.itschool.tableq.service;
 
 import com.itschool.tableq.domain.Restaurant;
 import com.itschool.tableq.domain.RestaurantImage;
-import com.itschool.tableq.domain.User;
 import com.itschool.tableq.network.Header;
-import com.itschool.tableq.network.Pagination;
 import com.itschool.tableq.network.request.RestaurantImageRequest;
 import com.itschool.tableq.network.response.RestaurantImageResponse;
-import com.itschool.tableq.network.response.UserResponse;
 import com.itschool.tableq.repository.RestaurantImageRepository;
 import com.itschool.tableq.repository.RestaurantRepository;
-import com.itschool.tableq.service.base.BaseService;
 import com.itschool.tableq.service.base.BaseServiceWithS3;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class RestaurantImageService extends
         BaseServiceWithS3<RestaurantImageRequest, RestaurantImageResponse, RestaurantImage> {
@@ -27,37 +18,10 @@ public class RestaurantImageService extends
     RestaurantRepository restaurantRepository;
 
     @Override
-    public Header<List<RestaurantImageResponse>> getPaginatedList(Pageable pageable) {
-        Page<RestaurantImage> entities =  baseRepository.findAll(pageable);
-
-        List<RestaurantImageResponse> restaurantImageResponsesList = entities.stream()
-                .map(entity -> response(entity))
-                .collect(Collectors.toList());
-
-        Pagination pagination = Pagination.builder()
-                .totalPages(entities.getTotalPages())
-                .totalElements(entities.getTotalElements())
-                .currentPage(entities.getNumber())
-                .currentElements(entities.getNumberOfElements())
-                .build();
-
-        return Header.OK(restaurantImageResponsesList, pagination);
-    }
-
-    @Override
     protected RestaurantImageResponse response(RestaurantImage restaurantImage) {
         return RestaurantImageResponse.of(restaurantImage);
     }
 
-    protected List<RestaurantImageResponse> responseList(List<RestaurantImage> restaurantImageList){
-        List<RestaurantImageResponse> responseList = new ArrayList<>();
-
-        for(RestaurantImage restaurantImage : restaurantImageList){
-            responseList.add(response(restaurantImage));
-        }
-
-        return responseList;
-    }
     @Override
     public Header<RestaurantImageResponse> create(Header<RestaurantImageRequest> request) {
         RestaurantImageRequest imageRequest = request.getData();
