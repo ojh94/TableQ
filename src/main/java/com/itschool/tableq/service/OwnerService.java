@@ -1,9 +1,11 @@
 package com.itschool.tableq.service;
 
+import com.itschool.tableq.domain.Bookmark;
 import com.itschool.tableq.domain.Owner;
 import com.itschool.tableq.domain.User;
 import com.itschool.tableq.network.Header;
 import com.itschool.tableq.network.Pagination;
+import com.itschool.tableq.network.response.BookmarkResponse;
 import com.itschool.tableq.network.response.OwnerResponse;
 import com.itschool.tableq.network.request.OwnerRequest;
 import com.itschool.tableq.network.response.UserResponse;
@@ -18,6 +20,7 @@ import org.webjars.NotFoundException;
 
 import org.springframework.data.domain.Pageable;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -30,6 +33,22 @@ public class OwnerService extends BaseService<OwnerRequest, OwnerResponse, Owner
 
     public List<Owner> findAll() {
         return ownerRepository.findAll();
+    }
+
+    @Override
+    protected OwnerResponse response(Owner owner) {
+        return OwnerResponse.of(owner);
+    }
+
+    @Override
+    protected List<OwnerResponse> responseList(List<Owner> owners) {
+        List<OwnerResponse> responseList = new ArrayList<>();
+
+        for(Owner owner : owners){
+            responseList.add(response(owner));
+        }
+
+        return responseList;
     }
 
     @Override
@@ -48,11 +67,6 @@ public class OwnerService extends BaseService<OwnerRequest, OwnerResponse, Owner
                 .build();
 
         return Header.OK(ownerResponsesList, pagination);
-    }
-
-    @Override
-    protected OwnerResponse response(Owner owner) {
-        return OwnerResponse.of(owner);
     }
 
     @Override

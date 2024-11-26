@@ -1,11 +1,13 @@
 package com.itschool.tableq.service;
 
 import com.itschool.tableq.domain.Amenity;
+import com.itschool.tableq.domain.Bookmark;
 import com.itschool.tableq.domain.User;
 import com.itschool.tableq.network.Header;
 import com.itschool.tableq.network.Pagination;
 import com.itschool.tableq.network.request.AmenityRequest;
 import com.itschool.tableq.network.response.AmenityResponse;
+import com.itschool.tableq.network.response.BookmarkResponse;
 import com.itschool.tableq.network.response.UserResponse;
 import com.itschool.tableq.service.base.BaseService;
 import jakarta.transaction.Transactional;
@@ -14,12 +16,30 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
 public class AmenityService extends BaseService<AmenityRequest, AmenityResponse, Amenity> {
+
+    @Override
+    protected AmenityResponse response(Amenity amenity) {
+        return AmenityResponse.of(amenity);
+    }
+
+    @Override
+    protected List<AmenityResponse> responseList(List<Amenity> amenities) {
+        List<AmenityResponse> responseList = new ArrayList<>();
+
+        for(Amenity amenity : amenities){
+            responseList.add(response(amenity));
+        }
+
+        return responseList;
+    }
+
     @Override
     public Header<List<AmenityResponse>> getPaginatedList(Pageable pageable) {
         Page<Amenity> entities =  baseRepository.findAll(pageable);
@@ -36,11 +56,6 @@ public class AmenityService extends BaseService<AmenityRequest, AmenityResponse,
                 .build();
 
         return Header.OK(amenityResponsesList, pagination);
-    }
-
-    @Override
-    protected AmenityResponse response(Amenity amenity) {
-        return AmenityResponse.of(amenity);
     }
 
     @Override

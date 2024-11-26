@@ -4,10 +4,7 @@ import com.itschool.tableq.domain.*;
 import com.itschool.tableq.network.Header;
 import com.itschool.tableq.network.Pagination;
 import com.itschool.tableq.network.request.BreakHourRequest;
-import com.itschool.tableq.network.response.BreakHourResponse;
-import com.itschool.tableq.network.response.MenuItemResponse;
-import com.itschool.tableq.network.response.ReviewResponse;
-import com.itschool.tableq.network.response.UserResponse;
+import com.itschool.tableq.network.response.*;
 import com.itschool.tableq.repository.BreakHoursRepository;
 import com.itschool.tableq.repository.MenuItemRepository;
 import com.itschool.tableq.repository.RestaurantRepository;
@@ -32,6 +29,22 @@ public class BreakHourService extends BaseService<BreakHourRequest, BreakHourRes
     RestaurantRepository restaurantRepository;
 
     @Override
+    protected BreakHourResponse response(BreakHour breakHour) {
+        return BreakHourResponse.of(breakHour);
+    }
+
+    @Override
+    protected List<BreakHourResponse> responseList(List<BreakHour> breakHours) {
+        List<BreakHourResponse> responseList = new ArrayList<>();
+
+        for(BreakHour breakHour : breakHours){
+            responseList.add(response(breakHour));
+        }
+
+        return responseList;
+    }
+
+    @Override
     public Header<List<BreakHourResponse>> getPaginatedList(Pageable pageable) {
         Page<BreakHour> entities =  baseRepository.findAll(pageable);
 
@@ -47,11 +60,6 @@ public class BreakHourService extends BaseService<BreakHourRequest, BreakHourRes
                 .build();
 
         return Header.OK(breakHourResponsesList, pagination);
-    }
-
-    @Override
-    protected BreakHourResponse response(BreakHour breakHour) {
-        return BreakHourResponse.of(breakHour);
     }
 
     @Override

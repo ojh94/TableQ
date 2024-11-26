@@ -1,10 +1,12 @@
 package com.itschool.tableq.service;
 
 import com.itschool.tableq.domain.Restaurant;
+import com.itschool.tableq.domain.Review;
 import com.itschool.tableq.network.Header;
 import com.itschool.tableq.network.Pagination;
 import com.itschool.tableq.network.response.RestaurantResponse;
 import com.itschool.tableq.network.request.RestaurantRequest;
+import com.itschool.tableq.network.response.ReviewResponse;
 import com.itschool.tableq.repository.RestaurantRepository;
 import com.itschool.tableq.service.base.BaseService;
 import jakarta.validation.constraints.Positive;
@@ -18,6 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import org.springframework.data.domain.Pageable;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -27,6 +30,22 @@ public class RestaurantService extends BaseService<RestaurantRequest, Restaurant
 
     @Autowired
     private RestaurantRepository restaurantRepository;
+
+    @Override
+    protected RestaurantResponse response(Restaurant restaurant) {
+        return RestaurantResponse.of(restaurant);
+    }
+
+    @Override
+    protected List<RestaurantResponse> responseList(List<Restaurant> restaurantList) {
+        List<RestaurantResponse> responseList = new ArrayList<>();
+
+        for(Restaurant restaurant : restaurantList){
+            responseList.add(response(restaurant));
+        }
+
+        return responseList;
+    }
 
     @Override
     public Header<List<RestaurantResponse>> getPaginatedList(Pageable pageable) {
@@ -44,11 +63,6 @@ public class RestaurantService extends BaseService<RestaurantRequest, Restaurant
                 .build();
 
         return Header.OK(restaurantResponsesList, pagination);
-    }
-
-    @Override
-    protected RestaurantResponse response(Restaurant restaurant) {
-        return RestaurantResponse.of(restaurant);
     }
 
     @Override
@@ -93,13 +107,15 @@ public class RestaurantService extends BaseService<RestaurantRequest, Restaurant
                 }).orElseThrow(() -> new RuntimeException("Restaurant delete fail"));
     }
 
-    public List<Restaurant> searchByName(String keyword) {
-        return restaurantRepository.searchByName(keyword);
+    public List<RestaurantResponse> searchByName(String keyword) {
+        List<Restaurant> searchedList = restaurantRepository.searchByName(keyword);
+
+        return responseList(searchedList);
     }
 
-    public List<Restaurant> searchByAddress(String address) {
-        return restaurantRepository.searchByAddress(address);
+    public List<RestaurantResponse> searchByAddress(String address) {
+        List<Restaurant> searchedList = restaurantRepository.searchByAddress(address);
+
+        return responseList(searchedList);
     }
-
-
 }

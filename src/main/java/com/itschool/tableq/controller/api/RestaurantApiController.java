@@ -30,13 +30,13 @@ public class RestaurantApiController extends CrudController<RestaurantRequest, R
 
     @Operation(summary = "레스토랑 검색", description = "레스토랑 이름 일부분으로 검색가능")
     @GetMapping("/keywordSearch")
-    public List<Restaurant> searchRestaurants(@RequestParam("arg0") String keyword) {
+    public List<RestaurantResponse> searchRestaurantsByName(@RequestParam("arg0") String keyword) {
         return restaurantService.searchByName(keyword);
     }
 
     @Operation(summary = "레스토랑 지역 검색", description = "레스토랑 이름 일부분으로 검색가능")
     @GetMapping("/addressSearch")
-    public List<Restaurant> searchByRestaurantsAddress(@RequestParam("arg0") String keyword) {
+    public List<RestaurantResponse> searchByRestaurantsAddress(@RequestParam("arg0") String keyword) {
         return restaurantService.searchByAddress(keyword);
     }
 

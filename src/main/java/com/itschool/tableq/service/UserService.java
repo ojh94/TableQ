@@ -1,8 +1,10 @@
 package com.itschool.tableq.service;
 
+import com.itschool.tableq.domain.Bookmark;
 import com.itschool.tableq.domain.User;
 import com.itschool.tableq.network.Header;
 import com.itschool.tableq.network.Pagination;
+import com.itschool.tableq.network.response.BookmarkResponse;
 import com.itschool.tableq.network.response.UserResponse;
 import com.itschool.tableq.network.request.UserRequest;
 import com.itschool.tableq.repository.UserRepository;
@@ -15,6 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import org.springframework.data.domain.Pageable;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -23,6 +26,22 @@ import java.util.stream.Collectors;
 public class UserService extends BaseService<UserRequest, UserResponse, User> {
 
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
+
+    @Override
+    protected UserResponse response(User user) {
+        return UserResponse.of(user);
+    }
+
+    @Override
+    protected List<UserResponse> responseList(List<User> userList) {
+        List<UserResponse> responseList = new ArrayList<>();
+
+        for(User user : userList){
+            responseList.add(response(user));
+        }
+
+        return responseList;
+    }
 
     @Override
     public Header<List<UserResponse>> getPaginatedList(Pageable pageable) {
@@ -40,11 +59,6 @@ public class UserService extends BaseService<UserRequest, UserResponse, User> {
                 .build();
 
         return Header.OK(userResponsesList, pagination);
-    }
-
-    @Override
-    protected UserResponse response(User user) {
-        return UserResponse.of(user);
     }
 
     @Override

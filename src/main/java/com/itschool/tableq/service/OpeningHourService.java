@@ -8,6 +8,7 @@ import com.itschool.tableq.network.Header;
 import com.itschool.tableq.network.Pagination;
 import com.itschool.tableq.network.request.OpeningHourRequest;
 import com.itschool.tableq.network.response.OpeningHourResponse;
+import com.itschool.tableq.network.response.RestaurantResponse;
 import com.itschool.tableq.network.response.ReviewResponse;
 import com.itschool.tableq.network.response.UserResponse;
 import com.itschool.tableq.repository.OpeningHoursRepository;
@@ -22,6 +23,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -31,24 +33,20 @@ public class OpeningHourService extends BaseService<OpeningHourRequest, OpeningH
     @Autowired
     RestaurantRepository restaurantRepository;
 
-    public Header<List<OpeningHourResponse>> readByRestaurantId(Long restaurantId, Pageable pageable) {
-        Restaurant restaurant = restaurantRepository.findById(restaurantId)
-                .orElseThrow(() -> new EntityNotFoundException("레스토랑을 찾을 수 없습니다."));
+    @Override
+    protected OpeningHourResponse response(OpeningHour openingHour) {
+        return OpeningHourResponse.of(openingHour);
+    }
 
-        Page<OpeningHour> entities = ((OpeningHoursRepository)baseRepository).findByRestaurant(restaurant, pageable);
+    @Override
+    protected List<OpeningHourResponse> responseList(List<OpeningHour> openingHourList) {
+        List<OpeningHourResponse> responseList = new ArrayList<>();
 
-        List<OpeningHourResponse> OpeningHourList = entities.stream()
-                .map(entity -> response(entity))
-                .collect(Collectors.toList());
+        for(OpeningHour openingHour : openingHourList){
+            responseList.add(response(openingHour));
+        }
 
-        Pagination pagination = Pagination.builder()
-                .totalPages(entities.getTotalPages())
-                .totalElements(entities.getTotalElements())
-                .currentPage(entities.getNumber())
-                .currentElements(entities.getNumberOfElements())
-                .build();
-
-        return Header.OK(OpeningHourList, pagination);
+        return responseList;
     }
 
     @Override
@@ -67,11 +65,6 @@ public class OpeningHourService extends BaseService<OpeningHourRequest, OpeningH
                 .build();
 
         return Header.OK(openingHourResponsesList, pagination);
-    }
-
-    @Override
-    protected OpeningHourResponse response(OpeningHour openingHour) {
-        return OpeningHourResponse.of(openingHour);
     }
 
     @Override
@@ -111,5 +104,25 @@ public class OpeningHourService extends BaseService<OpeningHourRequest, OpeningH
                     return Header.OK(response(openingHour));
                 })
                 .orElseThrow(() -> new IllegalArgumentException("not found"));
+    }
+
+    public Header<List<OpeningHourResponse>> readByRestaurantId(Long restaurantId, Pageable pageable) {
+        Restaurant restaurant = restaurantRepository.findById(restaurantId)
+                .orElseThrow(() -> new EntityNotFoundException("레스토랑을 찾을 수 없습니다."));
+
+        Page<OpeningHour> entities = ((OpeningHoursRepository)baseRepository).findByRestaurant(restaurant, pageable);
+
+        List<OpeningHourResponse> OpeningHourList = entities.stream()
+                .map(entity -> response(entity))
+                .collect(Collectors.toList());
+
+        Pagination pagination = Pagination.builder()
+                .totalPages(entities.getTotalPages())
+                .totalElements(entities.getTotalElements())
+                .currentPage(entities.getNumber())
+                .currentElements(entities.getNumberOfElements())
+                .build();
+
+        return Header.OK(OpeningHourList, pagination);
     }
 }

@@ -1,10 +1,12 @@
 package com.itschool.tableq.service;
 
+import com.itschool.tableq.domain.Bookmark;
 import com.itschool.tableq.domain.Keyword;
 import com.itschool.tableq.domain.User;
 import com.itschool.tableq.network.Header;
 import com.itschool.tableq.network.Pagination;
 import com.itschool.tableq.network.request.KeywordRequest;
+import com.itschool.tableq.network.response.BookmarkResponse;
 import com.itschool.tableq.network.response.KeywordResponse;
 import com.itschool.tableq.network.response.UserResponse;
 import com.itschool.tableq.repository.KeywordRepository;
@@ -17,6 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import org.springframework.data.domain.Pageable;
 import java.security.Key;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -27,6 +30,22 @@ public class KeywordService extends BaseService<KeywordRequest, KeywordResponse,
     private final KeywordRepository keywordRepository;
 
     public List<Keyword> findAll(){return keywordRepository.findAll();}
+
+    @Override
+    protected KeywordResponse response(Keyword keyword) {
+        return KeywordResponse.of(keyword);
+    }
+
+    @Override
+    protected List<KeywordResponse> responseList(List<Keyword> keywords) {
+        List<KeywordResponse> responseList = new ArrayList<>();
+
+        for(Keyword keyword : keywords){
+            responseList.add(response(keyword));
+        }
+
+        return responseList;
+    }
 
     @Override
     public Header<List<KeywordResponse>> getPaginatedList(Pageable pageable) {
@@ -44,11 +63,6 @@ public class KeywordService extends BaseService<KeywordRequest, KeywordResponse,
                 .build();
 
         return Header.OK(keywordResponsesList, pagination);
-    }
-
-    @Override
-    protected KeywordResponse response(Keyword keyword) {
-        return KeywordResponse.of(keyword);
     }
 
     @Override
