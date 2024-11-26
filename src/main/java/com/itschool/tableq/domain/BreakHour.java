@@ -24,8 +24,8 @@ public class BreakHour extends AuditableEntity {
 
     private LocalTime breakEnd;
 
-    @Enumerated(EnumType.STRING)
     @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
     private DayOfWeek dayOfWeek;
 
     @ManyToOne(fetch = FetchType.LAZY)

@@ -95,7 +95,9 @@
             'price': $('#menuPrice').val(),
             'description': $('#menuDescription').val(),
             'recommendation': $('#menuRecommendation').is(':checked') ? true : false,
-            'restaurantId': $('#restaurantIdCreate').val()
+            'restaurant': {
+                'id' : $('#restaurantIdCreate').val()
+            }
         };
 
         formData.append('data', JSON.stringify(request));
