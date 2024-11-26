@@ -5,6 +5,7 @@ import com.itschool.tableq.network.Header;
 import com.itschool.tableq.network.request.RestaurantRequest;
 import com.itschool.tableq.network.response.RestaurantResponse;
 import com.itschool.tableq.repository.RestaurantRepository;
+import com.itschool.tableq.repository.ReviewRepository;
 import com.itschool.tableq.service.base.BaseService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +19,12 @@ import java.util.List;
 @RequiredArgsConstructor
 @Service
 public class RestaurantService extends BaseService<RestaurantRequest, RestaurantResponse, Restaurant> {
-
+    
+    // 별점 높은 순 (review 테이블에 있는 리스트들의 평균을 내야함, 평균 관련 JPA 스펙 확인 필요)
+    // 리뷰 많은 순 (review 테이블에 있는 리뷰 개수 카운트)
+    @Autowired
+    ReviewRepository reviewRepository;
+    
     @Override
     protected RestaurantResponse response(Restaurant restaurant) {
         return RestaurantResponse.of(restaurant);
