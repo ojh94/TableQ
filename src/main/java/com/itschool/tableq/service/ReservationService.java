@@ -72,10 +72,10 @@ public class ReservationService extends
         return number;
     }
 
-    public Header<Integer> getQueue(Long retaurantId){
+    public Header<Integer> getQueue(Long restaurantId){
         Integer queue = 0;
         queue = ((ReservationRepository)baseRepository).countByRestaurantIdAndIsEnteredAndCreatedAtBetween(
-                retaurantId, null, DateUtil.getStartOfDay(), DateUtil.getEndOfDay()
+                restaurantId, null, DateUtil.getStartOfDay(), DateUtil.getEndOfDay()
         );
         return Header.OK(queue);
     }

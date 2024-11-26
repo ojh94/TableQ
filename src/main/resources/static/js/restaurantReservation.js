@@ -192,7 +192,6 @@ function formatDate(dateString) {
 function requestReservationDetailApi() {
 
     const reservationId = document.getElementById("reservation-id").value;
-    const userId = document.getElementById("user-id").value;
 
     $.ajax({
         url: `/api/reservation/${reservationId}`,
@@ -254,11 +253,10 @@ function requestReservationDetailApi() {
 // 이용예정 예약 대기순서 조회
 function requestReservationDetailNumApi() {
 
-    const restaurantId = document.getElementById("restaurant-id").value;
     const reservationId = document.getElementById("reservation-id").value;
 
     $.ajax({
-        url: `/api/reservation/user/${restaurantId}/${reservationId}`,
+        url: `/api/reservation/user/queue-left/${reservationId}`,
         type: 'GET', // 필요한 HTTP 메서드로 변경
         contentType: 'application/json', // JSON 형식으로 데이터 전송
         success: function(response) {
