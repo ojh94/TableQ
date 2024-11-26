@@ -155,26 +155,26 @@ function requestRestaurantApi() {
             // 요청 성공 시 동작
             const rName = $('body > div > div.container.mt-5 > div > div > article:nth-child(1) > header > h1');
             const rAddress = $('#home > p:nth-child(4)');
-            const rIntroduction = $('#introduction');
+            const rInformation = $('#information');
             const rContactNumber = $('#home > table > tbody > tr:nth-child(4) > td:nth-child(2)');
 
             rName[0].textContent = response.data.name;
             rAddress[0].textContent = response.data.address;
-            rIntroduction[0].textContent = response.data.introduction;
+            rInformation[0].textContent = response.data.information;
             rContactNumber[0].textContent = response.data.contactNumber;
 
-            if (response.data.available == false) {
+            if (response.data.available === false) {
                 $('#available').css("display" ,"none");
-                $("body > div > div.container.mt-5 > div > div > article:nth-child(1) > table > tbody > tr:nth-child(1) > td:nth-child(2)")
-                .text("현장대기 가능");
+                $("body > div > div.container.mt-5 > div > div > article:nth-child(1) > table > tbody > tr:nth-child(1) > td:nth-child(2)")[0]
+                .textContent = "현장대기 가능";
             } else {
-                $("body > div > div.container.mt-5 > div > div > article:nth-child(1) > table > tbody > tr:nth-child(1) > td:nth-child(2)")
-                .text("원격줄서기, 현장대기 모두 가능");
+                $("body > div > div.container.mt-5 > div > div > article:nth-child(1) > table > tbody > tr:nth-child(1) > td:nth-child(2)")[0]
+                .textContent = "원격줄서기, 현장대기 모두 가능";
             }
 
             // nav 속 마이페이지 클릭 시
             document.getElementById("nav-mypage").onclick = function() {
-                location.href = '/owner/mypage/' + response.data.businessInformation.owner.id;
+                location.href = '/owner/mypage/' + response.data.businessInformation.id;
             }
 
             console.log('가게 set 완료');
@@ -201,12 +201,12 @@ function requestRestaurantModifyApi() {
             // 요청 성공 시 동작
             const rName = $('body > div > div.container.mt-5 > div > div > article:nth-child(1) > header > h1 > input');
             const rAddress = $('#home > div:nth-child(4) > input');
-            const rIntroduction = $('#introduction');
+            const rInformation = $('#information');
             const rContactNumber = $('#times-modal > div > div > div.modal-body > div.card.mb-3 > div > table > tbody > tr:nth-child(1) > td:nth-child(2) > input');
 
             rName.val(response.data.name);
             rAddress.val(response.data.address);
-            rIntroduction.val(response.data.introduction);
+            rInformation.val(response.data.information);
             rContactNumber.val(response.data.contactNumber);
 
             if (response.data.available == false) {
@@ -220,7 +220,7 @@ function requestRestaurantModifyApi() {
 
             // nav 속 마이페이지 클릭 시
             document.getElementById("nav-mypage").onclick = function() {
-                location.href = '/owner/mypage/' + response.data.businessInformation.owner.id;
+                location.href = '/owner/mypage/' + response.data.businessInformation.id;
             }
 
             console.log('가게 수정 set 완료');
@@ -362,7 +362,7 @@ function requestReviewApi() {
                     <div class="d-flex">
                         <div class="ms-3">
                             <div>${starIcons}</div>
-                            <div class="fw-bold mt-2 mb-3">${review.user.name}<small>&nbsp;(${formattedDate})</small></div>
+                            <div class="fw-bold mt-2 mb-3">${review.user.email}<small>&nbsp;(${formattedDate})</small></div>
                             <p style="margin: 0;">${review.content}</p>
                         </div>
                     </div>
