@@ -36,7 +36,7 @@ public class RestaurantApiController extends CrudController<RestaurantRequest, R
     @Operation(summary = "레스토랑 검색", description = "레스토랑 이름 일부분으로 검색가능")
     @GetMapping("/keywordSearch")
     public Header<List<RestaurantResponse>> searchRestaurantsByName(@RequestParam("name") String keyword,
-                                                                    @Parameter(name = "pageable", description = "페이징 설정 (page, size, sort)")
+                                                                    @Parameter(name = "pageable", description = "페이징 설정 (page, size, sort)", example = "{\n" + "  \"page\": 0,\n" + "  \"size\": 10,\n" + "  \"sort\": [\"id,asc\"]\n"+ "}")
                                                                     @PageableDefault(sort = "id", direction = Sort.Direction.ASC) Pageable pageable) {
         return restaurantService.searchByName(keyword, pageable);
     }
@@ -44,7 +44,7 @@ public class RestaurantApiController extends CrudController<RestaurantRequest, R
     @Operation(summary = "레스토랑 지역 검색", description = "레스토랑 지역 일부분으로 검색가능")
     @GetMapping("/addressSearch")
     public Header<List<RestaurantResponse>> searchByRestaurantsAddress(@RequestParam("address") String keyword,
-                                                                       @Parameter(name = "pageable", description = "페이징 설정 (page, size, sort)")
+                                                                       @Parameter(name = "pageable", description = "페이징 설정 (page, size, sort)", example = "{\n" + "  \"page\": 0,\n" + "  \"size\": 10,\n" + "  \"sort\": [\"id,asc\"]\n"+ "}")
                                                                        @PageableDefault(sort = "id", direction = Sort.Direction.ASC) Pageable pageable) {
         return restaurantService.searchByAddress(keyword, pageable);
     }
