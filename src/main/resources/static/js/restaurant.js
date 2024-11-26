@@ -434,7 +434,7 @@ function requestMenuApi() {
                         <img class="photo menu-img" src="
                     `;
 
-                if (menu.fileUrl !== null) {
+                if (menu.fileUrl && menu.fileUrl !== "") {
                     menuHtml += `${menu.fileUrl}`;
                 }
 
@@ -505,7 +505,7 @@ function requestMenuModifyApi() {
                         <img class="photo menu-img-modify" src="
                     `;
 
-                if (menu.fileUrl !== null) {
+                if (menu.fileUrl && menu.fileUrl !== "") {
                     menuModifyHtml += `${menu.fileUrl}`;
                 }
 
@@ -556,7 +556,7 @@ function requestOpeningHourApi() {
 
             opens.forEach((open) => {
                 switch (open.dayOfWeek) {
-                    case 'monday' :
+                    case 'MONDAY' :
                         formattedOpenTime = open.openAt.substring(0, 5);
                         formattedCloseTime = open.closeAt.substring(0, 5);
 
@@ -572,7 +572,7 @@ function requestOpeningHourApi() {
                             $('#today-open-4')[0].textContent = formattedOpenTime + ' ~ ' + formattedCloseTime;
                         }
                         break;
-                    case 'tuesday' :
+                    case 'TUESDAY' :
                         formattedOpenTime = open.openAt.substring(0, 5);
                         formattedCloseTime = open.closeAt.substring(0, 5);
 
@@ -588,7 +588,7 @@ function requestOpeningHourApi() {
                             $('#today-open-4')[0].textContent = formattedOpenTime + ' ~ ' + formattedCloseTime;
                         }
                         break;
-                    case 'wednesday' :
+                    case 'WEDNESDAY' :
                         formattedOpenTime = open.openAt.substring(0, 5);
                         formattedCloseTime = open.closeAt.substring(0, 5);
 
@@ -604,7 +604,7 @@ function requestOpeningHourApi() {
                             $('#today-open-4')[0].textContent = formattedOpenTime + ' ~ ' + formattedCloseTime;
                         }
                         break;
-                    case 'thursday' :
+                    case 'THURSDAY' :
                         formattedOpenTime = open.openAt.substring(0, 5);
                         formattedCloseTime = open.closeAt.substring(0, 5);
 
@@ -620,7 +620,7 @@ function requestOpeningHourApi() {
                             $('#today-open-4')[0].textContent = formattedOpenTime + ' ~ ' + formattedCloseTime;
                         }
                         break;
-                    case 'friday' :
+                    case 'FRIDAY' :
                         formattedOpenTime = open.openAt.substring(0, 5);
                         formattedCloseTime = open.closeAt.substring(0, 5);
 
@@ -636,7 +636,7 @@ function requestOpeningHourApi() {
                             $('#today-open-4')[0].textContent = formattedOpenTime + ' ~ ' + formattedCloseTime;
                         }
                         break;
-                    case 'saturday' :
+                    case 'SATURDAY' :
                         formattedOpenTime = open.openAt.substring(0, 5);
                         formattedCloseTime = open.closeAt.substring(0, 5);
 
@@ -652,7 +652,7 @@ function requestOpeningHourApi() {
                             $('#today-open-4')[0].textContent = formattedOpenTime + ' ~ ' + formattedCloseTime;
                         }
                         break;
-                    case 'sunday' :
+                    case 'SUNDAY' :
                         formattedOpenTime = open.openAt.substring(0, 5);
                         formattedCloseTime = open.closeAt.substring(0, 5);
 
@@ -706,7 +706,7 @@ function requestOpeningHourModifyApi() {
 
             opens.forEach((open) => {
                 switch (open.dayOfWeek) {
-                    case 'monday' :
+                    case 'MONDAY' :
                         $('#monday-open').val(open.openAt);
                         $('#monday-close').val(open.closeAt);
 
@@ -720,7 +720,7 @@ function requestOpeningHourModifyApi() {
                             $('#today-open-2').html('<i class="fas fa-clock"></i> 원격줄서기 시간 :&nbsp;&nbsp;오늘 ' + formattedOpenTime + ' ~ ' + formattedCloseTime);
                         }
                         break;
-                    case 'tuesday' :
+                    case 'TUESDAY' :
                         $('#tuesday-open').val(open.openAt);
                         $('#tuesday-close').val(open.closeAt);
 
@@ -734,7 +734,7 @@ function requestOpeningHourModifyApi() {
                             $('#today-open-2').html('<i class="fas fa-clock"></i> 원격줄서기 시간 :&nbsp;&nbsp;오늘 ' + formattedOpenTime + ' ~ ' + formattedCloseTime);
                         }
                         break;
-                    case 'wednesday' :
+                    case 'WEDNESDAY' :
                         $('#wednesday-open').val(open.openAt);
                         $('#wednesday-close').val(open.closeAt);
 
@@ -748,7 +748,7 @@ function requestOpeningHourModifyApi() {
                             $('#today-open-2').html('<i class="fas fa-clock"></i> 원격줄서기 시간 :&nbsp;&nbsp;오늘 ' + formattedOpenTime + ' ~ ' + formattedCloseTime);
                         }
                         break;
-                    case 'thursday' :
+                    case 'THURSDAY' :
                         $('#thursday-open').val(open.openAt);
                         $('#thursday-close').val(open.closeAt);
 
@@ -762,7 +762,7 @@ function requestOpeningHourModifyApi() {
                             $('#today-open-2').html('<i class="fas fa-clock"></i> 원격줄서기 시간 :&nbsp;&nbsp;오늘 ' + formattedOpenTime + ' ~ ' + formattedCloseTime);
                         }
                         break;
-                    case 'friday' :
+                    case 'FRIDAY' :
                         $('#friday-open').val(open.openAt);
                         $('#friday-close').val(open.closeAt);
 
@@ -776,7 +776,7 @@ function requestOpeningHourModifyApi() {
                             $('#today-open-2').html('<i class="fas fa-clock"></i> 원격줄서기 시간 :&nbsp;&nbsp;오늘 ' + formattedOpenTime + ' ~ ' + formattedCloseTime);
                         }
                         break;
-                    case 'saturday' :
+                    case 'SATURDAY' :
                         $('#saturday-open').val(open.openAt);
                         $('#saturday-close').val(open.closeAt);
 
@@ -790,7 +790,7 @@ function requestOpeningHourModifyApi() {
                             $('#today-open-2').html('<i class="fas fa-clock"></i> 원격줄서기 시간 :&nbsp;&nbsp;오늘 ' + formattedOpenTime + ' ~ ' + formattedCloseTime);
                         }
                         break;
-                    case 'sunday' :
+                    case 'SUNDAY' :
                         $('#sunday-open').val(open.openAt);
                         $('#sunday-close').val(open.closeAt);
 
@@ -842,7 +842,7 @@ function requestBreakHourApi() {
 
             breaks.forEach((breaking) => {
                 switch (breaking.dayOfWeek) {
-                    case 'monday' :
+                    case 'MONDAY' :
                         formattedStartTime = breaking.breakStart.substring(0, 5);
                         formattedEndTime = breaking.breakEnd.substring(0, 5);
 
@@ -857,7 +857,7 @@ function requestBreakHourApi() {
                             $('#today-break-2')[0].textContent = formattedStartTime + ' ~ ' + formattedEndTime;
                         }
                         break;
-                    case 'tuesday' :
+                    case 'TUESDAY' :
                         formattedStartTime = breaking.breakStart.substring(0, 5);
                         formattedEndTime = breaking.breakEnd.substring(0, 5);
 
@@ -872,7 +872,7 @@ function requestBreakHourApi() {
                             $('#today-break-2')[0].textContent = formattedStartTime + ' ~ ' + formattedEndTime;
                         }
                         break;
-                    case 'wednesday' :
+                    case 'WEDNESDAY' :
                         formattedStartTime = breaking.breakStart.substring(0, 5);
                         formattedEndTime = breaking.breakEnd.substring(0, 5);
 
@@ -887,7 +887,7 @@ function requestBreakHourApi() {
                             $('#today-break-2')[0].textContent = formattedStartTime + ' ~ ' + formattedEndTime;
                         }
                         break;
-                    case 'thursday' :
+                    case 'THURSDAY' :
                         formattedStartTime = breaking.breakStart.substring(0, 5);
                         formattedEndTime = breaking.breakEnd.substring(0, 5);
 
@@ -902,7 +902,7 @@ function requestBreakHourApi() {
                             $('#today-break-2')[0].textContent = formattedStartTime + ' ~ ' + formattedEndTime;
                         }
                         break;
-                    case 'friday' :
+                    case 'FRIDAY' :
                         formattedStartTime = breaking.breakStart.substring(0, 5);
                         formattedEndTime = breaking.breakEnd.substring(0, 5);
 
@@ -917,7 +917,7 @@ function requestBreakHourApi() {
                             $('#today-break-2')[0].textContent = formattedStartTime + ' ~ ' + formattedEndTime;
                         }
                         break;
-                    case 'saturday' :
+                    case 'SATURDAY' :
                         formattedStartTime = breaking.breakStart.substring(0, 5);
                         formattedEndTime = breaking.breakEnd.substring(0, 5);
 
@@ -932,7 +932,7 @@ function requestBreakHourApi() {
                             $('#today-break-2')[0].textContent = formattedStartTime + ' ~ ' + formattedEndTime;
                         }
                         break;
-                    case 'sunday' :
+                    case 'SUNDAY' :
                         formattedStartTime = breaking.breakStart.substring(0, 5);
                         formattedEndTime = breaking.breakEnd.substring(0, 5);
 
@@ -985,7 +985,7 @@ function requestBreakHourModifyApi() {
 
             breaks.forEach((breaking) => {
                 switch (breaking.dayOfWeek) {
-                    case 'monday' :
+                    case 'MONDAY' :
                         formattedStartTime = breaking.breakStart.substring(0, 5);
                         formattedEndTime = breaking.breakEnd.substring(0, 5);
 
@@ -999,7 +999,7 @@ function requestBreakHourModifyApi() {
                             }
                         }
                         break;
-                    case 'tuesday' :
+                    case 'TUESDAY' :
                         formattedStartTime = breaking.breakStart.substring(0, 5);
                         formattedEndTime = breaking.breakEnd.substring(0, 5);
 
@@ -1013,7 +1013,7 @@ function requestBreakHourModifyApi() {
                             }
                         }
                         break;
-                    case 'wednesday' :
+                    case 'WEDNESDAY' :
                         formattedStartTime = breaking.breakStart.substring(0, 5);
                         formattedEndTime = breaking.breakEnd.substring(0, 5);
 
@@ -1027,7 +1027,7 @@ function requestBreakHourModifyApi() {
                             }
                         }
                         break;
-                    case 'thursday' :
+                    case 'THURSDAY' :
                         formattedStartTime = breaking.breakStart.substring(0, 5);
                         formattedEndTime = breaking.breakEnd.substring(0, 5);
 
@@ -1041,7 +1041,7 @@ function requestBreakHourModifyApi() {
                             }
                         }
                         break;
-                    case 'friday' :
+                    case 'FRIDAY' :
                         formattedStartTime = breaking.breakStart.substring(0, 5);
                         formattedEndTime = breaking.breakEnd.substring(0, 5);
 
@@ -1055,7 +1055,7 @@ function requestBreakHourModifyApi() {
                             }
                         }
                         break;
-                    case 'saturday' :
+                    case 'SATURDAY' :
                         formattedStartTime = breaking.breakStart.substring(0, 5);
                         formattedEndTime = breaking.breakEnd.substring(0, 5);
 
@@ -1069,7 +1069,7 @@ function requestBreakHourModifyApi() {
                             }
                         }
                         break;
-                    case 'sunday' :
+                    case 'SUNDAY' :
                         formattedStartTime = breaking.breakStart.substring(0, 5);
                         formattedEndTime = breaking.breakEnd.substring(0, 5);
 
