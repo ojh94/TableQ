@@ -19,9 +19,6 @@ import java.util.List;
 @Service
 public class RestaurantService extends BaseService<RestaurantRequest, RestaurantResponse, Restaurant> {
 
-    @Autowired
-    private RestaurantRepository restaurantRepository;
-
     @Override
     protected RestaurantResponse response(Restaurant restaurant) {
         return RestaurantResponse.of(restaurant);
@@ -70,13 +67,13 @@ public class RestaurantService extends BaseService<RestaurantRequest, Restaurant
     }
 
     public Header<List<RestaurantResponse>> searchByName(String keyword, Pageable pageable) {
-        Page<Restaurant> searchedList = restaurantRepository.searchByName(keyword, pageable);
+        Page<Restaurant> searchedList = ((RestaurantRepository)baseRepository).searchByName(keyword, pageable);
 
         return convertPageToList(searchedList);
     }
 
     public Header<List<RestaurantResponse>> searchByAddress(String address, Pageable pageable) {
-        Page<Restaurant> searchedList = restaurantRepository.searchByAddress(address, pageable);
+        Page<Restaurant> searchedList = ((RestaurantRepository)baseRepository).searchByAddress(address, pageable);
 
         return convertPageToList(searchedList);
     }
