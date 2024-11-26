@@ -32,7 +32,7 @@ public class ReservationApiController extends
         return ((ReservationService)baseService).readByRestaurantId(restaurantId,pageable);
     }
 
-    @Operation(summary = "레스토랑 대기 순서 조회", description = "Restaurant ID로 식당 현재 대기 순서 조회")
+    @Operation(summary = "레스토랑 총 대기열 조회", description = "Restaurant ID로 식당 현재 총 대기열 조회")
     @GetMapping("/restaurant/queue/{restaurantId}")
     public Header<Integer> readNowQueue(@PathVariable(name="restaurantId")Long restaurantId){
         log.info("{}","{}","{}","read: ",restaurantId);
@@ -47,13 +47,13 @@ public class ReservationApiController extends
         return ((ReservationService)baseService).readByUserId(userId,pageable);
     }
 
-    @Operation(summary = "유저 순번 조회", description = "Restaurant ID 와 Reservation ID로 대기열 조회")
-    @GetMapping("/user/{restaurantId}/{reservationId}")
+    @Operation(summary = "예약의 현재 순번 조회", description = "Restaurant ID 와 Reservation ID로 현재 순번 조회")
+    @GetMapping("/user/queue-left/{reservationId}")
     public Header<Integer> readMyQueue(@PathVariable(name = "restaurantId") Long restaurantId,
                                      @PathVariable(name = "reservationId") Long reservationId){
         log.info("{}","{}","{}","read: ",restaurantId, reservationId);
         try {
-            return ((ReservationService)baseService).getUserQueue(restaurantId, reservationId);
+            return ((ReservationService)baseService).getUserQueue(reservationId);
         } catch (Exception e) {
             return Header.ERROR(e.getMessage());
         }

@@ -65,7 +65,7 @@ public abstract class CrudController<Req, Res, Entity> implements CrudInterface<
     @PutMapping("{id}")
     public Header<Res> update(@PathVariable(name = "id") Long id,
                               @RequestBody Header<Req> request) {
-        log.info("{}","{}","update: ",id,request);
+        log.info("{}","{}","{}", "update: ", id, request);
         try {
             return baseService.update(id, request);
         } catch (Exception e) {
