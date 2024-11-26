@@ -33,47 +33,49 @@
 
     <input type="hidden" id="owner-id" th:value="${id}">
 
-    <div class="child">
-        <div class="">
-            <div class="input-form col-md-12 mx-auto">
-                <h4 class="text-orange text-center m-5 pt-2" style="font-weight:bold">점주 마이페이지</h4>
-                <form class="validation-form" id="signupForm" style="margin: 50px; padding: 0px 400px;" novalidate>
-                    <div class="mb-2">
-                        <label for="name">이름</label>
-                        <input type="text" class="form-control" id="name" name="name" readonly>
-                    </div>
-
-                    <div class="mb-2">
-                        <label for="email">이메일</label>
-                        <input type="text" class="form-control" id="email" name="email" readonly>
-                    </div>
-
-                    <div class="mb-2">
-                        <label for="phone">전화번호</label>
-                        <div class="certification">
-                            <input type="text" class="form-control" id="phone" name="phoneNumber" readonly>
-                            <button type="button">변경</button>
+    <div class="row">
+        <div class="child col-lg-6" style="margin: auto;">
+            <div class="">
+                <div class="input-form col-md-12 mx-auto">
+                    <h4 class="text-orange text-center m-5 pt-2" style="font-weight:bold">점주 마이페이지</h4>
+                    <form class="validation-form" id="signupForm" style="margin: 50px;" novalidate>
+                        <div class="mb-2">
+                            <label for="name">이름</label>
+                            <input type="text" class="form-control" id="name" name="name" readonly>
                         </div>
-                    </div>
 
-                    <div class="mb-2">
-                        <p style="margin: 0;">비밀번호</p>
-                        <!--<div class="certification">
-                            <p>새로운 비밀번호로 변경 가능</p>
-                        </div>-->
-                        <div id="pass-card" class="card" style="cursor: pointer;">
-                            <div class="card-body d-flex justify-content-between" onclick="">
-                                새로운 비밀번호로 변경 가능<i class="bi bi-chevron-right"></i>
+                        <div class="mb-2">
+                            <label for="email">이메일</label>
+                            <input type="text" class="form-control" id="email" name="email" readonly>
+                        </div>
+
+                        <div class="mb-2">
+                            <label for="phone">전화번호</label>
+                            <div class="certification">
+                                <input type="text" class="form-control" id="phone" name="phoneNumber" readonly>
+                                <button type="button">변경</button>
                             </div>
                         </div>
-                    </div>
 
-                    <div class="m-5 row justify-content-center">
-                      <div class="col-auto">
-                        <button class="btn btn-orange btn-lg text-light" type="submit" form="signupForm" style="width: 200px;">수정</button>
-                      </div>
-                    </div>
-                </form>
+                        <div class="mb-2">
+                            <p style="margin: 0;">비밀번호</p>
+                            <!--<div class="certification">
+                                <p>새로운 비밀번호로 변경 가능</p>
+                            </div>-->
+                            <div id="pass-card" class="card" style="cursor: pointer;">
+                                <div class="card-body d-flex justify-content-between" onclick="">
+                                    새로운 비밀번호로 변경 가능<i class="bi bi-chevron-right"></i>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="m-5 row justify-content-center">
+                          <div class="col-auto">
+                            <button class="btn btn-orange btn-lg text-light" type="submit" form="signupForm" style="width: 200px;">수정</button>
+                          </div>
+                        </div>
+                    </form>
+                </div>
             </div>
         </div>
     </div>

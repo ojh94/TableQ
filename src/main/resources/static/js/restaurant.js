@@ -160,8 +160,22 @@ function requestRestaurantApi() {
 
             rName[0].textContent = response.data.name;
             rAddress[0].textContent = response.data.address;
-            rInformation[0].textContent = response.data.information;
             rContactNumber[0].textContent = response.data.contactNumber;
+
+            if(response.data.information === undefined) {
+                let informationHtml =
+                    `
+                    <div style="text-align: center;">
+                        <p style="color: #696969;">설정된 매장소개 정보가 없습니다.</p>
+                        <a class="pick-outline" type="button">매장에 등록 요청하기</a>
+                    </div>
+                    `;
+                // information 요소(외부) 끝에 추가
+                $('#information').after(informationHtml);
+
+            } else {
+                rInformation[0].textContent = response.data.information;
+            }
 
             if (response.data.available === false) {
                 $('#available').css("display" ,"none");
@@ -1093,16 +1107,29 @@ function requestKeywordApi() {
         contentType: 'application/json', // JSON 형식으로 데이터 전송
         success: function(response) {
             // 요청 성공 시 동작
-            const restaurantKeyword = response.data; // 키워드 데이터 배열
-
-            restaurantKeyword.forEach((keywords) => {
+            if(Object.keys(response.data).length === 0) {
                 let keywordHtml =
                     `
-                    <a class="pick-outline mb-2">${keywords.keyword.name}</a>
+                    <div style="text-align: center;">
+                        <p style="color: #696969;">설정된 키워드 정보가 없습니다.</p>
+                        <a class="pick-outline" type="button">매장에 등록 요청하기</a>
+                    </div>
                     `;
                 // keyword 요소(내부) 끝에 추가
                 $('#keyword').append(keywordHtml);
-            });
+
+            } else {
+                const restaurantKeyword = response.data; // 키워드 데이터 배열
+
+                restaurantKeyword.forEach((keywords) => {
+                    let keywordHtml =
+                        `
+                        <a class="pick-outline mb-2">${keywords.keyword.name}</a>
+                        `;
+                    // keyword 요소(내부) 끝에 추가
+                    $('#keyword').append(keywordHtml);
+                });
+            }
 
             console.log('키워드 set 완료');
         },
@@ -1160,16 +1187,29 @@ function requestAmenityApi() {
         contentType: 'application/json', // JSON 형식으로 데이터 전송
         success: function(response) {
             // 요청 성공 시 동작
-            const restaurantAmenity = response.data; // 키워드 데이터 배열
-
-            restaurantAmenity.forEach((amenitys) => {
+            if(Object.keys(response.data).length === 0) {
                 let amenityHtml =
                     `
-                    <p>${amenitys.amenity.name}</p>
+                    <div style="text-align: center;">
+                        <p style="color: #696969;">설정된 편의시설 정보가 없습니다.</p>
+                        <a class="pick-outline" type="button">매장에 등록 요청하기</a>
+                    </div>
                     `;
-                // keyword 요소(내부) 끝에 추가
+                // amenity 요소(내부) 끝에 추가
                 $('#amenity').append(amenityHtml);
-            });
+
+            } else {
+                const restaurantAmenity = response.data; // 키워드 데이터 배열
+
+                restaurantAmenity.forEach((amenitys) => {
+                    let amenityHtml =
+                        `
+                        <p>${amenitys.amenity.name}</p>
+                        `;
+                    // amenity 요소(내부) 끝에 추가
+                    $('#amenity').append(amenityHtml);
+                });
+            }
 
             console.log('편의시설 set 완료');
         },
@@ -1226,12 +1266,29 @@ function requestAmenityModifyApi() {
 
     >> 점포 정보 수정 메소드 (이름, 위치, 전화번호, 매장소개) << ?
     >> 운영시간 수정 또는 생성 메소드  <<
+    >> 브레이크 타임 수정 또는 생성 메소드  <<
     >> 점포 편의시설 삭제 후 생성 메소드  <<
     >> 점포 키워드 삭제 후 생성 메소드 <<
     >> 점포 메인 이미지 삭제 후 생성 메소드 << ?
+    >> 메뉴 수정 또는 생성 메소드 << ?
 }*/
 
-// 상세 수정 페이지 수정 메소드
-/*function requestRestaurantUpdateApi() {
+// 점포 정보 수정 메소드
+function requestRestaurantUpdateApi() {
 
-}*/
+}
+
+// 운영시간 수정 또는 생성 메소드
+function requestOpeningHourUpdateApi() {
+
+}
+
+// 브레이크 타임 수정 또는 생성 메소드
+function requestBreakHourUpdateApi() {
+
+}
+
+// 브레이크 타임 수정 또는 생성 메소드
+function requestBreakHourUpdateApi() {
+
+}
