@@ -72,12 +72,12 @@ public class RestaurantService extends BaseService<RestaurantRequest, Restaurant
 
     // 별점 높은 순 (review 테이블에 있는 리스트들의 평균을 내야함, JPQL을 써서 Repository 구현이 필요)
     public Header<List<RestaurantResponse>> findRestaurantsOrderByReservationCountDesc(Pageable pageable) {
-        return ((RestaurantRepository)baseRepository).findRestaurantsOrderByReservationCountDesc(pageable);
+        return convertPageToList(((RestaurantRepository)baseRepository).findRestaurantsOrderByReservationCountDesc(pageable));
     }
 
     // 추천 순 : 리뷰 건별 별점 총합 (JPQL을 써서 GroupBy로 총점을 계산)
     public Header<List<RestaurantResponse>> findTopRatedRestaurants(Pageable pageable) {
-        return ((RestaurantRepository)baseRepository).findTopRatedRestaurants(pageable);
+        return convertPageToList(((RestaurantRepository)baseRepository).findTopRatedRestaurants(pageable));
     }
 
     public Header<List<RestaurantResponse>> searchByName(String keyword, Pageable pageable) {
