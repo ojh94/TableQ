@@ -118,7 +118,7 @@ public class ReservationService extends
         }
         // 현재 해당 레스토랑에 유효한 예약이 하나도 없는 경우 + 못 찾았을 경우
         if(userTurn > allReservation.size()) {
-            // 해당 레스토랑에 대한 예약 정보가 없거나, 이미 처리가 완료된 예약을 줄서기 신청 화면에서 조회하려고 할때
+            // 해당 레스토랑에 대한 예약 정보가 없거나, 이미 처리가 완료된 예약을 예약 내역 화면에서 조회하려고 할때
             throw new RuntimeException("INVALID_RESERVATION");
         }
 
