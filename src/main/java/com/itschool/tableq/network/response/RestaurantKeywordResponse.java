@@ -16,19 +16,20 @@ public class RestaurantKeywordResponse {
 
     private Long id;
 
-    private Keyword keyword;
+    private KeywordResponse keyword;
 
     private RestaurantResponse restaurant;
 
     public static RestaurantKeywordResponse of(RestaurantKeyword restaurantKeyword) {
         Restaurant restaurant = restaurantKeyword.getRestaurant();
+        Keyword keyword = restaurantKeyword.getKeyword();
 
         return RestaurantKeywordResponse.builder()
                 .id(restaurantKeyword.getId())
                 .restaurant(RestaurantResponse.builder()
                         .id(restaurant.getId())
                         .build())
-                .keyword(restaurantKeyword.getKeyword())
+                .keyword(KeywordResponse.of(keyword))
                 .build();
     }
 }
