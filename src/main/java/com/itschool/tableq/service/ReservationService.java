@@ -2,32 +2,22 @@ package com.itschool.tableq.service;
 
 import com.itschool.tableq.domain.Reservation;
 import com.itschool.tableq.domain.Restaurant;
-import com.itschool.tableq.domain.Review;
 import com.itschool.tableq.domain.User;
 import com.itschool.tableq.network.Header;
-import com.itschool.tableq.network.response.ReservationResponse;
 import com.itschool.tableq.network.request.ReservationRequest;
-import com.itschool.tableq.network.response.ReviewResponse;
+import com.itschool.tableq.network.response.ReservationResponse;
 import com.itschool.tableq.repository.ReservationRepository;
 import com.itschool.tableq.repository.RestaurantRepository;
-import com.itschool.tableq.repository.ReviewRepository;
 import com.itschool.tableq.repository.UserRepository;
 import com.itschool.tableq.service.base.BaseService;
 import com.itschool.tableq.util.DateUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.webjars.NotFoundException;
 
-import org.springframework.data.domain.Pageable;
-
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -42,23 +32,8 @@ public class ReservationService extends
     RestaurantRepository restaurantRepository;
 
     @Override
-    public Header<List<ReservationResponse>> getPaginatedList(Pageable pageable) {
-        return null;
-    }
-
-    @Override
     protected ReservationResponse response(Reservation reservation) {
         return ReservationResponse.of(reservation);
-    }
-
-    protected List<ReservationResponse> responseList(List<Reservation> reservationList) {
-        List<ReservationResponse> responseList = new ArrayList<>();
-
-        for(Reservation reservation : reservationList){
-            responseList.add(response(reservation));
-        }
-
-        return responseList;
     }
 
     public Boolean isExist(User user, Restaurant restaurant){

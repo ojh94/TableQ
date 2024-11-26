@@ -2,24 +2,18 @@ package com.itschool.tableq.service;
 
 import com.itschool.tableq.domain.Restaurant;
 import com.itschool.tableq.network.Header;
-import com.itschool.tableq.network.Pagination;
-import com.itschool.tableq.network.response.RestaurantResponse;
 import com.itschool.tableq.network.request.RestaurantRequest;
+import com.itschool.tableq.network.response.RestaurantResponse;
 import com.itschool.tableq.repository.RestaurantRepository;
 import com.itschool.tableq.service.base.BaseService;
-import jakarta.validation.constraints.Positive;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import org.springframework.data.domain.Pageable;
-
 import java.util.List;
-import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
@@ -27,24 +21,6 @@ public class RestaurantService extends BaseService<RestaurantRequest, Restaurant
 
     @Autowired
     private RestaurantRepository restaurantRepository;
-
-    @Override
-    public Header<List<RestaurantResponse>> getPaginatedList(Pageable pageable) {
-        Page<Restaurant> entities =  baseRepository.findAll(pageable);
-
-        List<RestaurantResponse> restaurantResponsesList = entities.stream()
-                .map(entity -> response(entity))
-                .collect(Collectors.toList());
-
-        Pagination pagination = Pagination.builder()
-                .totalPages(entities.getTotalPages())
-                .totalElements(entities.getTotalElements())
-                .currentPage(entities.getNumber())
-                .currentElements(entities.getNumberOfElements())
-                .build();
-
-        return Header.OK(restaurantResponsesList, pagination);
-    }
 
     @Override
     protected RestaurantResponse response(Restaurant restaurant) {
@@ -93,13 +69,15 @@ public class RestaurantService extends BaseService<RestaurantRequest, Restaurant
                 }).orElseThrow(() -> new RuntimeException("Restaurant delete fail"));
     }
 
-    public List<Restaurant> searchByName(String keyword) {
-        return restaurantRepository.searchByName(keyword);
+    public Header<List<RestaurantResponse>> searchByName(String keyword, Pageable pageable) {
+        Page<Restaurant> searchedList = restaurantRepository.searchByName(keyword, pageable);
+
+        return convertPageToList(searchedList);
     }
 
-    public List<Restaurant> searchByAddress(String address) {
-        return restaurantRepository.searchByAddress(address);
+    public Header<List<RestaurantResponse>> searchByAddress(String address, Pageable pageable) {
+        Page<Restaurant> searchedList = restaurantRepository.searchByAddress(address, pageable);
+
+        return convertPageToList(searchedList);
     }
-
-
 }

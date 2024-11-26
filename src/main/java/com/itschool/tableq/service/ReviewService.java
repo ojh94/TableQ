@@ -8,7 +8,6 @@ import com.itschool.tableq.network.Header;
 import com.itschool.tableq.network.Pagination;
 import com.itschool.tableq.network.request.ReviewRequest;
 import com.itschool.tableq.network.response.ReviewResponse;
-import com.itschool.tableq.network.response.UserResponse;
 import com.itschool.tableq.repository.RestaurantRepository;
 import com.itschool.tableq.repository.ReviewRepository;
 import com.itschool.tableq.repository.UserRepository;
@@ -20,8 +19,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -35,36 +32,8 @@ public class ReviewService extends BaseService<ReviewRequest, ReviewResponse, Re
     UserRepository userRepository;
 
     @Override
-    public Header<List<ReviewResponse>> getPaginatedList(Pageable pageable) {
-        Page<Review> entities =  baseRepository.findAll(pageable);
-
-        List<ReviewResponse> reviewResponseList = entities.stream()
-                .map(entity -> response(entity))
-                .collect(Collectors.toList());
-
-        Pagination pagination = Pagination.builder()
-                .totalPages(entities.getTotalPages())
-                .totalElements(entities.getTotalElements())
-                .currentPage(entities.getNumber())
-                .currentElements(entities.getNumberOfElements())
-                .build();
-
-        return Header.OK(reviewResponseList, pagination);
-    }
-
-    @Override
     protected ReviewResponse response(Review review) {
         return ReviewResponse.of(review);
-    }
-
-    protected List<ReviewResponse> responseList(List<Review> reviewList) {
-        List<ReviewResponse> responseList = new ArrayList<>();
-
-        for(Review review : reviewList){
-            responseList.add(response(review));
-        }
-
-        return responseList;
     }
 
     @Override
