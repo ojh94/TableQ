@@ -11,6 +11,7 @@ import com.itschool.tableq.repository.RestaurantRepository;
 import com.itschool.tableq.repository.UserRepository;
 import com.itschool.tableq.service.base.BaseService;
 import com.itschool.tableq.util.DateUtil;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
@@ -79,20 +80,24 @@ public class ReservationService extends
         return Header.OK(queue);
     }
 
-    public Header<Integer> getUserQueue(Long restaurantId, Long reservationId) {
+    public Header<Integer> getUserQueue(Long reservationId) {
         int userTurn = 1;
-        Restaurant restaurant = restaurantRepository.findById(restaurantId)
-                .orElseThrow(() -> new RuntimeException("Not Found Restaurant ID : " + restaurantId));
 
-        List<Reservation> allReservation = ((ReservationRepository) baseRepository)
+        Reservation entity = ((ReservationRepository)baseRepository).findById(reservationId)
+                .orElseThrow(() -> new EntityNotFoundException());
+
+        Restaurant restaurant = restaurantRepository.findById(entity.getRestaurant().getId())
+                .orElseThrow(() -> new EntityNotFoundException());
+
+        List<Reservation> allReservationForRestraunt = ((ReservationRepository) baseRepository)
                 .findByIsEnteredAndRestaurantAndCreatedAtBetweenOrderByIdAsc(null, restaurant, DateUtil.getStartOfDay(), DateUtil.getEndOfDay());
 
-        for (Reservation reservation : allReservation) {
+        for (Reservation reservation : allReservationForRestraunt) {
             if (reservation.getId() == reservationId) break;
             else userTurn++;
         }
         // 현재 해당 레스토랑에 유효한 예약이 하나도 없는 경우 + 못 찾았을 경우
-        if(userTurn > allReservation.size()) {
+        if(userTurn > allReservationForRestraunt.size()) {
             // 해당 레스토랑에 대한 예약 정보가 없거나, 이미 처리가 완료된 예약을 예약 내역 화면에서 조회하려고 할때
             throw new RuntimeException("INVALID_RESERVATION");
         }
