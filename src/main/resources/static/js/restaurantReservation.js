@@ -216,7 +216,7 @@ function requestReservationDetailApi() {
                 $('.reservation-information')[1].textContent = '이용예정';
 
                 requestReservationDetailNumApi();
-                /*setInterval(requestReservationDetailNumApi, 10000); // 10초*/
+                setInterval(requestReservationDetailNumApi, 10000); // 10초
 
                 // refresh 클릭 시
                 document.getElementById("refresh").onclick = function() {
