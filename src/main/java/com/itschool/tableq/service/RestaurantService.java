@@ -19,11 +19,9 @@ import java.util.List;
 @RequiredArgsConstructor
 @Service
 public class RestaurantService extends BaseService<RestaurantRequest, RestaurantResponse, Restaurant> {
-    
-    // 별점 높은 순 (review 테이블에 있는 리스트들의 평균을 내야함, 평균 관련 JPA 스펙 확인 필요)
-    // 리뷰 많은 순 (review 테이블에 있는 리뷰 개수 카운트)
-    @Autowired
-    ReviewRepository reviewRepository;
+
+    // @Autowired
+    // ReviewRepository reviewRepository;
     
     @Override
     protected RestaurantResponse response(Restaurant restaurant) {
@@ -70,6 +68,16 @@ public class RestaurantService extends BaseService<RestaurantRequest, Restaurant
                     baseRepository.delete(restaurant);
                     return Header.OK(response(restaurant));
                 }).orElseThrow(() -> new RuntimeException("Restaurant delete fail"));
+    }
+
+    // 별점 높은 순 (review 테이블에 있는 리스트들의 평균을 내야함, JPQL을 써서 Repository 구현이 필요)
+    public Header<List<RestaurantResponse>> findRestaurantsOrderByReservationCountDesc(Pageable pageable) {
+        return ((RestaurantRepository)baseRepository).findRestaurantsOrderByReservationCountDesc(pageable);
+    }
+
+    // 추천 순 : 리뷰 건별 별점 총합 (JPQL을 써서 GroupBy로 총점을 계산)
+    public Header<List<RestaurantResponse>> findTopRatedRestaurants(Pageable pageable) {
+        return ((RestaurantRepository)baseRepository).findTopRatedRestaurants(pageable);
     }
 
     public Header<List<RestaurantResponse>> searchByName(String keyword, Pageable pageable) {
