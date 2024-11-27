@@ -1,6 +1,7 @@
 package com.itschool.tableq.domain;
 
 import com.itschool.tableq.domain.base.AuditableEntity;
+import com.itschool.tableq.domain.enumclass.MemberRole;
 import com.itschool.tableq.network.request.UserRequest;
 import jakarta.persistence.*;
 import lombok.*;
@@ -50,7 +51,7 @@ public class User extends AuditableEntity implements UserDetails {
     private String email;
 
     @Column
-    private String memberRole;
+    private MemberRole memberRole;
 
     public void update(UserRequest userRequest) {
         this.password = userRequest.getPassword() == null? this.password : userRequest.getPassword();
@@ -67,7 +68,7 @@ public class User extends AuditableEntity implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of(new SimpleGrantedAuthority("user"));
+        return List.of(new SimpleGrantedAuthority(memberRole.getName()));
     }
 
     @Override
