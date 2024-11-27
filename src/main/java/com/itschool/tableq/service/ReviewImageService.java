@@ -21,7 +21,7 @@ public class ReviewImageService extends BaseServiceWithS3<ReviewImageRequest, Re
     @Autowired
     ReviewRepository reviewRepository;
 
-    private static final String DIRECTORY_NAME = "reviewImage";
+    private static final String DIRECTORY_NAME = "review-image";
 
     @Override
     protected ReviewImageResponse response(ReviewImage reviewImage) {

@@ -24,6 +24,12 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/business-information")
 public class BusinessInformationApiController extends CrudController<BusinessInformationRequest, BusinessInformationResponse, BusinessInformation> {
+
+    @Override
+    protected Class<BusinessInformationRequest> getRequestClass() {
+        return BusinessInformationRequest.class;
+    }
+
     @Operation(summary = "식당 관리자 별 사업자 번호 조회", description = "Owner ID 및 pageable로 엔티티 목록 조회")
     @GetMapping("/owner/{ownerId}")
     public Header<List<BusinessInformationResponse>> readByOwnerId(@PathVariable(name = "ownerId") Long ownerId,

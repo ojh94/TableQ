@@ -40,6 +40,8 @@ public class UserResponse {
     @Email
     private String email;
 
+    private String memberRole;
+
     public static UserResponse of(User user) {
         return UserResponse.builder()
             .id(user.getId())
@@ -50,6 +52,7 @@ public class UserResponse {
             .name(user.getName())
             .socialType(user.getSocialType())
             .socialId(user.getSocialId())
+            .memberRole(user.getMemberRole())
             .build();
     }
 }

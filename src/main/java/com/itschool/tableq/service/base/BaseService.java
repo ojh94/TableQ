@@ -32,7 +32,7 @@ public abstract class BaseService<Req, Res, Entity extends AuditableEntity> impl
     }
 
     public final Header<List<Res>> getPaginatedList(Pageable pageable) {
-        Page<Entity> entities =  baseRepository.findAll(pageable);
+        Page<Entity> entities = baseRepository.findAll(pageable);
 
         return convertPageToList(entities);
     }

@@ -22,8 +22,13 @@ import java.util.List;
 @Tag(name = "예약", description = "예약 관련 API")
 @RestController
 @RequestMapping("api/reservation")
-public class ReservationApiController extends
-        CrudController<ReservationRequest, ReservationResponse, Reservation> {
+public class ReservationApiController extends CrudController<ReservationRequest, ReservationResponse, Reservation> {
+
+    @Override
+    protected Class<ReservationRequest> getRequestClass() {
+        return null;
+    }
+
     @Operation(summary = "레스토랑 예약 조회", description = "Restaurant ID로 식당에 예약한 손님 목록을 조회")
     @GetMapping("/restaurant/{restaurantId}")
     public Header<List<ReservationResponse>> readByRestaurantId(@PathVariable(name="restaurantId") Long restaurantId,

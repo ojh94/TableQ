@@ -1,5 +1,6 @@
 package com.itschool.tableq.controller;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.itschool.tableq.domain.base.AuditableEntity;
 import com.itschool.tableq.ifs.CrudInterface;
 import com.itschool.tableq.network.Header;
@@ -14,13 +15,22 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 @Component
 public abstract class CrudController<Req, Res, Entity extends AuditableEntity> implements CrudInterface<Req, Res> {
+
     @Autowired(required = false)
     protected BaseService<Req, Res, Entity> baseService;
 
+    @Autowired
+    protected ObjectMapper objectMapper;  // 필요 시 Jackson ObjectMapper를 사용하여 JSON을 객체로 변환
+
     protected final Logger log = LoggerFactory.getLogger(this.getClass());
+
+    protected static final long MAX_IMAGE_FILE_SIZE = 10 * 1024 * 1024; // 10 MB 제한
+
+    protected abstract Class<Req> getRequestClass();
 
     @GetMapping("")
     @Operation(summary = "페이지별 조회", description = "pageable로 엔티티 목록을 조회")

@@ -2,7 +2,6 @@ package com.itschool.tableq.controller.api;
 
 import com.itschool.tableq.controller.CrudWithFileController;
 import com.itschool.tableq.domain.ReviewImage;
-import com.itschool.tableq.network.request.RestaurantImageRequest;
 import com.itschool.tableq.network.request.ReviewImageRequest;
 import com.itschool.tableq.network.response.ReviewImageResponse;
 import groovy.util.logging.Slf4j;
@@ -15,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/api/review-image")
 public class ReviewImageApiController extends CrudWithFileController <ReviewImageRequest, ReviewImageResponse, ReviewImage> {
+
     @Override
     protected Class<ReviewImageRequest> getRequestClass() {
         return ReviewImageRequest.class;

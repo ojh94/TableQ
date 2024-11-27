@@ -23,6 +23,12 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/restaurantamenity")
 public class RestaurantAmenityApiController extends CrudController<RestaurantAmenityRequest, RestaurantAmenityResponse, RestaurantAmenity> {
+
+    @Override
+    protected Class<RestaurantAmenityRequest> getRequestClass() {
+        return null;
+    }
+
     @Operation(summary = "레스토랑별 편의시설 조회", description = "Restaurant ID로 엔티티 목록을 조회")
     @GetMapping("/restaurant/{id}")
     public Header<List<RestaurantAmenityResponse>> readByRestaurantId(@PathVariable(name = "id") Long id){

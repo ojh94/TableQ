@@ -13,6 +13,10 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/api/owner")
 public class OwnerApiController extends CrudController<OwnerRequest, OwnerResponse, Owner> {
-    // 사용자 정보를   if새로 설정하기 위한 추가 작업
+    @Override
+    protected Class<OwnerRequest> getRequestClass() {
+        return OwnerRequest.class;
+    }
 
+    // 사용자 정보를   if새로 설정하기 위한 추가 작업
 }

@@ -14,4 +14,8 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/api/amenity")
 public class AmenityApiController extends CrudController<AmenityRequest, AmenityResponse, Amenity> {
+    @Override
+    protected Class<AmenityRequest> getRequestClass() {
+        return AmenityRequest.class;
+    }
 }

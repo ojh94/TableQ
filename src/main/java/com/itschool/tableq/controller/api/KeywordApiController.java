@@ -14,4 +14,9 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/api/keyword")
 public class KeywordApiController extends CrudController<KeywordRequest, KeywordResponse, Keyword> {
+
+    @Override
+    protected Class<KeywordRequest> getRequestClass() {
+        return KeywordRequest.class;
+    }
 }

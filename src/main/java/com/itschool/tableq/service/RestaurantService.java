@@ -3,10 +3,9 @@ package com.itschool.tableq.service;
 import com.itschool.tableq.domain.Restaurant;
 import com.itschool.tableq.network.Header;
 import com.itschool.tableq.network.request.RestaurantRequest;
-import com.itschool.tableq.network.request.RestaurantUpdateAllRequest;
+import com.itschool.tableq.network.request.update.RestaurantUpdateAllRequest;
 import com.itschool.tableq.network.response.RestaurantResponse;
-import com.itschool.tableq.repository.BusinessInformationRepository;
-import com.itschool.tableq.repository.RestaurantRepository;
+import com.itschool.tableq.repository.*;
 import com.itschool.tableq.service.base.BaseService;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
@@ -15,6 +14,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -24,7 +24,26 @@ public class RestaurantService extends BaseService<RestaurantRequest, Restaurant
 
     @Autowired
     BusinessInformationRepository businessInformationRepository;
-    
+
+    @Autowired
+    RestaurantImageRepository restaurantImageRepository;
+
+    @Autowired
+    OpeningHourRepository openingHourRepository;
+
+    @Autowired
+    BreakHourRepository breakHourRepository;
+
+    @Autowired
+    RestaurantAmenityRepository restaurantAmenityRepository;
+
+    @Autowired
+    RestaurantKeywordsRepository restaurantKeywordRepository;
+
+    @Autowired
+    MenuItemRepository menuItemRepository;
+
+
     @Override
     protected RestaurantResponse response(Restaurant restaurant) {
         return RestaurantResponse.of(restaurant);
@@ -97,13 +116,14 @@ public class RestaurantService extends BaseService<RestaurantRequest, Restaurant
 
     // @AuthorCheck // AuthorCheck를 위해서는 /*@CreatedBy @LastModifiedBy 필요*/
     @Transactional
-    public Header<RestaurantResponse> updateAll(Long id, Header<RestaurantUpdateAllRequest> request) {
-        RestaurantUpdateAllRequest restaurantUpdateAllRequest = request.getData();
+    public Header<RestaurantResponse> updateAll(Long id, RestaurantUpdateAllRequest request, List<MultipartFile> restaurantImages, List<MultipartFile> menuImages) {
 
-        Restaurant restaurant = baseRepository.findById(id).orElseThrow(() -> new EntityNotFoundException());
+        Restaurant restaurant = baseRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException());
 
-        // Restaurant restaurant = baseRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("not found"));
-        // restaurant.update(restaurantRequest);
+
+
+
 
         return Header.OK(response(restaurant));
     }

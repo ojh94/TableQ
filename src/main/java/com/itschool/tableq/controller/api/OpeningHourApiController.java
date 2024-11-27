@@ -26,6 +26,11 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/openinghour")
 public class OpeningHourApiController extends CrudController<OpeningHourRequest, OpeningHourResponse, OpeningHour> {
+    @Override
+    protected Class<OpeningHourRequest> getRequestClass() {
+        return OpeningHourRequest.class;
+    }
+
     @Operation(summary = "레스토랑별 운영시간 조회", description = "Restaurant ID 및 pageable로 엔티티 목록을 조회")
     @GetMapping("/restaurant/{id}")
     public Header<List<OpeningHourResponse>> readByRestaurantId(@PathVariable(name = "id") Long id,

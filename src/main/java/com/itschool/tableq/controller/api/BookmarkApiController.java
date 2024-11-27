@@ -23,8 +23,12 @@ import java.util.List;
 @Tag(name = "즐겨찾기", description = "즐겨찾기 관련 API")
 @RestController
 @RequestMapping("/api/bookmark")
-public class BookmarkApiController
-        extends CrudController<BookmarkRequest, BookmarkResponse, Bookmark> {
+public class BookmarkApiController extends CrudController<BookmarkRequest, BookmarkResponse, Bookmark> {
+    @Override
+    protected Class<BookmarkRequest> getRequestClass() {
+        return BookmarkRequest.class;
+    }
+
     @Operation(summary = "유저의 즐겨찾기 조회", description = "유저가 즐겨찾기한 목록 조회")
     @GetMapping("/user/{userId}")
     public Header<List<BookmarkResponse>> readByUserId(@PathVariable(name = "userId")Long userId,

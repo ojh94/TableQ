@@ -18,6 +18,8 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.List;
+
 @Component
 public abstract class CrudWithFileController<Req extends FileRequest, Res, Entity extends IncludeFileUrl> implements CrudWithFileInterface<Req, Res> {
 
@@ -33,16 +35,10 @@ public abstract class CrudWithFileController<Req extends FileRequest, Res, Entit
 
     protected abstract Class<Req> getRequestClass();
 
-    private Req validateRequest(String requestJson, MultipartFile file) {
-        // 제네릭 타입 Req에 맞게 요청 객체를 변환
 
-        // 파일 크기 체크
-        if (!FileUtil.isValidFileSize(file, MAX_IMAGE_FILE_SIZE))
-            throw new RuntimeException("파일 크기가 제한을 초과합니다.");
 
-        // 파일 유형 확인
-        if (!FileUtil.validateImageFileExtension(file))
-            throw new RuntimeException("잘못된 파일 유형입니다. (jpg, jpeg, png 확장자만 허용)");
+    protected Req validateJsonString(String requestJson) {
+        boolean result = false;
 
         Req request;
         try {
@@ -78,7 +74,9 @@ public abstract class CrudWithFileController<Req extends FileRequest, Res, Entit
         log.info("create: {}", requestJson);
 
         try {
-            Req request = validateRequest(requestJson, file);
+            FileUtil.validateFile(file, MAX_IMAGE_FILE_SIZE);
+
+            Req request = validateJsonString(requestJson);
 
             request.setFile(file);  // 요청 객체에 파일 설정
             return baseService.create(Header.OK(request));  // 서비스 레이어로 넘기기
@@ -98,7 +96,9 @@ public abstract class CrudWithFileController<Req extends FileRequest, Res, Entit
         log.info("update: {}, {}", id, requestJson);
 
         try {
-            Req request = validateRequest(requestJson, file);
+            FileUtil.validateFile(file, MAX_IMAGE_FILE_SIZE);
+
+            Req request = validateJsonString(requestJson);
 
             request.setFile(file);  // FileRequest의 setFile 메서드로 파일 설정
             return baseService.update(id, Header.OK(request));  // 서비스 레이어로 넘기기

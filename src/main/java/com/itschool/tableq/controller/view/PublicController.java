@@ -1,6 +1,7 @@
 package com.itschool.tableq.controller.view;
 
 import com.itschool.tableq.domain.User;
+import com.itschool.tableq.domain.enumclass.MemberRole;
 import com.itschool.tableq.network.Header;
 import com.itschool.tableq.network.request.OwnerRequest;
 import com.itschool.tableq.network.request.UserRequest;
@@ -29,10 +30,14 @@ public class PublicController {
     // 홈
     @GetMapping("/")
     public String home(@AuthenticationPrincipal User user, Model model) {
-        if(user != null) { // 로그인 한 상태
+        if(user != null && user.getMemberRole().equals(MemberRole.USER.getName())) { // 로그인 한 상태
             model.addAttribute("user", user);
             return "index";
-        } else { // 로그인 안 한 상태
+        }else if(user != null && user.getMemberRole().equals(MemberRole.OWNER.getName())) { // 로그인 한 상태
+            model.addAttribute("owner", user);
+            return "ownerwelcome";
+        }
+        else { // 로그인 안 한 상태
             return "welcome";
         }
     }

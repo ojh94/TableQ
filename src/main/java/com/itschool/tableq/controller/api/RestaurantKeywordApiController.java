@@ -26,6 +26,12 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/restaurantkeyword")
 public class RestaurantKeywordApiController extends CrudController<RestaurantKeywordRequest, RestaurantKeywordResponse, RestaurantKeyword>  {
+
+    @Override
+    protected Class<RestaurantKeywordRequest> getRequestClass() {
+        return RestaurantKeywordRequest.class;
+    }
+
     @Operation(summary = "레스토랑 키워드 조회", description = "Restaurant ID로 식당 관련 키워드 조회")
     @GetMapping("/restaurant/{restaurantId}")
     public Header<List<RestaurantKeywordResponse>> readByRestaurantId(@PathVariable(name="restaurantId") Long restaurantId
