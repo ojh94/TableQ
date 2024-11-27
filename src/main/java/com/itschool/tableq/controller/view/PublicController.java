@@ -30,10 +30,10 @@ public class PublicController {
     // 홈
     @GetMapping("/")
     public String home(@AuthenticationPrincipal User user, Model model) {
-        if(user != null && user.getMemberRole().equals(MemberRole.USER.getName())) { // 로그인 한 상태
+        if(user != null && user.getMemberRole().equals(MemberRole.USER)) { // 로그인 한 상태
             model.addAttribute("user", user);
             return "index";
-        }else if(user != null && user.getMemberRole().equals(MemberRole.OWNER.getName())) { // 로그인 한 상태
+        }else if(user != null && user.getMemberRole().equals(MemberRole.OWNER)) { // 로그인 한 상태
             model.addAttribute("owner", user);
             return "owner-mypage";
         }

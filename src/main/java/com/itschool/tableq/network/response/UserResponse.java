@@ -1,6 +1,7 @@
 package com.itschool.tableq.network.response;
 
 import com.itschool.tableq.domain.User;
+import com.itschool.tableq.domain.enumclass.MemberRole;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
@@ -40,7 +41,7 @@ public class UserResponse {
     @Email
     private String email;
 
-    private String memberRole;
+    private MemberRole memberRole;
 
     public static UserResponse of(User user) {
         return UserResponse.builder()
