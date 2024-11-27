@@ -10,23 +10,33 @@ import com.itschool.tableq.repository.BookmarkRepository;
 import com.itschool.tableq.repository.RestaurantRepository;
 import com.itschool.tableq.repository.UserRepository;
 import com.itschool.tableq.service.base.BaseService;
-import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-@RequiredArgsConstructor
 @Service
-public class BookmarkService extends
-        BaseService<BookmarkRequest, BookmarkResponse, Bookmark> {
+public class BookmarkService extends BaseService<BookmarkRequest, BookmarkResponse, Bookmark> {
 
-    @Autowired
-    RestaurantRepository restaurantRepository;
+    private final RestaurantRepository restaurantRepository;
 
+    private final UserRepository userRepository;
+
+    // 생성자
     @Autowired
-    UserRepository userRepository;
+    public BookmarkService(BookmarkRepository bookmarkRepository,
+                           RestaurantRepository restaurantRepository,
+                           UserRepository userRepository) {
+        super(bookmarkRepository);
+        this.restaurantRepository = restaurantRepository;
+        this.userRepository = userRepository;
+    }
+
+    @Override
+    protected BookmarkRepository getBaseRepository() {
+        return (BookmarkRepository) baseRepository;
+    }
 
     @Override
     protected BookmarkResponse response(Bookmark bookmark) {
@@ -48,13 +58,13 @@ public class BookmarkService extends
                 .user(user)
                 .build();
 
-        baseRepository.save(bookmark);
+        getBaseRepository().save(bookmark);
         return Header.OK(response(bookmark));
     }
 
     @Override
     public Header<BookmarkResponse> read(Long id) {
-        return Header.OK(response(baseRepository.findById(id).orElse(null)));
+        return Header.OK(response(getBaseRepository().findById(id).orElse(null)));
     }
 
     public Header<List<BookmarkResponse>> readByUserId(Long userId, Pageable pageable){
@@ -79,9 +89,9 @@ public class BookmarkService extends
 
     @Override
     public Header delete(Long id) {
-        return baseRepository.findById(id)
+        return getBaseRepository().findById(id)
                 .map(bookmark -> {
-                    baseRepository.delete(bookmark);
+                    getBaseRepository().delete(bookmark);
                     return Header.OK(response(bookmark));
                 })
                 .orElseThrow(() -> new RuntimeException("Bookmark delete fail"));

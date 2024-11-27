@@ -15,13 +15,11 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
 @Component
 public abstract class CrudController<Req, Res, Entity extends AuditableEntity> implements CrudInterface<Req, Res> {
 
-    @Autowired(required = false)
-    protected BaseService<Req, Res, Entity> baseService;
+    protected final BaseService<Req, Res, Entity> baseService;
 
     @Autowired
     protected ObjectMapper objectMapper;  // 필요 시 Jackson ObjectMapper를 사용하여 JSON을 객체로 변환
@@ -29,6 +27,11 @@ public abstract class CrudController<Req, Res, Entity extends AuditableEntity> i
     protected final Logger log = LoggerFactory.getLogger(this.getClass());
 
     protected static final long MAX_IMAGE_FILE_SIZE = 10 * 1024 * 1024; // 10 MB 제한
+
+
+    protected CrudController(BaseService<Req, Res, Entity> baseService) {
+        this.baseService = baseService;
+    }
 
     protected abstract Class<Req> getRequestClass();
 

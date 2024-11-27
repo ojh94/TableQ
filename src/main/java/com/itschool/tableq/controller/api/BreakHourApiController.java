@@ -5,14 +5,11 @@ import com.itschool.tableq.domain.BreakHour;
 import com.itschool.tableq.network.Header;
 import com.itschool.tableq.network.request.BreakHourRequest;
 import com.itschool.tableq.network.response.BreakHourResponse;
-import com.itschool.tableq.network.response.MenuItemResponse;
-import com.itschool.tableq.network.response.ReviewResponse;
 import com.itschool.tableq.service.BreakHourService;
-import com.itschool.tableq.service.MenuItemService;
-import com.itschool.tableq.service.ReviewService;
 import groovy.util.logging.Slf4j;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
@@ -28,6 +25,12 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/breakhour")
 public class BreakHourApiController extends CrudController<BreakHourRequest, BreakHourResponse, BreakHour> {
+
+    // 생성자
+    @Autowired
+    public BreakHourApiController(BreakHourService baseService) {
+        super(baseService);
+    }
 
     @Override
     protected Class<BreakHourRequest> getRequestClass() {

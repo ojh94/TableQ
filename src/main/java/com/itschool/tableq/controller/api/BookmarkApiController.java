@@ -9,6 +9,7 @@ import com.itschool.tableq.service.BookmarkService;
 import groovy.util.logging.Slf4j;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
@@ -24,6 +25,13 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/bookmark")
 public class BookmarkApiController extends CrudController<BookmarkRequest, BookmarkResponse, Bookmark> {
+
+    // 생성자
+    @Autowired
+    public BookmarkApiController(BookmarkService baseService) {
+        super(baseService);
+    }
+
     @Override
     protected Class<BookmarkRequest> getRequestClass() {
         return BookmarkRequest.class;

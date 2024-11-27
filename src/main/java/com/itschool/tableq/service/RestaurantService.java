@@ -8,7 +8,6 @@ import com.itschool.tableq.network.response.RestaurantResponse;
 import com.itschool.tableq.repository.*;
 import com.itschool.tableq.service.base.BaseService;
 import jakarta.persistence.EntityNotFoundException;
-import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -18,31 +17,48 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
-@RequiredArgsConstructor
 @Service
 public class RestaurantService extends BaseService<RestaurantRequest, RestaurantResponse, Restaurant> {
 
-    @Autowired
-    BusinessInformationRepository businessInformationRepository;
+    private final BusinessInformationRepository businessInformationRepository;
 
-    @Autowired
-    RestaurantImageRepository restaurantImageRepository;
+    private final RestaurantImageRepository restaurantImageRepository;
 
-    @Autowired
-    OpeningHourRepository openingHourRepository;
+    private final OpeningHourRepository openingHourRepository;
 
-    @Autowired
-    BreakHourRepository breakHourRepository;
+    private final BreakHourRepository breakHourRepository;
 
-    @Autowired
-    RestaurantAmenityRepository restaurantAmenityRepository;
+    private final RestaurantAmenityRepository restaurantAmenityRepository;
 
-    @Autowired
-    RestaurantKeywordsRepository restaurantKeywordRepository;
+    private final RestaurantKeywordRepository restaurantKeywordRepository;
 
-    @Autowired
-    MenuItemRepository menuItemRepository;
+    private final MenuItemRepository menuItemRepository;
 
+    // 생성자
+    @Autowired
+    public RestaurantService(RestaurantRepository baseRepository,
+                                BusinessInformationRepository businessInformationRepository,
+                                RestaurantImageRepository restaurantImageRepository,
+                                OpeningHourRepository openingHourRepository,
+                                BreakHourRepository breakHourRepository,
+                                RestaurantAmenityRepository restaurantAmenityRepository,
+                                RestaurantKeywordRepository restaurantKeywordRepository,
+                                MenuItemRepository menuItemRepository) {
+        super(baseRepository);
+        this.businessInformationRepository = businessInformationRepository;
+        this.restaurantImageRepository = restaurantImageRepository;
+        this.openingHourRepository = openingHourRepository;
+        this.breakHourRepository = breakHourRepository;
+        this.restaurantAmenityRepository = restaurantAmenityRepository;
+        this.restaurantKeywordRepository = restaurantKeywordRepository;
+        this.menuItemRepository = menuItemRepository;
+    }
+
+
+    @Override
+    protected RestaurantRepository getBaseRepository() {
+        return (RestaurantRepository) baseRepository;
+    }
 
     @Override
     protected RestaurantResponse response(Restaurant restaurant) {
@@ -63,13 +79,13 @@ public class RestaurantService extends BaseService<RestaurantRequest, Restaurant
                         .orElseThrow(() -> new EntityNotFoundException()))
                 .build();
 
-        baseRepository.save(restaurant);
+        getBaseRepository().save(restaurant);
         return Header.OK(response(restaurant));
     }
 
     @Override
     public Header<RestaurantResponse> read(Long id) {
-        return Header.OK(response(baseRepository.findById(id).orElse(null)));
+        return Header.OK(response(getBaseRepository().findById(id).orElse(null)));
     }
 
     @Override
@@ -77,7 +93,7 @@ public class RestaurantService extends BaseService<RestaurantRequest, Restaurant
     public Header<RestaurantResponse> update(Long id, Header<RestaurantRequest> request) {
         RestaurantRequest restaurantRequest = request.getData();
 
-        Restaurant restaurant = baseRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("not found"));
+        Restaurant restaurant = getBaseRepository().findById(id).orElseThrow(() -> new IllegalArgumentException("not found"));
         restaurant.update(restaurantRequest);
 
         return Header.OK(response(restaurant));
@@ -85,9 +101,9 @@ public class RestaurantService extends BaseService<RestaurantRequest, Restaurant
 
     @Override
     public Header delete(Long id) {
-        return baseRepository.findById(id)
+        return getBaseRepository().findById(id)
                 .map(restaurant -> {
-                    baseRepository.delete(restaurant);
+                    getBaseRepository().delete(restaurant);
                     return Header.OK(response(restaurant));
                 }).orElseThrow(() -> new RuntimeException("Restaurant delete fail"));
     }
@@ -118,7 +134,7 @@ public class RestaurantService extends BaseService<RestaurantRequest, Restaurant
     @Transactional
     public Header<RestaurantResponse> updateAll(Long id, RestaurantUpdateAllRequest request, List<MultipartFile> restaurantImages, List<MultipartFile> menuImages) {
 
-        Restaurant restaurant = baseRepository.findById(id)
+        Restaurant restaurant = getBaseRepository().findById(id)
                 .orElseThrow(() -> new EntityNotFoundException());
 
 

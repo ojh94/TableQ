@@ -8,9 +8,11 @@ import com.itschool.tableq.network.response.ReservationResponse;
 import com.itschool.tableq.network.response.RestaurantKeywordResponse;
 import com.itschool.tableq.service.ReservationService;
 import com.itschool.tableq.service.RestaurantKeywordService;
+import com.itschool.tableq.service.base.BaseService;
 import groovy.util.logging.Slf4j;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
@@ -26,6 +28,12 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/restaurantkeyword")
 public class RestaurantKeywordApiController extends CrudController<RestaurantKeywordRequest, RestaurantKeywordResponse, RestaurantKeyword>  {
+
+    // 생성자
+    @Autowired
+    public RestaurantKeywordApiController(RestaurantKeywordService baseService) {
+        super(baseService);
+    }
 
     @Override
     protected Class<RestaurantKeywordRequest> getRequestClass() {

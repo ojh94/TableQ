@@ -4,14 +4,26 @@ import com.itschool.tableq.domain.Amenity;
 import com.itschool.tableq.network.Header;
 import com.itschool.tableq.network.request.AmenityRequest;
 import com.itschool.tableq.network.response.AmenityResponse;
+import com.itschool.tableq.repository.AmenityRepository;
 import com.itschool.tableq.service.base.BaseService;
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
-import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-@RequiredArgsConstructor
 @Service
 public class AmenityService extends BaseService<AmenityRequest, AmenityResponse, Amenity> {
+
+    // 생성자
+    @Autowired
+    public AmenityService(AmenityRepository baseRepository) {
+        super(baseRepository);
+    }
+
+    @Override
+    protected AmenityRepository getBaseRepository() {
+        return (AmenityRepository) baseRepository;
+    }
 
     @Override
     protected AmenityResponse response(Amenity amenity) {
@@ -26,31 +38,31 @@ public class AmenityService extends BaseService<AmenityRequest, AmenityResponse,
                 .name(amenityRequest.getName())
                 .build();
 
-        baseRepository.save(amenity);
+        getBaseRepository().save(amenity);
         return Header.OK(response(amenity));
     }
 
     @Override
     public Header<AmenityResponse> read(Long id) {
-        return Header.OK(response(baseRepository.findById(id).orElse(null)));
+        return Header.OK(response(getBaseRepository().findById(id).orElse(null)));
     }
 
     @Override
     @Transactional
     public Header<AmenityResponse> update(Long id, Header<AmenityRequest> request) {
         AmenityRequest amenityRequest = request.getData();
-        Amenity amenity = baseRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("not found"));
+        Amenity amenity = getBaseRepository().findById(id).orElseThrow(() -> new IllegalArgumentException("not found"));
         amenity.update(amenityRequest);
         return Header.OK(response(amenity));
     }
 
     @Override
     public Header delete(Long id) {
-        return baseRepository.findById(id)
+        return getBaseRepository().findById(id)
                 .map(amenity -> {
-                    baseRepository.delete(amenity);
+                    getBaseRepository().delete(amenity);
                     return Header.OK(response(amenity));
                 })
-                .orElseThrow(() -> new IllegalArgumentException("not found"));
+                .orElseThrow(() -> new EntityNotFoundException());
     }
 }

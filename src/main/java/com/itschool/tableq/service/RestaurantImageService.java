@@ -11,16 +11,31 @@ import com.itschool.tableq.service.base.BaseServiceWithS3;
 import com.itschool.tableq.util.FileUtil;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
+@Service
 public class RestaurantImageService extends BaseServiceWithS3<RestaurantImageRequest, RestaurantImageResponse, RestaurantImage> {
-    @Autowired
-    RestaurantRepository restaurantRepository;
+
+    private final RestaurantRepository restaurantRepository;
 
     private static final String DIRECTORY_NAME = "restaurant-image";
+
+    // 생성자
+    @Autowired
+    public RestaurantImageService(RestaurantImageRepository baseRepository,
+                                  RestaurantRepository restaurantRepository) {
+        super(baseRepository);
+        this.restaurantRepository = restaurantRepository;
+    }
+
+    @Override
+    protected RestaurantImageRepository getBaseRepository() {
+        return (RestaurantImageRepository) baseRepository;
+    }
 
     @Override
     protected RestaurantImageResponse response(RestaurantImage restaurantImage) {
@@ -38,7 +53,7 @@ public class RestaurantImageService extends BaseServiceWithS3<RestaurantImageReq
                             .orElseThrow(() -> new EntityNotFoundException()))
                     .build();
 
-            entity = baseRepository.save(entity);
+            entity = getBaseRepository().save(entity);
 
             String fileUrl = uploadFile(menuItemRequest.getFile(), DIRECTORY_NAME,
                     entity.getId() + FileUtil.getFileExtension(request.getData().getFile()));
@@ -55,7 +70,7 @@ public class RestaurantImageService extends BaseServiceWithS3<RestaurantImageReq
 
     @Override
     public Header<RestaurantImageResponse> read(Long id) {
-        return Header.OK(response(baseRepository.findById(id).orElse(null)));
+        return Header.OK(response(getBaseRepository().findById(id).orElse(null)));
     }
 
     public Header<List<RestaurantImageResponse>> readByRestaurantId(Long restaurantId){
@@ -73,7 +88,7 @@ public class RestaurantImageService extends BaseServiceWithS3<RestaurantImageReq
 
             MultipartFile file = restaurantImageRequest.getFile();
 
-            RestaurantImage findEntity = baseRepository.findById(id)
+            RestaurantImage findEntity = getBaseRepository().findById(id)
                     .orElseThrow(() -> new IllegalArgumentException("not found"));
 
             String existingUrl = findEntity.getFileUrl();
@@ -100,13 +115,13 @@ public class RestaurantImageService extends BaseServiceWithS3<RestaurantImageReq
     @Override
     public Header delete(Long id) {
         try {
-            RestaurantImage entity = baseRepository.findById(id)
+            RestaurantImage entity = getBaseRepository().findById(id)
                     .orElseThrow(() -> new IllegalArgumentException("not found"));
 
             if(entity.getFileUrl() != null)
                 deleteFile(entity.getFileUrl());
 
-            baseRepository.delete(entity);
+            getBaseRepository().delete(entity);
 
             return Header.OK(response(entity));
         } catch (Exception e){

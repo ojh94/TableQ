@@ -13,7 +13,6 @@ import com.itschool.tableq.repository.UserRepository;
 import com.itschool.tableq.service.base.BaseService;
 import com.itschool.tableq.util.DateUtil;
 import jakarta.persistence.EntityNotFoundException;
-import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -23,16 +22,27 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-@RequiredArgsConstructor
 @Service
-public class ReservationService extends
-        BaseService<ReservationRequest, ReservationResponse, Reservation> {
+public class ReservationService extends BaseService<ReservationRequest, ReservationResponse, Reservation> {
 
-    @Autowired
-    UserRepository userRepository;
+    private final UserRepository userRepository;
 
+    private final RestaurantRepository restaurantRepository;
+
+    // 생성자
     @Autowired
-    RestaurantRepository restaurantRepository;
+    public ReservationService(ReservationRepository baseRepository,
+                              UserRepository userRepository,
+                              RestaurantRepository restaurantRepository) {
+        super(baseRepository);
+        this.userRepository = userRepository;
+        this.restaurantRepository = restaurantRepository;
+    }
+
+    @Override
+    protected ReservationRepository getBaseRepository() {
+        return (ReservationRepository) baseRepository;
+    }
 
     @Override
     protected ReservationResponse response(Reservation reservation) {
@@ -155,7 +165,7 @@ public class ReservationService extends
                     .user(user)
                     .build();
 
-            baseRepository.save(reservation);
+            getBaseRepository().save(reservation);
             return Header.OK(response(reservation));
         }
     }
@@ -163,7 +173,7 @@ public class ReservationService extends
     @Override
     public Header<ReservationResponse> read(Long id) {
         // ID에 해당하는 예약에 대한 정보 조회
-        return Header.OK(response(baseRepository.findById(id).orElse(null)));
+        return Header.OK(response(getBaseRepository().findById(id).orElse(null)));
     }
 
     public Header<List<ReservationResponse>> readByRestaurantId(Long restaurantId, Pageable pageable){
@@ -192,7 +202,7 @@ public class ReservationService extends
         // 손님이 입장을 했는지 판단하여 업데이트
         ReservationRequest reservationRequest = request.getData();
 
-        Reservation reservation = baseRepository.findById(id).orElse(null);
+        Reservation reservation = getBaseRepository().findById(id).orElse(null);
 
         reservation.update(reservationRequest);
 

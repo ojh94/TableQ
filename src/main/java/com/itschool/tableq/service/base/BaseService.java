@@ -4,7 +4,6 @@ import com.itschool.tableq.domain.base.AuditableEntity;
 import com.itschool.tableq.ifs.CrudInterface;
 import com.itschool.tableq.network.Header;
 import com.itschool.tableq.network.Pagination;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -16,8 +15,15 @@ import java.util.stream.Collectors;
 
 @Component
 public abstract class BaseService<Req, Res, Entity extends AuditableEntity> implements CrudInterface<Req, Res> {
-    @Autowired(required = false)
-    protected JpaRepository<Entity, Long> baseRepository;
+
+    protected final JpaRepository<Entity, Long> baseRepository;
+
+    // 생성자 주입을 통해 baseRepository를 주입받음
+    protected BaseService(JpaRepository<Entity, Long> baseRepository) {
+        this.baseRepository = baseRepository;
+    }
+
+    protected abstract JpaRepository<Entity, Long> getBaseRepository();
 
     protected abstract Res response(Entity entity);
 
@@ -32,7 +38,7 @@ public abstract class BaseService<Req, Res, Entity extends AuditableEntity> impl
     }
 
     public final Header<List<Res>> getPaginatedList(Pageable pageable) {
-        Page<Entity> entities = baseRepository.findAll(pageable);
+        Page<Entity> entities = getBaseRepository().findAll(pageable);
 
         return convertPageToList(entities);
     }

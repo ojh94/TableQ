@@ -7,11 +7,13 @@ import com.itschool.tableq.network.request.update.RestaurantUpdateAllRequest;
 import com.itschool.tableq.network.response.RestaurantResponse;
 import com.itschool.tableq.network.request.RestaurantRequest;
 import com.itschool.tableq.service.RestaurantService;
+import com.itschool.tableq.service.base.BaseService;
 import com.itschool.tableq.util.FileUtil;
 import groovy.util.logging.Slf4j;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
@@ -25,6 +27,12 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/restaurant")
 public class RestaurantApiController extends CrudController<RestaurantRequest, RestaurantResponse, Restaurant> {
+
+    // 생성자
+    @Autowired
+    public RestaurantApiController(RestaurantService baseService) {
+        super(baseService);
+    }
 
     @Override
     protected Class<RestaurantRequest> getRequestClass() {

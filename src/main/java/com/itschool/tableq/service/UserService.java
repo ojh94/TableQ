@@ -6,7 +6,8 @@ import com.itschool.tableq.network.request.UserRequest;
 import com.itschool.tableq.network.response.UserResponse;
 import com.itschool.tableq.repository.UserRepository;
 import com.itschool.tableq.service.base.BaseService;
-import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -14,11 +15,23 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDateTime;
 import java.util.List;
 
-@RequiredArgsConstructor
 @Service
 public class UserService extends BaseService<UserRequest, UserResponse, User> {
 
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
+
+    // 생성자
+    @Autowired
+    public UserService(JpaRepository<User, Long> baseRepository,
+                          BCryptPasswordEncoder bCryptPasswordEncoder) {
+        super(baseRepository);
+        this.bCryptPasswordEncoder = bCryptPasswordEncoder;
+    }
+
+    @Override
+    protected UserRepository getBaseRepository() {
+        return (UserRepository) baseRepository;
+    }
 
     @Override
     protected UserResponse response(User user) {
@@ -37,13 +50,13 @@ public class UserService extends BaseService<UserRequest, UserResponse, User> {
                 .lastLoginAt(LocalDateTime.now())
                 .build();
 
-        baseRepository.save(user);
+        getBaseRepository().save(user);
         return Header.OK(response(user));
     }
 
     @Override
     public Header<UserResponse> read(Long id) {
-        return Header.OK(response(baseRepository.findById(id).orElse(null)));
+        return Header.OK(response(getBaseRepository().findById(id).orElse(null)));
     }
 
     @Override
@@ -51,7 +64,7 @@ public class UserService extends BaseService<UserRequest, UserResponse, User> {
     public Header<UserResponse> update(Long id, Header<UserRequest> request) {
         UserRequest userRequest = request.getData();
 
-        User user = baseRepository.findById(id)
+        User user = getBaseRepository().findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("not found" + id));
 
         user.update(userRequest);
@@ -61,16 +74,16 @@ public class UserService extends BaseService<UserRequest, UserResponse, User> {
 
     @Override
     public Header<UserResponse> delete(Long id) {
-        return baseRepository.findById(id)
+        return getBaseRepository().findById(id)
                 .map(user-> {
-                    baseRepository.delete(user);
+                    getBaseRepository().delete(user);
                     return Header.OK(response(user));
                 })
                 .orElseThrow(() -> new RuntimeException("user delete fail"));
     }
 
     public Long signup(UserRequest dto) {
-        return baseRepository.save(User.builder()
+        return getBaseRepository().save(User.builder()
                 .email(dto.getEmail())
                 .password(bCryptPasswordEncoder.encode(dto.getPassword()))
                 .name(dto.getName())
@@ -87,6 +100,6 @@ public class UserService extends BaseService<UserRequest, UserResponse, User> {
     }
 
     public List<User> getAllUsers() {
-        return baseRepository.findAll();
+        return getBaseRepository().findAll();
     }
 }

@@ -11,17 +11,32 @@ import com.itschool.tableq.service.base.BaseServiceWithS3;
 import com.itschool.tableq.util.FileUtil;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
+@Service
 public class ReviewImageService extends BaseServiceWithS3<ReviewImageRequest, ReviewImageResponse, ReviewImage> {
 
-    @Autowired
-    ReviewRepository reviewRepository;
+    private final ReviewRepository reviewRepository;
 
     private static final String DIRECTORY_NAME = "review-image";
+
+    // 생성자
+    @Autowired
+    public ReviewImageService(JpaRepository<ReviewImage, Long> baseRepository,
+                              ReviewRepository reviewRepository) {
+        super(baseRepository);
+        this.reviewRepository = reviewRepository;
+    }
+
+    @Override
+    protected ReviewImageRespository getBaseRepository() {
+        return (ReviewImageRespository) baseRepository;
+    }
 
     @Override
     protected ReviewImageResponse response(ReviewImage reviewImage) {
@@ -39,7 +54,7 @@ public class ReviewImageService extends BaseServiceWithS3<ReviewImageRequest, Re
                             .orElseThrow(()-> new EntityNotFoundException()))
                     .build();
 
-            entity = baseRepository.save(entity);
+            entity = getBaseRepository().save(entity);
 
             String fileUrl = uploadFile(reviewImageRequest.getFile(), DIRECTORY_NAME,
                     entity.getId() + FileUtil.getFileExtension(request.getData().getFile()));
@@ -56,7 +71,7 @@ public class ReviewImageService extends BaseServiceWithS3<ReviewImageRequest, Re
 
     @Override
     public Header<ReviewImageResponse> read(Long id) {
-        return Header.OK(response(baseRepository.findById(id).
+        return Header.OK(response(getBaseRepository().findById(id).
                 orElseThrow(() -> new EntityNotFoundException())));
     }
 
@@ -78,7 +93,7 @@ public class ReviewImageService extends BaseServiceWithS3<ReviewImageRequest, Re
 
             MultipartFile file = reviewImageRequest.getFile();
 
-            ReviewImage findEntity = baseRepository.findById(id)
+            ReviewImage findEntity = getBaseRepository().findById(id)
                     .orElseThrow(() -> new IllegalArgumentException("not found"));
 
             String existingUrl = findEntity.getFileUrl();
@@ -105,13 +120,13 @@ public class ReviewImageService extends BaseServiceWithS3<ReviewImageRequest, Re
     @Override
     public Header delete(Long id) {
         try {
-            ReviewImage entity = baseRepository.findById(id)
+            ReviewImage entity = getBaseRepository().findById(id)
                     .orElseThrow(() -> new IllegalArgumentException("not found"));
 
             if(entity.getFileUrl() != null)
                 deleteFile(entity.getFileUrl());
 
-            baseRepository.delete(entity);
+            getBaseRepository().delete(entity);
 
             return Header.OK(response(entity));
         } catch (Exception e){

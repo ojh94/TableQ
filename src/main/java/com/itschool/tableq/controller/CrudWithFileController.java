@@ -23,8 +23,7 @@ import java.util.List;
 @Component
 public abstract class CrudWithFileController<Req extends FileRequest, Res, Entity extends IncludeFileUrl> implements CrudWithFileInterface<Req, Res> {
 
-    @Autowired(required = false)
-    protected BaseServiceWithS3<Req, Res, Entity> baseService;
+    protected final BaseServiceWithS3<Req, Res, Entity> baseService;
 
     @Autowired
     private ObjectMapper objectMapper;  // Jackson ObjectMapper를 사용하여 JSON을 객체로 변환
@@ -32,6 +31,10 @@ public abstract class CrudWithFileController<Req extends FileRequest, Res, Entit
     protected final Logger log = LoggerFactory.getLogger(this.getClass());
 
     private static final long MAX_IMAGE_FILE_SIZE = 10 * 1024 * 1024; // 10 MB 제한
+
+    protected CrudWithFileController(BaseServiceWithS3<Req, Res, Entity> baseService) {
+        this.baseService = baseService;
+    }
 
     protected abstract Class<Req> getRequestClass();
 

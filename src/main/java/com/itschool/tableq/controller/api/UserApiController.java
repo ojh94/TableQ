@@ -6,9 +6,11 @@ import com.itschool.tableq.network.Header;
 import com.itschool.tableq.network.response.UserResponse;
 import com.itschool.tableq.network.request.UserRequest;
 import com.itschool.tableq.service.UserService;
+import com.itschool.tableq.service.base.BaseService;
 import groovy.util.logging.Slf4j;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -20,6 +22,12 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/api/user")
 public class UserApiController extends CrudController<UserRequest, UserResponse, User> {
+
+    // 생성자
+    @Autowired
+    public UserApiController(UserService baseService) {
+        super(baseService);
+    }
 
     @Override
     protected Class<UserRequest> getRequestClass() {
