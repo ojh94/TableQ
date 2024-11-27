@@ -1,3 +1,10 @@
+const restaurantImageList = [];
+const openingHourList = [];
+const breakHourList = [];
+const restaurantAmenityList = [];
+const restaurantKeywordList = [];
+const menuItemList = [];
+
 $(document).ready(function() {
     if (window.location.pathname
     === '/restaurant/' + document.getElementById("restaurant-id").value) {
