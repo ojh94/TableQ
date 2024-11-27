@@ -51,6 +51,7 @@ public class User extends AuditableEntity implements UserDetails {
     private String email;
 
     @Column
+    @Enumerated(EnumType.STRING)
     private MemberRole memberRole;
 
     public void update(UserRequest userRequest) {
