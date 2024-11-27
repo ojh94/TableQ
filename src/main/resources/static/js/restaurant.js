@@ -1204,7 +1204,7 @@ function requestAmenityApi() {
                 restaurantAmenity.forEach((amenitys) => {
                     let amenityHtml =
                         `
-                        <p>${amenitys.amenity.name}</p>
+                        <p><i class="bi bi-check2-square"></i> ${amenitys.amenity.name}</p>
                         `;
                     // amenity 요소(내부) 끝에 추가
                     $('#amenity').append(amenityHtml);
