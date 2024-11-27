@@ -1,6 +1,7 @@
 package com.itschool.tableq.config;
 
 import com.itschool.tableq.config.handler.CustomAuthenticationSuccessHandler;
+import com.itschool.tableq.domain.enumclass.MemberRole;
 import com.itschool.tableq.service.UserDetailService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -40,7 +41,7 @@ public class WebSecurityConfig {
         return http
                 .authorizeHttpRequests(auth -> auth // 인증, 인가 설정
                         .requestMatchers(
-                                new AntPathRequestMatcher("**"), // 운영에 반영 x
+                                //new AntPathRequestMatcher("**"), // 운영에 반영 x
                                 new AntPathRequestMatcher("/"),
                                 new AntPathRequestMatcher("/css/**"),
                                 new AntPathRequestMatcher("/img/**"),
@@ -48,7 +49,6 @@ public class WebSecurityConfig {
                                 new AntPathRequestMatcher("/auth"),
                                 new AntPathRequestMatcher("/login"),
                                 new AntPathRequestMatcher("/signup"),
-                                new AntPathRequestMatcher("/user"),
                                 new AntPathRequestMatcher("/api/**"),
                                 new AntPathRequestMatcher("/api-docs"),
                                 new AntPathRequestMatcher("/api-docs/**"),
@@ -56,7 +56,10 @@ public class WebSecurityConfig {
                                 new AntPathRequestMatcher("/swagger*/**"),
                                 new AntPathRequestMatcher("/swagger-resources/**")
                         ).permitAll()
-                        .anyRequest().authenticated())
+                        .requestMatchers("/user/**").hasRole(MemberRole.USER.getName())
+                        .requestMatchers("/owner/**").hasRole(MemberRole.OWNER.getName())
+                        .anyRequest().authenticated()
+                )
                 .formLogin(formLogin -> formLogin // 폼 기반 로그인 설정
                         .loginPage("/login")
                         .usernameParameter("email")

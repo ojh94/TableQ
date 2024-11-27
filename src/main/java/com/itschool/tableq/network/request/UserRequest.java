@@ -43,4 +43,6 @@ public class UserRequest {
     @NotBlank
     @Email
     private String email;
+
+    private String memberRole;
 }

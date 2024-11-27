@@ -49,6 +49,9 @@ public class User extends AuditableEntity implements UserDetails {
     @Column(nullable = false, unique = true)
     private String email;
 
+    @Column
+    private String memberRole;
+
     public void update(UserRequest userRequest) {
         this.password = userRequest.getPassword() == null? this.password : userRequest.getPassword();
         this.nickname = userRequest.getNickname() == null? this.nickname : userRequest.getNickname();
