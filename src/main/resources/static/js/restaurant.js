@@ -430,7 +430,7 @@ function requestReviewPossibleApi() {
 
         // reviews-number 요소(외부) 끝에 추가
         $('#reviews-number').after(reviewPossibleStarHtml);
-        $('#review-form').after(reviewPossibleTextareaHtml);
+        $('#review-form').append(reviewPossibleTextareaHtml);
     }
 }
 
