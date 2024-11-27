@@ -32,4 +32,30 @@ public class FileUtil {
 
         return ALLOWED_IMAGE_EXTENSIONS.contains(extension) && isValidFileType(file, "image/");
     }
+
+    public static void validateFileList(List<MultipartFile> fileList, long maxImageFileSize) {
+        try {
+            fileList.stream().forEach((MultipartFile file) -> {
+                validateFile(file, maxImageFileSize);
+            });
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public static void validateFile(MultipartFile file, long maxImageFileSize) {
+        // boolean result = false;
+
+        // 제네릭 타입 Req에 맞게 요청 객체를 변환
+
+        // 파일 크기 체크
+        if (!FileUtil.isValidFileSize(file, maxImageFileSize))
+            throw new RuntimeException("파일 크기가 제한을 초과합니다.");
+
+        // 파일 유형 확인
+        if (!FileUtil.validateImageFileExtension(file))
+            throw new RuntimeException("잘못된 파일 유형입니다. (jpg, jpeg, png 확장자만 허용)");
+
+        // return result = true;
+    }
 }

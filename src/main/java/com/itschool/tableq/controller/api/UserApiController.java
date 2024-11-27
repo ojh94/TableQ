@@ -20,6 +20,12 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/api/user")
 public class UserApiController extends CrudController<UserRequest, UserResponse, User> {
+
+    @Override
+    protected Class<UserRequest> getRequestClass() {
+        return UserRequest.class;
+    }
+
     @Override
     @Operation(summary = "수정", description = "ID로 엔티티 및 세션 업데이트")
     @PutMapping("{id}")

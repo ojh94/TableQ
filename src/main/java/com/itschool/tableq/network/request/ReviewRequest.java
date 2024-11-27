@@ -19,4 +19,6 @@ public class ReviewRequest {
     private RestaurantRequest restaurant;
 
     private UserRequest user;
+
+    private ReservationRequest reservation;
 }

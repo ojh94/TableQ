@@ -28,6 +28,12 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/breakhour")
 public class BreakHourApiController extends CrudController<BreakHourRequest, BreakHourResponse, BreakHour> {
+
+    @Override
+    protected Class<BreakHourRequest> getRequestClass() {
+        return BreakHourRequest.class;
+    }
+
     @Operation(summary = "레스토랑별 휴무시간 조회", description = "Restaurant ID 및 pageable로 엔티티 목록을 조회")
     @GetMapping("/restaurant/{restaurantId}")
     public Header<List<BreakHourResponse>> readByRestaurantId(@PathVariable(name = "restaurantId") Long restaurantId,

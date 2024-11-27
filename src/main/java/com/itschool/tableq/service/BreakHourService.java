@@ -6,7 +6,7 @@ import com.itschool.tableq.network.Header;
 import com.itschool.tableq.network.Pagination;
 import com.itschool.tableq.network.request.BreakHourRequest;
 import com.itschool.tableq.network.response.BreakHourResponse;
-import com.itschool.tableq.repository.BreakHoursRepository;
+import com.itschool.tableq.repository.BreakHourRepository;
 import com.itschool.tableq.repository.RestaurantRepository;
 import com.itschool.tableq.service.base.BaseService;
 import jakarta.persistence.EntityNotFoundException;
@@ -73,7 +73,7 @@ public class BreakHourService extends BaseService<BreakHourRequest, BreakHourRes
         Restaurant restaurant = restaurantRepository.findById(restaurantId)
                 .orElseThrow(() -> new EntityNotFoundException("레스토랑을 찾을 수 없습니다. ID: " + restaurantId));
 
-        Page<BreakHour> entities = ((BreakHoursRepository)baseRepository).findByRestaurant(restaurant, pageable);
+        Page<BreakHour> entities = ((BreakHourRepository)baseRepository).findByRestaurant(restaurant, pageable);
 
         List<BreakHourResponse> BreakHourList = entities.stream()
                 .map(entity -> response(entity))

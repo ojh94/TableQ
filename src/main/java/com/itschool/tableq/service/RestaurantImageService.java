@@ -20,7 +20,7 @@ public class RestaurantImageService extends BaseServiceWithS3<RestaurantImageReq
     @Autowired
     RestaurantRepository restaurantRepository;
 
-    private static final String DIRECTORY_NAME = "restaurantImage";
+    private static final String DIRECTORY_NAME = "restaurant-image";
 
     @Override
     protected RestaurantImageResponse response(RestaurantImage restaurantImage) {

@@ -22,6 +22,12 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/review")
 public class ReviewApiController extends CrudController<ReviewRequest, ReviewResponse, Review> {
+
+    @Override
+    protected Class<ReviewRequest> getRequestClass() {
+        return ReviewRequest.class;
+    }
+
     @Operation(summary = "레스토랑별 리뷰 조회", description = "Restaurant ID 및 pageable로 엔티티 목록을 조회")
     @GetMapping("/restaurant/{restaurantId}")
     public Header<List<ReviewResponse>> readByRestaurantId(@PathVariable(name = "restaurantId") Long restaurantId,

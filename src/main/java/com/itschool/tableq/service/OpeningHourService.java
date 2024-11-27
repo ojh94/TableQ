@@ -3,22 +3,19 @@ package com.itschool.tableq.service;
 import com.itschool.tableq.domain.OpeningHour;
 import com.itschool.tableq.domain.Restaurant;
 import com.itschool.tableq.network.Header;
-import com.itschool.tableq.network.Pagination;
 import com.itschool.tableq.network.request.OpeningHourRequest;
 import com.itschool.tableq.network.response.OpeningHourResponse;
-import com.itschool.tableq.repository.OpeningHoursRepository;
+import com.itschool.tableq.repository.OpeningHourRepository;
 import com.itschool.tableq.repository.RestaurantRepository;
 import com.itschool.tableq.service.base.BaseService;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
@@ -74,6 +71,6 @@ public class OpeningHourService extends BaseService<OpeningHourRequest, OpeningH
         Restaurant restaurant = restaurantRepository.findById(restaurantId)
                 .orElseThrow(() -> new EntityNotFoundException("레스토랑을 찾을 수 없습니다."));
 
-        return convertPageToList(((OpeningHoursRepository)baseRepository).findByRestaurant(restaurant, pageable));
+        return convertPageToList(((OpeningHourRepository)baseRepository).findByRestaurant(restaurant, pageable));
     }
 }

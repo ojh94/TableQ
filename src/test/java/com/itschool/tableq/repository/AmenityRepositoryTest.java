@@ -9,16 +9,15 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
-class AmenitiesRepositoryTest extends ApplicationTests {
+class AmenityRepositoryTest extends ApplicationTests {
     @Autowired
-    private AmenitiesRepository amenitiesRepository;
+    private AmenityRepository amenityRepository;
 
     @BeforeEach
     void deleteEntities() {
-        amenitiesRepository.deleteAll();
+        amenityRepository.deleteAll();
     }
 
     @Test
@@ -28,7 +27,7 @@ class AmenitiesRepositoryTest extends ApplicationTests {
                 .name("테스트")
                 .build();
 
-        Amenity saveAmenity =  amenitiesRepository.save(amenity);
+        Amenity saveAmenity =  amenityRepository.save(amenity);
 
         System.out.println("saved amenity: " + amenity);
 
@@ -43,13 +42,13 @@ class AmenitiesRepositoryTest extends ApplicationTests {
                 .name("테스트")
                 .build();
 
-        Amenity saveAmenity = amenitiesRepository.save(amenity);
+        Amenity saveAmenity = amenityRepository.save(amenity);
         System.out.println("saved amenity: " + amenity);
         System.out.println("savedAmenity.getName(): " + saveAmenity.getName());
 
         saveAmenity.setName("테스트업데이트");
 
-        Amenity updateAmenity = amenitiesRepository.saveAndFlush(saveAmenity);
+        Amenity updateAmenity = amenityRepository.saveAndFlush(saveAmenity);
 
         System.out.println("updated amenity: " + updateAmenity);
         System.out.println("updateAmenity.getName(): " + updateAmenity.getName());
@@ -61,17 +60,17 @@ class AmenitiesRepositoryTest extends ApplicationTests {
     @Test
     @Transactional
     void deleteAmenities() {
-        Long beforeCount = amenitiesRepository.countBy().orElseThrow();
+        Long beforeCount = amenityRepository.countBy().orElseThrow();
 
         Amenity amenity = Amenity.builder()
                 .name("Test")
                 .build();
 
-        Amenity saveAmenity = amenitiesRepository.save(amenity);
+        Amenity saveAmenity = amenityRepository.save(amenity);
 
-        amenitiesRepository.delete(amenity);
+        amenityRepository.delete(amenity);
 
-        Long afterCount = amenitiesRepository.countBy().orElseThrow();
+        Long afterCount = amenityRepository.countBy().orElseThrow();
 
         assertThat(afterCount - beforeCount).isEqualTo(0);
     }
