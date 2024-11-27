@@ -10947,7 +10947,7 @@ th, td {
     display: inline-flex;
     float: left;
     flex-direction: row;
-    justify-content: flex-start;
+    justify-content: center;
 }
 .star_rating .star {
     width: 40px;
@@ -10984,4 +10984,8 @@ th, td {
 
 .btn-apply:active {
     box-shadow: 0 0 0 5px rgba(237, 125, 49, 0.5); /* 클릭 시 그림자 효과 */
+}
+
+#review-textarea {
+    height: 170px;
 }
