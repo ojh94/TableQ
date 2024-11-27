@@ -65,6 +65,9 @@ springdoc:
   paths-to-match:
     - /api/**
 
+logging:
+  level:
+    org.springframework.security: DEBUG
 
 
 cloud:
