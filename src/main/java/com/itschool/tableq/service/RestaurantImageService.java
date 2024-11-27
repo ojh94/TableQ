@@ -11,6 +11,8 @@ import com.itschool.tableq.service.base.BaseServiceWithS3;
 import com.itschool.tableq.util.FileUtil;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -74,8 +76,9 @@ public class RestaurantImageService extends BaseServiceWithS3<RestaurantImageReq
     }
 
     public Header<List<RestaurantImageResponse>> readByRestaurantId(Long restaurantId){
-        Restaurant restaurant = restaurantRepository.findById(restaurantId).get();
-        List<RestaurantImage> imageList = ((RestaurantImageRepository)baseRepository).findByRestaurant(restaurant).orElse(null);
+        Restaurant restaurant = restaurantRepository.findById(restaurantId)
+                .orElseThrow(() -> new EntityNotFoundException());
+        List<RestaurantImage> imageList = getBaseRepository().findByRestaurant(restaurant);
 
         return Header.OK(responseList(imageList));
     }
