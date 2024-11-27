@@ -6,10 +6,9 @@ const restaurantKeywordList = [];
 const menuItemList = [];
 
 $(document).ready(function() {
-    requestRestaurantApi(false);
-
     if (window.location.pathname
     === '/restaurant/' + document.getElementById("restaurant-id").value) {
+        requestRestaurantApi(false);
         requestReviewApi();
         requestMenuApi();
         requestOpeningHourApi();
@@ -32,6 +31,7 @@ $(document).ready(function() {
 
     if (window.location.pathname
     === '/restaurant/modify/' + document.getElementById("restaurant-id").value) {
+        requestRestaurantApi(true);
         requestReviewApi();
         requestMenuModifyApi();
         requestOpeningHourModifyApi();
@@ -154,71 +154,69 @@ function updateActiveCarouselImage(event) {
     event.target.value = '';
 }
 
-// 상세 페이지 restaurant API
+// restaurant 조회 API
 function requestRestaurantApi(isModifyMode) {
+
     const id = document.getElementById("restaurant-id").value;
-
-    const updateUI = (response) => {
-        const data = response.data;
-
-        const elements = {
-            rName: isModifyMode
-                ? $('body > div > div.container.mt-5 > div > div > article:nth-child(1) > header > h1 > input')
-                : $('body > div > div.container.mt-5 > div > div > article:nth-child(1) > header > h1'),
-            rAddress: isModifyMode
-                ? $('#home > div:nth-child(4) > input')
-                : $('#home > p:nth-child(4)'),
-            rInformation: $('#information'),
-            rContactNumber: isModifyMode
-                ? $('#times-modal > div > div > div.modal-body > div.card.mb-3 > div > table > tbody > tr:nth-child(1) > td:nth-child(2) > input')
-                : $('#home > table > tbody > tr:nth-child(4) > td:nth-child(2)'),
-            availabilityText: $("body > div > div.container.mt-5 > div > div > article:nth-child(1) > table > tbody > tr:nth-child(1) > td:nth-child(2)")
-        };
-
-        if (isModifyMode) {
-            elements.rName.val(data.name);
-            elements.rAddress.val(data.address);
-            elements.rInformation.val(data.information);
-            elements.rContactNumber.val(data.contactNumber);
-        } else {
-            elements.rName[0].textContent = data.name;
-            elements.rAddress[0].textContent = data.address;
-            elements.rContactNumber[0].textContent = data.contactNumber;
-
-            if (data.information === undefined) {
-                const informationHtml = `
-                    <div style="text-align: center;">
-                        <p style="color: #696969;">설정된 매장소개 정보가 없습니다.</p>
-                        <a class="pick-outline" type="button">매장에 등록 요청하기</a>
-                    </div>`;
-                elements.rInformation.after(informationHtml);
-            } else {
-                elements.rInformation[0].textContent = data.information;
-            }
-        }
-
-        if (data.available === false) {
-            $('#available').hide();
-            elements.availabilityText.text(isModifyMode ? "현장대기 가능" : "현장대기 가능");
-        } else {
-            elements.availabilityText.text("원격줄서기, 현장대기 모두 가능");
-        }
-
-        document.getElementById("nav-mypage").onclick = () => {
-            location.href = `/owner/mypage/${data.businessInformation.id}`;
-        };
-
-        console.log(isModifyMode ? '가게 수정 set 완료' : '가게 set 완료');
-    };
 
     $.ajax({
         url: `/api/restaurant/${id}`,
-        type: 'GET',
-        contentType: 'application/json',
-        success: updateUI,
-        error: (xhr, status, error) => {
-            console.error(isModifyMode ? '가게 수정 set 실패:' : '가게 set 실패:', error);
-            alert(isModifyMode ? '가게 수정 set 중 오류가 발생했습니다.' : '가게 set 중 오류가 발생했습니다.');
+        type: 'GET', // 필요한 HTTP 메서드로 변경
+        contentType: 'application/json', // JSON 형식으로 데이터 전송
+        success: function(response) {
+            // 요청 성공 시 동작
+            const rName = $('#restaurant-name');
+            const rAddress = $('#restaurant-address');
+            const rInformation = $('#information');
+            const rContactNumber = $('#restaurant-number');
+
+            if (response.data.available === false) {
+                $('#available').css("display" ,"none");
+                $("body > div > div.container.mt-5 > div > div > article:nth-child(1) > table > tbody > tr:nth-child(1) > td:nth-child(2)")[0]
+                .textContent = "현장대기 가능";
+            } else if (response.data.available === true) {
+                $("body > div > div.container.mt-5 > div > div > article:nth-child(1) > table > tbody > tr:nth-child(1) > td:nth-child(2)")[0]
+                .textContent = "원격줄서기, 현장대기 모두 가능";
+            }
+
+            if (isModifyMode) {
+                // nav 속 마이페이지 클릭 시
+                document.getElementById("nav-mypage").onclick = function() {
+                    location.href = '/owner/mypage/' + response.data.businessInformation.id;
+                }
+
+                rName.val(response.data.name);
+                rAddress.val(response.data.address);
+                rInformation.val(response.data.information);
+                rContactNumber.val(response.data.contactNumber);
+
+            } else {
+                rName[0].textContent = response.data.name;
+                rAddress[0].textContent = response.data.address;
+                rContactNumber[0].textContent = response.data.contactNumber;
+
+                if(response.data.information === undefined) {
+                    let informationHtml =
+                        `
+                        <div style="text-align: center;">
+                            <p style="color: #696969;">설정된 매장소개 정보가 없습니다.</p>
+                            <a class="pick-outline" type="button">매장에 등록 요청하기</a>
+                        </div>
+                        `;
+                    // information 요소(외부) 끝에 추가
+                    $('#information').after(informationHtml);
+
+                } else {
+                    rInformation[0].textContent = response.data.information;
+                }
+            }
+
+            console.log('가게 set 완료');
+        },
+        error: function(xhr, status, error) {
+            // 요청 실패 시 동작
+            console.error('가게 set 실패:', error);
+            alert('가게 set 중 오류가 발생했습니다.');
         }
     });
 }

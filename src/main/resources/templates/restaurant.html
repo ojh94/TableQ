@@ -12,7 +12,7 @@
                     <!-- Post header-->
                     <header class="mb-4">
                         <!-- Post title-->
-                        <h1 class="fw-bolder mb-1"></h1>
+                        <h1 id="restaurant-name" class="fw-bolder mb-1"></h1>
                         <!-- Post meta content-->
                         <!--<div class="text-muted fst-italic mb-2">YOUR FAVORITE TENDON HAUS</div>-->
                         <div style="display: flex; align-items: center;">
@@ -119,11 +119,11 @@
                                 </tr>
                                 <tr>
                                     <td>전화번호</td>
-                                    <td></td>
+                                    <td id="restaurant-number"></td>
                                 </tr>
                             </table>
                             <h4 class="fw-bolder mb-4 mt-5">위치정보</h4>
-                            <p id="text-copy" class="mb-4" style="display: block;"></p>
+                            <p id="restaurant-address" class="mb-4" style="display: block;"></p>
                             <!-- 네이버 지도 API 필요 -->
                             <button onclick="copyText()" style="border: none; padding: 5px 10px; border-radius: 20px;">
                                 <i class="bi bi-clipboard"></i>&nbsp;주소복사
