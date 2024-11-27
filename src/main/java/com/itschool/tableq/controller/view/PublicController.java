@@ -35,7 +35,7 @@ public class PublicController {
             return "index";
         }else if(user != null && user.getMemberRole().equals(MemberRole.OWNER.getName())) { // 로그인 한 상태
             model.addAttribute("owner", user);
-            return "ownerwelcome";
+            return "owner-mypage";
         }
         else { // 로그인 안 한 상태
             return "welcome";
