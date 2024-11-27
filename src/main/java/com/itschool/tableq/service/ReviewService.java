@@ -44,7 +44,7 @@ public class ReviewService extends BaseService<ReviewRequest, ReviewResponse, Re
         return ReviewResponse.of(review);
     }
 
-    public Header<Long> countUserReviewFor3Days(Long restaurantId, Long userId){
+    public Header<Long> countUserReviewsFor3Days(Long restaurantId, Long userId){
         Long count = 0L;
         User user = userRepository.findById(userId)
                 .orElseThrow(()-> new RuntimeException("유저를 조회할 수 없습니다."));

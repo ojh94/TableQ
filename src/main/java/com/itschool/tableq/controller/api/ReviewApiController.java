@@ -46,9 +46,9 @@ public class ReviewApiController extends CrudController<ReviewRequest, ReviewRes
 
     @Operation(summary = "3일간 사용자 리뷰 개수 조회", description = "User ID 및 Restaurant ID로 리뷰 개수 조회")
     @GetMapping("/count/{userId}/{restaurantId}")
-    public Header<Long> userReviewCount(@PathVariable(name = "userId") Long userId,
+    public Header<Long> countUserReviewsFor3DaysByUserId(@PathVariable(name = "userId") Long userId,
                                         @PathVariable(name= "restaurantId") Long restaurantId){
         log.info("read: ",userId, restaurantId);
-        return ((ReviewService)baseService).countUserReviewFor3Days(restaurantId,userId);
+        return ((ReviewService)baseService).countUserReviewsFor3Days(restaurantId,userId);
     }
 }

@@ -74,7 +74,7 @@ public class ReservationApiController extends CrudController<ReservationRequest,
 
     @Operation(summary = "유저별 3일 이내 방문한 식당 조회", description = "User ID로 3일 이내 방문한 식당 목록 조회")
     @GetMapping("/three-day/{userId}")
-    public Header<List<RestaurantResponse>> readVisitedRestaurantsFor3DaysByUserId(@PathVariable(name="userId")Long userId){
+    public Header<List<ReservationResponse>> readVisitedRestaurantsFor3DaysByUserId(@PathVariable(name="userId")Long userId){
 
         log.info("read: ",userId);
         return ((ReservationService)baseService).readVisitedRestaurantsFor3Day(userId);

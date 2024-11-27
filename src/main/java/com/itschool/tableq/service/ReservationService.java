@@ -55,7 +55,7 @@ public class ReservationService extends
         return false;
     }
 
-    public Header<List<RestaurantResponse>> readVisitedRestaurantsFor3Day(Long userId){
+    public Header<List<ReservationResponse>> readVisitedRestaurantsFor3Day(Long userId){
         User user = userRepository.findById(userId)
                 .orElseThrow(()->new RuntimeException("유저가 존재하지 않습니다."));
 
@@ -64,13 +64,7 @@ public class ReservationService extends
                     true, user, DateUtil.get3DaysAgo(),DateUtil.getEndOfDay()
                 );
 
-        List<RestaurantResponse> restauantList = new ArrayList<>();
-
-        for(Reservation reservation : reservationList){
-            restauantList.add(RestaurantResponse.of(reservation.getRestaurant()));
-        }
-
-        return Header.OK(restauantList);
+        return Header.OK(responseList(reservationList));
     }
 
     public Header<Long> countUserReservationsFor3Days(Long userId, Long restaurantId){
