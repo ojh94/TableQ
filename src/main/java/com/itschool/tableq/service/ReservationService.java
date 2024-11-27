@@ -6,6 +6,7 @@ import com.itschool.tableq.domain.User;
 import com.itschool.tableq.network.Header;
 import com.itschool.tableq.network.request.ReservationRequest;
 import com.itschool.tableq.network.response.ReservationResponse;
+import com.itschool.tableq.network.response.RestaurantResponse;
 import com.itschool.tableq.repository.ReservationRepository;
 import com.itschool.tableq.repository.RestaurantRepository;
 import com.itschool.tableq.repository.UserRepository;
@@ -19,6 +20,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -51,6 +53,40 @@ public class ReservationService extends
         }
 
         return false;
+    }
+
+    public Header<List<RestaurantResponse>> readVisitedRestaurantsFor3Day(Long userId){
+        User user = userRepository.findById(userId)
+                .orElseThrow(()->new RuntimeException("유저가 존재하지 않습니다."));
+
+        List<Reservation> reservationList = ((ReservationRepository)baseRepository)
+                .findByIsEnteredAndUserAndCreatedAtBetween(
+                    true, user, DateUtil.get3DaysAgo(),DateUtil.getEndOfDay()
+                );
+
+        List<RestaurantResponse> restauantList = new ArrayList<>();
+
+        for(Reservation reservation : reservationList){
+            restauantList.add(RestaurantResponse.of(reservation.getRestaurant()));
+        }
+
+        return Header.OK(restauantList);
+    }
+
+    public Header<Long> countUserReservationsFor3Days(Long userId, Long restaurantId){
+        Long count = 0L;
+        User user = userRepository.findById(userId)
+                .orElseThrow(()-> new RuntimeException("유저를 조회할 수 없습니다."));
+
+        Restaurant restaurant = restaurantRepository.findById(restaurantId)
+                .orElseThrow(()->new RuntimeException("식당을 조회할 수 없습니다."));
+
+        List<Reservation> reservationList = ((ReservationRepository)baseRepository).findByIsEnteredAndUserAndRestaurantAndCreatedAtBetween(true, user, restaurant,
+                                                                                                        DateUtil.get3DaysAgo(),DateUtil.getEndOfDay());
+
+        count = (long) reservationList.size();
+
+        return Header.OK(count);
     }
 
     public Long getWaitingNubmer(Restaurant restaurant) {

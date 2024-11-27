@@ -6,6 +6,7 @@ import com.itschool.tableq.domain.Restaurant;
 import com.itschool.tableq.network.Header;
 import com.itschool.tableq.network.response.ReservationResponse;
 import com.itschool.tableq.network.request.ReservationRequest;
+import com.itschool.tableq.network.response.RestaurantResponse;
 import com.itschool.tableq.service.ReservationService;
 import com.itschool.tableq.service.RestaurantService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -62,5 +63,20 @@ public class ReservationApiController extends CrudController<ReservationRequest,
         } catch (Exception e) {
             return Header.ERROR(e.getMessage());
         }
+    }
+    @Operation(summary = "3일간 사용자 예약 횟수 조회", description = "User ID 및 Restaurant ID로 예약 횟수 조회")
+    @GetMapping("/count/{userId}/{restaurantId}")
+    public Header<Long> userReviewCount(@PathVariable(name = "userId") Long userId,
+                                        @PathVariable(name= "restaurantId") Long restaurantId){
+        log.info("read: ",userId, restaurantId);
+        return ((ReservationService)baseService).countUserReservationsFor3Days(userId,restaurantId);
+    }
+
+    @Operation(summary = "유저별 3일 이내 방문한 식당 조회", description = "User ID로 3일 이내 방문한 식당 목록 조회")
+    @GetMapping("/three-day/{userId}")
+    public Header<List<RestaurantResponse>> readVisitedRestaurantsFor3DaysByUserId(@PathVariable(name="userId")Long userId){
+
+        log.info("read: ",userId);
+        return ((ReservationService)baseService).readVisitedRestaurantsFor3Day(userId);
     }
 }

@@ -1,5 +1,6 @@
 package com.itschool.tableq.service;
 
+import com.itschool.tableq.domain.Reservation;
 import com.itschool.tableq.domain.Restaurant;
 import com.itschool.tableq.domain.Review;
 import com.itschool.tableq.domain.User;
@@ -8,23 +9,30 @@ import com.itschool.tableq.network.Header;
 import com.itschool.tableq.network.Pagination;
 import com.itschool.tableq.network.request.ReviewRequest;
 import com.itschool.tableq.network.response.ReviewResponse;
+import com.itschool.tableq.repository.ReservationRepository;
 import com.itschool.tableq.repository.RestaurantRepository;
 import com.itschool.tableq.repository.ReviewRepository;
 import com.itschool.tableq.repository.UserRepository;
 import com.itschool.tableq.service.base.BaseService;
+import com.itschool.tableq.util.DateUtil;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.webjars.NotFoundException;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
 public class ReviewService extends BaseService<ReviewRequest, ReviewResponse, Review> {
+    @Autowired
+    ReservationRepository reservationRepository;
+
     @Autowired
     RestaurantRepository restaurantRepository;
 
@@ -34,6 +42,23 @@ public class ReviewService extends BaseService<ReviewRequest, ReviewResponse, Re
     @Override
     protected ReviewResponse response(Review review) {
         return ReviewResponse.of(review);
+    }
+
+    public Header<Long> countUserReviewFor3Days(Long restaurantId, Long userId){
+        Long count = 0L;
+        User user = userRepository.findById(userId)
+                .orElseThrow(()-> new RuntimeException("유저를 조회할 수 없습니다."));
+
+        Restaurant restaurant = restaurantRepository.findById(restaurantId)
+                .orElseThrow(()->new RuntimeException("식당을 조회할 수 없습니다."));
+
+
+        List<Review> reviewList = ((ReviewRepository)baseRepository).findByUserAndRestaurantAndCreatedAtBetween(user, restaurant,
+                                                                                    DateUtil.get3DaysAgo(), DateUtil.getEndOfDay());
+
+        count = (long) reviewList.size();
+
+        return Header.OK(count);
     }
 
     @Override
