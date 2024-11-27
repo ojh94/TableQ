@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RestaurantImage Item API Test</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+<h1>RestaurantImage Item API Test</h1>
+
+<!-- 레스토랑 이미지 추가 (생성) -->
+<div>
+    <h2>레스토랑 이미지 추가</h2>
+
+    <label for="restaurantImage">이미지 파일:</label>
+    <input type="file" id="restaurantImage" accept="image/*"><br><br>
+
+    <label for="restaurantIdCreate">레스토랑 ID:</label>
+    <input type="text" id="restaurantIdCreate" required><br><br>
+
+    <button id="createRestaurantImageBtn">레스토랑 이미지 추가</button>
+
+    <div id="createRestaurantImageResult"></div>
+</div>
+
+<!-- 레스토랑 이미지 조회 -->
+<div>
+    <h2>레스토랑 이미지 조회</h2>
+    <label for="restaurantImageId">레스토랑 이미지 ID:</label>
+    <input type="text" id="restaurantImageId" required><br><br>
+
+    <button id="fetchRestaurantImageBtn">레스토랑 이미지 조회</button><br><br>
+
+    <div id="restaurantImageDetails">
+        <p><strong>조회된 레스토랑 이미지:</strong></p>
+        <div id="restaurantImageDetailsContent"></div><br><br>
+    </div>
+</div>
+
+<!-- 레스토랑 이미지 수정 -->
+<div>
+    <h2>레스토랑 이미지 수정</h2>
+    <h3>수정할 항목</h3>
+
+    <label for="restaurantImageUpdate">이미지 파일:</label>
+    <input type="file" id="restaurantImageUpdate" accept="image/*"><br><br>
+
+    <button id="updateRestaurantImageBtn">레스토랑 이미지 수정</button>
+
+    <div id="updateRestaurantImageResult"></div>
+</div>
+
+<!-- 레스토랑 이미지 삭제 -->
+<div>
+    <h2>레스토랑 이미지 삭제</h2>
+    <label for="restaurantImageIdDelete">삭제할 레스토랑 이미지 ID:</label>
+    <input type="text" id="restaurantImageIdDelete" required><br><br>
+
+    <button id="deleteRestaurantImageBtn">레스토랑 이미지 삭제</button>
+
+    <div id="deleteRestaurantImageResult"></div>
+</div>
+
+<script>
+    // 레스토랑 이미지 추가 요청
+    $('#createRestaurantImageBtn').on('click', function() {
+        const formData = new FormData();
+
+        const request = {
+            'restaurant': {
+                'id' : $('#restaurantIdCreate').val()
+            }
+        };
+
+        formData.append('data', JSON.stringify(request));
+
+        const file = $('#restaurantImage')[0].files[0];
+        if (file) {
+            formData.append('file', file);
+        } else {
+            alert('이미지 파일을 선택해주세요.');
+            return;
+        }
+
+        if (file && !file.type.startsWith('image/')) {
+            alert('이미지 파일만 업로드할 수 있습니다.');
+            return;
+        }
+
+        if (file && file.size > 10 * 1024 * 1024) {
+            alert('파일 크기가 10MB를 초과합니다.');
+            return;
+        }
+
+        $.ajax({
+            url: '/api/restaurant-image',
+            method: 'POST',
+            data: formData,
+            processData: false,
+            contentType: false,
+            success: function(data) {
+                const responseData = data.data;
+                const resultHtml = `
+                    <div class="response">
+                        <p><strong>성공:</strong></p>
+                        <pre>${JSON.stringify(data, null, 2)}</pre>
+                        <p><strong>이미지:</strong></p>
+                        <img src="${responseData.fileUrl}" alt="Uploaded RestaurantImage Image" style="max-width: 300px; max-height: 300px;">
+                    </div>
+                `;
+                $('#createRestaurantImageResult').html(resultHtml);
+            },
+            error: function(xhr, status, error) {
+                $('#createRestaurantImageResult').html('<div class="error">오류 발생: ' + error + '</div>');
+            }
+        });
+    });
+
+    // 레스토랑 이미지 조회 요청
+    $('#fetchRestaurantImageBtn').on('click', function() {
+        const restaurantImageId = $('#restaurantImageId').val();
+        if (!restaurantImageId) {
+            alert('레스토랑 이미지 ID를 입력해주세요.');
+            return;
+        }
+
+        $.ajax({
+            url: `/api/restaurant-image/${restaurantImageId}`,
+            method: 'GET',
+            success: function(data) {
+                const restaurantImageData = data.data;
+                const resultHtml = `
+                    <p><strong>이미지:</strong></p>
+                    <img src="${restaurantImageData.fileUrl}" alt="RestaurantImage Image" style="max-width: 300px; max-height: 300px;">
+                `;
+                $('#restaurantImageDetailsContent').html(resultHtml);
+            },
+            error: function(xhr, status, error) {
+                $('#restaurantImageDetailsContent').html('<div class="error">오류 발생: ' + error + '</div>');
+            }
+        });
+    });
+
+    // 레스토랑 이미지 수정 요청
+    $('#updateRestaurantImageBtn').on('click', function() {
+        const formData = new FormData();
+        const restaurantImageId = $('#restaurantImageId').val();
+        if (!restaurantImageId) {
+            alert('레스토랑 이미지 ID를 입력해주세요.');
+            return;
+        }
+
+        const request = {
+            'needFileChange': $('#restaurantImageUpdate')[0].files.length > 0 // 파일이 있으면 true, 없으면 false
+        };
+
+        formData.append('data', JSON.stringify(request));
+
+        const file = $('#restaurantImageUpdate')[0].files[0];
+
+        if (file) {
+            formData.append('file', file);
+        }
+
+        $.ajax({
+            url: `/api/restaurant-image/${restaurantImageId}`,
+            method: 'PUT',
+            data: formData,
+            processData: false,
+            contentType: false,
+            success: function(data) {
+                const responseData = data.data;
+                const resultHtml = `
+                    <div class="response">
+                        <p><strong>성공:</strong></p>
+                        <pre>${JSON.stringify(data, null, 2)}</pre>
+                        <p><strong>이미지:</strong></p>
+                        <img src="${responseData.fileUrl}" alt="Updated RestaurantImage Image" style="max-width: 300px; max-height: 300px;">
+                    </div>
+                `;
+                $('#updateRestaurantImageResult').html(resultHtml);
+            },
+            error: function(xhr, status, error) {
+                $('#updateRestaurantImageResult').html('<div class="error">오류 발생: ' + error + '</div>');
+            }
+        });
+    });
+
+    // 레스토랑 이미지 삭제 요청
+    $('#deleteRestaurantImageBtn').on('click', function() {
+        const restaurantImageId = $('#restaurantImageIdDelete').val();
+        if (!restaurantImageId) {
+            alert('레스토랑 이미지 ID를 입력해주세요.');
+            return;
+        }
+
+        $.ajax({
+            url: `/api/restaurant-image/${restaurantImageId}`,
+            method: 'DELETE',
+            success: function(data) {
+                const resultHtml = `
+                    <div class="response">
+                        <p><strong>성공:</strong></p>
+                        <pre>${JSON.stringify(data, null, 2)}</pre>
+                    </div>
+                `;
+                $('#deleteRestaurantImageResult').html(resultHtml);
+            },
+            error: function(xhr, status, error) {
+                $('#deleteRestaurantImageResult').html('<div class="error">오류 발생: ' + error + '</div>');
+            }
+        });
+    });
+</script>
+
+</body>
+</html>

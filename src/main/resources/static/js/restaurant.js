@@ -6,6 +6,8 @@ const restaurantKeywordList = [];
 const menuItemList = [];
 
 $(document).ready(function() {
+    requestRestaurantImageApi();
+
     if (window.location.pathname
     === '/restaurant/' + document.getElementById("restaurant-id").value) {
         requestRestaurantApi(false);
@@ -225,20 +227,32 @@ function requestRestaurantApi(isModifyMode) {
 // restaurantImage API
 function requestRestaurantImageApi() {
 
-    const id = document.getElementById("restaurant-id").value;
+    const restaurantId = document.getElementById("restaurant-id").value;
 
     $.ajax({
-        url: `/api/restaurant-image/${id}`,
+        url: `/api/restaurant-image/restaurant/${restaurantId}`,
         type: 'GET', // 필요한 HTTP 메서드로 변경
         contentType: 'application/json', // JSON 형식으로 데이터 전송
         success: function(response) {
             // 요청 성공 시 동작
-            const rImage = $('#carouselExampleControls > div > div.carousel-item.active > img');
+            const restaurantImages = response.data;
 
-            rImage.attr('src', response.data.path);
+            if (restaurantImages != null) {
+                $('#restaurant-images').empty();
 
-            console.log('가게 이미지 set 완료');
+                restaurantImages.forEach((image) => {
+                    let restaurantImageHtml =
+                        `
+                        <div class="carousel-item">
+                            <img src="${image.fileUrl}" class="d-block w-100 main-img" alt="점포이미지">
+                        </div>
+                        `;
+                    // information 요소(내부) 끝에 추가
+                    $('#restaurant-images').append(restaurantImageHtml);
+                });
 
+                console.log('가게 이미지 set 완료');
+            }
         },
         error: function(xhr, status, error) {
         // 요청 실패 시 동작
@@ -428,10 +442,66 @@ function requestReviewPossibleApi() {
             <textarea id="review-textarea" class="form-control" rows="4" placeholder="솔직한 평가를 남겨주세요!"></textarea>
             `;
 
+        let reviewPossibleButtonHtml =
+            `
+            <div class="d-flex justify-content-center">
+                <button id="review-summit" type="button" class="btn btn-secondary mt-3">작성완료</button>
+            </div>
+            `;
+
         // reviews-number 요소(외부) 끝에 추가
         $('#reviews-number').after(reviewPossibleStarHtml);
         $('#review-form').append(reviewPossibleTextareaHtml);
+        $('#review-textarea').after(reviewPossibleButtonHtml);
+
+        requestReviewCreateAPI();
     }
+}
+
+// 리뷰 작성완료 버튼 클릭 시 create
+function requestReviewCreateAPI() {
+    document.getElementById('review-summit').addEventListener('click', function(event) {
+
+        const starCount = document.querySelectorAll('.star_rating .star.on').length;
+        const restaurantId = document.getElementById("restaurant-id").value;
+        const userId = document.getElementById("user-id").value;
+
+        if($('#review-textarea').val() === "") {
+            alert('내용을 입력해주세요.');
+            return;
+        }
+
+        const formData = {
+            "data": {
+                "content" : $('#review-textarea').val(),
+                "starRating" : starCount,
+                "restaurant" : {
+                    "id" : restaurantId
+                },
+                "user" : {
+                    "id" : userId
+                }
+            }
+        };
+
+        // AJAX 요청 보내기
+        $.ajax({
+            url: `/api/review`,
+            type: 'POST', // 필요한 HTTP 메서드로 변경 (PUT 또는 PATCH 등도 가능)
+            contentType: 'application/json', // JSON 형식으로 데이터 전송
+            data: JSON.stringify(formData), // 데이터를 JSON 문자열로 변환
+            success: function(response) {
+                // 요청 성공 시 동작
+                alert('리뷰 등록이 완료되었습니다.');
+                location.reload();
+            },
+            error: function(xhr, status, error) {
+                // 요청 실패 시 동작
+                console.error('생성 실패:', error);
+                alert('생성 중 오류가 발생했습니다.');
+            }
+        });
+    });
 }
 
 // 점주 상세 페이지 menu API
