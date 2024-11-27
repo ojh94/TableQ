@@ -10,21 +10,32 @@ import com.itschool.tableq.repository.RestaurantAmenityRepository;
 import com.itschool.tableq.repository.RestaurantRepository;
 import com.itschool.tableq.service.base.BaseService;
 import jakarta.persistence.EntityNotFoundException;
-import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-@RequiredArgsConstructor
 @Service
 public class RestaurantAmenityService extends BaseService<RestaurantAmenityRequest, RestaurantAmenityResponse, RestaurantAmenity> {
 
-    @Autowired
-    RestaurantRepository restaurantRepository;
+    private final RestaurantRepository restaurantRepository;
 
+    private final AmenityRepository amenityRepository;
+
+    // 생성자
     @Autowired
-    AmenityRepository amenityRepository;
+    public RestaurantAmenityService(RestaurantAmenityRepository baseRepository,
+                                    RestaurantRepository restaurantRepository,
+                                    AmenityRepository amenityRepository) {
+        super(baseRepository);
+        this.restaurantRepository = restaurantRepository;
+        this.amenityRepository = amenityRepository;
+    }
+
+    @Override
+    protected RestaurantAmenityRepository getBaseRepository() {
+        return (RestaurantAmenityRepository) baseRepository;
+    }
 
     @Override
     protected RestaurantAmenityResponse response(RestaurantAmenity restaurantAmenity) {
@@ -41,20 +52,20 @@ public class RestaurantAmenityService extends BaseService<RestaurantAmenityReque
                 .amenity(amenityRepository.findById(restaurantAmenityRequest.getAmenity().getId())
                         .orElseThrow(() -> new EntityNotFoundException()))
                 .build();
-        baseRepository.save(restaurantAmenity);
+        getBaseRepository().save(restaurantAmenity);
         return Header.OK(response(restaurantAmenity));
     }
 
     @Override
     public Header<RestaurantAmenityResponse> read(Long id) {
-        return Header.OK(response(baseRepository.findById(id).orElse(null)));
+        return Header.OK(response(getBaseRepository().findById(id).orElse(null)));
     }
 
     @Override
     public Header<RestaurantAmenityResponse> update(Long id, Header<RestaurantAmenityRequest> request) {
         /*RestaurantAmenityRequest restaurantAmenityRequest = request.getData();
 
-        RestaurantAmenity restaurantAmenity = baseRepository.findById(id)
+        RestaurantAmenity restaurantAmenity = getBaseRepository().findById(id)
                 .orElseThrow(() -> new EntityNotFoundException());
 
         restaurantAmenity.update(restaurantAmenityRequest);*/

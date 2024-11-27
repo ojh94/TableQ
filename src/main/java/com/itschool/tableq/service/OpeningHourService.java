@@ -9,7 +9,6 @@ import com.itschool.tableq.repository.OpeningHourRepository;
 import com.itschool.tableq.repository.RestaurantRepository;
 import com.itschool.tableq.service.base.BaseService;
 import jakarta.persistence.EntityNotFoundException;
-import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -17,11 +16,23 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
-@RequiredArgsConstructor
 @Service
 public class OpeningHourService extends BaseService<OpeningHourRequest, OpeningHourResponse, OpeningHour> {
+
+    private final RestaurantRepository restaurantRepository;
+
+    // 생성자
     @Autowired
-    RestaurantRepository restaurantRepository;
+    public OpeningHourService(OpeningHourRepository baseRepository,
+                              RestaurantRepository restaurantRepository) {
+        super(baseRepository);
+        this.restaurantRepository = restaurantRepository;
+    }
+
+    @Override
+    protected OpeningHourRepository getBaseRepository() {
+        return (OpeningHourRepository) baseRepository;
+    }
 
     @Override
     protected OpeningHourResponse response(OpeningHour openingHour) {
@@ -38,13 +49,13 @@ public class OpeningHourService extends BaseService<OpeningHourRequest, OpeningH
                 .dayOfWeek(openingHourRequest.getDayOfWeek())
                 .build();
 
-        baseRepository.save(openingHour);
+        getBaseRepository().save(openingHour);
         return Header.OK(response(openingHour));
     }
 
     @Override
     public Header<OpeningHourResponse> read(Long id) {
-        return Header.OK(response(baseRepository.findById(id).orElse(null)));
+        return Header.OK(response(getBaseRepository().findById(id).orElse(null)));
     }
 
     @Override
@@ -52,16 +63,16 @@ public class OpeningHourService extends BaseService<OpeningHourRequest, OpeningH
     public Header<OpeningHourResponse> update(Long id, Header<OpeningHourRequest> request) {
         OpeningHourRequest openingHourRequest = request.getData();
 
-        OpeningHour openingHour = baseRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("not found"));
+        OpeningHour openingHour = getBaseRepository().findById(id).orElseThrow(() -> new IllegalArgumentException("not found"));
         openingHour.update(openingHourRequest);
         return Header.OK(response(openingHour));
     }
 
     @Override
     public Header delete(Long id) {
-        return baseRepository.findById(id)
+        return getBaseRepository().findById(id)
                 .map(openingHour -> {
-                    baseRepository.delete(openingHour);
+                    getBaseRepository().delete(openingHour);
                     return Header.OK(response(openingHour));
                 })
                 .orElseThrow(() -> new IllegalArgumentException("not found"));

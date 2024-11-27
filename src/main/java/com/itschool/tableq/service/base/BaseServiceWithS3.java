@@ -5,19 +5,27 @@ import com.amazonaws.SdkClientException;
 import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.itschool.tableq.domain.base.IncludeFileUrl;
-import com.itschool.tableq.util.FileUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 
+@Component
 public abstract class BaseServiceWithS3<Req, Res, Entity extends IncludeFileUrl> extends BaseService<Req, Res, Entity>{
+
     @Autowired
     private AmazonS3Client amazonS3Client;
 
     @Value("${cloud.aws.s3.bucket}")
     private String bucketName;
+
+    protected BaseServiceWithS3(JpaRepository<Entity, Long> baseRepository) {
+        super(baseRepository);
+    }
 
     private String generateS3Key(MultipartFile file, String directoryName, String newFileName) {
         return directoryName + "/" + newFileName;

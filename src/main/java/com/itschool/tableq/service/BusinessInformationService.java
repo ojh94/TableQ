@@ -10,7 +10,6 @@ import com.itschool.tableq.repository.OwnerRepository;
 import com.itschool.tableq.service.base.BaseService;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
-import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -18,13 +17,23 @@ import org.webjars.NotFoundException;
 
 import java.util.List;
 
-@RequiredArgsConstructor
 @Service
-public class BusinessInformationService
-        extends BaseService<BusinessInformationRequest, BusinessInformationResponse, BusinessInformation> {
+public class BusinessInformationService extends BaseService<BusinessInformationRequest, BusinessInformationResponse, BusinessInformation> {
 
+    private final OwnerRepository ownerRepository;
+
+    // 생성자
     @Autowired
-    OwnerRepository ownerRepository;
+    public BusinessInformationService(BusinessInformationRepository baseRepository,
+                                      OwnerRepository ownerRepository) {
+        super(baseRepository);
+        this.ownerRepository = ownerRepository;
+    }
+
+    @Override
+    protected BusinessInformationRepository getBaseRepository() {
+        return (BusinessInformationRepository) baseRepository;
+    }
 
     @Override
     protected BusinessInformationResponse response(BusinessInformation businessInformation) {
@@ -43,13 +52,13 @@ public class BusinessInformationService
                         .orElseThrow(()-> new EntityNotFoundException()))
                 .build();
 
-        baseRepository.save(businessInformation);
+        getBaseRepository().save(businessInformation);
         return Header.OK(response(businessInformation));
     }
 
     @Override
     public Header<BusinessInformationResponse> read(Long id) {
-        return Header.OK(response(baseRepository.findById(id).orElse(null)));
+        return Header.OK(response(getBaseRepository().findById(id).orElse(null)));
     }
 
     public Header<List<BusinessInformationResponse>> readByOwnerId(Long ownerId, Pageable pageable){
@@ -67,7 +76,7 @@ public class BusinessInformationService
     public Header<BusinessInformationResponse> update(Long id, Header<BusinessInformationRequest> request) {
         BusinessInformationRequest businessInformationRequest = request.getData();
 
-        BusinessInformation businessInformation = baseRepository.findById(id)
+        BusinessInformation businessInformation = getBaseRepository().findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("not found" + id));
 
         businessInformation.update(businessInformationRequest);
@@ -76,9 +85,9 @@ public class BusinessInformationService
 
     @Override
     public Header delete(Long id) {
-        return baseRepository.findById(id)
+        return getBaseRepository().findById(id)
                 .map(buisnessInformation -> {
-                    baseRepository.delete(buisnessInformation);
+                    getBaseRepository().delete(buisnessInformation);
                     return Header.OK(response(buisnessInformation));
                 })
                 .orElseThrow(() -> new RuntimeException("user delete fail"));

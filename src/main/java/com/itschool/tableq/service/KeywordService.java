@@ -6,24 +6,32 @@ import com.itschool.tableq.network.request.KeywordRequest;
 import com.itschool.tableq.network.response.KeywordResponse;
 import com.itschool.tableq.repository.KeywordRepository;
 import com.itschool.tableq.service.base.BaseService;
-import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
-@RequiredArgsConstructor
 @Service
 public class KeywordService extends BaseService<KeywordRequest, KeywordResponse, Keyword> {
 
-    private final KeywordRepository keywordRepository;
+    // 생성자
+    @Autowired
+    public KeywordService(KeywordRepository baseRepository) {
+        super(baseRepository);
+    }
 
-    public List<Keyword> findAll(){return keywordRepository.findAll();}
+    @Override
+    protected KeywordRepository getBaseRepository() {
+        return (KeywordRepository) baseRepository;
+    }
 
     @Override
     protected KeywordResponse response(Keyword keyword) {
         return KeywordResponse.of(keyword);
     }
+
+    public List<Keyword> findAll(){return getBaseRepository().findAll();}
 
     @Override
     public Header<KeywordResponse> create(Header<KeywordRequest> request) {
@@ -33,13 +41,13 @@ public class KeywordService extends BaseService<KeywordRequest, KeywordResponse,
                 .name(keywordRequest.getName())
                 .build();
 
-        baseRepository.save(keyword);
+        getBaseRepository().save(keyword);
         return Header.OK(response(keyword));
     }
 
     @Override
     public Header<KeywordResponse> read(Long id) {
-        return Header.OK(response(baseRepository.findById(id).orElse(null)));
+        return Header.OK(response(getBaseRepository().findById(id).orElse(null)));
     }
 
     @Override
@@ -47,16 +55,16 @@ public class KeywordService extends BaseService<KeywordRequest, KeywordResponse,
     public Header<KeywordResponse> update(Long id, Header<KeywordRequest> request) {
         KeywordRequest keywordRequest = request.getData();
 
-        Keyword keyword = baseRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("not found"));
+        Keyword keyword = getBaseRepository().findById(id).orElseThrow(() -> new IllegalArgumentException("not found"));
         keyword.update(keywordRequest);
         return Header.OK(response(keyword));
     }
 
     @Override
     public Header delete(Long id) {
-        return baseRepository.findById(id)
+        return getBaseRepository().findById(id)
                 .map(keyword -> {
-                    baseRepository.delete(keyword);
+                    getBaseRepository().delete(keyword);
                     return Header.OK(response(keyword));
                 })
                 .orElseThrow(() -> new IllegalArgumentException("not found"));

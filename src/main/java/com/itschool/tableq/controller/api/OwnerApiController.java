@@ -4,8 +4,10 @@ import com.itschool.tableq.controller.CrudController;
 import com.itschool.tableq.domain.Owner;
 import com.itschool.tableq.network.response.OwnerResponse;
 import com.itschool.tableq.network.request.OwnerRequest;
+import com.itschool.tableq.service.base.BaseService;
 import groovy.util.logging.Slf4j;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 @Slf4j
@@ -13,6 +15,13 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/api/owner")
 public class OwnerApiController extends CrudController<OwnerRequest, OwnerResponse, Owner> {
+
+    // 생성자
+    @Autowired
+    public OwnerApiController(BaseService<OwnerRequest, OwnerResponse, Owner> baseService) {
+        super(baseService);
+    }
+
     @Override
     protected Class<OwnerRequest> getRequestClass() {
         return OwnerRequest.class;

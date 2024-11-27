@@ -18,13 +18,17 @@ public interface ReservationRepository extends JpaRepository<Reservation, Long> 
     List<Reservation> findByUserAndRestaurantAndCreatedAtBetween(User user, Restaurant restaurant,
                                                                  LocalDateTime startOfDay, LocalDateTime endOfDay);
 
-    List<Reservation> findByRestaurantAndCreatedAtBetweenOrderByIdAsc(
-            Restaurant restaurant, LocalDateTime startOfDay, LocalDateTime endOfDay
+    List<Reservation> findByIsEnteredAndUserAndRestaurantAndCreatedAtBetween(
+            Boolean isEntered, User user, Restaurant restaurant, LocalDateTime startOfDay, LocalDateTime endOfDay
     );
 
     // 예약 후 나의 순서 조회를 위한 Repository
     List<Reservation> findByIsEnteredAndRestaurantAndCreatedAtBetweenOrderByIdAsc(
             Boolean isEntered, Restaurant restaurant, LocalDateTime startOfDay, LocalDateTime endOfDay
+    );
+
+    List<Reservation> findByIsEnteredAndUserAndCreatedAtBetween(
+            Boolean isEntered, User user, LocalDateTime startOfDay, LocalDateTime endOfDay
     );
 
     // 예약 전 대기열 조회를 위한 countBy

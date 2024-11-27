@@ -15,6 +15,7 @@ $(document).ready(function() {
         requestBreakHourApi();
         requestKeywordApi();
         requestAmenityApi();
+        requestReviewPossibleApi();
 
         // 원격줄서기 버튼 클릭 시
         document.getElementById("apply").onclick = function() {
@@ -367,6 +368,47 @@ function requestReviewApi() {
         alert('리뷰 set 중 오류가 발생했습니다.');
         }
     });
+}
+
+// 상세 페이지 속 '작성 가능 리뷰' 화면 출력
+function requestReviewPossibleApi() {
+    const restaurantId = document.getElementById("restaurant-id").value;
+    const userId = document.getElementById("user-id").value;
+
+    let reservationCount;
+    let reviewCount;
+
+    $.ajax({
+        url: `/api/reservation/count/${userId}/${restaurantId}`,
+        type: 'GET', // 필요한 HTTP 메서드로 변경
+        contentType: 'application/json', // JSON 형식으로 데이터 전송
+        success: function(response) {
+            // 요청 성공 시 동작
+            reservationCount = response.data;
+        },
+        error: function(xhr, status, error) {
+        // 요청 실패 시 동작
+        console.error('3일간 방문한 reservation 조회 실패:', error);
+        alert('3일간 방문한 reservation 조회 오류가 발생했습니다.');
+        }
+    });
+
+    $.ajax({
+        url: `/api/review/count/${userId}/${restaurantId}`,
+        type: 'GET', // 필요한 HTTP 메서드로 변경
+        contentType: 'application/json', // JSON 형식으로 데이터 전송
+        success: function(response) {
+            // 요청 성공 시 동작
+            reviewCount = response.data;
+        },
+        error: function(xhr, status, error) {
+        // 요청 실패 시 동작
+        console.error('3일간 작성한 review 조회 실패:', error);
+        alert('3일간 작성한 review 조회 오류가 발생했습니다.');
+        }
+    });
+
+    console.log(reservationCount);
 }
 
 // 점주 상세 페이지 menu API

@@ -11,7 +11,6 @@ import com.itschool.tableq.repository.RestaurantRepository;
 import com.itschool.tableq.service.base.BaseService;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
-import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -20,11 +19,23 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@RequiredArgsConstructor
 @Service
 public class BreakHourService extends BaseService<BreakHourRequest, BreakHourResponse, BreakHour> {
+
+    private final RestaurantRepository restaurantRepository;
+
+    // 생성자
     @Autowired
-    RestaurantRepository restaurantRepository;
+    public BreakHourService(BreakHourRepository baseRepository,
+                            RestaurantRepository restaurantRepository) {
+        super(baseRepository);
+        this.restaurantRepository = restaurantRepository;
+    }
+
+    @Override
+    protected BreakHourRepository getBaseRepository() {
+        return (BreakHourRepository) baseRepository;
+    }
 
     @Override
     protected BreakHourResponse response(BreakHour breakHour) {
@@ -41,29 +52,29 @@ public class BreakHourService extends BaseService<BreakHourRequest, BreakHourRes
                 .dayOfWeek(breakHourRequest.getDayOfWeek())
                 .build();
 
-        baseRepository.save(breakHour);
+        getBaseRepository().save(breakHour);
         return Header.OK(response(breakHour));
     }
 
     @Override
     public Header<BreakHourResponse> read(Long id) {
-        return Header.OK(response(baseRepository.findById(id).orElse(null)));
+        return Header.OK(response(getBaseRepository().findById(id).orElse(null)));
     }
 
     @Override
     @Transactional
     public Header<BreakHourResponse> update(Long id, Header<BreakHourRequest> request) {
         BreakHourRequest breakHourRequest = request.getData();
-        BreakHour breakHour = baseRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("not found"));
+        BreakHour breakHour = getBaseRepository().findById(id).orElseThrow(() -> new IllegalArgumentException("not found"));
         breakHour.update(breakHourRequest);
         return Header.OK(response(breakHour));
     }
 
     @Override
     public Header delete(Long id) {
-        return baseRepository.findById(id)
+        return getBaseRepository().findById(id)
                 .map(breakHour -> {
-                    baseRepository.delete(breakHour);
+                    getBaseRepository().delete(breakHour);
                     return Header.OK(response(breakHour));
                 })
                 .orElseThrow(() -> new IllegalArgumentException("not found"));

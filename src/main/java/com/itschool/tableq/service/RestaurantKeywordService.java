@@ -6,25 +6,37 @@ import com.itschool.tableq.network.Header;
 import com.itschool.tableq.network.request.RestaurantKeywordRequest;
 import com.itschool.tableq.network.response.RestaurantKeywordResponse;
 import com.itschool.tableq.repository.KeywordRepository;
-import com.itschool.tableq.repository.RestaurantKeywordsRepository;
+import com.itschool.tableq.repository.RestaurantKeywordRepository;
 import com.itschool.tableq.repository.RestaurantRepository;
 import com.itschool.tableq.service.base.BaseService;
 import jakarta.persistence.EntityNotFoundException;
-import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-@RequiredArgsConstructor
 @Service
 public class RestaurantKeywordService extends BaseService<RestaurantKeywordRequest, RestaurantKeywordResponse, RestaurantKeyword> {
 
-    @Autowired
-    RestaurantRepository restaurantRepository;
+    private final RestaurantRepository restaurantRepository;
 
+    private final KeywordRepository keywordRepository;
+
+    // 생성자
     @Autowired
-    KeywordRepository keywordRepository;
+    public RestaurantKeywordService(RestaurantKeywordRepository baseRepository,
+                                    RestaurantRepository restaurantRepository,
+                                    KeywordRepository keywordRepository) {
+        super(baseRepository);
+        this.restaurantRepository = restaurantRepository;
+        this.keywordRepository = keywordRepository;
+    }
+
+
+    @Override
+    protected RestaurantKeywordRepository getBaseRepository() {
+        return (RestaurantKeywordRepository) baseRepository;
+    }
 
     @Override
     protected RestaurantKeywordResponse response(RestaurantKeyword restaurantKeyword) {
@@ -42,13 +54,13 @@ public class RestaurantKeywordService extends BaseService<RestaurantKeywordReque
                         .orElseThrow(() -> new EntityNotFoundException()))
                 .build();
 
-        baseRepository.save(restaurantKeyword);
+        getBaseRepository().save(restaurantKeyword);
         return Header.OK(response(restaurantKeyword));
     }
 
     @Override
     public Header<RestaurantKeywordResponse> read(Long id) {
-        return Header.OK(response(baseRepository.findById(id).orElse(null)));
+        return Header.OK(response(getBaseRepository().findById(id).orElse(null)));
     }
 
     public Header<List<RestaurantKeywordResponse>> readByRestaurantId(Long restaurantId){
@@ -57,7 +69,7 @@ public class RestaurantKeywordService extends BaseService<RestaurantKeywordReque
         Restaurant restaurant = restaurantRepository.findById(restaurantId)
                 .orElseThrow(() -> new EntityNotFoundException());
 
-        List<RestaurantKeyword> keywordList = ((RestaurantKeywordsRepository)baseRepository).findByRestaurant(restaurant);
+        List<RestaurantKeyword> keywordList = ((RestaurantKeywordRepository)baseRepository).findByRestaurant(restaurant);
 
         return Header.OK(responseList(keywordList));
     }
@@ -65,7 +77,7 @@ public class RestaurantKeywordService extends BaseService<RestaurantKeywordReque
     @Override
     public Header<RestaurantKeywordResponse> update(Long id, Header<RestaurantKeywordRequest> request) {
         /*RestaurantKeywordRequest restaurantKeywordRequest = request.getData();
-        RestaurantKeyword restaurantKeyword = baseRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("not found"));
+        RestaurantKeyword restaurantKeyword = getBaseRepository().findById(id).orElseThrow(() -> new IllegalArgumentException("not found"));
         restaurantKeyword.update(restaurantKeywordRequest);
         return Header.OK(response(restaurantKeyword));*/
 
@@ -74,9 +86,9 @@ public class RestaurantKeywordService extends BaseService<RestaurantKeywordReque
 
     @Override
     public Header delete(Long id) {
-        return baseRepository.findById(id)
+        return getBaseRepository().findById(id)
                 .map(restaurantKeyword -> {
-                    baseRepository.delete(restaurantKeyword);
+                    getBaseRepository().delete(restaurantKeyword);
                     return Header.OK(response(restaurantKeyword));
                 })
                 .orElseThrow(() -> new IllegalArgumentException("not found"));

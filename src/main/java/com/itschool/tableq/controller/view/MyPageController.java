@@ -52,9 +52,9 @@ public class MyPageController {
         return "history";
     }
 
-    @GetMapping("/my-review")
+    @GetMapping("/review")
     public String getMyReviewPage() {
-        return "my-review";
+        return "mypage-review";
     }
 
     @GetMapping("/waiting")

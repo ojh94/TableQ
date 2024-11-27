@@ -6,7 +6,7 @@ import com.itschool.tableq.network.request.OwnerRequest;
 import com.itschool.tableq.network.response.OwnerResponse;
 import com.itschool.tableq.repository.OwnerRepository;
 import com.itschool.tableq.service.base.BaseService;
-import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -14,15 +14,30 @@ import org.webjars.NotFoundException;
 
 import java.util.List;
 
-@RequiredArgsConstructor
 @Service
 public class OwnerService extends BaseService<OwnerRequest, OwnerResponse, Owner> {
 
     private final OwnerRepository ownerRepository;
+
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
+
+    // 생성자
+    @Autowired
+    public OwnerService(OwnerRepository baseRepository,
+                        OwnerRepository ownerRepository,
+                        BCryptPasswordEncoder bCryptPasswordEncoder) {
+        super(baseRepository);
+        this.ownerRepository = ownerRepository;
+        this.bCryptPasswordEncoder = bCryptPasswordEncoder;
+    }
 
     public List<Owner> findAll() {
         return ownerRepository.findAll();
+    }
+
+    @Override
+    protected OwnerRepository getBaseRepository() {
+        return (OwnerRepository) baseRepository;
     }
 
     @Override
@@ -41,13 +56,13 @@ public class OwnerService extends BaseService<OwnerRequest, OwnerResponse, Owner
                 .phoneNumber(ownerRequest.getPhoneNumber())
                 .build();
 
-        baseRepository.save(owner);
+        getBaseRepository().save(owner);
         return Header.OK(response(owner));
     }
 
     @Override
     public Header<OwnerResponse> read(Long id) {
-        return Header.OK(response(baseRepository.findById(id).orElse(null)));
+        return Header.OK(response(getBaseRepository().findById(id).orElse(null)));
     }
 
     @Override
@@ -55,7 +70,7 @@ public class OwnerService extends BaseService<OwnerRequest, OwnerResponse, Owner
     public Header<OwnerResponse> update(Long id, Header<OwnerRequest> request) {
         OwnerRequest ownerRequest = request.getData();
 
-        Owner owner = baseRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("not found"));
+        Owner owner = getBaseRepository().findById(id).orElseThrow(() -> new IllegalArgumentException("not found"));
         owner.update(ownerRequest);
 
         return Header.OK(response(owner));
@@ -63,7 +78,7 @@ public class OwnerService extends BaseService<OwnerRequest, OwnerResponse, Owner
 
     @Override
     public Header delete(Long id) {
-        return baseRepository.findById(id)
+        return getBaseRepository().findById(id)
                 .map(owner -> {
                     ownerRepository.delete(owner);
                     return Header.OK(response(owner));
