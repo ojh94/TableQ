@@ -382,6 +382,7 @@ function requestReviewPossibleApi() {
         url: `/api/reservation/count/${userId}/${restaurantId}`,
         type: 'GET', // 필요한 HTTP 메서드로 변경
         contentType: 'application/json', // JSON 형식으로 데이터 전송
+        async: false,
         success: function(response) {
             // 요청 성공 시 동작
             reservationCount = response.data;
@@ -397,6 +398,7 @@ function requestReviewPossibleApi() {
         url: `/api/review/count/${userId}/${restaurantId}`,
         type: 'GET', // 필요한 HTTP 메서드로 변경
         contentType: 'application/json', // JSON 형식으로 데이터 전송
+        async: false,
         success: function(response) {
             // 요청 성공 시 동작
             reviewCount = response.data;
@@ -408,7 +410,28 @@ function requestReviewPossibleApi() {
         }
     });
 
-    console.log(reservationCount);
+    if (reservationCount - reviewCount > 0) {
+        let reviewPossibleStarHtml =
+            `
+            <hr/>
+            <div class="star_rating ms-1 mb-2">
+                <span class="star on" value="1"> </span>
+                <span class="star" value="2"> </span>
+                <span class="star" value="3"> </span>
+                <span class="star" value="4"> </span>
+                <span class="star" value="5"> </span>
+            </div>
+            `;
+
+        let reviewPossibleTextareaHtml =
+            `
+            <textarea id="review-textarea" class="form-control" rows="4" placeholder="솔직한 평가를 남겨주세요!"></textarea>
+            `;
+
+        // reviews-number 요소(외부) 끝에 추가
+        $('#reviews-number').after(reviewPossibleStarHtml);
+        $('#review-form').append(reviewPossibleTextareaHtml);
+    }
 }
 
 // 점주 상세 페이지 menu API
