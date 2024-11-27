@@ -69,6 +69,11 @@ $(document).ready(function() {
                 checkbox.checked = checkbox.getAttribute('data-initial-checked') === 'true';
             });
         });
+
+        // 메뉴 수정 요청
+        $('#modify').on('click', function() {
+            requestRestaurantUpdateAllApi();
+        });
     }
 
     // 리뷰 탭으로 이동
@@ -1291,4 +1296,115 @@ function requestBreakHourUpdateApi() {
 // 브레이크 타임 수정 또는 생성 메소드
 function requestBreakHourUpdateApi() {
 
+}
+
+// 레스토랑 관련 전체 수정
+function requestRestaurantUpdateAllApi() {
+    const restaurantId = $('#restaurant-id').val();
+
+    const request = {
+       "name": restaurantId,
+       "address":"string",
+       "information":"string",
+       "contact_number":"string",
+       "restaurantImageList":[
+          {
+             "needFileChange":true,
+             "id":0
+          }
+       ],
+       "openingHourList":[
+          {
+             "id":0,
+             "openAt": undefined/*{
+                "hour":0,
+                "minute":0,
+                "second":0,
+                "nano":0
+             }*/,
+             "closeAt": undefined/*{
+                "hour":0,
+                "minute":0,
+                "second":0,
+                "nano":0
+             }*/,
+             "dayOfWeek":"MONDAY"
+          }
+       ],
+       "breakHourList":[
+          {
+             "id":0,
+             "breakStart": undefined /*{
+                "hour":0,
+                "minute":0,
+                "second":0,
+                "nano":0
+             }*/,
+             "breakEnd": undefined /*{
+                "hour":0,
+                "minute":0,
+                "second":0,
+                "nano":0
+             }*/,
+             "dayOfWeek":"MONDAY"
+          }
+       ],
+       "restaurantAmenityList":[
+          {
+             "id":0,
+             "amenity":{
+                "id":0,
+                "name":"string"
+             }
+          }
+       ],
+       "restaurantKeywordList":[
+          {
+             "id":0,
+             "keyword":{
+                "id":0,
+                "name":"string"
+             }
+          }
+       ],
+       "menuItemList":[
+          {
+             "needFileChange":true,
+             "id":0,
+             "name":"string",
+             "price":"string",
+             "description":"string",
+             "recommendation":true
+          }
+       ]
+    };
+
+    const formData = new FormData();
+
+    formData.append('data', JSON.stringify(request));
+
+    const file = $('#carouselExampleControls > input')[0].files[0];
+
+    if (file) {
+        formData.append('file', file);
+    }
+
+    $.ajax({
+        url: `/api/restaurant/all/${restaurantId}`,
+        method: 'PUT',
+        data: formData,
+        processData: false,
+        contentType: false,
+        success: function(data) {
+            if ('scrollRestoration' in history) {
+                history.scrollRestoration = 'manual'; // 자동 복원을 방지
+            }
+            window.location.reload();
+        },
+        error: function(xhr, status, error) {
+            alert(`${xhr}
+                   ${status}
+                   ${error}`)
+        }
+    });
 }
