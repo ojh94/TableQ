@@ -56,8 +56,8 @@ public class WebSecurityConfig {
                                 new AntPathRequestMatcher("/swagger*/**"),
                                 new AntPathRequestMatcher("/swagger-resources/**")
                         ).permitAll()
-                        .requestMatchers("/user/**").hasRole(MemberRole.USER.getRole())
-                        .requestMatchers("/owner/**").hasRole(MemberRole.OWNER.getRole())
+                        .requestMatchers("/user/**").hasRole("USER")
+                        .requestMatchers("/owner/**").hasRole("OWNER")
                         .anyRequest().authenticated()
                 )
                 .formLogin(formLogin -> formLogin // 폼 기반 로그인 설정
