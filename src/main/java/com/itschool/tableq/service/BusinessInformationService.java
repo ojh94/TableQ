@@ -1,13 +1,11 @@
 package com.itschool.tableq.service;
 
 import com.itschool.tableq.domain.BusinessInformation;
-import com.itschool.tableq.domain.Owner;
 import com.itschool.tableq.domain.User;
 import com.itschool.tableq.network.Header;
 import com.itschool.tableq.network.request.BusinessInformationRequest;
 import com.itschool.tableq.network.response.BusinessInformationResponse;
 import com.itschool.tableq.repository.BusinessInformationRepository;
-import com.itschool.tableq.repository.OwnerRepository;
 import com.itschool.tableq.repository.UserRepository;
 import com.itschool.tableq.service.base.BaseService;
 import jakarta.persistence.EntityNotFoundException;
@@ -68,7 +66,7 @@ public class BusinessInformationService extends BaseService<BusinessInformationR
                 .orElseThrow(()->new NotFoundException("Not Found Owner Id: "+userId));
 
         List<BusinessInformation> businessInformationList = ((BusinessInformationRepository)baseRepository)
-                .findByOwner(user).orElse(null);
+                .findByUser(user).orElse(null);
 
         return Header.OK(responseList(businessInformationList));
     }

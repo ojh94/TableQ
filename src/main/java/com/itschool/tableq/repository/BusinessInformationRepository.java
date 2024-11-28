@@ -1,7 +1,6 @@
 package com.itschool.tableq.repository;
 
 import com.itschool.tableq.domain.BusinessInformation;
-import com.itschool.tableq.domain.Owner;
 import com.itschool.tableq.domain.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
@@ -12,5 +11,5 @@ public interface BusinessInformationRepository extends JpaRepository<BusinessInf
 
     Optional<Long> countBy();
     Optional<BusinessInformation> findByBusinessNumber(String businessNumber);
-    Optional<List<BusinessInformation>> findByOwner(User user);
+    Optional<List<BusinessInformation>> findByUser(User user);
 }

@@ -1,7 +1,6 @@
 package com.itschool.tableq.network.response;
 
 import com.itschool.tableq.domain.BusinessInformation;
-import com.itschool.tableq.domain.Owner;
 import com.itschool.tableq.domain.User;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
