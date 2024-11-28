@@ -1,6 +1,9 @@
 $(document).ready(function() {
+    let isEmailChecked = false; // 이메일 중복 체크 여부
+    let isPhoneChecked = false; // 전화번호 중복 체크 여부
+
     // 필드 입력 시 실시간 유효성 검사
-    $('#name, #email, #pass1, #pass2').on('input', function() {
+    $('#name, #email, #password, #confirm-password').on('input', function() {
         const field = $(this);
         validateField(field);
     });
@@ -26,6 +29,74 @@ $(document).ready(function() {
 
         // 전화번호 유효성 검사
         validateField($(this));
+    });
+
+    // 이메일 중복 체크 버튼 클릭 시
+    $('#checkEmailBtn').on('click', function() {
+        const email = $('#email').val();
+
+        if (email === '') {
+            alert('이메일을 입력해주세요.');
+            return;
+        }
+
+        // 이메일 중복 체크 API 호출
+        $.ajax({
+            url: '/api/user/check-email',   // API URL
+            type: 'POST',                   // POST 요청
+            contentType: 'application/json', // 요청 헤더: JSON 형식
+            data: JSON.stringify({
+                'data' : { 'email' : email }
+            }),  // JSON 데이터
+            success: function(response) {
+                if (response.data === true) {
+                    alert('사용 가능한 이메일입니다.');
+                    isEmailChecked = true;  // 중복 체크 완료
+                } else if(response.data === false) {
+                    alert('이미 사용 중인 이메일입니다.');
+                    isEmailChecked = false;  // 중복 체크되지 않음
+                } else {
+                  alert('이메일 중복 확인에 실패했습니다.');
+              }
+           },
+           error: function() {
+               alert('네트워크 에러.');
+           }
+        });
+    });
+
+    // 휴대전화 중복 체크 버튼 클릭 시
+    $('#checkPhoneBtn').on('click', function() {
+        const phoneNumber = $('#phone').val();
+
+        if (phoneNumber === '') {
+            alert('전화번호를 입력해주세요.');
+            return;
+        }
+
+        // 전화번호 중복 체크 API 호출
+        $.ajax({
+            url: '/api/user/check-phonenumber',   // API URL
+            type: 'POST',                         // POST 요청
+            contentType: 'application/json',      // 요청 헤더: JSON 형식
+            data: JSON.stringify({
+                'data' : { 'phoneNumber' : phoneNumber }
+            }),  // JSON 데이터
+            success: function(response) {
+                if (response.data === true) {
+                    alert('사용 가능한 전화번호입니다.');
+                    isPhoneChecked = true;  // 중복 체크 완료
+                } else if(response.data === false) {
+                    alert('이미 사용 중인 전화번호입니다.');
+                    isPhoneChecked = false;  // 중복 체크되지 않음
+                } else {
+                    alert('전화번호 중복 확인에 실패했습니다.');
+                }
+            },
+            error: function() {
+                alert('네트워크 에러.');
+            }
+        });
     });
 
     // 동의 버튼 클릭 시 체크박스 체크
@@ -54,13 +125,29 @@ $(document).ready(function() {
         let firstInvalidField = null; // 첫 번째 유효하지 않은 필드
 
         // 모든 필드 유효성 검사
-        $('#name, #email, #phone, #pass1, #pass2').each(function() {
+        $('#name, #email, #phone, #password, #confirm-password').each(function() {
             const field = $(this);
             if (!validateField(field)) {
                 isValid = false;
                 if (!firstInvalidField) firstInvalidField = field;
             }
         });
+
+        // 이메일 중복 체크 여부 확인
+        if (!isEmailChecked) {
+            isValid = false;
+            $('#email').addClass('is-invalid');
+            $('#email').next('.invalid-feedback').text('이메일 중복 체크를 해주세요.');
+            if (!firstInvalidField) firstInvalidField = $('#email');
+        }
+
+        // 전화번호 중복 체크 여부 확인
+        if (!isPhoneChecked) {
+            isValid = false;
+            $('#phone').addClass('is-invalid');
+            $('#phone').next('.invalid-feedback').text('전화번호 중복 체크를 해주세요.');
+            if (!firstInvalidField) firstInvalidField = $('#phone');
+        }
 
         // 체크박스 유효성 검사
         const isCheckboxChecked = $('#agreement').prop('checked'); // 체크박스 ID 확인
@@ -104,13 +191,13 @@ function validateField(field) {
             isValid = validatePhone(phoneValue);
             toggleInvalidClass(field, isValid);
             break;
-        case 'pass1':
+        case 'password':
             isValid = validatePassword(value);
             toggleInvalidClass(field, isValid);
             $('#pwConfirm').text(isValid ? '' : "비밀번호는 숫자, 영문, 특수문자가 혼합된 8~16자여야 합니다.");
             break;
-        case 'pass2':
-            const password = $('#pass1').val();
+        case 'confirm-password':
+            const password = $('#password').val();
             isValid = validateConfirmPassword(password, value);
             toggleInvalidClass(field, isValid);
             $('#pwConfirm').text(isValid ? (password === value ? "비밀번호가 일치합니다." : '') : "비밀번호가 일치하지 않습니다.");

@@ -93,11 +93,11 @@ public class UserService extends BaseService<UserRequest, UserResponse, User> {
                 .build()).getId();
     }
 
-    public Boolean checkEmail(String email) {
-        return getBaseRepository().findByEmail(email).isEmpty();
+    public Boolean checkEmail(Header<UserRequest> request) {
+        return getBaseRepository().findByEmail(request.getData().getEmail()).isEmpty();
     }
-    public Boolean checkPhoneNumber(String phoneNumber) {
-        return getBaseRepository().findByPhoneNumber(phoneNumber).isEmpty();
+    public Boolean checkPhoneNumber(Header<UserRequest> request) {
+        return getBaseRepository().findByPhoneNumber(request.getData().getPhoneNumber()).isEmpty();
     }
 
     public List<User> getAllUsers() {

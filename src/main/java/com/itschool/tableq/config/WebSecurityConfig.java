@@ -50,8 +50,8 @@ public class WebSecurityConfig {
                                 new AntPathRequestMatcher("/login"),
                                 new AntPathRequestMatcher("/signup"),
                                 new AntPathRequestMatcher("/api/user"), // 비회원도 회원 가입 시 필요
-                                new AntPathRequestMatcher("/api/check-email"), // 비회원도 회원 가입 시 필요
-                                new AntPathRequestMatcher("/api/check-phonenumber"), // 비회원도 회원 가입 시 필요
+                                new AntPathRequestMatcher("/api/user/check-email"), // 비회원도 회원 가입 시 필요
+                                new AntPathRequestMatcher("/api/user/check-phonenumber"), // 비회원도 회원 가입 시 필요
                                 new AntPathRequestMatcher("/api/**"), // 운영 배포 시 삭제 요망
                                 new AntPathRequestMatcher("/api-docs"), // 운영 배포 시 삭제 요망
                                 new AntPathRequestMatcher("/api-docs/**"), // 운영 배포 시 삭제 요망

@@ -96,14 +96,26 @@ public class UserApiController extends CrudController<UserRequest, UserResponse,
     }
 
     @Operation(summary = "이메일 중복 확인", description = "가입이 가능할 때 true 반환")
-    @GetMapping("/check-email")
-    public Header<Boolean> checkEmail(@RequestParam(name = "email") String email){
-        return Header.OK(((UserService)baseService).checkEmail(email));
+    @PostMapping("/check-email")
+    public Header<Boolean> checkEmail(@RequestBody Header<UserRequest> request){
+        try {
+            if(request.getData().getEmail() != null)
+                return Header.OK(((UserService)baseService).checkEmail(request));
+            throw new Exception();
+        } catch (Exception e) {
+            return Header.ERROR("data 내 email 값이 null 입니다.");
+        }
     }
 
     @Operation(summary = "전화번호 중복확인")
-    @GetMapping("/check-phonenumber")
-    public Header<Boolean> checkPhoneNumber(@RequestParam(name = "phoneNumber") String phoneNumber){
-        return Header.OK(((UserService)baseService).checkPhoneNumber(phoneNumber));
+    @PostMapping("/check-phonenumber")
+    public Header<Boolean> checkPhoneNumber(@RequestBody Header<UserRequest> request){
+        try {
+            if(request.getData().getPhoneNumber() != null)
+                return Header.OK(((UserService)baseService).checkPhoneNumber(request));
+            throw new Exception();
+        } catch (Exception e) {
+            return Header.ERROR("data 내 phoneNumber 값이 null 입니다.");
+        }
     }
 }
