@@ -94,10 +94,10 @@ public class UserService extends BaseService<UserRequest, UserResponse, User> {
     }
 
     public Boolean checkEmail(String email) {
-        return ((UserRepository)baseRepository).findByEmail(email).isEmpty();
+        return getBaseRepository().findByEmail(email).isEmpty();
     }
     public Boolean checkPhoneNumber(String phoneNumber) {
-        return ((UserRepository)baseRepository).findByPhoneNumber(phoneNumber).isEmpty();
+        return getBaseRepository().findByPhoneNumber(phoneNumber).isEmpty();
     }
 
     public List<User> getAllUsers() {
