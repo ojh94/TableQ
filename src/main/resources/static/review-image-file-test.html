@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ReviewImage Item API Test</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+<h1>ReviewImage Item API Test</h1>
+
+<!-- 리뷰 이미지 추가 (생성) -->
+<div>
+    <h2>리뷰 이미지 추가</h2>
+
+    <label for="reviewImage">이미지 파일:</label>
+    <input type="file" id="reviewImage" accept="image/*"><br><br>
+
+    <label for="reviewIdCreate">리뷰 ID:</label>
+    <input type="text" id="reviewIdCreate" required><br><br>
+
+    <button id="createReviewImageBtn">리뷰 이미지 추가</button>
+
+    <div id="createReviewImageResult"></div>
+</div>
+
+<!-- 리뷰 이미지 조회 -->
+<div>
+    <h2>리뷰 이미지 조회</h2>
+    <label for="reviewImageId">리뷰 이미지 ID:</label>
+    <input type="text" id="reviewImageId" required><br><br>
+
+    <button id="fetchReviewImageBtn">리뷰 이미지 조회</button><br><br>
+
+    <div id="reviewImageDetails">
+        <p><strong>조회된 리뷰 이미지:</strong></p>
+        <div id="reviewImageDetailsContent"></div><br><br>
+    </div>
+</div>
+
+<!-- 리뷰 이미지 수정 -->
+<div>
+    <h2>리뷰 이미지 수정</h2>
+    <h3>수정할 항목</h3>
+
+    <label for="reviewImageUpdate">이미지 파일:</label>
+    <input type="file" id="reviewImageUpdate" accept="image/*"><br><br>
+
+    <button id="updateReviewImageBtn">리뷰 이미지 수정</button>
+
+    <div id="updateReviewImageResult"></div>
+</div>
+
+<!-- 리뷰 이미지 삭제 -->
+<div>
+    <h2>리뷰 이미지 삭제</h2>
+    <label for="reviewImageIdDelete">삭제할 리뷰 이미지 ID:</label>
+    <input type="text" id="reviewImageIdDelete" required><br><br>
+
+    <button id="deleteReviewImageBtn">리뷰 이미지 삭제</button>
+
+    <div id="deleteReviewImageResult"></div>
+</div>
+
+<script>
+    // 리뷰 이미지 추가 요청
+    $('#createReviewImageBtn').on('click', function() {
+        const formData = new FormData();
+
+        const request = {
+            'review': {
+                'id' : $('#reviewIdCreate').val()
+            }
+        };
+
+        formData.append('data', JSON.stringify(request));
+
+        const file = $('#reviewImage')[0].files[0];
+        if (file) {
+            formData.append('file', file);
+        } else {
+            alert('이미지 파일을 선택해주세요.');
+            return;
+        }
+
+        if (file && !file.type.startsWith('image/')) {
+            alert('이미지 파일만 업로드할 수 있습니다.');
+            return;
+        }
+
+        if (file && file.size > 10 * 1024 * 1024) {
+            alert('파일 크기가 10MB를 초과합니다.');
+            return;
+        }
+
+        $.ajax({
+            url: '/api/review-image',
+            method: 'POST',
+            data: formData,
+            processData: false,
+            contentType: false,
+            success: function(data) {
+                const responseData = data.data;
+                const resultHtml = `
+                    <div class="response">
+                        <p><strong>성공:</strong></p>
+                        <pre>${JSON.stringify(data, null, 2)}</pre>
+                        <p><strong>이미지:</strong></p>
+                        <img src="${responseData.fileUrl}" alt="Uploaded ReviewImage Image" style="max-width: 300px; max-height: 300px;">
+                    </div>
+                `;
+                $('#createReviewImageResult').html(resultHtml);
+            },
+            error: function(xhr, status, error) {
+                $('#createReviewImageResult').html('<div class="error">오류 발생: ' + error + '</div>');
+            }
+        });
+    });
+
+    // 리뷰 이미지 조회 요청
+    $('#fetchReviewImageBtn').on('click', function() {
+        const reviewImageId = $('#reviewImageId').val();
+        if (!reviewImageId) {
+            alert('리뷰 이미지 ID를 입력해주세요.');
+            return;
+        }
+
+        $.ajax({
+            url: `/api/review-image/${reviewImageId}`,
+            method: 'GET',
+            success: function(data) {
+                const reviewImageData = data.data;
+                const resultHtml = `
+                    <p><strong>이미지:</strong></p>
+                    <img src="${reviewImageData.fileUrl}" alt="ReviewImage Image" style="max-width: 300px; max-height: 300px;">
+                `;
+                $('#reviewImageDetailsContent').html(resultHtml);
+            },
+            error: function(xhr, status, error) {
+                $('#reviewImageDetailsContent').html('<div class="error">오류 발생: ' + error + '</div>');
+            }
+        });
+    });
+
+    // 리뷰 이미지 수정 요청
+    $('#updateReviewImageBtn').on('click', function() {
+        const formData = new FormData();
+        const reviewImageId = $('#reviewImageId').val();
+        if (!reviewImageId) {
+            alert('리뷰 이미지 ID를 입력해주세요.');
+            return;
+        }
+
+        const request = {
+            'needFileChange': $('#reviewImageUpdate')[0].files.length > 0 // 파일이 있으면 true, 없으면 false
+        };
+
+        formData.append('data', JSON.stringify(request));
+
+        const file = $('#reviewImageUpdate')[0].files[0];
+
+        if (file) {
+            formData.append('file', file);
+        }
+
+        $.ajax({
+            url: `/api/review-image/${reviewImageId}`,
+            method: 'PUT',
+            data: formData,
+            processData: false,
+            contentType: false,
+            success: function(data) {
+                const responseData = data.data;
+                const resultHtml = `
+                    <div class="response">
+                        <p><strong>성공:</strong></p>
+                        <pre>${JSON.stringify(data, null, 2)}</pre>
+                        <p><strong>이미지:</strong></p>
+                        <img src="${responseData.fileUrl}" alt="Updated ReviewImage Image" style="max-width: 300px; max-height: 300px;">
+                    </div>
+                `;
+                $('#updateReviewImageResult').html(resultHtml);
+            },
+            error: function(xhr, status, error) {
+                $('#updateReviewImageResult').html('<div class="error">오류 발생: ' + error + '</div>');
+            }
+        });
+    });
+
+    // 리뷰 이미지 삭제 요청
+    $('#deleteReviewImageBtn').on('click', function() {
+        const reviewImageId = $('#reviewImageIdDelete').val();
+        if (!reviewImageId) {
+            alert('리뷰 이미지 ID를 입력해주세요.');
+            return;
+        }
+
+        $.ajax({
+            url: `/api/review-image/${reviewImageId}`,
+            method: 'DELETE',
+            success: function(data) {
+                const resultHtml = `
+                    <div class="response">
+                        <p><strong>성공:</strong></p>
+                        <pre>${JSON.stringify(data, null, 2)}</pre>
+                    </div>
+                `;
+                $('#deleteReviewImageResult').html(resultHtml);
+            },
+            error: function(xhr, status, error) {
+                $('#deleteReviewImageResult').html('<div class="error">오류 발생: ' + error + '</div>');
+            }
+        });
+    });
+</script>
+
+</body>
+</html>

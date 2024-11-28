@@ -8,6 +8,7 @@ import com.itschool.tableq.network.response.ReviewImageResponse;
 import com.itschool.tableq.repository.ReviewImageRespository;
 import com.itschool.tableq.repository.ReviewRepository;
 import com.itschool.tableq.service.base.BaseServiceWithS3;
+import com.itschool.tableq.service.base.S3Service;
 import com.itschool.tableq.util.FileUtil;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,9 +28,8 @@ public class ReviewImageService extends BaseServiceWithS3<ReviewImageRequest, Re
 
     // 생성자
     @Autowired
-    public ReviewImageService(JpaRepository<ReviewImage, Long> baseRepository,
-                              ReviewRepository reviewRepository) {
-        super(baseRepository);
+    public ReviewImageService(ReviewImageRespository baseRepository, S3Service s3Service, ReviewRepository reviewRepository) {
+        super(baseRepository, s3Service);
         this.reviewRepository = reviewRepository;
     }
 
@@ -56,7 +56,7 @@ public class ReviewImageService extends BaseServiceWithS3<ReviewImageRequest, Re
 
             entity = getBaseRepository().save(entity);
 
-            String fileUrl = uploadFile(reviewImageRequest.getFile(), DIRECTORY_NAME,
+            String fileUrl = s3Service.uploadFile(reviewImageRequest.getFile(), DIRECTORY_NAME,
                     entity.getId() + FileUtil.getFileExtension(request.getData().getFile()));
 
             entity.updateFileUrl(fileUrl);
@@ -100,10 +100,10 @@ public class ReviewImageService extends BaseServiceWithS3<ReviewImageRequest, Re
 
             if (reviewImageRequest.isNeedFileChange()) { // 프론트에서 파일 변경이 필요하다 한 경우
                 if (file.isEmpty() && existingUrl != null) { // 대체 파일이 없고 기존 url이 있는 경우
-                    deleteFile(existingUrl); // 기존 파일 삭제
+                    s3Service.deleteFile(existingUrl); // 기존 파일 삭제
                     findEntity.updateFileUrl(null); // 파일 URL 삭제
                 } else if (!file.isEmpty()) { // 대체 파일이 있는 경우
-                    String newUrl = updateFile(existingUrl, file); // 새 파일 업로드
+                    String newUrl = s3Service.updateFile(existingUrl, file); // 새 파일 업로드
                     findEntity.updateFileUrl(newUrl); // 새 파일 URL 설정
                 }
             }
@@ -124,7 +124,7 @@ public class ReviewImageService extends BaseServiceWithS3<ReviewImageRequest, Re
                     .orElseThrow(() -> new IllegalArgumentException("not found"));
 
             if(entity.getFileUrl() != null)
-                deleteFile(entity.getFileUrl());
+                s3Service.deleteFile(entity.getFileUrl());
 
             getBaseRepository().delete(entity);
 

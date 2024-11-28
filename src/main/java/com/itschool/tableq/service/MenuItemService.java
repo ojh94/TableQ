@@ -8,9 +8,11 @@ import com.itschool.tableq.network.response.MenuItemResponse;
 import com.itschool.tableq.repository.MenuItemRepository;
 import com.itschool.tableq.repository.RestaurantRepository;
 import com.itschool.tableq.service.base.BaseServiceWithS3;
+import com.itschool.tableq.service.base.S3Service;
 import com.itschool.tableq.util.FileUtil;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -26,9 +28,8 @@ public class MenuItemService extends BaseServiceWithS3<MenuItemRequest, MenuItem
 
     // 생성자
     @Autowired
-    public MenuItemService(MenuItemRepository baseRepository,
-                           RestaurantRepository restaurantRepository) {
-        super(baseRepository);
+    public MenuItemService(MenuItemRepository baseRepository, S3Service s3Service, RestaurantRepository restaurantRepository) {
+        super(baseRepository, s3Service);
         this.restaurantRepository = restaurantRepository;
     }
 
@@ -59,7 +60,7 @@ public class MenuItemService extends BaseServiceWithS3<MenuItemRequest, MenuItem
 
             entity = getBaseRepository().save(entity);
 
-            String fileUrl = uploadFile(menuItemRequest.getFile(), DIRECTORY_NAME,
+            String fileUrl = s3Service.uploadFile(menuItemRequest.getFile(), DIRECTORY_NAME,
                     entity.getId() + FileUtil.getFileExtension(request.getData().getFile()));
 
             entity.updateFileUrl(fileUrl);
@@ -94,10 +95,10 @@ public class MenuItemService extends BaseServiceWithS3<MenuItemRequest, MenuItem
 
             if (menuItemRequest.isNeedFileChange()) { // 프론트에서 파일 변경이 필요하다 한 경우
                 if (file.isEmpty() && existingUrl != null) { // 대체 파일이 없고 기존 url이 있는 경우
-                    deleteFile(existingUrl); // 기존 파일 삭제
+                    s3Service.deleteFile(existingUrl); // 기존 파일 삭제
                     findEntity.updateFileUrl(null); // 파일 URL 삭제
                 } else if (!file.isEmpty()) { // 대체 파일이 있는 경우
-                    String newUrl = updateFile(existingUrl, file); // 새 파일 업로드
+                    String newUrl = s3Service.updateFile(existingUrl, file); // 새 파일 업로드
                     findEntity.updateFileUrl(newUrl); // 새 파일 URL 설정
                 }     
             }
@@ -118,7 +119,7 @@ public class MenuItemService extends BaseServiceWithS3<MenuItemRequest, MenuItem
                     .orElseThrow(() -> new IllegalArgumentException("not found"));
 
             if(entity.getFileUrl() != null)
-                deleteFile(entity.getFileUrl());
+                s3Service.deleteFile(entity.getFileUrl());
 
             getBaseRepository().delete(entity);
 
