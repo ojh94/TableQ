@@ -17,5 +17,5 @@ public class BusinessInformationRequest {
 
     private String contactNumber;
 
-    private OwnerRequest owner;
+    private UserRequest userRequest;
 }

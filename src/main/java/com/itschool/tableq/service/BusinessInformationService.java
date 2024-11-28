@@ -2,11 +2,13 @@ package com.itschool.tableq.service;
 
 import com.itschool.tableq.domain.BusinessInformation;
 import com.itschool.tableq.domain.Owner;
+import com.itschool.tableq.domain.User;
 import com.itschool.tableq.network.Header;
 import com.itschool.tableq.network.request.BusinessInformationRequest;
 import com.itschool.tableq.network.response.BusinessInformationResponse;
 import com.itschool.tableq.repository.BusinessInformationRepository;
 import com.itschool.tableq.repository.OwnerRepository;
+import com.itschool.tableq.repository.UserRepository;
 import com.itschool.tableq.service.base.BaseService;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
@@ -20,14 +22,14 @@ import java.util.List;
 @Service
 public class BusinessInformationService extends BaseService<BusinessInformationRequest, BusinessInformationResponse, BusinessInformation> {
 
-    private final OwnerRepository ownerRepository;
+    private final UserRepository userRepository;
 
     // 생성자
     @Autowired
     public BusinessInformationService(BusinessInformationRepository baseRepository,
-                                      OwnerRepository ownerRepository) {
+                                      UserRepository userRepository) {
         super(baseRepository);
-        this.ownerRepository = ownerRepository;
+        this.userRepository = userRepository;
     }
 
     @Override
@@ -48,7 +50,7 @@ public class BusinessInformationService extends BaseService<BusinessInformationR
                 .businessNumber(businessInformationRequest.getBusinessNumber())
                 .businessName(businessInformationRequest.getBusinessName())
                 .contactNumber(businessInformationRequest.getContactNumber())
-                .owner(ownerRepository.findById(businessInformationRequest.getOwner().getId())
+                .user(userRepository.findById(businessInformationRequest.getUserRequest().getId())
                         .orElseThrow(()-> new EntityNotFoundException()))
                 .build();
 
@@ -61,12 +63,12 @@ public class BusinessInformationService extends BaseService<BusinessInformationR
         return Header.OK(response(getBaseRepository().findById(id).orElse(null)));
     }
 
-    public Header<List<BusinessInformationResponse>> readByOwnerId(Long ownerId, Pageable pageable){
-        Owner owner = ownerRepository.findById(ownerId)
-                .orElseThrow(()->new NotFoundException("Not Found Owner Id: "+ownerId));
+    public Header<List<BusinessInformationResponse>> readByOwnerId(Long userId, Pageable pageable){
+        User user = userRepository.findById(userId)
+                .orElseThrow(()->new NotFoundException("Not Found Owner Id: "+userId));
 
         List<BusinessInformation> businessInformationList = ((BusinessInformationRepository)baseRepository)
-                .findByOwner(owner).orElse(null);
+                .findByOwner(user).orElse(null);
 
         return Header.OK(responseList(businessInformationList));
     }
