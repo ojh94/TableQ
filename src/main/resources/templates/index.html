@@ -3,10 +3,10 @@
   <div class="section-list">
     <section class="search-section">
       <h2>맛있는 식사를 예약하세요</h2>
-      <form id="searchForm">
+      <form id="searchForm" action="#" method="GET">
         <input
                 type="text"
-                id="searchInput"
+                id="searchKeyword"
                 placeholder="레스토랑 또는 음식 검색"
         />
         <button type="submit" class="btn btn-orange">
@@ -32,36 +32,59 @@
       <section class="restaurant-section">
         <div class="section-header">
           <h3>추천 레스토랑</h3>
-          <select id="sortSelect">
-            <option value="rating">별점 높은순</option>
-            <option value="reviewsCount">가까운 순</option>
+          <select id="favoriteSortSelect">
+            <option value="mostVisit">인기순</option>
+            <option value="recommendationScore">추천순</option>
           </select>
         </div>
         <div class="restaurant-grid" id="restaurantGrid"></div>
+        <div id="favoritePagination">
+          <button id="favoritePrevPage" disabled>이전</button>
+          <span id="favoriteCurrentPage">1</span> 페이지
+          <button id="favoriteNextPage">다음</button>
+        </div>
       </section>
 
+
+
       <div class="category">
-        <div class="sub-category">
-          <div class="local-title">
-            <h3>대전 맛집 찾기</h3>
-            <button class="btn btn-change">지역변경</button>
-          </div>
-          <div class="local-container">
-            <button class="btn local">
-              대전<br />
-              전체
-            </button>
-            <button class="btn local">
-              유성구<br />
-              대덕구
-            </button>
-            <button class="btn local">서구</button>
-            <button class="btn local">
-              중구<br />
-              동구
-            </button>
-          </div>
-        </div>
+        <section class="restaurant-section">
+          <h3>전체 레스토랑</h3>
+          <select id="sortId">
+            <option value="mostVisit">인기순</option>
+            <option value="recommendationScore">추천순</option>
+          </select>
+
+          <div class="restaurant-grid" id="restaurantGrid3"></div>
+            <div id="pagination">
+              <button id="prevPage" disabled>이전</button>
+              <span id="currentPage">1</span> 페이지
+              <button id="nextPage">다음</button>
+            </div>
+        </section>
+      </div>
+
+<!--        <div class="sub-category">-->
+<!--          <div class="local-title">-->
+<!--            <h3>대전 맛집 찾기</h3>-->
+<!--            <button class="btn btn-change">지역변경</button>-->
+<!--          </div>-->
+<!--          <div class="local-container">-->
+<!--            <button class="btn local">-->
+<!--              대전<br />-->
+<!--              전체-->
+<!--            </button>-->
+<!--            <button class="btn local">-->
+<!--              유성구<br />-->
+<!--              대덕구-->
+<!--            </button>-->
+<!--            <button class="btn local">서구</button>-->
+<!--            <button class="btn local">-->
+<!--              중구<br />-->
+<!--              동구-->
+<!--            </button>-->
+<!--          </div>-->
+<!--        </div>-->
 
 
         <!-- <div class="sub-category"> -->

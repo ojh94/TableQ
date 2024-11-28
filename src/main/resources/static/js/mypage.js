@@ -100,12 +100,12 @@ $(document).ready(function () {
     function displayNoReservations() {
       upcomingReservationsContainer.style.display = "none"; // 예약 그리드 숨기기
       noReservationsMessage.style.display = "block"; // "예약 없음" 메시지 표시
-      reservationInfoContainer.innerHTML = `
-          <div class="no-reservation">
-              <p class="emoji">😢</p>
-              <p>이용 예정인 내역이 없어요!</p>
-          </div>
-      `;
+//      reservationInfoContainer.innerHTML = `
+//          <div class="no-reservation">
+//              <p class="emoji">😢</p>
+//              <p>이용 예정인 내역이 없어요!</p>
+//          </div>
+//      `;
     }
 
     // 그리드 항목 생성 함수

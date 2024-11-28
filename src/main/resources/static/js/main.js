@@ -4,6 +4,11 @@ console.log("main.js 시작");
 function createRestaurantCard(restaurant, rating, reviewsCount) {
     const card = document.createElement('div');
     card.className = 'card';
+
+    // rating 값이 유효한지 확인하고, 없으면 0으로 설정
+    const validRating = (rating && !isNaN(rating)) ? rating : 0; // rating이 없거나 NaN이면 0으로 설정
+
+
     card.innerHTML =`
         <div class="card-header">
             <button id="favorite-btn-${restaurant.id}" class="favorite-btn" data-id="${restaurant.id}" data-favorite="false"  >
@@ -15,7 +20,7 @@ function createRestaurantCard(restaurant, rating, reviewsCount) {
             <img src="/img/test-img/텐동.jpg" alt="${restaurant.name}" class="card-image">
             <div class="rating">
                 <i data-lucide="star" class="rating-star"></i>
-                <span class="rating-value">${rating.toFixed(1)}</span>
+                <span class="rating-value">${validRating.toFixed(1)}</span>
                 <span class="rating-count">(${reviewsCount} 리뷰)</span>
             </div>
             <div class="location">
@@ -222,7 +227,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const userId = userIdInput ? userIdInput.value : null;
     const url = `/api/reservation/user/${userId}?page=0&size=10&sort=createdAt,desc`;
 
-
     fetch(url)
       .then(response => response.json())
       .then(data => {
@@ -368,5 +372,127 @@ function removeFromFavorites(restaurantId, userId) {
         }
     });
 }
+
+// 기본 페이지와 페이지 크기 설정
+let currentPage = 0;
+const pageSize = 10;
+
+// 레스토랑 데이터를 가져오는 함수
+async function fetchRestaurants(sortType = 'id', page = currentPage) {
+    try {
+        // 레스토랑 정보 가져오기
+        const restaurantResponse = await $.ajax({
+            url: `/api/restaurant?page=${page}&size=${pageSize}&sort=${sortType},asc`,
+            method: 'GET'
+        });
+
+        if (restaurantResponse && restaurantResponse.data) {
+            console.log('레스토랑 데이터:', restaurantResponse.data);
+
+            // 각 레스토랑의 리뷰 데이터 가져오기
+            const restaurants = restaurantResponse.data;
+            const reviewPromises = restaurantResponse.data.map(restaurant =>
+                $.ajax({
+                    url: `/api/review/restaurant/${restaurant.id}`,
+                    method: 'GET'
+                }).then(reviewResponse => {
+                  const reviews = reviewResponse.data || [];
+                  const rating = reviews.length > 0
+                      ? reviews.reduce((sum, r) => sum + r.starRating, 0) / reviews.length
+                      : 0;
+
+                  return {
+                      ...restaurant,
+                      rating: Math.round(rating * 10) / 10, // 소수점 1자리 반올림
+                      reviewsCount: reviews.length
+                  };
+              })
+            );
+
+            const reviewData = await Promise.all(reviewPromises);
+            console.log('리뷰 데이터:', reviewData);
+
+            // 레스토랑 데이터와 리뷰 데이터를 병합
+            const mergedRestaurants = restaurantResponse.data.map((restaurant, index) => {
+                const review = reviewData[index]?.data; // 리뷰 데이터가 없을 경우 null 방지
+                const reviews = review?.reviews || []; // 리뷰가 없으면 빈 배열
+                const rating = reviews.length > 0
+                    ? reviews.reduce((sum, r) => sum + r.starRating, 0) / reviews.length
+                    : 0; // 평점 평균 계산
+
+                return {
+                    ...restaurant,
+                    reviews,
+                    rating: Math.round(rating * 10) / 10 // 소수점 1자리 반올림
+                };
+            });
+
+            console.log('결합된 레스토랑 데이터:', mergedRestaurants);
+
+            // 렌더링 및 페이지네이션 업데이트
+            renderRestaurantCards(mergedRestaurants);
+            updatePagination(restaurantResponse.pagination.totalPages);
+        } else {
+            console.error('Invalid response format:', restaurantResponse);
+        }
+    } catch (error) {
+        console.error('Error fetching restaurant data:', error);
+    }
+}
+
+
+
+// 레스토랑 카드를 렌더링하는 함수
+function renderRestaurantCards(restaurants) {
+    const $restaurantGrid = $('#restaurantGrid3');
+    $restaurantGrid.empty(); // 기존 카드 초기화
+
+    restaurants.forEach(restaurant => {
+        const $card = createRestaurantCard(restaurant);
+        $restaurantGrid.append($card);
+    });
+}
+
+
+// 페이지네이션 업데이트 함수
+function updatePagination(totalPages) {
+    $('#prevPage').prop('disabled', currentPage === 0);
+    $('#nextPage').prop('disabled', currentPage === totalPages - 1);
+    $('#currentPage').text(currentPage + 1); // 현재 페이지 표시
+}
+
+// 페이지 변경 처리 함수
+ function handlePagination(event) {
+    if (event.target.id === 'nextPage' && currentPage < totalPages - 1) {
+        currentPage++;
+    } else if (event.target.id === 'prevPage' && currentPage > 0) {
+        currentPage--;
+    }
+
+    // 페이지 변경 시 데이터를 새로 불러옴
+    fetchRestaurants($('#sortId').val(), currentPage);
+}
+
+// 정렬 기준 변경 처리 함수
+function handleSortChange() {
+    const sortType = $('#sortId').val(); // 인기순, 추천순 선택
+    fetchRestaurants(sortType, currentPage); // 선택된 기준에 따라 레스토랑 데이터 가져오기
+}
+
+
+
+$(document).ready(function () {
+    // 초기 레스토랑 데이터 불러오기 (ID 순)
+    fetchRestaurants('id', 0);
+
+    // 페이지네이션 버튼 이벤트 리스너
+    $('#prevPage').on('click', handlePagination);
+    $('#nextPage').on('click', handlePagination);
+
+    // 정렬 기준 변경 시 이벤트 리스너
+    $('#sortId').on('change', handleSortChange);
+});
+
+
 
 console.log("main.js 끝");

@@ -188,6 +188,14 @@ header, .toolbar-top, .toolbar {
   margin: 0 auto;
 }
 
+#searchKeyword{
+  flex-grow: 1;
+  padding: 1rem;
+  width: 70%;
+  border: 1px solid #ccc;
+  border-radius: 0.25rem 0 0 0.25rem;
+}
+
 #searchInput {
   flex-grow: 1;
   padding: 1rem;
