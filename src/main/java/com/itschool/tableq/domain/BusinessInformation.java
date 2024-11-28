@@ -27,8 +27,8 @@ public class BusinessInformation extends AuditableEntity {
     private String contactNumber;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="owner_id",updatable = false)
-    private Owner owner;
+    @JoinColumn(name="user_id",updatable = false)
+    private User user;
 
     public void update(BusinessInformationRequest businessInformationRequest) {
         this.businessNumber = businessInformationRequest.getBusinessNumber() == null? this.businessNumber : businessInformationRequest.getBusinessNumber();

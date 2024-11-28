@@ -1,7 +1,7 @@
 package com.itschool.tableq.network.response;
 
 import com.itschool.tableq.domain.BusinessInformation;
-import com.itschool.tableq.domain.Owner;
+import com.itschool.tableq.domain.User;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -20,18 +20,18 @@ public class BusinessInformationResponse {
 
     private String contactNumber;
 
-    private OwnerResponse owner;
+    private UserResponse userResponse;
 
     public static BusinessInformationResponse of (BusinessInformation businessInformation) {
-        Owner owner = businessInformation.getOwner();
+        User user = businessInformation.getUser();
 
         return BusinessInformationResponse.builder()
                 .id(businessInformation.getId())
                 .businessNumber(businessInformation.getBusinessNumber())
                 .businessName(businessInformation.getBusinessName())
                 .contactNumber(businessInformation.getContactNumber())
-                .owner(OwnerResponse.builder()
-                        .id(owner.getId())
+                .userResponse(UserResponse.builder()
+                        .id(user.getId())
                         .build())
                 .build();
     }

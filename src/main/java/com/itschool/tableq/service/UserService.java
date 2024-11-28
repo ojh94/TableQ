@@ -1,6 +1,7 @@
 package com.itschool.tableq.service;
 
 import com.itschool.tableq.domain.User;
+import com.itschool.tableq.domain.enumclass.MemberRole;
 import com.itschool.tableq.network.Header;
 import com.itschool.tableq.network.request.UserRequest;
 import com.itschool.tableq.network.response.UserResponse;
@@ -47,7 +48,7 @@ public class UserService extends BaseService<UserRequest, UserResponse, User> {
                 .password(bCryptPasswordEncoder.encode(userRequest.getPassword()))
                 .name(userRequest.getName())
                 .phoneNumber(userRequest.getPhoneNumber())
-                .lastLoginAt(LocalDateTime.now())
+                .memberRole(userRequest.getMemberRole())
                 .build();
 
         getBaseRepository().save(user);
@@ -82,24 +83,40 @@ public class UserService extends BaseService<UserRequest, UserResponse, User> {
                 .orElseThrow(() -> new RuntimeException("user delete fail"));
     }
 
-    public Long signup(UserRequest dto) {
+    public Long signup(UserRequest userRequest) {
         return getBaseRepository().save(User.builder()
-                .email(dto.getEmail())
-                .password(bCryptPasswordEncoder.encode(dto.getPassword()))
-                .name(dto.getName())
-                .phoneNumber(dto.getPhoneNumber())
+                .email(userRequest.getEmail())
+                .password(bCryptPasswordEncoder.encode(userRequest.getPassword()))
+                .name(userRequest.getName())
+                .phoneNumber(userRequest.getPhoneNumber())
                 .lastLoginAt(LocalDateTime.now())
                 .build()).getId();
     }
 
-    public Boolean checkEmail(String email) {
-        return ((UserRepository)baseRepository).findByEmail(email).isEmpty();
+    public Boolean checkEmail(Header<UserRequest> request) {
+        return getBaseRepository().findByEmail(request.getData().getEmail()).isEmpty();
     }
-    public Boolean checkPhoneNumber(String phoneNumber) {
-        return ((UserRepository)baseRepository).findByPhoneNumber(phoneNumber).isEmpty();
+    public Boolean checkPhoneNumber(Header<UserRequest> request) {
+        return getBaseRepository().findByPhoneNumber(request.getData().getPhoneNumber()).isEmpty();
     }
 
     public List<User> getAllUsers() {
         return getBaseRepository().findAll();
+    }
+
+    public Header<UserResponse> createUserRole(Header<UserRequest> request) {
+        if(request.getData() != null) {
+            request.getData().setMemberRole(MemberRole.USER);
+        }
+
+        return create(request);
+    }
+
+    public Header<UserResponse> createOwnerRole(Header<UserRequest> request) {
+        if(request.getData() != null) {
+            request.getData().setMemberRole(MemberRole.OWNER);
+        }
+
+        return create(request);
     }
 }
