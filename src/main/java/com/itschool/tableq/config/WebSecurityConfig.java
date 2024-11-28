@@ -49,15 +49,22 @@ public class WebSecurityConfig {
                                 new AntPathRequestMatcher("/auth"),
                                 new AntPathRequestMatcher("/login"),
                                 new AntPathRequestMatcher("/signup"),
-                                new AntPathRequestMatcher("/api/user/user-role"), // 비회원도 회원 가입 시 필요
+                                new AntPathRequestMatcher("/api/user"), // 비회원도 회원 가입 시 필요
                                 new AntPathRequestMatcher("/api-docs"), // 운영 배포 시 삭제 요망
                                 new AntPathRequestMatcher("/api-docs/**"), // 운영 배포 시 삭제 요망
                                 new AntPathRequestMatcher("/v3/api-docs/**"), // 운영 배포 시 삭제 요망
                                 new AntPathRequestMatcher("/swagger*/**"), // 운영 배포 시 삭제 요망
                                 new AntPathRequestMatcher("/swagger-resources/**") // 운영 배포 시 삭제 요망
                         ).permitAll()
-                        .requestMatchers("/user/**", "/api/**").hasRole(MemberRole.USER.name())
-                        .requestMatchers("/owner/**", "/api/**").hasRole(MemberRole.OWNER.name())
+                        .requestMatchers("/admin/**",
+                                                   "/api/user/owner-role")
+                        .hasRole(MemberRole.ADMIN.name())
+                        .requestMatchers("/user/**",
+                                                   "/api/**")
+                        .hasRole(MemberRole.USER.name())
+                        .requestMatchers("/owner/**",
+                                                   "/api/**")
+                        .hasRole(MemberRole.OWNER.name())
                         .anyRequest().authenticated()
                 )
                 .formLogin(formLogin -> formLogin // 폼 기반 로그인 설정
