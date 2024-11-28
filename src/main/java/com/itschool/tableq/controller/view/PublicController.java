@@ -19,17 +19,19 @@ public class PublicController {
     // 홈
     @GetMapping("/")
     public String home(@AuthenticationPrincipal User user, Model model) {
-        if(user != null && user.getMemberRole().equals(MemberRole.USER)) {
-            model.addAttribute("user", user);
-            return "index";
-        } else if(user != null && user.getMemberRole().equals(MemberRole.OWNER)) {
-            model.addAttribute("owner", user);
-            return "owner-mypage";
-        } else if(user != null && user.getMemberRole().equals(MemberRole.ADMIN)) {
-            model.addAttribute("admin", user);
-            return "admin";
-        } else { // 로그인 안 한 상태
-            return "welcome";
+        switch (user != null ? user.getMemberRole() : null) {
+            case USER:
+                model.addAttribute("user", user);
+                return "index";
+            case OWNER:
+                model.addAttribute("owner", user);
+                return "owner-mypage";
+            case ADMIN:
+                model.addAttribute("admin", user);
+                return "admin";
+            default:
+                // 로그인 안 한 상태
+                return "welcome";
         }
     }
 
