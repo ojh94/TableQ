@@ -46,21 +46,28 @@
 
                     <div class="mb-3">
                         <label for="email">이메일</label>
-                        <input type="email" class="form-control" id="email" name="email" placeholder="이메일@example.com" required>
-                        <div class="invalid-feedback">
-                            유효한 이메일 주소를 입력해주세요.
+                        <div class="input-group">
+                            <input type="email" id="email" class="form-control" placeholder="이메일" required>
+                            <div class="input-group-append">
+                                <button type="button" id="checkEmailBtn" class="btn btn-outline-secondary">중복 확인</button>
+                            </div>
+                            <div class="invalid-feedback">
+                                유효한 이메일 주소를 입력해주세요.
+                            </div>
                         </div>
-                        <button type="button" id="checkEmailBtn" class="btn btn-secondary mt-2">이메일 중복 체크</button>
-                        <div id="emailStatus" class="mt-2"></div> <!-- 이메일 중복 확인 상태 표시 -->
                     </div>
 
                     <div class="mb-3">
                         <label for="phone">전화번호</label>
-                        <input type="text" class="form-control" id="phone" name="phoneNumber" placeholder="-를 제외한 숫자만 입력해주세요." required>
-                        <div class="invalid-feedback">
-                            유효한 전화번호를 입력해주세요.
+                        <div class="input-group">
+                            <input type="tel" id="phone" class="form-control" placeholder="전화번호" required>
+                            <div class="input-group-append">
+                                <button type="button" id="checkPhoneBtn" class="btn btn-outline-secondary">중복 확인</button>
+                            </div>
+                            <div class="invalid-feedback">
+                                유효한 전화번호를 입력해주세요.
+                            </div>
                         </div>
-                        <button type="button" id="checkPhoneBtn" class="btn btn-secondary mt-2">휴대전화 중복 체크</button>
                     </div>
 
                     <div class="row">
@@ -111,7 +118,34 @@
             <div class="modal-body" id="particularModalContent">
                 <h3>개인정보 수집 및 활용 동의서</h3>
                 <p>
-                    <!-- 개인정보 수집 및 활용 동의서 내용 -->
+                    <strong>1. 개인정보의 수집 및 이용 목적</strong><br>
+                    회사는 아래와 같은 목적으로 개인정보를 수집 및 이용합니다:<br>
+                    - 서비스 제공 및 회원 관리<br>
+                    - 문의 및 불만 처리<br>
+                    - 맞춤형 서비스 제공<br>
+                    - 법적 의무 준수<br><br>
+
+                    <strong>2. 수집하는 개인정보의 항목</strong><br>
+                    회사가 수집하는 개인정보는 다음과 같습니다:<br>
+                    - 필수 항목: 이름, 생년월일, 연락처(전화번호/이메일), 아이디<br>
+                    - 선택 항목: 주소, 기타 사용자 제공 정보<br><br>
+
+                    <strong>3. 개인정보의 보유 및 이용 기간</strong><br>
+                    회사는 개인정보를 수집 및 이용 목적이 달성된 후에는 해당 정보를 지체 없이 파기합니다.<br>
+                    단, 법령에 의해 보존이 필요한 경우는 예외로 합니다.<br>
+                    - 회원 가입 정보: 회원 탈퇴 후 5일까지<br>
+                    - 계약 또는 청약 철회 관련 기록: 5년<br>
+                    - 소비자 불만 또는 분쟁 처리 기록: 3년<br><br>
+
+                    <strong>4. 개인정보 제공</strong><br>
+                    회사는 원칙적으로 회원의 동의 없이 개인정보를 외부에 제공하지 않습니다.<br>
+                    다만, 아래의 경우 예외로 합니다:<br>
+                    - 회원의 사전 동의를 받은 경우<br>
+                    - 법령의 규정에 의거하거나, 수사 목적으로 관계 기관의 요구가 있는 경우<br><br>
+
+                    <strong>5. 동의 거부 시 불이익</strong><br>
+                    회원은 개인정보 수집 및 이용에 대한 동의를 거부할 권리가 있습니다.<br>
+                    그러나 동의를 거부할 경우 서비스 이용이 제한될 수 있습니다.<br><br>
                 </p>
             </div>
             <div class="modal-footer">

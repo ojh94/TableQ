@@ -16,6 +16,8 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+
 @Slf4j
 @Tag(name = "사용자", description = "사용자 관련 API") // 문서에서 쉽게 찾도록 한글로 했음
 @RestController
@@ -36,25 +38,29 @@ public class UserApiController extends CrudController<UserRequest, UserResponse,
     @Override
     @Operation(summary = "일반 사용자 생성", description = "새로운 일반 사용자를 생성")
     @PostMapping("")
-    public Header<UserResponse> create(@RequestBody Header<UserRequest> request) {
+    public Header<UserResponse> create(@RequestBody @Valid Header<UserRequest> request) {
         log.info("{}","{}", "create : ", request);
         try {
-            return ((UserService)baseService).createUserRole(request);
+            if(request.getData() != null)
+                return ((UserService)baseService).createUserRole(request);
+            throw new Exception("Json 객체 내 data 내 email 값이 null");
         } catch (Exception e) {
             log.error("엔티티 생성 중 오류 발생", e);
-            return Header.ERROR("새로운 엔티티를 생성하는 중 오류가 발생했습니다.");
+            return Header.ERROR(e.getMessage());
         }
     }
 
     @Operation(summary = "점주 회원가입", description = "새로운 점주 생성")
     @PostMapping("/owner-role")
-    public Header<UserResponse> createUser(@RequestBody Header<UserRequest> request) {
+    public Header<UserResponse> createOwner(@RequestBody Header<UserRequest> request) {
         log.info("{}","{}", "createUser : ", request);
         try {
-            return ((UserService)baseService).createOwnerRole(request);
+            if(request.getData() != null)
+                return ((UserService)baseService).createOwnerRole(request);
+            throw new Exception("Json 객체 내 data 내 email 값이 null");
         } catch (Exception e) {
             log.error("엔티티 생성 중 오류 발생", e);
-            return Header.ERROR("새로운 엔티티를 생성하는 중 오류가 발생했습니다.");
+            return Header.ERROR(e.getMessage());
         }
     }
 
@@ -101,9 +107,9 @@ public class UserApiController extends CrudController<UserRequest, UserResponse,
         try {
             if(request.getData().getEmail() != null)
                 return Header.OK(((UserService)baseService).checkEmail(request));
-            throw new Exception();
+            throw new Exception("Json 객체 내 data 내 email 값이 null");
         } catch (Exception e) {
-            return Header.ERROR("data 내 email 값이 null 입니다.");
+            return Header.ERROR(e.getMessage());
         }
     }
 
@@ -113,9 +119,9 @@ public class UserApiController extends CrudController<UserRequest, UserResponse,
         try {
             if(request.getData().getPhoneNumber() != null)
                 return Header.OK(((UserService)baseService).checkPhoneNumber(request));
-            throw new Exception();
+            throw new Exception("Json 객체 내 data 내 phoneNumber 값이 null");
         } catch (Exception e) {
-            return Header.ERROR("data 내 phoneNumber 값이 null 입니다.");
+            return Header.ERROR(e.getMessage());
         }
     }
 }

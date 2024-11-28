@@ -164,13 +164,55 @@ $(document).ready(function() {
 
         // 유효하지 않은 필드로 포커스 이동
         if (isValid) {
-            console.log("폼 제출!");
-            // 서버로 전송 로직 추가
+            requestUserCreateApi();
         } else {
             firstInvalidField.focus();
         }
     });
 });
+
+function requestUserCreateApi() {
+    // 사용자 입력 값 가져오기
+    const name = $('#name').val();
+    const email = $('#email').val();
+    const phone = $('#phone').val();
+    const password = $('#password').val();
+
+    // 서버로 보낼 데이터 객체 생성
+    const createUser = {
+        'data' : {
+            'name': name,
+            'email': email,
+            'phoneNumber': phone,
+            'password': password
+        }
+    };
+
+    // AJAX로 사용자 생성 API 호출
+    $.ajax({
+        url: '/api/user',  // 사용자 생성 API URL
+        type: 'POST',      // POST 요청
+        contentType: 'application/json',  // JSON 형식으로 요청
+        data: JSON.stringify(createUser),  // 사용자 데이터 JSON으로 변환하여 전송
+        success: function(response) {
+            debugger;
+            if (response.data) {
+                // 성공적으로 사용자 생성된 경우
+                alert('회원가입이 완료되었습니다.');
+                window.location.href = '/login';  // 로그인 페이지로 리디렉션 (원하는 페이지로 변경 가능)
+            } else {
+                // 서버 응답에서 오류가 있을 경우
+                alert('회원가입에 실패했습니다. 다시 시도해 주세요.');
+                console.log(response.description)
+            }
+        },
+        error: function() {
+            // 네트워크 에러 발생 시 처리
+            alert('네트워크 오류가 발생했습니다. 다시 시도해 주세요.');
+        }
+    });
+}
+
 
 // 필드 유효성 검사
 function validateField(field) {
