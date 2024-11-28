@@ -57,13 +57,14 @@ public class WebSecurityConfig {
                                 new AntPathRequestMatcher("/swagger-resources/**") // 운영 배포 시 삭제 요망
                         ).permitAll()
                         .requestMatchers("/admin/**",
-                                                   "/api/user/owner-role")
+                                         "/api/user/owner-role")
                         .hasRole(MemberRole.ADMIN.name())
                         .requestMatchers("/user/**",
-                                                   "/api/**")
+                                         "/api/**")
                         .hasRole(MemberRole.USER.name())
                         .requestMatchers("/owner/**",
-                                                   "/api/**")
+                                         "/api/**",
+                                         "/restaurant/modify/**")
                         .hasRole(MemberRole.OWNER.name())
                         .anyRequest().authenticated()
                 )
