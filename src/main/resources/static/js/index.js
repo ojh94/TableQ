@@ -64,11 +64,11 @@ console.log("index.js 끝");
         // 여기에 검색 로직 추가
     });
 
-    const sortSelect = document.getElementById("sortSelect");
-    sortSelect.addEventListener("change", () => {
-        console.log("Sorting by:", sortSelect.value);
-        // 여기에 정렬 로직 추가
-    });
+//    const sortSelect = document.getElementById("sortSelect");
+//    sortSelect.addEventListener("change", () => {
+//        console.log("Sorting by:", sortSelect.value);
+//        // 여기에 정렬 로직 추가
+//    });
 
 
 
