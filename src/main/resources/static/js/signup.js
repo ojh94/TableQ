@@ -55,6 +55,7 @@ $(document).ready(function() {
                 } else if(response.data === false) {
                     alert('이미 사용 중인 이메일입니다.');
                     isEmailChecked = false;  // 중복 체크되지 않음
+                    $('#email').next().next('.invalid-feedback').text('유효한 이메일을 입력해주세요.');
                 } else {
                   alert('이메일 중복 확인에 실패했습니다.');
               }
@@ -89,6 +90,7 @@ $(document).ready(function() {
                 } else if(response.data === false) {
                     alert('이미 사용 중인 전화번호입니다.');
                     isPhoneChecked = false;  // 중복 체크되지 않음
+                    $('#phone').next().next('.invalid-feedback').text('유효한 전화번호를 입력해주세요.');
                 } else {
                     alert('전화번호 중복 확인에 실패했습니다.');
                 }
@@ -117,6 +119,7 @@ $(document).ready(function() {
         $('#agreement').next('label').append('<span class="text-danger">[필수] 개인정보 수집 및 이용에 동의해야 합니다.</span>'); // 오류 메시지 추가
     });
 
+
     // 폼 제출 시 유효성 검사
     $('#signupForm').on('submit', function(event) {
         event.preventDefault();  // 기본 제출 동작 방지
@@ -137,7 +140,7 @@ $(document).ready(function() {
         if (!isEmailChecked) {
             isValid = false;
             $('#email').addClass('is-invalid');
-            $('#email').next('.invalid-feedback').text('이메일 중복 체크를 해주세요.');
+            $('#email').next().next('.invalid-feedback').text('이메일 중복 체크를 해주세요.');
             if (!firstInvalidField) firstInvalidField = $('#email');
         }
 
@@ -145,7 +148,7 @@ $(document).ready(function() {
         if (!isPhoneChecked) {
             isValid = false;
             $('#phone').addClass('is-invalid');
-            $('#phone').next('.invalid-feedback').text('전화번호 중복 체크를 해주세요.');
+            $('#phone').next().next('.invalid-feedback').text('전화번호 중복 체크를 해주세요.');
             if (!firstInvalidField) firstInvalidField = $('#phone');
         }
 
@@ -170,6 +173,7 @@ $(document).ready(function() {
         }
     });
 });
+
 
 function requestUserCreateApi() {
     // 사용자 입력 값 가져오기
