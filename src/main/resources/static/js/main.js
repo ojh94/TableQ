@@ -1,13 +1,17 @@
 console.log("main.js 시작");
 
 // 레스토랑 카드 생성 함수
-function createRestaurantCard(restaurant, rating, reviewsCount) {
+function createRestaurantCard(restaurant, rating = 0, reviewsCount =0) {
     const card = document.createElement('div');
     card.className = 'card';
+    console.log('Received rating:', restaurant.rating);  // rating 값 확인
+    console.log('Received reviewsCount:', restaurant.reviewsCount);  // reviewsCount 값 확인
+
+
 
     // rating 값이 유효한지 확인하고, 없으면 0으로 설정
     const validRating = (rating && !isNaN(rating)) ? rating : 0; // rating이 없거나 NaN이면 0으로 설정
-
+    console.log('Valid rating:', validRating);  // validRating 값 확인
 
     card.innerHTML =`
         <div class="card-header">
@@ -151,7 +155,7 @@ function requestReviewData(restaurantId) {
             reviewData = {
                 rating: 0 || response.data.reduce(function(acc, review) {
                     return acc + review.starRating;
-                }, 0) / response.data.length,
+                }, 0) / response.data.length || 0,
                 reviewsCount: 0 || response.data.length,
             };
         },
@@ -391,43 +395,36 @@ async function fetchRestaurants(sortType = 'id', page = currentPage) {
 
             // 각 레스토랑의 리뷰 데이터 가져오기
             const restaurants = restaurantResponse.data;
-            const reviewPromises = restaurantResponse.data.map(restaurant =>
-                $.ajax({
-                    url: `/api/review/restaurant/${restaurant.id}`,
-                    method: 'GET'
-                }).then(reviewResponse => {
-                  const reviews = reviewResponse.data || [];
-                  const rating = reviews.length > 0
-                      ? reviews.reduce((sum, r) => sum + r.starRating, 0) / reviews.length
-                      : 0;
+           const reviewPromises = restaurantResponse.data.map(async (restaurant) => {
+               try {
+                   // 각 레스토랑에 해당하는 리뷰를 가져오기
+                   const reviewResponse = await $.ajax({
+                       url: `/api/review/restaurant/${restaurant.id}`,
+                       method: 'GET',
+                   });
 
-                  return {
-                      ...restaurant,
-                      rating: Math.round(rating * 10) / 10, // 소수점 1자리 반올림
-                      reviewsCount: reviews.length
-                  };
-              })
-            );
+                   const reviews = reviewResponse.data || [];
+                   const rating = reviews.length > 0
+                       ? reviews.reduce((sum, r) => sum + r.starRating, 0) / reviews.length
+                       : 0;
 
-            const reviewData = await Promise.all(reviewPromises);
-            console.log('리뷰 데이터:', reviewData);
+                   return {
+                       ...restaurant,
+                       rating: Math.round(rating * 10) / 10, // 소수점 1자리 반올림
+                       reviewsCount: reviews.length,
+                   };
+               } catch (error) {
+                   console.error(`Failed to fetch reviews for restaurant ID: ${restaurant.id}`, error);
+                   return {
+                       ...restaurant,
+                       rating: 0, // 기본값 설정
+                       reviewsCount: 0,
+                   };
+               }
+           });
 
-            // 레스토랑 데이터와 리뷰 데이터를 병합
-            const mergedRestaurants = restaurantResponse.data.map((restaurant, index) => {
-                const review = reviewData[index]?.data; // 리뷰 데이터가 없을 경우 null 방지
-                const reviews = review?.reviews || []; // 리뷰가 없으면 빈 배열
-                const rating = reviews.length > 0
-                    ? reviews.reduce((sum, r) => sum + r.starRating, 0) / reviews.length
-                    : 0; // 평점 평균 계산
-
-                return {
-                    ...restaurant,
-                    reviews,
-                    rating: Math.round(rating * 10) / 10 // 소수점 1자리 반올림
-                };
-            });
-
-            console.log('결합된 레스토랑 데이터:', mergedRestaurants);
+           const mergedRestaurants = await Promise.all(reviewPromises);
+           console.log('결합된 레스토랑 데이터:', mergedRestaurants);
 
             // 렌더링 및 페이지네이션 업데이트
             renderRestaurantCards(mergedRestaurants);
@@ -448,7 +445,8 @@ function renderRestaurantCards(restaurants) {
     $restaurantGrid.empty(); // 기존 카드 초기화
 
     restaurants.forEach(restaurant => {
-        const $card = createRestaurantCard(restaurant);
+        console.log('Restaurant to be rendered:', restaurant);  // 데이터 확인
+        const $card = createRestaurantCard(restaurant, restaurant.rating, restaurant.reviewsCount);
         $restaurantGrid.append($card);
     });
 }

@@ -39,7 +39,7 @@
 }
 
 body, html {
-
+  margin-top: 20px;
   margin: 0;
   padding: 0;
   font-family: Arial, sans-serif;
@@ -72,6 +72,7 @@ main {
 }
 
 header {
+   margin-top: 20px;
   background-color: var(--color-orange-500);
   padding: 1rem 0;
   display: flex;
@@ -165,7 +166,9 @@ header, .toolbar-top, .toolbar {
   cursor: pointer;
 }
 
-
+.restaurant-section{
+    margin-bottom: 40px;
+}
 
 .btn-orange {
   background-color: var(--color-orange-600);
@@ -180,6 +183,12 @@ header, .toolbar-top, .toolbar {
 .search-section h2 {
   font-size: 2rem;
   margin-bottom: 1rem;
+}
+
+.search-section form {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
 }
 
 #searchForm {
@@ -218,6 +227,13 @@ header, .toolbar-top, .toolbar {
 
 .section-header h3 {
   font-size: 1.5rem;
+  margin-top 1.5rem;
+  margin-left 0.5rem;
+}
+
+.section-header select {
+  margin-top 1.5rem;
+  margin-left 0.5rem;
 }
 
 #sortSelect {
@@ -230,6 +246,41 @@ header, .toolbar-top, .toolbar {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
   gap: 1rem;
+}
+.pagination{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 20px; /* 버튼과 텍스트 사이 간격 */
+    font-size: 1.2rem;
+    padding: 20px 0;
+}
+
+/* Pagination 버튼 스타일 */
+.pagination-btn {
+  padding: 12px 20px;
+  font-size: 1.2rem;
+  background-color:white;
+  font-weight: bold;
+  border: 2px none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s, color 0.3s, transform 0.2s;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.pagination-btn:hover:not(:disabled) {
+  background-color: var(--color-orange-500);
+
+  transform: scale(1.1); /* 마우스 올릴 때 크기 살짝 커지기 */
+}
+
+/* 페이지 간격 조정: 좌우 버튼에 동일한 크기 적용 */
+.pagination > button,
+.pagination > span {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .card {
@@ -378,13 +429,22 @@ header {
 }
 .section-list {
   color: black;
+  padding: 20px;
 }
 .category {
-  margin-top: 3%;
+  max-width: 1200px;
+  margin-bottom: 30px;
+  padding: 0 15px;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 20px; /* 자식 요소들 간의 간격 */
+/*  margin-top: 3%;
   display: flex;
   flex-direction: column;
-  align-items: center; /* 가로 중앙 정렬 */
+  align-items: center;  가로 중앙 정렬 */
 }
+
+
 
 .sub-category {
   background-color: white;
@@ -660,4 +720,20 @@ button[type="submit"] {
   border: none;
   border-radius: 0.25rem;
   font-size: 1rem;
+}
+
+@media (max-width: 768px) {
+  .pagination {
+    font-size: 1rem;
+    gap: 10px;
+  }
+
+  .pagination-btn {
+    padding: 10px 15px;
+    font-size: 1rem;
+  }
+
+  .pagination-text {
+    font-size: 1.2rem;
+  }
 }
