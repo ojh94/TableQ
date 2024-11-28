@@ -60,9 +60,8 @@ public class ReservationApiController extends CrudController<ReservationRequest,
 
     @Operation(summary = "예약의 현재 순번 조회", description = "Restaurant ID 와 Reservation ID로 현재 순번 조회")
     @GetMapping("/user/queue-left/{reservationId}")
-    public Header<Long> readMyQueue(@PathVariable(name = "restaurantId") Long restaurantId,
-                                     @PathVariable(name = "reservationId") Long reservationId){
-        log.info("{}","{}","{}","read: ",restaurantId, reservationId);
+    public Header<Long> readMyQueue(@PathVariable(name = "reservationId") Long reservationId){
+        log.info("{}","{}","{}","read: ", reservationId);
         try {
             return ((ReservationService)baseService).getUserQueue(reservationId);
         } catch (Exception e) {
