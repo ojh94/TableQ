@@ -1,5 +1,6 @@
 package com.itschool.tableq.network.request;
 
+import com.itschool.tableq.domain.enumclass.MemberRole;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
@@ -44,5 +45,5 @@ public class UserRequest {
     @Email
     private String email;
 
-    private String memberRole;
+    private MemberRole memberRole;
 }

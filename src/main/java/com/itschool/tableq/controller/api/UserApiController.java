@@ -6,7 +6,6 @@ import com.itschool.tableq.network.Header;
 import com.itschool.tableq.network.response.UserResponse;
 import com.itschool.tableq.network.request.UserRequest;
 import com.itschool.tableq.service.UserService;
-import com.itschool.tableq.service.base.BaseService;
 import groovy.util.logging.Slf4j;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -35,8 +34,33 @@ public class UserApiController extends CrudController<UserRequest, UserResponse,
     }
 
     @Override
+    @Operation(summary = "일반 사용자 생성", description = "새로운 일반 사용자를 생성")
+    @PostMapping("")
+    public Header<UserResponse> create(@RequestBody Header<UserRequest> request) {
+        log.info("{}","{}", "create : ", request);
+        try {
+            return ((UserService)baseService).createUserRole(request);
+        } catch (Exception e) {
+            log.error("엔티티 생성 중 오류 발생", e);
+            return Header.ERROR("새로운 엔티티를 생성하는 중 오류가 발생했습니다.");
+        }
+    }
+
+    @Operation(summary = "점주 회원가입", description = "새로운 점주 생성")
+    @PostMapping("/owner-role")
+    public Header<UserResponse> createUser(@RequestBody Header<UserRequest> request) {
+        log.info("{}","{}", "createUser : ", request);
+        try {
+            return ((UserService)baseService).createOwnerRole(request);
+        } catch (Exception e) {
+            log.error("엔티티 생성 중 오류 발생", e);
+            return Header.ERROR("새로운 엔티티를 생성하는 중 오류가 발생했습니다.");
+        }
+    }
+
+    @Override
     @Operation(summary = "수정", description = "ID로 엔티티 및 세션 업데이트")
-    @PutMapping("{id}")
+    @PutMapping("/{id}")
     public Header<UserResponse> update(@PathVariable(name = "id") Long id,
                               @RequestBody Header<UserRequest> request) {
         Header<UserResponse> response = super.update(id, request);
@@ -73,7 +97,7 @@ public class UserApiController extends CrudController<UserRequest, UserResponse,
 
     @Operation(summary = "이메일 중복 확인", description = "가입이 가능할 때 true 반환")
     @GetMapping("/check-email")
-    public Header<Boolean> checkEamil(@RequestParam(name = "email") String email){
+    public Header<Boolean> checkEmail(@RequestParam(name = "email") String email){
         return Header.OK(((UserService)baseService).checkEmail(email));
     }
 
