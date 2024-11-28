@@ -59,13 +59,13 @@ public class WebSecurityConfig {
                         .requestMatchers("/admin/**",
                                          "/api/user/owner-role")
                         .hasRole(MemberRole.ADMIN.name())
-                        .requestMatchers("/user/**",
-                                         "/api/**")
-                        .hasRole(MemberRole.USER.name())
                         .requestMatchers("/owner/**",
                                          "/api/**",
                                          "/restaurant/modify/**")
                         .hasRole(MemberRole.OWNER.name())
+                        .requestMatchers("/user/**",
+                                         "/api/**")
+                        .hasRole(MemberRole.USER.name())
                         .anyRequest().authenticated()
                 )
                 .formLogin(formLogin -> formLogin // 폼 기반 로그인 설정
