@@ -56,8 +56,15 @@ public class WebSecurityConfig {
                                 new AntPathRequestMatcher("/swagger*/**"), // 운영 배포 시 삭제 요망
                                 new AntPathRequestMatcher("/swagger-resources/**") // 운영 배포 시 삭제 요망
                         ).permitAll()
-                        .requestMatchers("/user/**", "/api/**").hasRole(MemberRole.USER.name())
-                        .requestMatchers("/owner/**", "/api/**").hasRole(MemberRole.OWNER.name())
+                        .requestMatchers("/admin/**",
+                                                   "/api/user/owner-role")
+                        .hasRole(MemberRole.ADMIN.name())
+                        .requestMatchers("/user/**",
+                                                   "/api/**")
+                        .hasRole(MemberRole.USER.name())
+                        .requestMatchers("/owner/**",
+                                                   "/api/**")
+                        .hasRole(MemberRole.OWNER.name())
                         .anyRequest().authenticated()
                 )
                 .formLogin(formLogin -> formLogin // 폼 기반 로그인 설정
