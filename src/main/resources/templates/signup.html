@@ -11,90 +11,18 @@
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
               integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 
+        <link rel="stylesheet" href="css/signup.css" />
+
         <!-- jQuery -->
-        <script src="http://code.jquery.com/jquery-latest.min.js"></script>
+        <script defer src="http://code.jquery.com/jquery-latest.min.js"></script>
+        <script defer src="/js/signup.js"></script>
+        <!-- Bootstrap JS -->
+        <script defer src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+                integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+                crossorigin="anonymous"></script>
+        <!-- validator JS -->
+        <script defer src="https://unpkg.com/validator@latest/validator.min.js"></script>
 
-        <style>
-            body {
-              min-height: 100vh;
-              background: linear-gradient(to right, rgba(237, 125, 49, 1), rgba(237, 125, 49, 0.3))
-            }
-
-            .input-form {
-              max-width: 680px;
-
-              margin-top: 80px;
-              padding: 32px;
-
-              background: #fff;
-              -webkit-border-radius: 10px;
-              -moz-border-radius: 10px;
-              border-radius: 10px;
-              -webkit-box-shadow: 0 8px 20px 0 rgba(0, 0, 0, 0.15);
-              -moz-box-shadow: 0 8px 20px 0 rgba(0, 0, 0, 0.15);
-              box-shadow: 0 8px 20px 0 rgba(0, 0, 0, 0.15)
-            }
-
-            .btn-orange {
-                background-color: rgba(237, 125, 49, 1) !important;
-                border-color: rgba(237, 125, 49, 1) !important;
-            }
-
-            input:focus, textarea:focus, .btn-orange:focus {
-              border-color: rgba(237, 125, 49, 0.8) !important; /* 원하는 테두리 색상 */
-              box-shadow: 0 0 0 3px rgba(237, 125, 49, 0.5) !important; /* 포커스 시 테두리 강조 효과 (옵션) */
-            }
-
-            .text-orange {
-                color: rgba(237, 125, 49, 1) !important;
-            }
-
-            .child {
-              /* 상하좌우 정렬하기 */
-              transform: translate(0%, 2%);
-            }
-
-            .certification {
-                position: relative;
-                display: flex;
-            }
-
-            .certification button {
-                position: absolute;
-                top: 1px;
-                bottom: 1px;
-                right: 5px;
-                border-radius: 20px;
-            }
-
-            .btn-close {
-              box-sizing: content-box;
-              width: 1em;
-              height: 1em;
-              padding: 0.25em 0.25em;
-              color: #000; /* 닫기 아이콘 색상 (검정색) */
-              background: transparent; /* 배경 투명 */
-              border: none; /* 테두리 없음 */
-              appearance: none; /* 기본 스타일 제거 */
-              cursor: pointer; /* 마우스 커서를 포인터로 변경 */
-            }
-
-            .btn-close:hover {
-              color: #000; /* 호버 시 닫기 아이콘 색상 (필요 시 변경 가능) */
-              opacity: 0.75; /* 호버 시 약간 투명하게 */
-            }
-
-            .btn-close:focus {
-              outline: none; /* 포커스 시 외곽선 제거 */
-              box-shadow: none; /* 포커스 시 그림자 제거 */
-            }
-
-            .btn-close::before {
-              content: "×"; /* 닫기 아이콘 */
-              font-size: 1.5em; /* 아이콘 크기 */
-              display: block;
-            }
-        </style>
     </head>
     <body>
         <div class="container">
@@ -107,10 +35,10 @@
                             </button>
                         </div>
                         <h4 class="mb-4 text-orange text-center" style="font-weight:bold">Email 회원가입</h4>
-                        <form class="validation-form" id="signupForm" method="post" action="/user" novalidate>
+                        <form class="validation-form" id="signupForm" novalidate>
                             <div class="mb-3">
                                 <label for="name">이름</label>
-                                <input type="text" class="form-control" id="name" name="name" placeholder="" required>
+                                <input type="text" class="form-control" id="name" name="name" placeholder="홍길동" required>
                                 <div class="invalid-feedback">
                                     이름을 입력해주세요.
                                 </div>
@@ -118,71 +46,47 @@
 
                             <div class="mb-3">
                                 <label for="email">이메일</label>
-                                <div class="certification">
-                                    <input type="email" class="form-control" id="email" name="email" placeholder="you@example.com" required>
+                                <input type="email" class="form-control" id="email" name="email" placeholder="이메일@example.com" required>
+                                <!--<div class="certification">
                                     <button type="button">인증</button>
-                                </div>
+                                </div>-->
                                 <div class="invalid-feedback">
-                                    이메일을 입력해주세요.
+                                    유효한 이메일 주소를 입력해주세요.
                                 </div>
                             </div>
 
                             <div class="mb-3">
                                 <label for="phone">전화번호</label>
-                                <div class="certification">
-                                    <input type="number" class="form-control" id="phone" name="phoneNumber" placeholder="숫자만 입력해주세요." required>
+                                <input type="text" class="form-control" id="phone" name="phoneNumber" placeholder="-를 제외한 숫자만 입력해주세요." required>
+                                <!--<div class="certification">
                                     <button type="button">인증</button>
-                                </div>
+                                </div>-->
                                 <div class="invalid-feedback">
-                                    전화번호를 입력해주세요.
+                                    유효한 전화번호를 입력해주세요.
                                 </div>
                             </div>
 
                             <div class="row">
                                 <div class="col-md-6 mb-3">
                                     <label for="pass1">비밀번호</label>
-                                    <input type="password" class="form-control" id="pass1" name="password" placeholder="숫자, 영문, 특수문자 8~16자 입력" oninput="pwCheck()" required>
+                                    <input type="password" class="form-control" id="pass1" name="password" placeholder="숫자, 영문, 특수문자 8~16자 입력" required>
                                     <div class="invalid-feedback">
-                                        비밀번호를 입력해주세요.
+                                        비밀번호는 숫자, 영문, 특수문자가 혼합된 8~16자여야 합니다.
                                     </div>
                                 </div>
                                 <div class="col-md-6 mb-3">
                                     <label for="pass2" oninput="pwCheck()">비밀번호 확인</label>
-                                    <input type="password" class="form-control" id="pass2" placeholder="비밀번호 확인" oninput="pwCheck()" required>
+                                    <input type="password" class="form-control" id="pass2" placeholder="비밀번호 확인" required>
                                     <div class="invalid-feedback">
-                                        비밀번호를 재입력해주세요.
+                                        비밀번호가 일치하지 않습니다.
                                     </div>
                                 </div>
                                 <span id="pwConfirm" class="col-md-6" style="font-size: 90%;"></span>
                             </div>
-
-                            <!--
-                            <div class="row">
-                                <div class="col-md-8 mb-3">
-                                    <label for="root">가입 경로</label>
-                                    <select class="custom-select d-block w-100" id="root">
-                                        <option value=""></option>
-                                        <option>검색</option>
-                                        <option>카페</option>
-                                    </select>
-                                    <div class="invalid-feedback">
-                                        가입 경로를 선택해주세요.
-                                    </div>
-                                </div>
-                                <div class="col-md-4 mb-3">
-                                    <label for="code">추천인 코드</label>
-                                    <input type="text" class="form-control" id="code" placeholder="" required>
-                                    <div class="invalid-feedback">
-                                        추천인 코드를 입력해주세요.
-                                    </div>
-                                </div>
-                            </div>
-                            -->
-
                             <hr class="mb-4">
                             <div class="custom-control custom-checkbox">
-                                <input type="checkbox" class="custom-control-input" id="aggrement" required>
-                                <label class="custom-control-label" for="aggrement">&nbsp;[필수] 개인정보 수집 및 이용에 동의합니다. </label>
+                                <input type="checkbox" class="custom-control-input" id="agreement" required>
+                                <label class="custom-control-label" for="agreement">&nbsp;[필수] 개인정보 수집 및 이용에 동의합니다. </label>
                                 <button type="button" style="border: none; background: none; outline:none;" data-bs-toggle="modal" data-bs-target="#particularModal">
                                     <small style="color: #0099FF; text-decoration: underline;">상세보기</small>
                                 </button>
@@ -198,62 +102,54 @@
             </div>
         </div>
 
-        <div class="modal fade" id="particularModal" tabindex="-1" aria-labelledby="particularModalLabel" aria-hidden="true">
+        <div class="modal fade" id="particularModal" tabindex="-1"
+             aria-labelledby="particularModalLabel"
+             aria-hidden="true">
             <div class="modal-dialog modal-dialog-scrollable">
                 <div class="modal-content">
                     <div class="modal-header">
                         <h2 class="modal-title fs-5" id="particularModalLabel">개인정보 수집 및 이용 동의서</h2>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" aria-hidden="false"></button> <!-- 포커스 받을 버튼에 aria-hidden="false" -->
                     </div>
-                    <div class="modal-body">
-                        <p>Modal body text goes here.</p>
+                    <div class="modal-body" id="particularModalContent">
+                        <h3>개인정보 수집 및 활용 동의서</h3>
+                        <p>
+                            <strong>1. 개인정보의 수집 및 이용 목적</strong><br>
+                            회사는 아래와 같은 목적으로 개인정보를 수집 및 이용합니다:<br>
+                            - 서비스 제공 및 회원 관리<br>
+                            - 문의 및 불만 처리<br>
+                            - 맞춤형 서비스 제공<br>
+                            - 법적 의무 준수<br><br>
+
+                            <strong>2. 수집하는 개인정보의 항목</strong><br>
+                            회사가 수집하는 개인정보는 다음과 같습니다:<br>
+                            - 필수 항목: 이름, 생년월일, 연락처(전화번호/이메일), 아이디<br>
+                            - 선택 항목: 주소, 기타 사용자 제공 정보<br><br>
+
+                            <strong>3. 개인정보의 보유 및 이용 기간</strong><br>
+                            회사는 개인정보를 수집 및 이용 목적이 달성된 후에는 해당 정보를 지체 없이 파기합니다.<br>
+                            단, 법령에 의해 보존이 필요한 경우는 예외로 합니다.<br>
+                            - 회원 가입 정보: 회원 탈퇴 후 5일까지<br>
+                            - 계약 또는 청약 철회 관련 기록: 5년<br>
+                            - 소비자 불만 또는 분쟁 처리 기록: 3년<br><br>
+
+                            <strong>4. 개인정보 제공</strong><br>
+                            회사는 원칙적으로 회원의 동의 없이 개인정보를 외부에 제공하지 않습니다.<br>
+                            다만, 아래의 경우 예외로 합니다:<br>
+                            - 회원의 사전 동의를 받은 경우<br>
+                            - 법령의 규정에 의거하거나, 수사 목적으로 관계 기관의 요구가 있는 경우<br><br>
+
+                            <strong>5. 동의 거부 시 불이익</strong><br>
+                            회원은 개인정보 수집 및 이용에 대한 동의를 거부할 권리가 있습니다.<br>
+                            그러나 동의를 거부할 경우 서비스 이용이 제한될 수 있습니다.<br><br>
+                        </p>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
-                        <!--<button type="button" class="btn btn-primary btn-orange">문의하기</button>-->
+                        <button type="button" class="btn btn-success" data-bs-dismiss="modal" id="agreeButton" aria-hidden="false">동의</button> <!-- 포커스 받을 버튼에 aria-hidden="false" -->
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id="rejectButton" aria-hidden="false">거절</button> <!-- 포커스 받을 버튼에 aria-hidden="false" -->
                     </div>
                 </div>
             </div>
         </div>
-
-        <!-- Bootstrap JS -->
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
-                integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
-                crossorigin="anonymous"></script>
-
-        <script>
-            window.addEventListener('load', () => {
-                const forms = document.getElementsByClassName('validation-form');
-
-                Array.prototype.filter.call(forms, (form) => {
-                    form.addEventListener('submit', function (event) {
-                        if (form.checkValidity() === false) {
-                            event.preventDefault();
-                            event.stopPropagation();
-                        }
-
-                        form.classList.add('was-validated');
-                    }, false);
-                });
-            }, false);
-
-            function pwCheck() {
-                const pass1 = $('#pass1').val();
-                const pass2 = $('#pass2').val();
-
-                // 입력값이 비어 있는 경우 초기 상태로 복원
-                if (pass1 === "" || pass2 === "") {
-                    $('#pwConfirm').text('')
-                }
-                // 비밀번호가 일치하는 경우
-                else if (pass1 === pass2) {
-                    $('#pwConfirm').text('비밀번호 일치').css('color', 'green');
-                }
-                // 비밀번호가 일치하지 않는 경우
-                else {
-                    $('#pwConfirm').text('비밀번호 불일치').css('color', 'red');
-                }
-            }
-        </script>
     </body>
 </html>
