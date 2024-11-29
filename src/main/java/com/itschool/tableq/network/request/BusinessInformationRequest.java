@@ -10,8 +10,6 @@ import lombok.Setter;
 @Setter
 public class BusinessInformationRequest extends SingleKeyRequest {
 
-    private Long id;
-
     private String businessNumber;
 
     private String businessName;

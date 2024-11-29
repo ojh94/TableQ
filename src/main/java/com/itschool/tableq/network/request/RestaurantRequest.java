@@ -10,8 +10,6 @@ import lombok.Setter;
 @Setter
 public class RestaurantRequest extends SingleKeyRequest {
 
-    private Long id;
-
     private String name;
 
     private String address;

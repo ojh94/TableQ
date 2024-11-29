@@ -10,8 +10,6 @@ import lombok.Setter;
 @Setter
 public class RestaurantImageRequestWithFile extends RequestWithFile {
 
-    private Long id;
-
     private RestaurantRequest restaurant;
 }
 

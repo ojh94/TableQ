@@ -9,7 +9,6 @@ import lombok.Setter;
 @Getter
 @Setter
 public class ReviewImageRequestWithFile extends RequestWithFile {
-    private Long id;
 
     private ReviewRequest review;
 }

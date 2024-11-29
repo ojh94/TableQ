@@ -10,8 +10,6 @@ import lombok.Setter;
 @Setter
 public class ReservationRequest extends SingleKeyRequest {
 
-    private Long id;
-
     private Long reservationNumber;
 
     private Boolean isEntered;

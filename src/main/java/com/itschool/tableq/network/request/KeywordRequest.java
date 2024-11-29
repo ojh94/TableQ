@@ -10,7 +10,5 @@ import lombok.Setter;
 @Setter
 public class KeywordRequest extends SingleKeyRequest {
 
-    private Long id;
-
     private String name;
 }
