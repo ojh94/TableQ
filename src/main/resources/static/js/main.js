@@ -385,10 +385,23 @@ let sortType = 'id';        // 기본 정렬 기준
 
 // 레스토랑 데이터를 가져오는 함수
 async function fetchRestaurants(sortType, page = currentPage) {
+
+     let apiUrl;
+
+        // sortType에 따라 다른 API 주소로 요청
+        if (sortType === 'mostVisit') {
+            apiUrl = `/api/restaurant/popular/restaurants?page=${page}&size=${pageSize}`;
+        } else if (sortType === 'recommendationScore') {
+            apiUrl = `/api/restaurant/recommend/restaurants?page=${page}&size=${pageSize}`;
+        } else {
+            apiUrl = `/api/restaurant?page=${page}&size=${pageSize}&sort=${sortType},asc`;
+        }
+
+
     try {
         // 레스토랑 정보 가져오기
         const restaurantResponse = await $.ajax({
-            url: `/api/restaurant?page=${page}&size=${pageSize}&sort=${sortType},asc`,
+            url: apiUrl,
             method: 'GET'
         });
 
