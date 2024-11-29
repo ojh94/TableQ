@@ -55,7 +55,7 @@ public class OpeningHourService extends BaseService<OpeningHourRequest, OpeningH
 
     @Override
     public Header<OpeningHourResponse> read(Long id) {
-        return Header.OK(response(getBaseRepository().findById(id).orElse(null)));
+        return Header.OK(response(getBaseRepository().findById(id).orElseThrow(()-> new EntityNotFoundException())));
     }
 
     @Override
@@ -63,7 +63,7 @@ public class OpeningHourService extends BaseService<OpeningHourRequest, OpeningH
     public Header<OpeningHourResponse> update(Long id, Header<OpeningHourRequest> request) {
         OpeningHourRequest openingHourRequest = request.getData();
 
-        OpeningHour openingHour = getBaseRepository().findById(id).orElseThrow(() -> new IllegalArgumentException("not found"));
+        OpeningHour openingHour = getBaseRepository().findById(id).orElseThrow(() -> new EntityNotFoundException());
         openingHour.update(openingHourRequest);
         return Header.OK(response(openingHour));
     }
@@ -75,7 +75,7 @@ public class OpeningHourService extends BaseService<OpeningHourRequest, OpeningH
                     getBaseRepository().delete(openingHour);
                     return Header.OK(response(openingHour));
                 })
-                .orElseThrow(() -> new IllegalArgumentException("not found"));
+                .orElseThrow(() -> new EntityNotFoundException());
     }
 
     public Header<List<OpeningHourResponse>> readByRestaurantId(Long restaurantId, Pageable pageable) {

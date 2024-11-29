@@ -23,7 +23,7 @@ import java.util.List;
 @Slf4j
 @Tag(name = "점포 편의시설", description = "점포 편의시설 관련 API")
 @RestController
-@RequestMapping("/api/restaurantamenity")
+@RequestMapping("/api/restaurant-amenity")
 public class RestaurantAmenityApiController extends CrudController<RestaurantAmenityRequest, RestaurantAmenityResponse, RestaurantAmenity> {
 
     // 생성자

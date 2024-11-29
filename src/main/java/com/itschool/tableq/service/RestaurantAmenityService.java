@@ -58,7 +58,7 @@ public class RestaurantAmenityService extends BaseService<RestaurantAmenityReque
 
     @Override
     public Header<RestaurantAmenityResponse> read(Long id) {
-        return Header.OK(response(getBaseRepository().findById(id).orElse(null)));
+        return Header.OK(response(getBaseRepository().findById(id).orElseThrow(()-> new EntityNotFoundException())));
     }
 
     @Override
@@ -75,7 +75,12 @@ public class RestaurantAmenityService extends BaseService<RestaurantAmenityReque
 
     @Override
     public Header delete(Long id) {
-        return null;
+        return getBaseRepository().findById(id)
+                .map(restaurantAmenity -> {
+                    getBaseRepository().delete(restaurantAmenity);
+                    return Header.OK(response(restaurantAmenity));
+                })
+                .orElseThrow(() -> new EntityNotFoundException());
     }
 
     public Header<List<RestaurantAmenityResponse>> readByRestaurantId(Long restaurantId) {

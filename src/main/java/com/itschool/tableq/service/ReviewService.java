@@ -1,12 +1,10 @@
 package com.itschool.tableq.service;
 
-import com.itschool.tableq.domain.Reservation;
-import com.itschool.tableq.domain.Restaurant;
-import com.itschool.tableq.domain.Review;
-import com.itschool.tableq.domain.User;
+import com.itschool.tableq.domain.*;
 import com.itschool.tableq.ifs.annotation.AuthorCheck;
 import com.itschool.tableq.network.Header;
 import com.itschool.tableq.network.Pagination;
+import com.itschool.tableq.network.request.BusinessInformationRequest;
 import com.itschool.tableq.network.request.ReviewRequest;
 import com.itschool.tableq.network.response.ReviewResponse;
 import com.itschool.tableq.repository.ReservationRepository;
@@ -59,10 +57,10 @@ public class ReviewService extends BaseService<ReviewRequest, ReviewResponse, Re
     public Header<Long> countUserReviewsFor3Days(Long restaurantId, Long userId){
         Long count = 0L;
         User user = userRepository.findById(userId)
-                .orElseThrow(()-> new RuntimeException("유저를 조회할 수 없습니다."));
+                .orElseThrow(()-> new EntityNotFoundException("유저를 조회할 수 없습니다."));
 
         Restaurant restaurant = restaurantRepository.findById(restaurantId)
-                .orElseThrow(()->new RuntimeException("식당을 조회할 수 없습니다."));
+                .orElseThrow(()->new EntityNotFoundException("식당을 조회할 수 없습니다."));
 
 
         List<Review> reviewList = ((ReviewRepository)baseRepository).findByUserAndRestaurantAndCreatedAtBetween(user, restaurant,
@@ -97,7 +95,7 @@ public class ReviewService extends BaseService<ReviewRequest, ReviewResponse, Re
 
     @Override
     public Header<ReviewResponse> read(Long id) {
-        return Header.OK(response(getBaseRepository().findById(id).orElse(null)));
+        return Header.OK(response(getBaseRepository().findById(id).orElseThrow(()-> new EntityNotFoundException())));
     }
 
     // ID에 해당하는 식당에 대한 리뷰 조회
@@ -146,7 +144,14 @@ public class ReviewService extends BaseService<ReviewRequest, ReviewResponse, Re
 
     @Override
     public Header<ReviewResponse> update(Long id, Header<ReviewRequest> request) {
-        return null;
+        ReviewRequest reviewRequest = request.getData();
+
+        Review review = getBaseRepository().findById(id)
+                .orElseThrow(() -> new EntityNotFoundException());
+
+        review.update(reviewRequest);
+
+        return Header.OK(response(review));
     }
 
     @AuthorCheck

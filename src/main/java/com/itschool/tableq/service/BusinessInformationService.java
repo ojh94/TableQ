@@ -58,7 +58,8 @@ public class BusinessInformationService extends BaseService<BusinessInformationR
 
     @Override
     public Header<BusinessInformationResponse> read(Long id) {
-        return Header.OK(response(getBaseRepository().findById(id).orElse(null)));
+        return Header.OK(response(getBaseRepository().findById(id)
+                .orElseThrow(()-> new EntityNotFoundException())));
     }
 
     public Header<List<BusinessInformationResponse>> readByOwnerId(Long userId, Pageable pageable){
@@ -66,7 +67,7 @@ public class BusinessInformationService extends BaseService<BusinessInformationR
                 .orElseThrow(()->new NotFoundException("Not Found Owner Id: "+userId));
 
         List<BusinessInformation> businessInformationList = ((BusinessInformationRepository)baseRepository)
-                .findByUser(user).orElse(null);
+                .findByUser(user).orElseThrow(()-> new EntityNotFoundException());
 
         return Header.OK(responseList(businessInformationList));
     }
@@ -77,7 +78,7 @@ public class BusinessInformationService extends BaseService<BusinessInformationR
         BusinessInformationRequest businessInformationRequest = request.getData();
 
         BusinessInformation businessInformation = getBaseRepository().findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("not found" + id));
+                .orElseThrow(() -> new EntityNotFoundException());
 
         businessInformation.update(businessInformationRequest);
         return Header.OK(response(businessInformation));

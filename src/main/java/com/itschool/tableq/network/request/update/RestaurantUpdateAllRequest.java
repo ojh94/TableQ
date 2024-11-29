@@ -1,38 +1,26 @@
 package com.itschool.tableq.network.request.update;
 
-import com.itschool.tableq.network.request.RestaurantImageRequest;
-import com.itschool.tableq.network.request.update.restaurant.*;
+import com.itschool.tableq.network.request.*;
 import lombok.*;
+import lombok.experimental.SuperBuilder;
 
 import java.util.List;
 
-@Builder
 @NoArgsConstructor
-@AllArgsConstructor
 @Getter
 @Setter
-public class RestaurantUpdateAllRequest {
+public class RestaurantUpdateAllRequest extends RestaurantRequest {
 
-    private String name;
+    private List<RestaurantImageRequest> restaurantImageList;
 
-    private String address;
+    private List<OpeningHourRequest> openingHourList;
 
-    private String information;
+    private List<BreakHourRequest> breakHourList;
 
-    private String contact_number;
+    private List<RestaurantAmenityRequest> restaurantAmenityList;
 
-    // private boolean isAvailable;
+    private List<RestaurantKeywordRequest> restaurantKeywordList;
 
-    private List<RestaurantImageUpdateRequest> restaurantImageList;
-
-    private List<OpeningHourUpdateRequest> openingHourList;
-
-    private List<BreakHourUpdateRequest> breakHourList;
-
-    private List<RestaurantAmenityUpdateRequest> restaurantAmenityList;
-
-    private List<RestaurantKeywordUpdateRequest> restaurantKeywordList;
-
-    private List<MenuItemUpdateRequest> menuItemList;
+    private List<MenuItemRequest> menuItemList;
 
 }

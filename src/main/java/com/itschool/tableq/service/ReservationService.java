@@ -67,7 +67,7 @@ public class ReservationService extends BaseService<ReservationRequest, Reservat
 
     public Header<List<ReservationResponse>> readVisitedRestaurantsFor3Day(Long userId){
         User user = userRepository.findById(userId)
-                .orElseThrow(()->new RuntimeException("유저가 존재하지 않습니다."));
+                .orElseThrow(()->new EntityNotFoundException("유저가 존재하지 않습니다."));
 
         List<Reservation> reservationList = ((ReservationRepository)baseRepository)
                 .findByIsEnteredAndUserAndCreatedAtBetween(
@@ -80,10 +80,10 @@ public class ReservationService extends BaseService<ReservationRequest, Reservat
     public Header<Long> countUserReservationsFor3Days(Long userId, Long restaurantId){
         Long count = 0L;
         User user = userRepository.findById(userId)
-                .orElseThrow(()-> new RuntimeException("유저를 조회할 수 없습니다."));
+                .orElseThrow(()-> new EntityNotFoundException("유저를 조회할 수 없습니다."));
 
         Restaurant restaurant = restaurantRepository.findById(restaurantId)
-                .orElseThrow(()->new RuntimeException("식당을 조회할 수 없습니다."));
+                .orElseThrow(()->new EntityNotFoundException("식당을 조회할 수 없습니다."));
 
         List<Reservation> reservationList = ((ReservationRepository)baseRepository).findByIsEnteredAndUserAndRestaurantAndCreatedAtBetween(true, user, restaurant,
                                                                                                         DateUtil.get3DaysAgo(),DateUtil.getEndOfDay());
@@ -99,8 +99,8 @@ public class ReservationService extends BaseService<ReservationRequest, Reservat
 
         LocalDate today = LocalDate.now();
 
-        List<Reservation> reservationList = ((ReservationRepository) baseRepository)
-                .findByRestaurant(restaurant).orElse(null);
+        List<Reservation> reservationList = getBaseRepository().findByRestaurant(restaurant)
+                .orElseThrow(()-> new EntityNotFoundException());
 
         for (Reservation reservation : reservationList) {
             LocalDate reservationTime = reservation.getCreatedAt().toLocalDate();
@@ -173,7 +173,8 @@ public class ReservationService extends BaseService<ReservationRequest, Reservat
     @Override
     public Header<ReservationResponse> read(Long id) {
         // ID에 해당하는 예약에 대한 정보 조회
-        return Header.OK(response(getBaseRepository().findById(id).orElse(null)));
+        return Header.OK(response(getBaseRepository().findById(id)
+                .orElseThrow(()-> new EntityNotFoundException())));
     }
 
     public Header<List<ReservationResponse>> readByRestaurantId(Long restaurantId, Pageable pageable){
@@ -181,7 +182,7 @@ public class ReservationService extends BaseService<ReservationRequest, Reservat
         // --> 필요한 정보 : reservationNumber(대기번호), people(인원), User.contactNumber(예약자 전화번호)
         Restaurant restaurant = restaurantRepository.findById(restaurantId).get();
         List<Reservation> reservationList = ((ReservationRepository)baseRepository)
-                .findByRestaurant(restaurant).orElse(null);
+                .findByRestaurant(restaurant).orElseThrow(()-> new EntityNotFoundException());
 
         return Header.OK(responseList(reservationList));
     }
@@ -191,7 +192,7 @@ public class ReservationService extends BaseService<ReservationRequest, Reservat
         // --> 유저가 예약했던 식당을 조회하는 방식으로 변경 건의
         User user = userRepository.findById(userId).get();
         List<Reservation> reservationList = ((ReservationRepository)baseRepository)
-                .findByUser(user).orElse(null);
+                .findByUser(user).orElseThrow(()-> new EntityNotFoundException());
 
         return Header.OK(responseList(reservationList));
     }
@@ -202,7 +203,7 @@ public class ReservationService extends BaseService<ReservationRequest, Reservat
         // 손님이 입장을 했는지 판단하여 업데이트
         ReservationRequest reservationRequest = request.getData();
 
-        Reservation reservation = getBaseRepository().findById(id).orElse(null);
+        Reservation reservation = getBaseRepository().findById(id).orElseThrow(()-> new EntityNotFoundException());
 
         reservation.update(reservationRequest);
 
@@ -211,6 +212,11 @@ public class ReservationService extends BaseService<ReservationRequest, Reservat
 
     @Override
     public Header delete(Long id) {
-        return null;
+        return getBaseRepository().findById(id)
+                .map(reservation -> {
+                    getBaseRepository().delete(reservation);
+                    return Header.OK(response(reservation));
+                })
+                .orElseThrow(() -> new EntityNotFoundException());
     }
 }

@@ -94,7 +94,7 @@ public class ReviewImageService extends BaseServiceWithS3<ReviewImageRequest, Re
             MultipartFile file = reviewImageRequest.getFile();
 
             ReviewImage findEntity = getBaseRepository().findById(id)
-                    .orElseThrow(() -> new IllegalArgumentException("not found"));
+                    .orElseThrow(() -> new EntityNotFoundException());
 
             String existingUrl = findEntity.getFileUrl();
 
@@ -121,7 +121,7 @@ public class ReviewImageService extends BaseServiceWithS3<ReviewImageRequest, Re
     public Header delete(Long id) {
         try {
             ReviewImage entity = getBaseRepository().findById(id)
-                    .orElseThrow(() -> new IllegalArgumentException("not found"));
+                    .orElseThrow(() -> new EntityNotFoundException());
 
             if(entity.getFileUrl() != null)
                 s3Service.deleteFile(entity.getFileUrl());

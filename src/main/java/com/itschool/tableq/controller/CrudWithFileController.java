@@ -76,17 +76,12 @@ public abstract class CrudWithFileController<Req extends FileRequest, Res, Entit
 
         log.info("create: {}", requestJson);
 
-        try {
-            FileUtil.validateFile(file, MAX_IMAGE_FILE_SIZE);
+        FileUtil.validateFile(file, MAX_IMAGE_FILE_SIZE);
 
-            Req request = validateJsonString(requestJson);
+        Req request = validateJsonString(requestJson);
 
-            request.setFile(file);  // 요청 객체에 파일 설정
-            return baseService.create(Header.OK(request));  // 서비스 레이어로 넘기기
-        } catch (Exception e) {
-            log.error("파일 업로드 처리 중 오류 발생", e);
-            return Header.ERROR("Create 실패 : " + e.getMessage());
-        }
+        request.setFile(file);  // 요청 객체에 파일 설정
+        return baseService.create(Header.OK(request));  // 서비스 레이어로 넘기기
     }
 
 
@@ -97,38 +92,27 @@ public abstract class CrudWithFileController<Req extends FileRequest, Res, Entit
                               @RequestPart("data") String requestJson,  // String으로 JSON 받기
                               @RequestPart(value = "file", required = false) MultipartFile file) {
         log.info("update: {}, {}", id, requestJson);
+        FileUtil.validateFile(file, MAX_IMAGE_FILE_SIZE);
 
-        try {
-            FileUtil.validateFile(file, MAX_IMAGE_FILE_SIZE);
+        Req request = validateJsonString(requestJson);
 
-            Req request = validateJsonString(requestJson);
-
-            request.setFile(file);  // FileRequest의 setFile 메서드로 파일 설정
-            return baseService.update(id, Header.OK(request));  // 서비스 레이어로 넘기기
-        } catch (Exception e) {
-            log.error("파일 수정 중 오류 발생", e);
-            return Header.ERROR("Update 실패 : " + e.getMessage());
-        }
+        request.setFile(file);  // FileRequest의 setFile 메서드로 파일 설정
+        return baseService.update(id, Header.OK(request));  // 서비스 레이어로 넘기기
     }
 
     @Override
     @DeleteMapping("{id}")
     @Operation(summary = "삭제", description = "ID로 엔티티를 삭제 및 S3에 저장된 파일도 같이 삭제")
     public Header delete(@PathVariable(name = "id") Long id) {
-        try {
-            log.info("{}","{}","delete: ",id);
-            baseService.delete(id);
-            return Header.OK();
-        } catch (Exception e) {
-            log.error("파일 삭제 중 오류 발생", e);
-            return Header.ERROR("delete 실패 : " + e.getMessage());
-        }
+        log.info("{}","{}","delete: ",id);
+        baseService.delete(id);
+        return Header.OK();
     }
 
     // 예외 처리 핸들러 추가
-    /*@ExceptionHandler(Exception.class)
+    @ExceptionHandler(Exception.class)
     public Header handleException(Exception e) {
-        log.error("예기치 않은 오류 발생: ", e);
-        return Header.ERROR("예기치 않은 오류가 발생했습니다. 500 : Internal Server Error");
-    }*/
+        log.error(e.getClass().getSimpleName() + " : " + e.getMessage() + "\n" + e.getCause());
+        return Header.ERROR(e.getClass().getSimpleName() + " : " + e.getCause());
+    }
 }

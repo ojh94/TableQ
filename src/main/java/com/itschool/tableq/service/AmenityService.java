@@ -44,14 +44,15 @@ public class AmenityService extends BaseService<AmenityRequest, AmenityResponse,
 
     @Override
     public Header<AmenityResponse> read(Long id) {
-        return Header.OK(response(getBaseRepository().findById(id).orElse(null)));
+        return Header.OK(response(getBaseRepository().findById(id)
+                .orElseThrow(()-> new EntityNotFoundException())));
     }
 
     @Override
     @Transactional
     public Header<AmenityResponse> update(Long id, Header<AmenityRequest> request) {
         AmenityRequest amenityRequest = request.getData();
-        Amenity amenity = getBaseRepository().findById(id).orElseThrow(() -> new IllegalArgumentException("not found"));
+        Amenity amenity = getBaseRepository().findById(id).orElseThrow(() -> new EntityNotFoundException());
         amenity.update(amenityRequest);
         return Header.OK(response(amenity));
     }

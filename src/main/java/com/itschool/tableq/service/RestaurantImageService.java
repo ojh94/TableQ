@@ -12,9 +12,6 @@ import com.itschool.tableq.service.base.S3Service;
 import com.itschool.tableq.util.FileUtil;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -73,7 +70,8 @@ public class RestaurantImageService extends BaseServiceWithS3<RestaurantImageReq
 
     @Override
     public Header<RestaurantImageResponse> read(Long id) {
-        return Header.OK(response(getBaseRepository().findById(id).orElse(null)));
+        return Header.OK(response(getBaseRepository().findById(id)
+                .orElseThrow(()-> new EntityNotFoundException())));
     }
 
     public Header<List<RestaurantImageResponse>> readByRestaurantId(Long restaurantId){
@@ -93,7 +91,7 @@ public class RestaurantImageService extends BaseServiceWithS3<RestaurantImageReq
             MultipartFile file = restaurantImageRequest.getFile();
 
             RestaurantImage findEntity = getBaseRepository().findById(id)
-                    .orElseThrow(() -> new IllegalArgumentException("not found"));
+                    .orElseThrow(() -> new EntityNotFoundException());
 
             String existingUrl = findEntity.getFileUrl();
 
@@ -120,7 +118,7 @@ public class RestaurantImageService extends BaseServiceWithS3<RestaurantImageReq
     public Header delete(Long id) {
         try {
             RestaurantImage entity = getBaseRepository().findById(id)
-                    .orElseThrow(() -> new IllegalArgumentException("not found"));
+                    .orElseThrow(() -> new EntityNotFoundException());
 
             if(entity.getFileUrl() != null)
                 s3Service.deleteFile(entity.getFileUrl());

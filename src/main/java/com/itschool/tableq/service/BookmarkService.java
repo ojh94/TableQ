@@ -10,6 +10,7 @@ import com.itschool.tableq.repository.BookmarkRepository;
 import com.itschool.tableq.repository.RestaurantRepository;
 import com.itschool.tableq.repository.UserRepository;
 import com.itschool.tableq.service.base.BaseService;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -64,20 +65,23 @@ public class BookmarkService extends BaseService<BookmarkRequest, BookmarkRespon
 
     @Override
     public Header<BookmarkResponse> read(Long id) {
-        return Header.OK(response(getBaseRepository().findById(id).orElse(null)));
+        return Header.OK(response(getBaseRepository().findById(id)
+                .orElseThrow(()-> new EntityNotFoundException())));
     }
 
     public Header<List<BookmarkResponse>> readByUserId(Long userId, Pageable pageable){
         User user = userRepository.findById(userId)
                 .orElseThrow(()-> new RuntimeException("Not Found ID"));
 
-        List<Bookmark> bookmarkList = ((BookmarkRepository)baseRepository).findByUser(user).orElse(null);
+        List<Bookmark> bookmarkList = ((BookmarkRepository)baseRepository).findByUser(user)
+                .orElseThrow(()-> new EntityNotFoundException());
 
         return Header.OK(responseList(bookmarkList));
     }
 
     public Header<Integer> countBookmarks(Long restaurantId){
-        Restaurant restaurant = restaurantRepository.findById(restaurantId).orElse(null);
+        Restaurant restaurant = restaurantRepository.findById(restaurantId)
+                .orElseThrow(()-> new EntityNotFoundException());
         List<Bookmark> bookmarkList = ((BookmarkRepository)baseRepository).findByRestaurant(restaurant);
 
         return Header.OK(bookmarkList.size());

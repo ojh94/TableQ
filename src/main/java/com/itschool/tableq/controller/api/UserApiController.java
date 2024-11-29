@@ -43,10 +43,10 @@ public class UserApiController extends CrudController<UserRequest, UserResponse,
         try {
             if(request.getData() != null)
                 return ((UserService)baseService).createUserRole(request);
-            throw new Exception("Json 객체 내 data 내 email 값이 null");
+            throw new IllegalArgumentException("Json 객체 내 data 내 email 값이 null");
         } catch (Exception e) {
             log.error("엔티티 생성 중 오류 발생", e);
-            return Header.ERROR(e.getMessage());
+            return Header.ERROR(e.getClass().getSimpleName() + " : " + e.getCause());
         }
     }
 
@@ -60,7 +60,7 @@ public class UserApiController extends CrudController<UserRequest, UserResponse,
             throw new Exception("Json 객체 내 data 내 email 값이 null");
         } catch (Exception e) {
             log.error("엔티티 생성 중 오류 발생", e);
-            return Header.ERROR(e.getMessage());
+            return Header.ERROR(e.getClass().getSimpleName() + e.getMessage());
         }
     }
 
@@ -80,7 +80,6 @@ public class UserApiController extends CrudController<UserRequest, UserResponse,
 
             // 새로운 사용자 정보로 인증 객체 생성
             UserDetails newUserDetails = User.builder()
-                    .id(userResponse.getId())
                     .email(userResponse.getEmail())
                     .nickname(userResponse.getNickname())
                     .phoneNumber(userResponse.getPhoneNumber())
@@ -107,9 +106,9 @@ public class UserApiController extends CrudController<UserRequest, UserResponse,
         try {
             if(request.getData().getEmail() != null)
                 return Header.OK(((UserService)baseService).checkEmail(request));
-            throw new Exception("Json 객체 내 data 내 email 값이 null");
+            throw new RuntimeException("Json 객체 내 data 내 email 값이 null");
         } catch (Exception e) {
-            return Header.ERROR(e.getMessage());
+            return Header.ERROR(e.getClass().getSimpleName() + e.getMessage());
         }
     }
 
@@ -119,9 +118,9 @@ public class UserApiController extends CrudController<UserRequest, UserResponse,
         try {
             if(request.getData().getPhoneNumber() != null)
                 return Header.OK(((UserService)baseService).checkPhoneNumber(request));
-            throw new Exception("Json 객체 내 data 내 phoneNumber 값이 null");
+            throw new RuntimeException("Json 객체 내 data 내 phoneNumber 값이 null");
         } catch (Exception e) {
-            return Header.ERROR(e.getMessage());
+            return Header.ERROR(e.getClass().getSimpleName() + e.getMessage());
         }
     }
 }

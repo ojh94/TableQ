@@ -4,18 +4,15 @@ import com.itschool.tableq.domain.base.IncludeFileUrl;
 import com.itschool.tableq.network.request.MenuItemRequest;
 import jakarta.persistence.*;
 import lombok.*;
+import lombok.experimental.SuperBuilder;
 
 @Builder
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 @Entity
 @Table(name = "menu_items")
 public class MenuItem extends IncludeFileUrl {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(updatable = false, nullable = false)
-    private Long id;
 
     @Column(nullable = false)
     private String name;

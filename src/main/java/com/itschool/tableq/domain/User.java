@@ -14,17 +14,14 @@ import java.util.Collection;
 import java.util.List;
 
 @Builder
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 @Entity
 @Table(name = "users")
 public class User extends AuditableEntity implements UserDetails {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(updatable = false)
-    private Long id;
+    private static final long serialVersionUID = 1L; // 고정된 값으로 선언
 
     @Column(nullable = false)
     private String password;

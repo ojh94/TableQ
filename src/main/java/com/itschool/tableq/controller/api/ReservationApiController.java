@@ -65,7 +65,7 @@ public class ReservationApiController extends CrudController<ReservationRequest,
         try {
             return ((ReservationService)baseService).getUserQueue(reservationId);
         } catch (Exception e) {
-            return Header.ERROR(e.getMessage());
+            return Header.ERROR(e.getClass().getSimpleName() + " : " + e.getCause());
         }
     }
     @Operation(summary = "3일간 사용자 예약 횟수 조회", description = "User ID 및 Restaurant ID로 예약 횟수 조회")

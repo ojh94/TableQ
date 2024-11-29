@@ -1,11 +1,11 @@
 package com.itschool.tableq.network.request;
 
 import com.itschool.tableq.network.request.base.FileRequest;
-import lombok.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-@Builder
 @NoArgsConstructor
-@AllArgsConstructor
 @Getter
 @Setter
 public class RestaurantImageRequest extends FileRequest {

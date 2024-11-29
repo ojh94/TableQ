@@ -1,13 +1,14 @@
 package com.itschool.tableq.network.request;
 
-import lombok.*;
+import com.itschool.tableq.network.request.base.SingleKeyRequest;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-@Builder
 @NoArgsConstructor
-@AllArgsConstructor
 @Getter
 @Setter
-public class RestaurantRequest {
+public class RestaurantRequest extends SingleKeyRequest {
 
     private Long id;
 
@@ -21,5 +22,5 @@ public class RestaurantRequest {
 
     private boolean isAvailable;
 
-    private BusinessInformationRequest businessInformation;
+    // private BusinessInformationRequest businessInformation;
 }
