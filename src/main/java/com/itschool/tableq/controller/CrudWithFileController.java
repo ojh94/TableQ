@@ -18,6 +18,8 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.validation.Valid;
+
 @Component
 public abstract class CrudWithFileController<Req extends RequestWithFile, Res, Entity extends IncludeFileUrl> implements CrudWithFileInterface<Req, Res> {
 
@@ -76,6 +78,7 @@ public abstract class CrudWithFileController<Req extends RequestWithFile, Res, E
 
         FileUtil.validateFile(file, MAX_IMAGE_FILE_SIZE);
 
+        @Valid
         Req request = validateJsonString(requestJson);
 
         request.setFile(file);  // 요청 객체에 파일 설정
@@ -92,6 +95,7 @@ public abstract class CrudWithFileController<Req extends RequestWithFile, Res, E
         log.info("update: {}, {}", id, requestJson);
         FileUtil.validateFile(file, MAX_IMAGE_FILE_SIZE);
 
+        @Valid
         Req request = validateJsonString(requestJson);
 
         request.setFile(file);  // FileRequest의 setFile 메서드로 파일 설정

@@ -52,7 +52,7 @@ public class UserApiController extends CrudController<UserRequest, UserResponse,
 
     @Operation(summary = "점주 회원가입", description = "새로운 점주 생성")
     @PostMapping("/owner-role")
-    public Header<UserResponse> createOwner(@RequestBody Header<UserRequest> request) {
+    public Header<UserResponse> createOwner(@RequestBody @Valid Header<UserRequest> request) {
         log.info("{}","{}", "createUser : ", request);
         try {
             if(request.getData() != null)
@@ -68,7 +68,7 @@ public class UserApiController extends CrudController<UserRequest, UserResponse,
     @Operation(summary = "수정", description = "ID로 엔티티 및 세션 업데이트")
     @PutMapping("/{id}")
     public Header<UserResponse> update(@PathVariable(name = "id") Long id,
-                              @RequestBody Header<UserRequest> request) {
+                              @RequestBody @Valid Header<UserRequest> request) {
         Header<UserResponse> response = super.update(id, request);
 
         // 사용자 정보를 새로 설정하기 위한 추가 작업

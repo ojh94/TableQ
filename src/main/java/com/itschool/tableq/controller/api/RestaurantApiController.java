@@ -20,6 +20,7 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @Slf4j
@@ -83,7 +84,8 @@ public class RestaurantApiController extends CrudController<RestaurantRequest, R
                 id, requestJson, restaurantImages, menuItemImages);
 
         // JSON 파싱 및 객체 변환
-        RestaurantUpdateAllRequest request = (RestaurantUpdateAllRequest) parseRequestToJson(requestJson, RestaurantUpdateAllRequest.class);
+        @Valid
+        RestaurantUpdateAllRequest request = parseRequestToJson(requestJson, RestaurantUpdateAllRequest.class);
 
         // 이미지 파일 검증
         FileUtil.validateImages(restaurantImages, "Restaurant Images", MAX_IMAGE_FILE_SIZE);

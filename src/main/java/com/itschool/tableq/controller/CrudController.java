@@ -18,6 +18,8 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+
 @Component
 public abstract class CrudController<Req extends SingleKeyRequest, Res, Entity extends AuditableEntity> implements CrudInterface<Req, Res> {
 
@@ -50,7 +52,7 @@ public abstract class CrudController<Req extends SingleKeyRequest, Res, Entity e
     @Override
     @Operation(summary = "생성", description = "새로운 엔티티를 생성")
     @PostMapping("")
-    public Header<Res> create(@RequestBody Header<Req> request) {
+    public Header<Res> create(@RequestBody @Valid Header<Req> request) {
 
         log.info("{}","{}", "create : ", request);
 
@@ -71,7 +73,7 @@ public abstract class CrudController<Req extends SingleKeyRequest, Res, Entity e
     @Operation(summary = "수정", description = "ID로 엔티티를 업데이트")
     @PutMapping("{id}")
     public Header<Res> update(@PathVariable(name = "id") Long id,
-                              @RequestBody Header<Req> request) {
+                              @RequestBody @Valid Header<Req> request) {
 
         log.info("{}","{}","{}", "update: ", id, request);
 
