@@ -380,9 +380,11 @@ function removeFromFavorites(restaurantId, userId) {
 // 기본 페이지와 페이지 크기 설정
 let currentPage = 0;
 const pageSize = 10;
+let totalPages = 1;
+let sortType = 'id';        // 기본 정렬 기준
 
 // 레스토랑 데이터를 가져오는 함수
-async function fetchRestaurants(sortType = 'id', page = currentPage) {
+async function fetchRestaurants(sortType, page = currentPage) {
     try {
         // 레스토랑 정보 가져오기
         const restaurantResponse = await $.ajax({
@@ -392,6 +394,9 @@ async function fetchRestaurants(sortType = 'id', page = currentPage) {
 
         if (restaurantResponse && restaurantResponse.data) {
             console.log('레스토랑 데이터:', restaurantResponse.data);
+
+            // 총 페이지 수 갱신
+            totalPages = restaurantResponse.pagination.totalPages;
 
             // 각 레스토랑의 리뷰 데이터 가져오기
             const restaurants = restaurantResponse.data;
@@ -469,6 +474,7 @@ function updatePagination(totalPages) {
 
     // 페이지 변경 시 데이터를 새로 불러옴
     fetchRestaurants($('#sortId').val(), currentPage);
+    updatePagination(totalPages); // 페이지 상태 갱신
 }
 
 // 정렬 기준 변경 처리 함수
@@ -477,6 +483,12 @@ function handleSortChange() {
     fetchRestaurants(sortType, currentPage); // 선택된 기준에 따라 레스토랑 데이터 가져오기
 }
 
+function updatePagination(totalPages) {
+    $('#prevPage').prop('disabled', currentPage === 0); // 이전 버튼 비활성화 조건
+    $('#nextPage').prop('disabled', currentPage === totalPages - 1); // 다음 버튼 비활성화 조건
+    $('#currentPage').text(currentPage + 1); // 현재 페이지 표시
+    $('#totalPages').text(totalPages); // 전체 페이지 수 표시
+}
 
 
 $(document).ready(function () {
@@ -484,11 +496,32 @@ $(document).ready(function () {
     fetchRestaurants('id', 0);
 
     // 페이지네이션 버튼 이벤트 리스너
-    $('#prevPage').on('click', handlePagination);
-    $('#nextPage').on('click', handlePagination);
 
-    // 정렬 기준 변경 시 이벤트 리스너
-    $('#sortId').on('change', handleSortChange);
+    // 이전 페이지 버튼
+    $('#prevPage').on('click', function () {
+        if (currentPage > 0) {
+            currentPage--;
+            console.log("이전 페이지, 커런트 페이지", currentPage); // currentPage 값 확인
+            fetchRestaurants(sortType , currentPage);
+        }
+    });
+
+    // 다음 페이지 버튼
+    $('#nextPage').on('click', function () {
+        if (currentPage < totalPages - 1) {
+            currentPage++;
+            console.log("Next Page, currentPage:", currentPage); // currentPage 값 확인
+            fetchRestaurants(sortType , currentPage);
+        }
+    });
+
+    // 정렬 기준 변경
+    $('#sortId').on('change', function () {
+        const sortType = $(this).val(); // 드롭다운에서 선택된 정렬 기준
+        currentPage = 0; // 정렬 변경 시 첫 페이지로 이동
+        fetchRestaurants(sortType, currentPage);
+    });
+
 });
 
 
