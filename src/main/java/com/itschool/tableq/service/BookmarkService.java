@@ -66,7 +66,7 @@ public class BookmarkService extends BaseService<BookmarkRequest, BookmarkRespon
         User user = userRepository.findById(userId)
                 .orElseThrow(()-> new RuntimeException("Not Found ID"));
 
-        List<Bookmark> bookmarkList = ((BookmarkRepository)baseRepository).findByUser(user)
+        List<Bookmark> bookmarkList = getBaseRepository().findByUser(user)
                 .orElseThrow(()-> new EntityNotFoundException());
 
         return Header.OK(responseList(bookmarkList));
@@ -75,7 +75,7 @@ public class BookmarkService extends BaseService<BookmarkRequest, BookmarkRespon
     public Header<Integer> countBookmarks(Long restaurantId){
         Restaurant restaurant = restaurantRepository.findById(restaurantId)
                 .orElseThrow(()-> new EntityNotFoundException());
-        List<Bookmark> bookmarkList = ((BookmarkRepository)baseRepository).findByRestaurant(restaurant);
+        List<Bookmark> bookmarkList = getBaseRepository().findByRestaurant(restaurant);
 
         return Header.OK(bookmarkList.size());
     }

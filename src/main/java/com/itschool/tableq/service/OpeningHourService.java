@@ -57,7 +57,7 @@ public class OpeningHourService extends BaseService<OpeningHourRequest, OpeningH
         Restaurant restaurant = restaurantRepository.findById(restaurantId)
                 .orElseThrow(() -> new EntityNotFoundException("레스토랑을 찾을 수 없습니다."));
 
-        return convertPageToList(((OpeningHourRepository)baseRepository).findByRestaurant(restaurant, pageable));
+        return convertPageToList(getBaseRepository().findByRestaurant(restaurant, pageable));
     }
 
     public void deleteByRestaurantId(Long id) {

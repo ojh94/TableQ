@@ -57,7 +57,7 @@ public class BreakHourService extends BaseService<BreakHourRequest, BreakHourRes
         Restaurant restaurant = restaurantRepository.findById(restaurantId)
                 .orElseThrow(() -> new EntityNotFoundException("레스토랑을 찾을 수 없습니다. ID: " + restaurantId));
 
-        Page<BreakHour> entities = ((BreakHourRepository)baseRepository).findByRestaurant(restaurant, pageable);
+        Page<BreakHour> entities = getBaseRepository().findByRestaurant(restaurant, pageable);
 
         List<BreakHourResponse> BreakHourList = entities.stream()
                 .map(entity -> response(entity))

@@ -10,8 +10,6 @@ import lombok.Setter;
 @Setter
 public class RestaurantAmenityRequest extends SingleKeyRequest {
 
-    private Long id;
-
     private RestaurantRequest restaurant;
 
     private AmenityRequest amenity;

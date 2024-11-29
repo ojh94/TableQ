@@ -66,7 +66,7 @@ public class RestaurantKeywordService extends BaseService<RestaurantKeywordReque
         Restaurant restaurant = restaurantRepository.findById(restaurantId)
                 .orElseThrow(() -> new EntityNotFoundException());
 
-        List<RestaurantKeyword> keywordList = ((RestaurantKeywordRepository)baseRepository).findByRestaurant(restaurant);
+        List<RestaurantKeyword> keywordList = getBaseRepository().findByRestaurant(restaurant);
 
         return Header.OK(responseList(keywordList));
     }

@@ -10,8 +10,6 @@ import lombok.Setter;
 @Setter
 public class MenuItemRequestWithFile extends RequestWithFile {
 
-    private Long id;
-
     private String name;
 
     private String price;

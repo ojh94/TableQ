@@ -10,8 +10,6 @@ import lombok.Setter;
 @Setter
 public class RestaurantKeywordRequest extends SingleKeyRequest {
 
-    private Long id;
-
     private RestaurantRequest restaurant;
 
     private KeywordRequest keyword;

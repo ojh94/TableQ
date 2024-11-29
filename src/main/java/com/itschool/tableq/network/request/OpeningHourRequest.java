@@ -13,8 +13,6 @@ import java.time.LocalTime;
 @Setter
 public class OpeningHourRequest extends SingleKeyRequest {
 
-    private Long id;
-
     private LocalTime openAt;
 
     private LocalTime closeAt;

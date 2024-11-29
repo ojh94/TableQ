@@ -15,8 +15,6 @@ import lombok.Setter;
 @Setter
 public class UserRequest extends SingleKeyRequest {
 
-    private Long id;
-
     @NotBlank
     @Size(min = 8, max = 16)
     @Pattern(regexp = "^(?=.*[A-Za-z])(?=.*\\d)(?=.*[!@#$%^&*]).{8,16}$", message = "비밀번호는 최소 8자 이상, 숫자, 대소문자, 특수문자를 포함해야 합니다.")

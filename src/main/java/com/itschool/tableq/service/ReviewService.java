@@ -76,7 +76,7 @@ public class ReviewService extends BaseService<ReviewRequest, ReviewResponse, Re
                 .orElseThrow(()->new EntityNotFoundException("식당을 조회할 수 없습니다."));
 
 
-        List<Review> reviewList = ((ReviewRepository)baseRepository).findByUserAndRestaurantAndCreatedAtBetween(user, restaurant,
+        List<Review> reviewList = getBaseRepository().findByUserAndRestaurantAndCreatedAtBetween(user, restaurant,
                                                                                     DateUtil.get3DaysAgo(), DateUtil.getEndOfDay());
 
         count = (long) reviewList.size();
@@ -91,7 +91,7 @@ public class ReviewService extends BaseService<ReviewRequest, ReviewResponse, Re
                 .orElseThrow(() -> new EntityNotFoundException("레스토랑을 찾을 수 없습니다. ID: " + restaurantId));
 
         // 레스토랑에 해당하는 리뷰 목록 조회
-        Page<Review> entities = ((ReviewRepository)baseRepository).findByRestaurant(restaurant, pageable);
+        Page<Review> entities = getBaseRepository().findByRestaurant(restaurant, pageable);
 
         List<ReviewResponse> reviewList = entities.stream()
                 .map(entity -> response(entity))
@@ -112,7 +112,7 @@ public class ReviewService extends BaseService<ReviewRequest, ReviewResponse, Re
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new EntityNotFoundException("유저를 찾을 수 없습니다. ID: " + userId));
 
-        Page<Review> entities = ((ReviewRepository)baseRepository).findByUser(user, pageable);
+        Page<Review> entities = getBaseRepository().findByUser(user, pageable);
 
         List<ReviewResponse> reviewList = entities.stream()
                 .map(entity -> response(entity))
