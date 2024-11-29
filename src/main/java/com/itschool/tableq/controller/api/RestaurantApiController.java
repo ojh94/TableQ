@@ -3,11 +3,12 @@ package com.itschool.tableq.controller.api;
 import com.itschool.tableq.controller.CrudController;
 import com.itschool.tableq.domain.Restaurant;
 import com.itschool.tableq.network.Header;
+import com.itschool.tableq.network.request.MenuItemRequest;
+import com.itschool.tableq.network.request.RestaurantRequest;
 import com.itschool.tableq.network.request.update.RestaurantUpdateAllRequest;
 import com.itschool.tableq.network.response.RestaurantResponse;
-import com.itschool.tableq.network.request.RestaurantRequest;
+import com.itschool.tableq.service.RestaurantLogicService;
 import com.itschool.tableq.service.RestaurantService;
-import com.itschool.tableq.service.base.BaseService;
 import com.itschool.tableq.util.FileUtil;
 import groovy.util.logging.Slf4j;
 import io.swagger.v3.oas.annotations.Operation;
@@ -30,7 +31,7 @@ public class RestaurantApiController extends CrudController<RestaurantRequest, R
 
     // 생성자
     @Autowired
-    public RestaurantApiController(RestaurantService baseService) {
+    public RestaurantApiController(RestaurantLogicService baseService) {
         super(baseService);
     }
 
@@ -71,52 +72,34 @@ public class RestaurantApiController extends CrudController<RestaurantRequest, R
         return ((RestaurantService)baseService).searchByAddress(keyword, pageable);
     }
 
-    // JSON 파싱 로직 분리
-    private RestaurantUpdateAllRequest parseUpdateAllRequestToJson(String requestJson) {
-        try {
-            return objectMapper.readValue(requestJson, RestaurantUpdateAllRequest.class);
-        } catch (Exception e) {
-            log.error("JSON Parsing Error: {}", e.getMessage(), e);
-            throw new RuntimeException("Invalid JSON format.");
-        }
-    }
-
-    // 이미지 유효성 검사 로직 분리
-    private void validateImages(List<MultipartFile> images, String imageType) {
-        if (images != null && !images.isEmpty()) {
-            try {
-                FileUtil.validateFileList(images, MAX_IMAGE_FILE_SIZE);
-            } catch (Exception e) {
-                log.error("File validation failed for {}: {}", imageType, e.getMessage(), e);
-                throw new RuntimeException(imageType + " validation failed: " + e.getMessage());
-            }
-        }
-    }
-
     @Operation(summary = "레스토랑 관련 내역 전체 수정", description = "레스토랑 관련 전체 수정")
     @PutMapping("/all/{id}")
     public Header<RestaurantResponse> updateAll(
             @PathVariable(name = "id") Long id,
             @RequestPart("data") String requestJson,
             @RequestPart(value = "restaurantImages", required = false) List<MultipartFile> restaurantImages,
-            @RequestPart(value = "menuImages", required = false) List<MultipartFile> menuImages) {
+            @RequestPart(value = "menuImages", required = false) List<MultipartFile> menuItemImages) {
 
         log.info("Update All Request Received: id={}, requestJson={}, restaurantImages={}, menuImages={}",
-                id, requestJson, restaurantImages, menuImages);
+                id, requestJson, restaurantImages, menuItemImages);
 
         try {
             // JSON 파싱 및 객체 변환
-            RestaurantUpdateAllRequest request = parseUpdateAllRequestToJson(requestJson);
+            RestaurantUpdateAllRequest request = (RestaurantUpdateAllRequest) parseRequestToJson(requestJson, getRequestClass());
 
             // 이미지 파일 검증
-            validateImages(restaurantImages, "Restaurant Images");
-            validateImages(menuImages, "Menu Images");
+            FileUtil.validateImages(restaurantImages, "Restaurant Images", MAX_IMAGE_FILE_SIZE);
+            FileUtil.validateImages(menuItemImages, "Menu Images", MAX_IMAGE_FILE_SIZE);
+
+            // 파일을 객체로 옮기기
+            FileUtil.saveFileListInObjectList(request.getRestaurantImageList(), restaurantImages);
+            FileUtil.saveFileListInObjectList(request.getMenuItemList(), menuItemImages);
 
             // 업데이트 서비스 호출
-            return ((RestaurantService) baseService).updateAll(id, request, restaurantImages, menuImages);
+            return ((RestaurantLogicService) baseService).updateAll(id, request);
         } catch (Exception e) {
             log.error("Error during entity update: {}", e.getMessage(), e);
-            return Header.ERROR("Entity update error: " + e.getMessage());
+            return Header.ERROR(e.getClass().getSimpleName() + " : " + e.getCause());
         }
     }
 }

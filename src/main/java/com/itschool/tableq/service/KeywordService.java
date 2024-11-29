@@ -6,6 +6,7 @@ import com.itschool.tableq.network.request.KeywordRequest;
 import com.itschool.tableq.network.response.KeywordResponse;
 import com.itschool.tableq.repository.KeywordRepository;
 import com.itschool.tableq.service.base.BaseService;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -47,7 +48,8 @@ public class KeywordService extends BaseService<KeywordRequest, KeywordResponse,
 
     @Override
     public Header<KeywordResponse> read(Long id) {
-        return Header.OK(response(getBaseRepository().findById(id).orElse(null)));
+        return Header.OK(response(getBaseRepository().findById(id)
+                .orElseThrow(()-> new EntityNotFoundException())));
     }
 
     @Override
@@ -55,7 +57,7 @@ public class KeywordService extends BaseService<KeywordRequest, KeywordResponse,
     public Header<KeywordResponse> update(Long id, Header<KeywordRequest> request) {
         KeywordRequest keywordRequest = request.getData();
 
-        Keyword keyword = getBaseRepository().findById(id).orElseThrow(() -> new IllegalArgumentException("not found"));
+        Keyword keyword = getBaseRepository().findById(id).orElseThrow(() -> new EntityNotFoundException());
         keyword.update(keywordRequest);
         return Header.OK(response(keyword));
     }
@@ -67,7 +69,7 @@ public class KeywordService extends BaseService<KeywordRequest, KeywordResponse,
                     getBaseRepository().delete(keyword);
                     return Header.OK(response(keyword));
                 })
-                .orElseThrow(() -> new IllegalArgumentException("not found"));
+                .orElseThrow(() -> new EntityNotFoundException());
     }
 
 }

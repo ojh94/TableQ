@@ -2,7 +2,7 @@ package com.itschool.tableq.domain.base;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.MappedSuperclass;
-import lombok.Getter;
+import lombok.*;
 import lombok.experimental.SuperBuilder;
 
 @MappedSuperclass

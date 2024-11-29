@@ -58,14 +58,14 @@ public class BreakHourService extends BaseService<BreakHourRequest, BreakHourRes
 
     @Override
     public Header<BreakHourResponse> read(Long id) {
-        return Header.OK(response(getBaseRepository().findById(id).orElse(null)));
+        return Header.OK(response(getBaseRepository().findById(id).orElseThrow(()-> new EntityNotFoundException())));
     }
 
     @Override
     @Transactional
     public Header<BreakHourResponse> update(Long id, Header<BreakHourRequest> request) {
         BreakHourRequest breakHourRequest = request.getData();
-        BreakHour breakHour = getBaseRepository().findById(id).orElseThrow(() -> new IllegalArgumentException("not found"));
+        BreakHour breakHour = getBaseRepository().findById(id).orElseThrow(() -> new EntityNotFoundException());
         breakHour.update(breakHourRequest);
         return Header.OK(response(breakHour));
     }
@@ -77,7 +77,7 @@ public class BreakHourService extends BaseService<BreakHourRequest, BreakHourRes
                     getBaseRepository().delete(breakHour);
                     return Header.OK(response(breakHour));
                 })
-                .orElseThrow(() -> new IllegalArgumentException("not found"));
+                .orElseThrow(() -> new EntityNotFoundException());
     }
 
     public Header<List<BreakHourResponse>> readByRestaurantId(Long restaurantId, Pageable pageable) {

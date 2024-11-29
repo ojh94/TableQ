@@ -4,18 +4,15 @@ import com.itschool.tableq.domain.base.AuditableEntity;
 import com.itschool.tableq.network.request.RestaurantAmenityRequest;
 import jakarta.persistence.*;
 import lombok.*;
+import lombok.experimental.SuperBuilder;
 
 @Builder
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 @Entity
 @Table(name = "restaurant_amenities")
 public class RestaurantAmenity extends AuditableEntity {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(updatable = false,nullable = false)
-    private Long id;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "restaurant_id", updatable = false)

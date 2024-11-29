@@ -1,15 +1,14 @@
 package com.itschool.tableq.network.request;
 
-import lombok.*;
+import com.itschool.tableq.network.request.base.SingleKeyRequest;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-import java.time.LocalDateTime;
-
-@Builder
 @NoArgsConstructor
-@AllArgsConstructor
 @Getter
 @Setter
-public class ReviewRequest {
+public class ReviewRequest extends SingleKeyRequest {
     private Long id;
 
     private String content;

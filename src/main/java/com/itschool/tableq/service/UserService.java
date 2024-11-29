@@ -7,6 +7,7 @@ import com.itschool.tableq.network.request.UserRequest;
 import com.itschool.tableq.network.response.UserResponse;
 import com.itschool.tableq.repository.UserRepository;
 import com.itschool.tableq.service.base.BaseService;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -57,7 +58,8 @@ public class UserService extends BaseService<UserRequest, UserResponse, User> {
 
     @Override
     public Header<UserResponse> read(Long id) {
-        return Header.OK(response(getBaseRepository().findById(id).orElse(null)));
+        return Header.OK(response(getBaseRepository().findById(id)
+                .orElseThrow(()-> new EntityNotFoundException())));
     }
 
     @Override
@@ -66,7 +68,7 @@ public class UserService extends BaseService<UserRequest, UserResponse, User> {
         UserRequest userRequest = request.getData();
 
         User user = getBaseRepository().findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("not found" + id));
+                .orElseThrow(() -> new EntityNotFoundException());
 
         user.update(userRequest);
 

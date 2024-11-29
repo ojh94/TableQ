@@ -4,21 +4,18 @@ import com.itschool.tableq.domain.base.AuditableEntity;
 import com.itschool.tableq.network.request.BreakHourRequest;
 import jakarta.persistence.*;
 import lombok.*;
+import lombok.experimental.SuperBuilder;
 
 import java.time.DayOfWeek;
 import java.time.LocalTime;
 
 @Builder
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 @Entity
 @Table(name = "break_hours")
 public class BreakHour extends AuditableEntity {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(updatable = false,nullable = false)
-    private Long id;
 
     private LocalTime breakStart;
 
@@ -31,13 +28,6 @@ public class BreakHour extends AuditableEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="restaurant_id",updatable = false)
     private Restaurant restaurant;
-
-    @Builder
-    public BreakHour(LocalTime breakStart, LocalTime breakEnd, DayOfWeek dayOfWeek){
-        this.breakStart = breakStart;
-        this.breakEnd = breakEnd;
-        this.dayOfWeek = dayOfWeek;
-    }
 
     public void update(BreakHourRequest breakHourRequest) {
         this.breakStart = breakHourRequest.getBreakStart() == null ? this.breakStart : breakHourRequest.getBreakStart();

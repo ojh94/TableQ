@@ -22,36 +22,12 @@ public class RestaurantService extends BaseService<RestaurantRequest, Restaurant
 
     private final BusinessInformationRepository businessInformationRepository;
 
-    private final RestaurantImageRepository restaurantImageRepository;
-
-    private final OpeningHourRepository openingHourRepository;
-
-    private final BreakHourRepository breakHourRepository;
-
-    private final RestaurantAmenityRepository restaurantAmenityRepository;
-
-    private final RestaurantKeywordRepository restaurantKeywordRepository;
-
-    private final MenuItemRepository menuItemRepository;
-
     // 생성자
     @Autowired
     public RestaurantService(RestaurantRepository baseRepository,
-                                BusinessInformationRepository businessInformationRepository,
-                                RestaurantImageRepository restaurantImageRepository,
-                                OpeningHourRepository openingHourRepository,
-                                BreakHourRepository breakHourRepository,
-                                RestaurantAmenityRepository restaurantAmenityRepository,
-                                RestaurantKeywordRepository restaurantKeywordRepository,
-                                MenuItemRepository menuItemRepository) {
+                                BusinessInformationRepository businessInformationRepository) {
         super(baseRepository);
         this.businessInformationRepository = businessInformationRepository;
-        this.restaurantImageRepository = restaurantImageRepository;
-        this.openingHourRepository = openingHourRepository;
-        this.breakHourRepository = breakHourRepository;
-        this.restaurantAmenityRepository = restaurantAmenityRepository;
-        this.restaurantKeywordRepository = restaurantKeywordRepository;
-        this.menuItemRepository = menuItemRepository;
     }
 
 
@@ -75,8 +51,8 @@ public class RestaurantService extends BaseService<RestaurantRequest, Restaurant
                 .information(restaurantRequest.getInformation())
                 .contactNumber(restaurantRequest.getContact_number())
                 .isAvailable(restaurantRequest.isAvailable())
-                .businessInformation(businessInformationRepository.findById(restaurantRequest.getBusinessInformation().getId())
-                        .orElseThrow(() -> new EntityNotFoundException()))
+                /*.businessInformation(businessInformationRepository.findById(restaurantRequest.getBusinessInformation().getId())
+                        .orElseThrow(() -> new EntityNotFoundException()))*/
                 .build();
 
         getBaseRepository().save(restaurant);
@@ -85,7 +61,8 @@ public class RestaurantService extends BaseService<RestaurantRequest, Restaurant
 
     @Override
     public Header<RestaurantResponse> read(Long id) {
-        return Header.OK(response(getBaseRepository().findById(id).orElse(null)));
+        return Header.OK(response(getBaseRepository().findById(id)
+                .orElseThrow(()-> new EntityNotFoundException())));
     }
 
     @Override
@@ -93,7 +70,7 @@ public class RestaurantService extends BaseService<RestaurantRequest, Restaurant
     public Header<RestaurantResponse> update(Long id, Header<RestaurantRequest> request) {
         RestaurantRequest restaurantRequest = request.getData();
 
-        Restaurant restaurant = getBaseRepository().findById(id).orElseThrow(() -> new IllegalArgumentException("not found"));
+        Restaurant restaurant = getBaseRepository().findById(id).orElseThrow(() -> new EntityNotFoundException());
         restaurant.update(restaurantRequest);
 
         return Header.OK(response(restaurant));
@@ -128,19 +105,5 @@ public class RestaurantService extends BaseService<RestaurantRequest, Restaurant
         Page<Restaurant> searchedList = ((RestaurantRepository)baseRepository).searchByAddress(address, pageable);
 
         return convertPageToList(searchedList);
-    }
-
-    // @AuthorCheck // AuthorCheck를 위해서는 /*@CreatedBy @LastModifiedBy 필요*/
-    @Transactional
-    public Header<RestaurantResponse> updateAll(Long id, RestaurantUpdateAllRequest request, List<MultipartFile> restaurantImages, List<MultipartFile> menuImages) {
-
-        Restaurant restaurant = getBaseRepository().findById(id)
-                .orElseThrow(() -> new EntityNotFoundException());
-
-
-
-
-
-        return Header.OK(response(restaurant));
     }
 }

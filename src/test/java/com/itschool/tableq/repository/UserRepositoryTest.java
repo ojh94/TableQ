@@ -2,6 +2,7 @@ package com.itschool.tableq.repository;
 
 import com.itschool.tableq.ApplicationTests;
 import com.itschool.tableq.domain.User;
+import jakarta.persistence.EntityNotFoundException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,7 +30,6 @@ class UserRepositoryTest extends ApplicationTests {
     @Transactional
     void create() {
         User entity = User.builder()
-                .id(1L)
                 .email(sampleEmail)
                 .password("1234")
                 .phoneNumber("010-0000-9999")
@@ -63,7 +63,7 @@ class UserRepositoryTest extends ApplicationTests {
 
         // 해당 이메일로 사용자를 찾는다.
         User findUser = userRepository.findByEmail(sampleEmail)
-                .orElseThrow(() -> new NoSuchElementException("해당 유저를 찾을 수 없습니다."));
+                .orElseThrow(() -> new EntityNotFoundException("해당 유저를 찾을 수 없습니다."));
 
         assertThat(findUser).isNotNull();
         assertThat(findUser.getEmail()).isEqualTo(sampleEmail);

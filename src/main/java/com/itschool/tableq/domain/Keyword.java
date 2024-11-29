@@ -4,18 +4,15 @@ import com.itschool.tableq.domain.base.AuditableEntity;
 import com.itschool.tableq.network.request.KeywordRequest;
 import jakarta.persistence.*;
 import lombok.*;
+import lombok.experimental.SuperBuilder;
 
 @Builder
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 @Entity
 @Table(name = "keywords")
 public class Keyword extends AuditableEntity {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id", updatable = false)
-    private Long id;
 
     @Column(nullable = false,unique = true)
     private String name;

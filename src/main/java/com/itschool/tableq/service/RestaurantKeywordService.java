@@ -60,7 +60,7 @@ public class RestaurantKeywordService extends BaseService<RestaurantKeywordReque
 
     @Override
     public Header<RestaurantKeywordResponse> read(Long id) {
-        return Header.OK(response(getBaseRepository().findById(id).orElse(null)));
+        return Header.OK(response(getBaseRepository().findById(id).orElseThrow(()-> new EntityNotFoundException())));
     }
 
     public Header<List<RestaurantKeywordResponse>> readByRestaurantId(Long restaurantId){
@@ -77,7 +77,7 @@ public class RestaurantKeywordService extends BaseService<RestaurantKeywordReque
     @Override
     public Header<RestaurantKeywordResponse> update(Long id, Header<RestaurantKeywordRequest> request) {
         /*RestaurantKeywordRequest restaurantKeywordRequest = request.getData();
-        RestaurantKeyword restaurantKeyword = getBaseRepository().findById(id).orElseThrow(() -> new IllegalArgumentException("not found"));
+        RestaurantKeyword restaurantKeyword = getBaseRepository().findById(id).orElseThrow(() -> new EntityNotFoundException());
         restaurantKeyword.update(restaurantKeywordRequest);
         return Header.OK(response(restaurantKeyword));*/
 
@@ -91,6 +91,6 @@ public class RestaurantKeywordService extends BaseService<RestaurantKeywordReque
                     getBaseRepository().delete(restaurantKeyword);
                     return Header.OK(response(restaurantKeyword));
                 })
-                .orElseThrow(() -> new IllegalArgumentException("not found"));
+                .orElseThrow(() -> new EntityNotFoundException());
     }
 }

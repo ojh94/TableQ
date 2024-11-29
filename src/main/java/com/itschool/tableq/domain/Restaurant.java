@@ -4,19 +4,15 @@ import com.itschool.tableq.domain.base.AuditableEntity;
 import com.itschool.tableq.network.request.RestaurantRequest;
 import jakarta.persistence.*;
 import lombok.*;
+import lombok.experimental.SuperBuilder;
 
 @Builder
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 @Entity
 @Table(name = "restaurants")
 public class Restaurant extends AuditableEntity {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id", updatable = false)
-    private Long id;
 
     @Column(nullable = false)
     private String name;

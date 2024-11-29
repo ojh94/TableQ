@@ -26,7 +26,7 @@ import java.util.List;
 @Slf4j
 @Tag(name = "점포 키워드", description = "점포 관련 API")
 @RestController
-@RequestMapping("/api/restaurantkeyword")
+@RequestMapping("/api/restaurant-keyword")
 public class RestaurantKeywordApiController extends CrudController<RestaurantKeywordRequest, RestaurantKeywordResponse, RestaurantKeyword>  {
 
     // 생성자

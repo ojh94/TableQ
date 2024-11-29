@@ -89,7 +89,7 @@ public class MenuItemService extends BaseServiceWithS3<MenuItemRequest, MenuItem
             MultipartFile file = menuItemRequest.getFile();
 
             MenuItem findEntity = getBaseRepository().findById(id)
-                    .orElseThrow(() -> new IllegalArgumentException("not found"));
+                    .orElseThrow(() -> new EntityNotFoundException());
 
             String existingUrl = findEntity.getFileUrl();
 
@@ -116,7 +116,7 @@ public class MenuItemService extends BaseServiceWithS3<MenuItemRequest, MenuItem
     public Header delete(Long id) {
         try {
             MenuItem entity = getBaseRepository().findById(id)
-                    .orElseThrow(() -> new IllegalArgumentException("not found"));
+                    .orElseThrow(() -> new EntityNotFoundException());
 
             if(entity.getFileUrl() != null)
                 s3Service.deleteFile(entity.getFileUrl());

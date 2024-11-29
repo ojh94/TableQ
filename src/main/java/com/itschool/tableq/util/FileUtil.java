@@ -1,5 +1,9 @@
 package com.itschool.tableq.util;
 
+import com.itschool.tableq.domain.base.IncludeFileUrl;
+import com.itschool.tableq.network.request.MenuItemRequest;
+import com.itschool.tableq.network.request.base.FileRequest;
+import com.itschool.tableq.network.request.update.RestaurantUpdateAllRequest;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
@@ -57,5 +61,31 @@ public class FileUtil {
             throw new RuntimeException("잘못된 파일 유형입니다. (jpg, jpeg, png 확장자만 허용)");
 
         // return result = true;
+    }
+
+    // 이미지 리스트 유효성 검사
+    public static void validateImages(List<MultipartFile> images, String imageType, Long imageSize) {
+        if (images != null && !images.isEmpty()) {
+            try {
+                FileUtil.validateFileList(images, imageSize);
+            } catch (Exception e) {
+                // log.error("File validation failed for {}: {}", imageType, e.getMessage(), e);
+                throw new RuntimeException(imageType + " validation failed: " + e.getMessage());
+            }
+        }
+    }
+
+    public static <T extends FileRequest> void saveFileInObject(T object, MultipartFile file) {
+        object.setFile(file);
+    }
+
+    public static <T extends FileRequest> void saveFileListInObjectList(List<T> objectList, List<MultipartFile> fileList) {
+        if(objectList.size() == fileList.size()) {
+            for (int i = 0; i < objectList.size(); i++) {
+                saveFileInObject(objectList.get(i), fileList.get(i));
+            }
+        } else {
+            throw new RuntimeException("객체 리스트와 파일 리스트 간의 사이즈가 맞지 않습니다.");
+        }
     }
 }

@@ -1,20 +1,19 @@
 package com.itschool.tableq.network.request;
 
 import com.itschool.tableq.domain.enumclass.MemberRole;
+import com.itschool.tableq.network.request.base.SingleKeyRequest;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
-import lombok.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-import java.time.LocalDateTime;
-
-@Builder
 @NoArgsConstructor
-@AllArgsConstructor
 @Getter
 @Setter
-public class UserRequest {
+public class UserRequest extends SingleKeyRequest {
 
     private Long id;
 

@@ -1,16 +1,17 @@
 package com.itschool.tableq.network.request;
 
-import lombok.*;
+import com.itschool.tableq.network.request.base.SingleKeyRequest;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.time.DayOfWeek;
 import java.time.LocalTime;
 
-@Builder
 @NoArgsConstructor
-@AllArgsConstructor
 @Getter
 @Setter
-public class BreakHourRequest {
+public class BreakHourRequest extends SingleKeyRequest {
 
     private Long id;
 
