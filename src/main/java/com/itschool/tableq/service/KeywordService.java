@@ -32,44 +32,13 @@ public class KeywordService extends BaseService<KeywordRequest, KeywordResponse,
         return KeywordResponse.of(keyword);
     }
 
-    public List<Keyword> findAll(){return getBaseRepository().findAll();}
-
     @Override
-    public Header<KeywordResponse> create(Header<KeywordRequest> request) {
-        KeywordRequest keywordRequest = request.getData();
-
-        Keyword keyword = Keyword.builder()
-                .name(keywordRequest.getName())
+    protected Keyword convertBaseEntityFromRequest(KeywordRequest requestEntity) {
+        return Keyword.builder()
+                .name(requestEntity.getName())
                 .build();
-
-        getBaseRepository().save(keyword);
-        return Header.OK(response(keyword));
     }
 
-    @Override
-    public Header<KeywordResponse> read(Long id) {
-        return Header.OK(response(getBaseRepository().findById(id)
-                .orElseThrow(()-> new EntityNotFoundException())));
-    }
-
-    @Override
-    @Transactional
-    public Header<KeywordResponse> update(Long id, Header<KeywordRequest> request) {
-        KeywordRequest keywordRequest = request.getData();
-
-        Keyword keyword = getBaseRepository().findById(id).orElseThrow(() -> new EntityNotFoundException());
-        keyword.update(keywordRequest);
-        return Header.OK(response(keyword));
-    }
-
-    @Override
-    public Header delete(Long id) {
-        return getBaseRepository().findById(id)
-                .map(keyword -> {
-                    getBaseRepository().delete(keyword);
-                    return Header.OK(response(keyword));
-                })
-                .orElseThrow(() -> new EntityNotFoundException());
-    }
+    public List<Keyword> findAll(){return getBaseRepository().findAll();}
 
 }

@@ -9,7 +9,6 @@ import lombok.Setter;
 @Getter
 @Setter
 public class ReviewRequest extends SingleKeyRequest {
-    private Long id;
 
     private String content;
 

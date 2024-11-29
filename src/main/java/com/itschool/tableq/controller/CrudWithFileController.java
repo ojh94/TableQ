@@ -4,7 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.itschool.tableq.domain.base.IncludeFileUrl;
 import com.itschool.tableq.ifs.CrudWithFileInterface;
 import com.itschool.tableq.network.Header;
-import com.itschool.tableq.network.request.base.FileRequest;
+import com.itschool.tableq.network.request.base.RequestWithFile;
 import com.itschool.tableq.service.base.BaseServiceWithS3;
 import com.itschool.tableq.util.FileUtil;
 import io.swagger.v3.oas.annotations.Operation;
@@ -18,10 +18,8 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.util.List;
-
 @Component
-public abstract class CrudWithFileController<Req extends FileRequest, Res, Entity extends IncludeFileUrl> implements CrudWithFileInterface<Req, Res> {
+public abstract class CrudWithFileController<Req extends RequestWithFile, Res, Entity extends IncludeFileUrl> implements CrudWithFileInterface<Req, Res> {
 
     protected final BaseServiceWithS3<Req, Res, Entity> baseService;
 

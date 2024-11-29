@@ -12,7 +12,7 @@ import lombok.experimental.SuperBuilder;
 @Getter
 @Entity
 @Table(name = "reviews")
-public class Review extends AuditableEntity {
+public class Review extends AuditableEntity<ReviewRequest> {
 
     @Column(nullable = false)
     private String content;

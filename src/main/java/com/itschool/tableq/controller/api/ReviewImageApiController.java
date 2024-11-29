@@ -2,10 +2,9 @@ package com.itschool.tableq.controller.api;
 
 import com.itschool.tableq.controller.CrudWithFileController;
 import com.itschool.tableq.domain.ReviewImage;
-import com.itschool.tableq.network.request.ReviewImageRequest;
+import com.itschool.tableq.network.request.ReviewImageRequestWithFile;
 import com.itschool.tableq.network.response.ReviewImageResponse;
 import com.itschool.tableq.service.ReviewImageService;
-import com.itschool.tableq.service.base.BaseServiceWithS3;
 import groovy.util.logging.Slf4j;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 @Tag(name = "리뷰 사진", description = "리뷰 사진 관련 API")
 @RestController
 @RequestMapping("/api/review-image")
-public class ReviewImageApiController extends CrudWithFileController <ReviewImageRequest, ReviewImageResponse, ReviewImage> {
+public class ReviewImageApiController extends CrudWithFileController <ReviewImageRequestWithFile, ReviewImageResponse, ReviewImage> {
 
     // 생성자
     @Autowired
@@ -25,7 +24,7 @@ public class ReviewImageApiController extends CrudWithFileController <ReviewImag
     }
 
     @Override
-    protected Class<ReviewImageRequest> getRequestClass() {
-        return ReviewImageRequest.class;
+    protected Class<ReviewImageRequestWithFile> getRequestClass() {
+        return ReviewImageRequestWithFile.class;
     }
 }

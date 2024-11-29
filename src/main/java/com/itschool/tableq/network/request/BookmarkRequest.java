@@ -10,8 +10,6 @@ import lombok.Setter;
 @Setter
 public class BookmarkRequest extends SingleKeyRequest {
 
-    private Long id;
-
     private RestaurantRequest restaurant;
 
     private UserRequest user;

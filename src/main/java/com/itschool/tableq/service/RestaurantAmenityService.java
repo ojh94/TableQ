@@ -9,6 +9,7 @@ import com.itschool.tableq.repository.AmenityRepository;
 import com.itschool.tableq.repository.RestaurantAmenityRepository;
 import com.itschool.tableq.repository.RestaurantRepository;
 import com.itschool.tableq.service.base.BaseService;
+import groovy.lang.DeprecationException;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -43,52 +44,25 @@ public class RestaurantAmenityService extends BaseService<RestaurantAmenityReque
     }
 
     @Override
-    public Header<RestaurantAmenityResponse> create(Header<RestaurantAmenityRequest> request) {
-        RestaurantAmenityRequest restaurantAmenityRequest = request.getData();
-
-        RestaurantAmenity restaurantAmenity = RestaurantAmenity.builder()
-                .restaurant(restaurantRepository.findById(restaurantAmenityRequest.getRestaurant().getId())
+    protected RestaurantAmenity convertBaseEntityFromRequest(RestaurantAmenityRequest requestEntity) {
+        return RestaurantAmenity.builder()
+                .restaurant(restaurantRepository.findById(requestEntity.getRestaurant().getId())
                         .orElseThrow(() -> new EntityNotFoundException()))
-                .amenity(amenityRepository.findById(restaurantAmenityRequest.getAmenity().getId())
+                .amenity(amenityRepository.findById(requestEntity.getAmenity().getId())
                         .orElseThrow(() -> new EntityNotFoundException()))
                 .build();
-        getBaseRepository().save(restaurantAmenity);
-        return Header.OK(response(restaurantAmenity));
     }
 
     @Override
-    public Header<RestaurantAmenityResponse> read(Long id) {
-        return Header.OK(response(getBaseRepository().findById(id).orElseThrow(()-> new EntityNotFoundException())));
-    }
-
-    @Override
+    @Deprecated
     public Header<RestaurantAmenityResponse> update(Long id, Header<RestaurantAmenityRequest> request) {
-        /*RestaurantAmenityRequest restaurantAmenityRequest = request.getData();
-
-        RestaurantAmenity restaurantAmenity = getBaseRepository().findById(id)
-                .orElseThrow(() -> new EntityNotFoundException());
-
-        restaurantAmenity.update(restaurantAmenityRequest);*/
-
-        return Header.ERROR(this.getClass() + " : update is deprecated");
-    }
-
-    @Override
-    public Header delete(Long id) {
-        return getBaseRepository().findById(id)
-                .map(restaurantAmenity -> {
-                    getBaseRepository().delete(restaurantAmenity);
-                    return Header.OK(response(restaurantAmenity));
-                })
-                .orElseThrow(() -> new EntityNotFoundException());
+        throw new DeprecationException("연결 테이블이므로 delete, create API 이용할 것");
     }
 
     public Header<List<RestaurantAmenityResponse>> readByRestaurantId(Long restaurantId) {
         Restaurant restaurant = restaurantRepository.findById(restaurantId).orElseThrow();
 
-        return Header.OK(
-                responseList(
-                        ((RestaurantAmenityRepository)baseRepository).findByRestaurant(restaurant)
+        return Header.OK(responseList(getBaseRepository().findByRestaurant(restaurant)
                                 .orElseThrow(() -> new EntityNotFoundException())));
     }
 }

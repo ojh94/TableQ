@@ -31,39 +31,9 @@ public class AmenityService extends BaseService<AmenityRequest, AmenityResponse,
     }
 
     @Override
-    public Header<AmenityResponse> create(Header<AmenityRequest> request) {
-        AmenityRequest amenityRequest = request.getData();
-
-        Amenity amenity = Amenity.builder()
-                .name(amenityRequest.getName())
+    protected Amenity convertBaseEntityFromRequest(AmenityRequest requestEntity) {
+        return Amenity.builder()
+                .name(requestEntity.getName())
                 .build();
-
-        getBaseRepository().save(amenity);
-        return Header.OK(response(amenity));
-    }
-
-    @Override
-    public Header<AmenityResponse> read(Long id) {
-        return Header.OK(response(getBaseRepository().findById(id)
-                .orElseThrow(()-> new EntityNotFoundException())));
-    }
-
-    @Override
-    @Transactional
-    public Header<AmenityResponse> update(Long id, Header<AmenityRequest> request) {
-        AmenityRequest amenityRequest = request.getData();
-        Amenity amenity = getBaseRepository().findById(id).orElseThrow(() -> new EntityNotFoundException());
-        amenity.update(amenityRequest);
-        return Header.OK(response(amenity));
-    }
-
-    @Override
-    public Header delete(Long id) {
-        return getBaseRepository().findById(id)
-                .map(amenity -> {
-                    getBaseRepository().delete(amenity);
-                    return Header.OK(response(amenity));
-                })
-                .orElseThrow(() -> new EntityNotFoundException());
     }
 }

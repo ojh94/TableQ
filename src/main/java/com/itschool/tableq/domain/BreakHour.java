@@ -15,7 +15,7 @@ import java.time.LocalTime;
 @Getter
 @Entity
 @Table(name = "break_hours")
-public class BreakHour extends AuditableEntity {
+public class BreakHour extends AuditableEntity<BreakHourRequest> {
 
     private LocalTime breakStart;
 
@@ -29,9 +29,9 @@ public class BreakHour extends AuditableEntity {
     @JoinColumn(name="restaurant_id",updatable = false)
     private Restaurant restaurant;
 
-    public void update(BreakHourRequest breakHourRequest) {
-        this.breakStart = breakHourRequest.getBreakStart() == null ? this.breakStart : breakHourRequest.getBreakStart();
-        this.breakEnd = breakHourRequest.getBreakEnd() == null ? this.breakEnd : breakHourRequest.getBreakEnd();
-        this.dayOfWeek = breakHourRequest.getDayOfWeek() == null ? this.dayOfWeek : breakHourRequest.getDayOfWeek();
+    public void update(BreakHourRequest requestEntity) {
+        this.breakStart = requestEntity.getBreakStart() == null ? this.breakStart : requestEntity.getBreakStart();
+        this.breakEnd = requestEntity.getBreakEnd() == null ? this.breakEnd : requestEntity.getBreakEnd();
+        this.dayOfWeek = requestEntity.getDayOfWeek() == null ? this.dayOfWeek : requestEntity.getDayOfWeek();
     }
 }

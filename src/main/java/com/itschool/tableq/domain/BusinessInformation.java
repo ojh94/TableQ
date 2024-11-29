@@ -12,7 +12,7 @@ import lombok.experimental.SuperBuilder;
 @Getter
 @Entity
 @Table(name = "business_informations")
-public class BusinessInformation extends AuditableEntity {
+public class BusinessInformation extends AuditableEntity<BusinessInformationRequest> {
 
     @Column(nullable = false, unique = true)
     private String businessNumber;
@@ -27,9 +27,9 @@ public class BusinessInformation extends AuditableEntity {
     @JoinColumn(name="user_id",updatable = false)
     private User user;
 
-    public void update(BusinessInformationRequest businessInformationRequest) {
-        this.businessNumber = businessInformationRequest.getBusinessNumber() == null? this.businessNumber : businessInformationRequest.getBusinessNumber();
-        this.businessName = businessInformationRequest.getBusinessName() == null? this.businessName : businessInformationRequest.getBusinessName();
-        this.contactNumber = businessInformationRequest.getContactNumber() == null? this.contactNumber : businessInformationRequest.getContactNumber();
+    public void update(BusinessInformationRequest requestEntity) {
+        this.businessNumber = requestEntity.getBusinessNumber() == null? this.businessNumber : requestEntity.getBusinessNumber();
+        this.businessName = requestEntity.getBusinessName() == null? this.businessName : requestEntity.getBusinessName();
+        this.contactNumber = requestEntity.getContactNumber() == null? this.contactNumber : requestEntity.getContactNumber();
     }
 }

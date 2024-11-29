@@ -9,6 +9,7 @@ import com.itschool.tableq.repository.KeywordRepository;
 import com.itschool.tableq.repository.RestaurantKeywordRepository;
 import com.itschool.tableq.repository.RestaurantRepository;
 import com.itschool.tableq.service.base.BaseService;
+import groovy.lang.DeprecationException;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -44,23 +45,19 @@ public class RestaurantKeywordService extends BaseService<RestaurantKeywordReque
     }
 
     @Override
-    public Header<RestaurantKeywordResponse> create(Header<RestaurantKeywordRequest> request) {
-        RestaurantKeywordRequest restaurantKeywordRequest = request.getData();
-
-        RestaurantKeyword restaurantKeyword = RestaurantKeyword.builder()
-                .restaurant(restaurantRepository.findById(restaurantKeywordRequest.getRestaurant().getId())
+    protected RestaurantKeyword convertBaseEntityFromRequest(RestaurantKeywordRequest requestEntity) {
+        return RestaurantKeyword.builder()
+                .restaurant(restaurantRepository.findById(requestEntity.getRestaurant().getId())
                         .orElseThrow(() -> new EntityNotFoundException()))
-                .keyword(keywordRepository.findById(restaurantKeywordRequest.getKeyword().getId())
+                .keyword(keywordRepository.findById(requestEntity.getKeyword().getId())
                         .orElseThrow(() -> new EntityNotFoundException()))
                 .build();
-
-        getBaseRepository().save(restaurantKeyword);
-        return Header.OK(response(restaurantKeyword));
     }
 
     @Override
-    public Header<RestaurantKeywordResponse> read(Long id) {
-        return Header.OK(response(getBaseRepository().findById(id).orElseThrow(()-> new EntityNotFoundException())));
+    @Deprecated
+    public Header<RestaurantKeywordResponse> update(Long id, Header<RestaurantKeywordRequest> request) {
+        throw new DeprecationException("연결 테이블이므로 delete, create API 이용할 것");
     }
 
     public Header<List<RestaurantKeywordResponse>> readByRestaurantId(Long restaurantId){
@@ -69,28 +66,8 @@ public class RestaurantKeywordService extends BaseService<RestaurantKeywordReque
         Restaurant restaurant = restaurantRepository.findById(restaurantId)
                 .orElseThrow(() -> new EntityNotFoundException());
 
-        List<RestaurantKeyword> keywordList = ((RestaurantKeywordRepository)baseRepository).findByRestaurant(restaurant);
+        List<RestaurantKeyword> keywordList = getBaseRepository().findByRestaurant(restaurant);
 
         return Header.OK(responseList(keywordList));
-    }
-
-    @Override
-    public Header<RestaurantKeywordResponse> update(Long id, Header<RestaurantKeywordRequest> request) {
-        /*RestaurantKeywordRequest restaurantKeywordRequest = request.getData();
-        RestaurantKeyword restaurantKeyword = getBaseRepository().findById(id).orElseThrow(() -> new EntityNotFoundException());
-        restaurantKeyword.update(restaurantKeywordRequest);
-        return Header.OK(response(restaurantKeyword));*/
-
-        return Header.ERROR(this.getClass() + " : update is deprecated");
-    }
-
-    @Override
-    public Header delete(Long id) {
-        return getBaseRepository().findById(id)
-                .map(restaurantKeyword -> {
-                    getBaseRepository().delete(restaurantKeyword);
-                    return Header.OK(response(restaurantKeyword));
-                })
-                .orElseThrow(() -> new EntityNotFoundException());
     }
 }

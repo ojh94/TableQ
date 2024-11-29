@@ -3,7 +3,7 @@ package com.itschool.tableq.controller.api;
 import com.itschool.tableq.controller.CrudWithFileController;
 import com.itschool.tableq.domain.MenuItem;
 import com.itschool.tableq.network.Header;
-import com.itschool.tableq.network.request.MenuItemRequest;
+import com.itschool.tableq.network.request.MenuItemRequestWithFile;
 import com.itschool.tableq.network.response.MenuItemResponse;
 import com.itschool.tableq.service.MenuItemService;
 import groovy.util.logging.Slf4j;
@@ -21,7 +21,7 @@ import java.util.List;
 @Tag(name = "메뉴", description = "메뉴 관련 API")
 @RestController
 @RequestMapping("/api/menu-item")
-public class MenuItemApiController extends CrudWithFileController<MenuItemRequest, MenuItemResponse, MenuItem> {
+public class MenuItemApiController extends CrudWithFileController<MenuItemRequestWithFile, MenuItemResponse, MenuItem> {
 
     // 생성자
     @Autowired
@@ -30,8 +30,8 @@ public class MenuItemApiController extends CrudWithFileController<MenuItemReques
     }
 
     @Override
-    protected Class<MenuItemRequest> getRequestClass() {
-        return MenuItemRequest.class;
+    protected Class<MenuItemRequestWithFile> getRequestClass() {
+        return MenuItemRequestWithFile.class;
     }
 
     @Operation(summary = "레스토랑별 메뉴 조회", description = "Restaurant ID로 엔티티 목록을 조회")

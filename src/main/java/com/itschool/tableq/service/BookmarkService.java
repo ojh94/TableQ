@@ -10,6 +10,7 @@ import com.itschool.tableq.repository.BookmarkRepository;
 import com.itschool.tableq.repository.RestaurantRepository;
 import com.itschool.tableq.repository.UserRepository;
 import com.itschool.tableq.service.base.BaseService;
+import groovy.lang.DeprecationException;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
@@ -45,35 +46,27 @@ public class BookmarkService extends BaseService<BookmarkRequest, BookmarkRespon
     }
 
     @Override
-    public Header<BookmarkResponse> create(Header<BookmarkRequest> request) {
-        BookmarkRequest bookmarkRequest = request.getData();
+    protected Bookmark convertBaseEntityFromRequest(BookmarkRequest requestEntity) {
 
-        Restaurant restaurant = restaurantRepository.findById(bookmarkRequest.getRestaurant().getId())
-                .orElseThrow(() -> new RuntimeException("Not Found ID"));
-
-        User user = userRepository.findById(bookmarkRequest.getUser().getId())
-                .orElseThrow(() -> new RuntimeException("Not Found ID"));
-
-        Bookmark bookmark = Bookmark.builder()
-                .restaurant(restaurant)
-                .user(user)
+        return Bookmark.builder()
+                .restaurant(restaurantRepository.findById(requestEntity.getRestaurant().getId())
+                        .orElseThrow(() -> new EntityNotFoundException()))
+                .user(userRepository.findById(requestEntity.getUser().getId())
+                        .orElseThrow(() -> new EntityNotFoundException()))
                 .build();
-
-        getBaseRepository().save(bookmark);
-        return Header.OK(response(bookmark));
     }
 
     @Override
-    public Header<BookmarkResponse> read(Long id) {
-        return Header.OK(response(getBaseRepository().findById(id)
-                .orElseThrow(()-> new EntityNotFoundException())));
+    @Deprecated
+    public Header<BookmarkResponse> update(Long id, Header<BookmarkRequest> request) throws DeprecationException {
+        throw new DeprecationException("연결 테이블이므로 delete, create API 이용할 것");
     }
 
     public Header<List<BookmarkResponse>> readByUserId(Long userId, Pageable pageable){
         User user = userRepository.findById(userId)
                 .orElseThrow(()-> new RuntimeException("Not Found ID"));
 
-        List<Bookmark> bookmarkList = ((BookmarkRepository)baseRepository).findByUser(user)
+        List<Bookmark> bookmarkList = getBaseRepository().findByUser(user)
                 .orElseThrow(()-> new EntityNotFoundException());
 
         return Header.OK(responseList(bookmarkList));
@@ -82,22 +75,8 @@ public class BookmarkService extends BaseService<BookmarkRequest, BookmarkRespon
     public Header<Integer> countBookmarks(Long restaurantId){
         Restaurant restaurant = restaurantRepository.findById(restaurantId)
                 .orElseThrow(()-> new EntityNotFoundException());
-        List<Bookmark> bookmarkList = ((BookmarkRepository)baseRepository).findByRestaurant(restaurant);
+        List<Bookmark> bookmarkList = getBaseRepository().findByRestaurant(restaurant);
 
         return Header.OK(bookmarkList.size());
-    }
-    @Override
-    public Header<BookmarkResponse> update(Long id, Header<BookmarkRequest> request) {
-        return null;
-    }
-
-    @Override
-    public Header delete(Long id) {
-        return getBaseRepository().findById(id)
-                .map(bookmark -> {
-                    getBaseRepository().delete(bookmark);
-                    return Header.OK(response(bookmark));
-                })
-                .orElseThrow(() -> new RuntimeException("Bookmark delete fail"));
     }
 }

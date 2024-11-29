@@ -1,10 +1,9 @@
 package com.itschool.tableq.domain;
 
 import com.itschool.tableq.domain.base.IncludeFileUrl;
-import com.itschool.tableq.network.request.MenuItemRequest;
+import com.itschool.tableq.network.request.MenuItemRequestWithFile;
 import jakarta.persistence.*;
 import lombok.*;
-import lombok.experimental.SuperBuilder;
 
 @Builder
 @AllArgsConstructor
@@ -12,7 +11,7 @@ import lombok.experimental.SuperBuilder;
 @Getter
 @Entity
 @Table(name = "menu_items")
-public class MenuItem extends IncludeFileUrl {
+public class MenuItem extends IncludeFileUrl<MenuItemRequestWithFile> {
 
     @Column(nullable = false)
     private String name;
@@ -28,10 +27,11 @@ public class MenuItem extends IncludeFileUrl {
     @JoinColumn(name = "restaurant_id")
     private Restaurant restaurant;
 
-    public void updateWithoutFileUrl(MenuItemRequest menuItemRequest) {
-        this.name = menuItemRequest.getName();
-        this.price = menuItemRequest.getPrice();
-        this.description = menuItemRequest.getDescription();
-        this.recommendation = menuItemRequest.getRecommendation();
+    @Override
+    public void updateWithoutFileUrl(MenuItemRequestWithFile requestEntity) {
+        this.name = requestEntity.getName();
+        this.price = requestEntity.getPrice();
+        this.description = requestEntity.getDescription();
+        this.recommendation = requestEntity.getRecommendation();
     }
 }

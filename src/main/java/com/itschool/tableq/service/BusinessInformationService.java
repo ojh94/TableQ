@@ -41,56 +41,22 @@ public class BusinessInformationService extends BaseService<BusinessInformationR
     }
 
     @Override
-    public Header<BusinessInformationResponse> create(Header<BusinessInformationRequest> request) {
-        BusinessInformationRequest businessInformationRequest = request.getData();
-
-        BusinessInformation businessInformation = BusinessInformation.builder()
-                .businessNumber(businessInformationRequest.getBusinessNumber())
-                .businessName(businessInformationRequest.getBusinessName())
-                .contactNumber(businessInformationRequest.getContactNumber())
-                .user(userRepository.findById(businessInformationRequest.getUserRequest().getId())
+    protected BusinessInformation convertBaseEntityFromRequest(BusinessInformationRequest requestEntity) {
+        return BusinessInformation.builder()
+                .businessNumber(requestEntity.getBusinessNumber())
+                .businessName(requestEntity.getBusinessName())
+                .contactNumber(requestEntity.getContactNumber())
+                .user(userRepository.findById(requestEntity.getUserRequest().getId())
                         .orElseThrow(()-> new EntityNotFoundException()))
                 .build();
-
-        getBaseRepository().save(businessInformation);
-        return Header.OK(response(businessInformation));
-    }
-
-    @Override
-    public Header<BusinessInformationResponse> read(Long id) {
-        return Header.OK(response(getBaseRepository().findById(id)
-                .orElseThrow(()-> new EntityNotFoundException())));
     }
 
     public Header<List<BusinessInformationResponse>> readByOwnerId(Long userId, Pageable pageable){
         User user = userRepository.findById(userId)
                 .orElseThrow(()->new NotFoundException("Not Found Owner Id: "+userId));
 
-        List<BusinessInformation> businessInformationList = ((BusinessInformationRepository)baseRepository)
-                .findByUser(user).orElseThrow(()-> new EntityNotFoundException());
+        List<BusinessInformation> businessInformationList = getBaseRepository().findByUser(user).orElseThrow(()-> new EntityNotFoundException());
 
         return Header.OK(responseList(businessInformationList));
-    }
-
-    @Override
-    @Transactional
-    public Header<BusinessInformationResponse> update(Long id, Header<BusinessInformationRequest> request) {
-        BusinessInformationRequest businessInformationRequest = request.getData();
-
-        BusinessInformation businessInformation = getBaseRepository().findById(id)
-                .orElseThrow(() -> new EntityNotFoundException());
-
-        businessInformation.update(businessInformationRequest);
-        return Header.OK(response(businessInformation));
-    }
-
-    @Override
-    public Header delete(Long id) {
-        return getBaseRepository().findById(id)
-                .map(buisnessInformation -> {
-                    getBaseRepository().delete(buisnessInformation);
-                    return Header.OK(response(buisnessInformation));
-                })
-                .orElseThrow(() -> new RuntimeException("user delete fail"));
     }
 }

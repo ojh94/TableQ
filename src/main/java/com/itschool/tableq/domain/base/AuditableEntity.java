@@ -1,5 +1,6 @@
 package com.itschool.tableq.domain.base;
 
+import com.itschool.tableq.network.request.base.SingleKeyRequest;
 import jakarta.persistence.Column;
 import jakarta.persistence.EntityListeners;
 import jakarta.persistence.MappedSuperclass;
@@ -16,7 +17,7 @@ import java.time.LocalDateTime;
 @MappedSuperclass
 @EntityListeners(AuditingEntityListener.class)
 @Getter
-public abstract class AuditableEntity extends SingleKeyEntity<Long> {
+public abstract class AuditableEntity<Req extends SingleKeyRequest> extends SingleKeyEntity<Long, Req> {
 
     @CreatedDate
     @Column(updatable = false, nullable = false)
@@ -29,6 +30,10 @@ public abstract class AuditableEntity extends SingleKeyEntity<Long> {
     protected LocalDateTime lastModifiedAt;
 
     /*@CreatedBy
+    @Column(updatable = false, nullable = false)
+    protected String createdBy;
 
-    @LastModifiedBy*/
+    @LastModifiedBy
+    @Column(insertable = false)
+    protected String lastModifiedBy;*/
 }

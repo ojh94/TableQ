@@ -12,16 +12,16 @@ import lombok.experimental.SuperBuilder;
 @Getter
 @Entity
 @Table(name = "amenities")
-public class Amenity extends AuditableEntity {
+public class Amenity extends AuditableEntity<AmenityRequest> {
 
     @Column(nullable = false,unique = true)
     private String name;
 
-    public void update(AmenityRequest amenityRequest) {
-        this.name = amenityRequest.getName() == null? this.name : amenityRequest.getName();
-    }
-
     public void setName(String name) {
         this.name = name;
+    }
+
+    public void update(AmenityRequest requestEntity) {
+        this.name = requestEntity.getName() == null? this.name : requestEntity.getName();
     }
 }

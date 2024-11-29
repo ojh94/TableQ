@@ -13,8 +13,6 @@ import java.time.LocalTime;
 @Setter
 public class BreakHourRequest extends SingleKeyRequest {
 
-    private Long id;
-
     private LocalTime breakStart;
 
     private LocalTime breakEnd;
