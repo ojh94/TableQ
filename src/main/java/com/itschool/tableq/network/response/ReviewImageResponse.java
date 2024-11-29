@@ -19,6 +19,7 @@ public class ReviewImageResponse extends FileResponse {
         Review review = reviewImage.getReview();
 
         return ReviewImageResponse.builder()
+                .id(reviewImage.getId())
                 .fileUrl(reviewImage.getFileUrl())
                 .review(ReviewResponse.builder()
                         .id(review.getId())
