@@ -80,9 +80,22 @@ $(document).ready(function() {
             });
         });
 
+        // keyword 선택완료 버튼 클릭 시
+        $('#keyword-set').click(function() {
+            $('#keywords-modal').modal('hide');
+        });
+
+        // amenity 선택완료 버튼 클릭 시
+        $('#amenity-set').click(function() {
+            $('#amenities-modal').modal('hide');
+        });
+
         // 메뉴 수정 요청
         $('#modify').on('click', function() {
             requestRestaurantUpdateAllApi();
+            requestRestaurantUpdateApi();
+            requestKeywordUpdateApi();
+            requestAmenityUpdateApi();
         });
     }
 
@@ -237,7 +250,7 @@ function requestRestaurantImageApi() {
             // 요청 성공 시 동작
             const restaurantImages = response.data;
 
-            if (restaurantImages != null) {
+            if (restaurantImages.length > 0) {
                 $('#restaurant-images').empty();
 
                 restaurantImages.forEach((image) => {
@@ -250,6 +263,8 @@ function requestRestaurantImageApi() {
                     // information 요소(내부) 끝에 추가
                     $('#restaurant-images').append(restaurantImageHtml);
                 });
+
+                $('#restaurant-images .carousel-item:first').addClass('active');
 
                 console.log('가게 이미지 set 완료');
             }
@@ -1210,7 +1225,7 @@ function requestKeywordApi() {
     const id = document.getElementById("restaurant-id").value;
 
     $.ajax({
-        url: `/api/restaurantkeyword/restaurant/${id}`,
+        url: `/api/restaurant-keyword/restaurant/${id}`,
         type: 'GET', // 필요한 HTTP 메서드로 변경
         contentType: 'application/json', // JSON 형식으로 데이터 전송
         success: function(response) {
@@ -1255,7 +1270,7 @@ function requestKeywordModifyApi() {
     const id = document.getElementById("restaurant-id").value;
 
     $.ajax({
-        url: `/api/restaurantkeyword/restaurant/${id}`,
+        url: `/api/restaurant-keyword/restaurant/${id}`,
         type: 'GET', // 필요한 HTTP 메서드로 변경
         contentType: 'application/json', // JSON 형식으로 데이터 전송
         success: function(response) {
@@ -1290,7 +1305,7 @@ function requestAmenityApi() {
     const id = document.getElementById("restaurant-id").value;
 
     $.ajax({
-        url: `/api/restaurantamenity/restaurant/${id}`,
+        url: `/api/restaurant-amenity/restaurant/${id}`,
         type: 'GET', // 필요한 HTTP 메서드로 변경
         contentType: 'application/json', // JSON 형식으로 데이터 전송
         success: function(response) {
@@ -1335,7 +1350,7 @@ function requestAmenityModifyApi() {
     const id = document.getElementById("restaurant-id").value;
 
     $.ajax({
-        url: `/api/restaurantamenity/restaurant/${id}`,
+        url: `/api/restaurant-amenity/restaurant/${id}`,
         type: 'GET', // 필요한 HTTP 메서드로 변경
         contentType: 'application/json', // JSON 형식으로 데이터 전송
         success: function(response) {
@@ -1381,9 +1396,34 @@ function requestAmenityModifyApi() {
     >> 메뉴 수정 또는 생성 메소드 << ?
 }*/
 
-// 점포 정보 수정 메소드
+// 레스토랑 정보 수정 메소드
 function requestRestaurantUpdateApi() {
 
+    const restaurantId = document.getElementById("restaurant-id").value;
+
+    const formData = {
+        "data": {
+            "name" : $('#restaurant-name').val(),
+            "address" : $('#restaurant-address').val(),
+            "information" : $('#information').val(),
+            "contact_number" : $('#restaurant-number').val()
+        }
+    };
+
+    $.ajax({
+        url: `/api/restaurant/${restaurantId}`,
+        type: 'PUT', // 필요한 HTTP 메서드로 변경 (PUT 또는 PATCH 등도 가능)
+        contentType: 'application/json', // JSON 형식으로 데이터 전송
+        data: JSON.stringify(formData), // 데이터를 JSON 문자열로 변환
+        success: function(response) {
+            // 요청 성공 시 동작
+        },
+        error: function(xhr, status, error) {
+            // 요청 실패 시 동작
+            console.error('레스토랑 정보 수정 실패:', error);
+            alert('레스토랑 정보 수정 중 오류가 발생했습니다.');
+        }
+    });
 }
 
 // 운영시간 수정 또는 생성 메소드
@@ -1396,9 +1436,176 @@ function requestBreakHourUpdateApi() {
 
 }
 
-// 브레이크 타임 수정 또는 생성 메소드
-function requestBreakHourUpdateApi() {
+// 키워드 삭제 후 생성 메소드
+function requestKeywordUpdateApi() {
+    // 현재 레스트랑 키워드 모두 삭제
+    requestKeywordDeleteApi();
 
+    // 체크한 키워드의 value를 배열에 담음
+    const checkedValues = $('#keyword .form-check-input:checked').map(function() {
+        return $(this).val();
+    }).get();
+
+    if (checkedValues.length === 0) {
+        console.log("체크한 키워드가 없음.");
+        return;
+    }
+
+    const restaurantId = document.getElementById("restaurant-id").value;
+
+    checkedValues.forEach((checkKeyword) => {
+        const formData = {
+            "data": {
+                "restaurant" : {
+                    "id" : restaurantId
+                },
+                "keyword" : {
+                    "id" : checkKeyword
+                }
+            }
+        };
+
+        $.ajax({
+            url: `/api/restaurant-keyword`,
+            type: 'POST', // 필요한 HTTP 메서드로 변경 (PUT 또는 PATCH 등도 가능)
+            contentType: 'application/json', // JSON 형식으로 데이터 전송
+            data: JSON.stringify(formData), // 데이터를 JSON 문자열로 변환
+            success: function(response) {
+                // 요청 성공 시 동작
+            },
+            error: function(xhr, status, error) {
+                // 요청 실패 시 동작
+                console.error('키워드 생성 실패:', error);
+                alert('키워드 생성 중 오류가 발생했습니다.');
+            }
+        });
+    });
+}
+
+// 레스토랑별 키워드 삭제
+function requestKeywordDeleteApi() {
+
+    const restaurantId = document.getElementById("restaurant-id").value;
+
+    let restaurantKeywords;
+
+    $.ajax({
+        url: `/api/restaurant-keyword/restaurant/${restaurantId}`,
+        type: 'GET', // 필요한 HTTP 메서드로 변경
+        contentType: 'application/json', // JSON 형식으로 데이터 전송
+        async: false,
+        success: function(response) {
+            // 요청 성공 시 동작
+            restaurantKeywords = response.data.map(keywords => keywords.id);
+        },
+        error: function(xhr, status, error) {
+        // 요청 실패 시 동작
+        console.error('키워드 불러오기 실패:', error);
+        alert('키워드 불러오기 중 오류가 발생했습니다.');
+        }
+    });
+
+    restaurantKeywords.forEach((restaurantKeywordId) => {
+
+        $.ajax({
+            url: `/api/restaurant-keyword/${restaurantKeywordId}`,
+            type: 'DELETE', // 필요한 HTTP 메서드로 변경 (PUT 또는 PATCH 등도 가능)
+            success: function(response) {
+                // 요청 성공 시 동작
+            },
+            error: function(xhr, status, error) {
+                // 요청 실패 시 동작
+                console.error('키워드 삭제 실패:', error);
+                alert('키워드 삭제 중 오류가 발생했습니다.');
+            }
+        });
+    });
+}
+
+// 편의시설 삭제 후 생성 메소드
+function requestAmenityUpdateApi() {
+    // 현재 레스트랑 편의시설 모두 삭제
+    requestAmenityDeleteApi();
+
+    // 체크한 편의시설의 value를 배열에 담음
+    const checkedValues = $('#amenity .form-check-input:checked').map(function() {
+        return $(this).val();
+    }).get();
+
+    if (checkedValues.length === 0) {
+        console.log("체크한 편의시설가 없음.");
+        return;
+    }
+
+    const restaurantId = document.getElementById("restaurant-id").value;
+
+    checkedValues.forEach((checkAmenity) => {
+        const formData = {
+            "data": {
+                "restaurant" : {
+                    "id" : restaurantId
+                },
+                "amenity" : {
+                    "id" : checkAmenity
+                }
+            }
+        };
+
+        $.ajax({
+            url: `/api/restaurant-amenity`,
+            type: 'POST', // 필요한 HTTP 메서드로 변경 (PUT 또는 PATCH 등도 가능)
+            contentType: 'application/json', // JSON 형식으로 데이터 전송
+            data: JSON.stringify(formData), // 데이터를 JSON 문자열로 변환
+            success: function(response) {
+                // 요청 성공 시 동작
+            },
+            error: function(xhr, status, error) {
+                // 요청 실패 시 동작
+                console.error('편의시설 생성 실패:', error);
+                alert('편의시설 생성 중 오류가 발생했습니다.');
+            }
+        });
+    });
+}
+
+// 레스토랑별 편의시설 삭제
+function requestAmenityDeleteApi() {
+
+    const restaurantId = document.getElementById("restaurant-id").value;
+
+    let restaurantAmenities;
+
+    $.ajax({
+        url: `/api/restaurant-amenity/restaurant/${restaurantId}`,
+        type: 'GET', // 필요한 HTTP 메서드로 변경
+        contentType: 'application/json', // JSON 형식으로 데이터 전송
+        async: false,
+        success: function(response) {
+            // 요청 성공 시 동작
+            restaurantAmenities = response.data.map(amenities => amenities.id);
+        },
+        error: function(xhr, status, error) {
+        // 요청 실패 시 동작
+        console.error('편의시설 불러오기 실패:', error);
+        alert('편의시설 불러오기 중 오류가 발생했습니다.');
+        }
+    });
+
+    restaurantAmenities.forEach((restaurantAmenityId) => {
+
+        $.ajax({
+            url: `/api/restaurant-amenity/${restaurantAmenityId}`,
+            type: 'DELETE', // 필요한 HTTP 메서드로 변경 (PUT 또는 PATCH 등도 가능)
+            success: function(response) {
+                // 요청 성공 시 동작
+            },
+            error: function(xhr, status, error) {
+                // 요청 실패 시 동작
+                console.error('편의시설 삭제 실패:', error);
+                alert('편의시설 삭제 중 오류가 발생했습니다.');
+            }
+        });
+    });
 }
 
 // 레스토랑 관련 전체 수정

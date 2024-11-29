@@ -25,7 +25,7 @@ $(document).ready(function() {
 
 /* reservation-apply 함수 */
 
-// 예약 할 가게 이름 조회
+// apply 예약 할 가게 이름 조회
 function requestReservationApi() {
 
     const restaurantId = document.getElementById("restaurant-id").value;
@@ -48,7 +48,7 @@ function requestReservationApi() {
     });
 }
 
-// 예약 할 가게 대기 순서 조회
+// apply 예약 할 가게 대기 순서 조회
 function requestReservationNumApi() {
 
     const restaurantId = document.getElementById("restaurant-id").value;
@@ -71,7 +71,7 @@ function requestReservationNumApi() {
     });
 }
 
-// 인원 수 업데이트
+// apply 인원 수 업데이트
 function peopleUpdate() {
     function updateCount(type, change) {
         // 성인과 아동 구분
@@ -111,7 +111,7 @@ function peopleUpdate() {
     });
 }
 
-// reservation 생성 API
+// 새로운 예약 생성 reservation API
 function requestReservationCreateApi() {
     // 신청하기 버튼 클릭 시
     document.getElementById('apply').addEventListener('click', function(event) {
@@ -135,8 +135,12 @@ function requestReservationCreateApi() {
         const formData = {
             "data": {
                 "people" : totalCount,
-                "restaurantId" : restaurantId,
-                "userId" : userId
+                "restaurant" : {
+                    "id" : restaurantId
+                },
+                "user" : {
+                    "id" : userId
+                }
             }
         };
 
@@ -168,7 +172,7 @@ function requestReservationCreateApi() {
 
 /* reservation-detail 함수 */
 
-// 예약 이용날짜 형식 변경
+// detail 예약 이용날짜 형식 변경
 function formatDate(dateString) {
     // 문자열을 Date 객체로 변환
     const date = new Date(dateString);
@@ -188,7 +192,7 @@ function formatDate(dateString) {
     return `${year}.${month}.${day} (${weekday}) ${hours}:${minutes}`;
 }
 
-// 예약 상세내역 조회
+// detail 예약 상세내역 조회
 function requestReservationDetailApi() {
 
     const reservationId = document.getElementById("reservation-id").value;
@@ -250,7 +254,7 @@ function requestReservationDetailApi() {
     });
 }
 
-// 이용예정 예약 대기순서 조회
+// detail 예약 대기순서 조회
 function requestReservationDetailNumApi() {
 
     const reservationId = document.getElementById("reservation-id").value;
@@ -275,7 +279,7 @@ function requestReservationDetailNumApi() {
     });
 }
 
-// 예약 취소
+// detail 예약 취소
 function requestReservationCancelApi() {
     document.getElementById('reservation-cancel').addEventListener('click', function(event) {
         event.preventDefault(); // 폼의 기본 제출 동작을 막음
