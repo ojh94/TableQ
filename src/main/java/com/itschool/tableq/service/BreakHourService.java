@@ -1,6 +1,7 @@
 package com.itschool.tableq.service;
 
 import com.itschool.tableq.domain.BreakHour;
+import com.itschool.tableq.domain.OpeningHour;
 import com.itschool.tableq.domain.Restaurant;
 import com.itschool.tableq.network.Header;
 import com.itschool.tableq.network.Pagination;
@@ -16,6 +17,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -43,41 +45,12 @@ public class BreakHourService extends BaseService<BreakHourRequest, BreakHourRes
     }
 
     @Override
-    public Header<BreakHourResponse> create(Header<BreakHourRequest> request) {
-        BreakHourRequest breakHourRequest = request.getData();
-
-        BreakHour breakHour = BreakHour.builder()
-                .breakStart(breakHourRequest.getBreakStart())
-                .breakEnd(breakHourRequest.getBreakEnd())
-                .dayOfWeek(breakHourRequest.getDayOfWeek())
+    protected BreakHour convertBaseEntityFromRequest(BreakHourRequest requestEntity) {
+        return BreakHour.builder()
+                .breakStart(requestEntity.getBreakStart())
+                .breakEnd(requestEntity.getBreakEnd())
+                .dayOfWeek(requestEntity.getDayOfWeek())
                 .build();
-
-        getBaseRepository().save(breakHour);
-        return Header.OK(response(breakHour));
-    }
-
-    @Override
-    public Header<BreakHourResponse> read(Long id) {
-        return Header.OK(response(getBaseRepository().findById(id).orElseThrow(()-> new EntityNotFoundException())));
-    }
-
-    @Override
-    @Transactional
-    public Header<BreakHourResponse> update(Long id, Header<BreakHourRequest> request) {
-        BreakHourRequest breakHourRequest = request.getData();
-        BreakHour breakHour = getBaseRepository().findById(id).orElseThrow(() -> new EntityNotFoundException());
-        breakHour.update(breakHourRequest);
-        return Header.OK(response(breakHour));
-    }
-
-    @Override
-    public Header delete(Long id) {
-        return getBaseRepository().findById(id)
-                .map(breakHour -> {
-                    getBaseRepository().delete(breakHour);
-                    return Header.OK(response(breakHour));
-                })
-                .orElseThrow(() -> new EntityNotFoundException());
     }
 
     public Header<List<BreakHourResponse>> readByRestaurantId(Long restaurantId, Pageable pageable) {
@@ -99,4 +72,16 @@ public class BreakHourService extends BaseService<BreakHourRequest, BreakHourRes
 
         return Header.OK(BreakHourList, pagination);
     }
+
+    public void deleteByRestaurantId(Long id) {
+
+        Restaurant restaurant = restaurantRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException());
+
+        List<BreakHour> breakHourList = getBaseRepository().findAllByRestaurant(restaurant);
+
+        getBaseRepository().deleteAll(breakHourList);
+    }
+
+
 }

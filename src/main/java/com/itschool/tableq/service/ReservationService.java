@@ -49,6 +49,27 @@ public class ReservationService extends BaseService<ReservationRequest, Reservat
         return ReservationResponse.of(reservation);
     }
 
+    @Override
+    protected Reservation convertBaseEntityFromRequest(ReservationRequest requestEntity) {
+
+        User user = userRepository.findById(requestEntity.getUser().getId())
+                .orElseThrow(()-> new EntityNotFoundException());
+
+        Restaurant restaurant = restaurantRepository.findById(requestEntity.getRestaurant().getId())
+                .orElseThrow(()-> new EntityNotFoundException());
+
+        if(isExist(user, restaurant)) {
+            throw new RuntimeException("Already Reserved User");
+        }
+
+        return Reservation.builder()
+                .reservationNumber(getWaitingNubmer(restaurant))
+                .people(requestEntity.getPeople())
+                .restaurant(restaurant)
+                .user(user)
+                .build();
+    }
+
     public Boolean isExist(User user, Restaurant restaurant){
         // 대기중인 예약이 존재한다면 true 반환
         // 그 이미 완료된 줄서기라면 대기중이 아닌 것으로 판단하여 false 반환
@@ -145,38 +166,6 @@ public class ReservationService extends BaseService<ReservationRequest, Reservat
         return Header.OK(userTurn);
     }
 
-    @Override
-    public Header<ReservationResponse> create(Header<ReservationRequest> request) {
-        ReservationRequest reservationRequest = request.getData();
-
-        User user = userRepository.findById(reservationRequest.getUser().getId())
-                .orElseThrow(()-> new EntityNotFoundException());
-
-        Restaurant restaurant = restaurantRepository.findById(reservationRequest.getRestaurant().getId())
-                .orElseThrow(()-> new EntityNotFoundException());
-
-        if(isExist(user, restaurant)) {
-            throw new RuntimeException("Already Reserved User");
-        } else {
-            Reservation reservation = Reservation.builder()
-                    .reservationNumber(getWaitingNubmer(restaurant))
-                    .people(reservationRequest.getPeople())
-                    .restaurant(restaurant)
-                    .user(user)
-                    .build();
-
-            getBaseRepository().save(reservation);
-            return Header.OK(response(reservation));
-        }
-    }
-
-    @Override
-    public Header<ReservationResponse> read(Long id) {
-        // ID에 해당하는 예약에 대한 정보 조회
-        return Header.OK(response(getBaseRepository().findById(id)
-                .orElseThrow(()-> new EntityNotFoundException())));
-    }
-
     public Header<List<ReservationResponse>> readByRestaurantId(Long restaurantId, Pageable pageable){
         // 식당을 예약한 손님 조회
         // --> 필요한 정보 : reservationNumber(대기번호), people(인원), User.contactNumber(예약자 전화번호)
@@ -195,28 +184,5 @@ public class ReservationService extends BaseService<ReservationRequest, Reservat
                 .findByUser(user).orElseThrow(()-> new EntityNotFoundException());
 
         return Header.OK(responseList(reservationList));
-    }
-
-    @Override
-    @Transactional
-    public Header<ReservationResponse> update(Long id, Header<ReservationRequest> request) {
-        // 손님이 입장을 했는지 판단하여 업데이트
-        ReservationRequest reservationRequest = request.getData();
-
-        Reservation reservation = getBaseRepository().findById(id).orElseThrow(()-> new EntityNotFoundException());
-
-        reservation.update(reservationRequest);
-
-        return Header.OK(response(reservation));
-    }
-
-    @Override
-    public Header delete(Long id) {
-        return getBaseRepository().findById(id)
-                .map(reservation -> {
-                    getBaseRepository().delete(reservation);
-                    return Header.OK(response(reservation));
-                })
-                .orElseThrow(() -> new EntityNotFoundException());
     }
 }

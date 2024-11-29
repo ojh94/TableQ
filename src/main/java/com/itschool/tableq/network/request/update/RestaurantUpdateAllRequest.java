@@ -2,7 +2,6 @@ package com.itschool.tableq.network.request.update;
 
 import com.itschool.tableq.network.request.*;
 import lombok.*;
-import lombok.experimental.SuperBuilder;
 
 import java.util.List;
 
@@ -11,7 +10,7 @@ import java.util.List;
 @Setter
 public class RestaurantUpdateAllRequest extends RestaurantRequest {
 
-    private List<RestaurantImageRequest> restaurantImageList;
+    private List<RestaurantImageRequestWithFile> restaurantImageList;
 
     private List<OpeningHourRequest> openingHourList;
 
@@ -21,6 +20,6 @@ public class RestaurantUpdateAllRequest extends RestaurantRequest {
 
     private List<RestaurantKeywordRequest> restaurantKeywordList;
 
-    private List<MenuItemRequest> menuItemList;
+    private List<MenuItemRequestWithFile> menuItemList;
 
 }

@@ -3,7 +3,6 @@ package com.itschool.tableq.controller.api;
 import com.itschool.tableq.controller.CrudController;
 import com.itschool.tableq.domain.Restaurant;
 import com.itschool.tableq.network.Header;
-import com.itschool.tableq.network.request.MenuItemRequest;
 import com.itschool.tableq.network.request.RestaurantRequest;
 import com.itschool.tableq.network.request.update.RestaurantUpdateAllRequest;
 import com.itschool.tableq.network.response.RestaurantResponse;
@@ -83,23 +82,21 @@ public class RestaurantApiController extends CrudController<RestaurantRequest, R
         log.info("Update All Request Received: id={}, requestJson={}, restaurantImages={}, menuImages={}",
                 id, requestJson, restaurantImages, menuItemImages);
 
-        try {
-            // JSON 파싱 및 객체 변환
-            RestaurantUpdateAllRequest request = (RestaurantUpdateAllRequest) parseRequestToJson(requestJson, getRequestClass());
+        // JSON 파싱 및 객체 변환
+        RestaurantUpdateAllRequest request = (RestaurantUpdateAllRequest) parseRequestToJson(requestJson, RestaurantUpdateAllRequest.class);
 
-            // 이미지 파일 검증
-            FileUtil.validateImages(restaurantImages, "Restaurant Images", MAX_IMAGE_FILE_SIZE);
-            FileUtil.validateImages(menuItemImages, "Menu Images", MAX_IMAGE_FILE_SIZE);
+        // 이미지 파일 검증
+        FileUtil.validateImages(restaurantImages, "Restaurant Images", MAX_IMAGE_FILE_SIZE);
+        FileUtil.validateImages(menuItemImages, "Menu Images", MAX_IMAGE_FILE_SIZE);
 
-            // 파일을 객체로 옮기기
+        // 파일을 객체로 옮기기
+        if(restaurantImages != null && restaurantImages.size() > 0)
             FileUtil.saveFileListInObjectList(request.getRestaurantImageList(), restaurantImages);
+
+        if(menuItemImages != null && menuItemImages.size() > 0)
             FileUtil.saveFileListInObjectList(request.getMenuItemList(), menuItemImages);
 
-            // 업데이트 서비스 호출
-            return ((RestaurantLogicService) baseService).updateAll(id, request);
-        } catch (Exception e) {
-            log.error("Error during entity update: {}", e.getMessage(), e);
-            return Header.ERROR(e.getClass().getSimpleName() + " : " + e.getCause());
-        }
+        // 업데이트 서비스 호출
+        return ((RestaurantLogicService) baseService).updateAll(id, request);
     }
 }

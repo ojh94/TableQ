@@ -12,12 +12,12 @@ import lombok.experimental.SuperBuilder;
 @Getter
 @Entity
 @Table(name = "keywords")
-public class Keyword extends AuditableEntity {
+public class Keyword extends AuditableEntity<KeywordRequest> {
 
     @Column(nullable = false,unique = true)
     private String name;
 
-    public void update(KeywordRequest keywordRequest) {
-        this.name = keywordRequest.getName();
+    public void update(KeywordRequest requestEntity) {
+        this.name = requestEntity.getName();
     }
 }

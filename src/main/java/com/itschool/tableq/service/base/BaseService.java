@@ -5,6 +5,8 @@ import com.itschool.tableq.ifs.CrudInterface;
 import com.itschool.tableq.network.Header;
 import com.itschool.tableq.network.Pagination;
 import com.itschool.tableq.network.request.base.SingleKeyRequest;
+import groovy.lang.DeprecationException;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -29,6 +31,40 @@ public abstract class BaseService<Req extends SingleKeyRequest, Res, Entity exte
 
     protected abstract Res response(Entity entity);
 
+    protected abstract Entity convertBaseEntityFromRequest(Req requestEntity);
+
+
+
+    public Header<Res> create(Header<Req> request) {
+
+        Entity entity = convertBaseEntityFromRequest(request.getData());
+
+        getBaseRepository().save(entity);
+        return Header.OK(response(entity));
+    }
+
+    public final Header<Res> read(Long id) {
+        return Header.OK(response(getBaseRepository().findById(id)
+                .orElseThrow(()-> new EntityNotFoundException())));
+    }
+    
+    @Transactional
+    public Header<Res> update(Long id, Header<Req> request) throws DeprecationException {
+        Req requestEntity = request.getData();
+        Entity entity = getBaseRepository().findById(id).orElseThrow(() -> new EntityNotFoundException());
+        entity.update(requestEntity);
+        return Header.OK(response(entity));
+    }
+
+    public Header delete(Long id) {
+        return getBaseRepository().findById(id)
+                .map(entity -> {
+                    getBaseRepository().delete(entity);
+                    return Header.OK(response(entity));
+                })
+                .orElseThrow(() -> new EntityNotFoundException());
+    }
+    
     protected final List<Res> responseList(List<Entity> entities) {
         List<Res> responseList = new ArrayList<>();
 
@@ -79,5 +115,15 @@ public abstract class BaseService<Req extends SingleKeyRequest, Res, Entity exte
                 .build();
 
         return Header.OK(responsesList, pagination);
+    }
+
+    public List<Res> createByList(List<Req> requestList) {
+        List<Entity> entities = new ArrayList<>();
+
+        for(Req request : requestList) {
+            entities.add(convertBaseEntityFromRequest(request));
+        }
+
+        return responseList(getBaseRepository().saveAll(entities));
     }
 }

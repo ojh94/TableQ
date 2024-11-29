@@ -12,7 +12,7 @@ import lombok.experimental.SuperBuilder;
 @Getter
 @Entity
 @Table(name = "reservations")
-public class Reservation extends AuditableEntity {
+public class Reservation extends AuditableEntity<ReservationRequest> {
 
     /*@Column(nullable = false)
     private String contactNumber;*/
@@ -32,7 +32,7 @@ public class Reservation extends AuditableEntity {
     @JoinColumn(name = "user_id", updatable = false)
     private User user;
 
-    public void update(ReservationRequest dto){
-        this.isEntered = dto.getIsEntered();
+    public void update(ReservationRequest requestEntity){
+        this.isEntered = requestEntity.getIsEntered();
     }
 }

@@ -1,22 +1,14 @@
 package com.itschool.tableq.service;
 
 import com.itschool.tableq.domain.Restaurant;
-import com.itschool.tableq.domain.RestaurantImage;
 import com.itschool.tableq.network.Header;
-import com.itschool.tableq.network.request.MenuItemRequest;
-import com.itschool.tableq.network.request.OpeningHourRequest;
-import com.itschool.tableq.network.request.RestaurantRequest;
 import com.itschool.tableq.network.request.update.RestaurantUpdateAllRequest;
 import com.itschool.tableq.network.response.RestaurantResponse;
 import com.itschool.tableq.repository.BusinessInformationRepository;
 import com.itschool.tableq.repository.RestaurantRepository;
-import com.itschool.tableq.util.FileUtil;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.multipart.MultipartFile;
-
-import java.util.List;
 
 @Service
 public class RestaurantLogicService extends RestaurantService {

@@ -54,6 +54,19 @@ public class ReviewService extends BaseService<ReviewRequest, ReviewResponse, Re
         return ReviewResponse.of(review);
     }
 
+    @Override
+    protected Review convertBaseEntityFromRequest(ReviewRequest requestEntity) {
+
+        return Review.builder()
+                .content(requestEntity.getContent())
+                .starRating(requestEntity.getStarRating())
+                .restaurant(restaurantRepository.findById(requestEntity.getRestaurant().getId())
+                        .orElseThrow(() -> new EntityNotFoundException("레스토랑을 찾을 수 없습니다.")))
+                .user(userRepository.findById(requestEntity.getUser().getId())
+                        .orElseThrow(() -> new EntityNotFoundException("유저를 찾을 수 없습니다.")))
+                .build();
+    }
+
     public Header<Long> countUserReviewsFor3Days(Long restaurantId, Long userId){
         Long count = 0L;
         User user = userRepository.findById(userId)
@@ -69,33 +82,6 @@ public class ReviewService extends BaseService<ReviewRequest, ReviewResponse, Re
         count = (long) reviewList.size();
 
         return Header.OK(count);
-    }
-
-    @Override
-    public Header<ReviewResponse> create(Header<ReviewRequest> request){
-        ReviewRequest reviewRequest= request.getData();
-
-        Restaurant restaurant = restaurantRepository.findById(reviewRequest.getRestaurant().getId())
-                .orElseThrow(() -> new EntityNotFoundException("레스토랑을 찾을 수 없습니다."));
-
-        User user = userRepository.findById(reviewRequest.getUser().getId())
-                .orElseThrow(() -> new EntityNotFoundException("유저를 찾을 수 없습니다."));
-
-        Review review = Review.builder()
-                .content(reviewRequest.getContent())
-                .starRating(reviewRequest.getStarRating())
-                .restaurant(restaurant)
-                .user(user)
-                .build();
-
-        getBaseRepository().save(review);
-
-        return Header.OK(response(review));
-    }
-
-    @Override
-    public Header<ReviewResponse> read(Long id) {
-        return Header.OK(response(getBaseRepository().findById(id).orElseThrow(()-> new EntityNotFoundException())));
     }
 
     // ID에 해당하는 식당에 대한 리뷰 조회
@@ -140,26 +126,5 @@ public class ReviewService extends BaseService<ReviewRequest, ReviewResponse, Re
                 .build();
 
         return Header.OK(reviewList, pagination);
-    }
-
-    @Override
-    public Header<ReviewResponse> update(Long id, Header<ReviewRequest> request) {
-        ReviewRequest reviewRequest = request.getData();
-
-        Review review = getBaseRepository().findById(id)
-                .orElseThrow(() -> new EntityNotFoundException());
-
-        review.update(reviewRequest);
-
-        return Header.OK(response(review));
-    }
-
-    @AuthorCheck
-    @Override
-    public Header delete(Long id) {
-        return getBaseRepository().findById(id).map(review -> {
-            getBaseRepository().delete(review);
-            return Header.OK(response(review));
-        }).orElseThrow(()->new RuntimeException("review delete fail"));
     }
 }

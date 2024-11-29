@@ -1,7 +1,11 @@
 package com.itschool.tableq.domain;
 
 import com.itschool.tableq.domain.base.AuditableEntity;
+import com.itschool.tableq.network.Header;
+import com.itschool.tableq.network.request.BookmarkRequest;
 import com.itschool.tableq.network.request.RestaurantRequest;
+import com.itschool.tableq.network.response.BookmarkResponse;
+import groovy.lang.DeprecationException;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
@@ -12,7 +16,7 @@ import lombok.experimental.SuperBuilder;
 @Getter
 @Entity
 @Table(name = "restaurants")
-public class Restaurant extends AuditableEntity {
+public class Restaurant extends AuditableEntity<RestaurantRequest> {
 
     @Column(nullable = false)
     private String name;
@@ -32,10 +36,10 @@ public class Restaurant extends AuditableEntity {
     @JoinColumn(name = "buisness_id", updatable = false)
     private BusinessInformation businessInformation;
 
-    public void update(RestaurantRequest restaurantRequest) {
-        this.name = restaurantRequest.getName() == null ? this.name : restaurantRequest.getName();
-        this.address = restaurantRequest.getAddress() == null ? this.address : restaurantRequest.getAddress();
-        this.information = restaurantRequest.getInformation() == null ? this.information : restaurantRequest.getInformation();
-        this.contactNumber = restaurantRequest.getContact_number() == null ? this.contactNumber : restaurantRequest.getContact_number();
+    public void update(RestaurantRequest requestEntity) {
+        this.name = requestEntity.getName() == null ? this.name : requestEntity.getName();
+        this.address = requestEntity.getAddress() == null ? this.address : requestEntity.getAddress();
+        this.information = requestEntity.getInformation() == null ? this.information : requestEntity.getInformation();
+        this.contactNumber = requestEntity.getContact_number() == null ? this.contactNumber : requestEntity.getContact_number();
     }
 }

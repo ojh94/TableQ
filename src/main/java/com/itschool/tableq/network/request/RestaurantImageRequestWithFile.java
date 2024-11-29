@@ -1,6 +1,6 @@
 package com.itschool.tableq.network.request;
 
-import com.itschool.tableq.network.request.base.FileRequest;
+import com.itschool.tableq.network.request.base.RequestWithFile;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -8,8 +8,11 @@ import lombok.Setter;
 @NoArgsConstructor
 @Getter
 @Setter
-public class ReviewImageRequest extends FileRequest {
+public class RestaurantImageRequestWithFile extends RequestWithFile {
+
     private Long id;
 
-    private ReviewRequest review;
+    private RestaurantRequest restaurant;
 }
+
+

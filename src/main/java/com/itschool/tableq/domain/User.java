@@ -19,7 +19,7 @@ import java.util.List;
 @Getter
 @Entity
 @Table(name = "users")
-public class User extends AuditableEntity implements UserDetails {
+public class User extends AuditableEntity<UserRequest> implements UserDetails {
 
     private static final long serialVersionUID = 1L; // 고정된 값으로 선언
 

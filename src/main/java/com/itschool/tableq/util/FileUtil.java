@@ -1,9 +1,6 @@
 package com.itschool.tableq.util;
 
-import com.itschool.tableq.domain.base.IncludeFileUrl;
-import com.itschool.tableq.network.request.MenuItemRequest;
-import com.itschool.tableq.network.request.base.FileRequest;
-import com.itschool.tableq.network.request.update.RestaurantUpdateAllRequest;
+import com.itschool.tableq.network.request.base.RequestWithFile;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
@@ -75,17 +72,22 @@ public class FileUtil {
         }
     }
 
-    public static <T extends FileRequest> void saveFileInObject(T object, MultipartFile file) {
-        object.setFile(file);
+    public static <T extends RequestWithFile> void saveFileInObject(T object, MultipartFile file) {
+        if(file != null && !file.isEmpty() && file.getSize() != 0L)
+            object.setFile(file);
+        /*else
+            throw new RuntimeException("파일이 존재하지 않습니다.");*/
     }
 
-    public static <T extends FileRequest> void saveFileListInObjectList(List<T> objectList, List<MultipartFile> fileList) {
-        if(objectList.size() == fileList.size()) {
-            for (int i = 0; i < objectList.size(); i++) {
-                saveFileInObject(objectList.get(i), fileList.get(i));
+    public static <T extends RequestWithFile> void saveFileListInObjectList(List<T> objectList, List<MultipartFile> fileList) {
+        if(objectList != null && !objectList.isEmpty()) {
+            if(objectList.size() == fileList.size()) {
+                for (int i = 0; i < objectList.size(); i++) {
+                    saveFileInObject(objectList.get(i), fileList.get(i));
+                }
+            } else {
+                throw new RuntimeException("객체 리스트와 파일 리스트 간의 사이즈가 맞지 않습니다.");
             }
-        } else {
-            throw new RuntimeException("객체 리스트와 파일 리스트 간의 사이즈가 맞지 않습니다.");
         }
     }
 }
