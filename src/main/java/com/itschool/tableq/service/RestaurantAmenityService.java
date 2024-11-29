@@ -62,9 +62,7 @@ public class RestaurantAmenityService extends BaseService<RestaurantAmenityReque
     public Header<List<RestaurantAmenityResponse>> readByRestaurantId(Long restaurantId) {
         Restaurant restaurant = restaurantRepository.findById(restaurantId).orElseThrow();
 
-        return Header.OK(
-                responseList(
-                        ((RestaurantAmenityRepository)baseRepository).findByRestaurant(restaurant)
+        return Header.OK(responseList(getBaseRepository().findByRestaurant(restaurant)
                                 .orElseThrow(() -> new EntityNotFoundException())));
     }
 }

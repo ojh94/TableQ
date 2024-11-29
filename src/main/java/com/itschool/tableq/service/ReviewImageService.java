@@ -56,7 +56,7 @@ public class ReviewImageService extends BaseServiceWithS3<ReviewImageRequestWith
         Review review = reviewRepository.findById(reviewId)
                 .orElseThrow(() -> new EntityNotFoundException());
 
-        List<ReviewImage> reviewImages = ((ReviewImageRespository)baseRepository).findByReview(review)
+        List<ReviewImage> reviewImages = getBaseRepository().findByReview(review)
                 .orElseThrow(() -> new EntityNotFoundException());
 
         return Header.OK(responseList(reviewImages));

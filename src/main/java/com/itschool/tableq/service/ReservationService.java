@@ -73,10 +73,8 @@ public class ReservationService extends BaseService<ReservationRequest, Reservat
     public Boolean isExist(User user, Restaurant restaurant){
         // 대기중인 예약이 존재한다면 true 반환
         // 그 이미 완료된 줄서기라면 대기중이 아닌 것으로 판단하여 false 반환
-        List<Reservation> reservations = ((ReservationRepository)baseRepository)
-                .findByUserAndRestaurantAndCreatedAtBetween(
-                        user, restaurant, DateUtil.getStartOfDay(), DateUtil.getEndOfDay()
-                );
+        List<Reservation> reservations = getBaseRepository().findByUserAndRestaurantAndCreatedAtBetween(
+                        user, restaurant, DateUtil.getStartOfDay(), DateUtil.getEndOfDay());
         if(reservations != null){
             for(Reservation entity : reservations){
                 if (entity.getIsEntered() == null) return true;
@@ -90,8 +88,7 @@ public class ReservationService extends BaseService<ReservationRequest, Reservat
         User user = userRepository.findById(userId)
                 .orElseThrow(()->new EntityNotFoundException("유저가 존재하지 않습니다."));
 
-        List<Reservation> reservationList = ((ReservationRepository)baseRepository)
-                .findByIsEnteredAndUserAndCreatedAtBetween(
+        List<Reservation> reservationList = getBaseRepository().findByIsEnteredAndUserAndCreatedAtBetween(
                     true, user, DateUtil.get3DaysAgo(),DateUtil.getEndOfDay()
                 );
 
@@ -106,7 +103,7 @@ public class ReservationService extends BaseService<ReservationRequest, Reservat
         Restaurant restaurant = restaurantRepository.findById(restaurantId)
                 .orElseThrow(()->new EntityNotFoundException("식당을 조회할 수 없습니다."));
 
-        List<Reservation> reservationList = ((ReservationRepository)baseRepository).findByIsEnteredAndUserAndRestaurantAndCreatedAtBetween(true, user, restaurant,
+        List<Reservation> reservationList = getBaseRepository().findByIsEnteredAndUserAndRestaurantAndCreatedAtBetween(true, user, restaurant,
                                                                                                         DateUtil.get3DaysAgo(),DateUtil.getEndOfDay());
 
         count = (long) reservationList.size();
@@ -135,7 +132,7 @@ public class ReservationService extends BaseService<ReservationRequest, Reservat
 
     public Header<Integer> getQueue(Long restaurantId){
         Integer queue = 0;
-        queue = ((ReservationRepository)baseRepository).countByRestaurantIdAndIsEnteredAndCreatedAtBetween(
+        queue = getBaseRepository().countByRestaurantIdAndIsEnteredAndCreatedAtBetween(
                 restaurantId, null, DateUtil.getStartOfDay(), DateUtil.getEndOfDay()
         );
         return Header.OK(queue);
@@ -144,13 +141,13 @@ public class ReservationService extends BaseService<ReservationRequest, Reservat
     public Header<Long> getUserQueue(Long reservationId) {
         Long userTurn = 1L;
 
-        Reservation entity = ((ReservationRepository)baseRepository).findById(reservationId)
+        Reservation entity = getBaseRepository().findById(reservationId)
                 .orElseThrow(() -> new EntityNotFoundException());
 
         Restaurant restaurant = restaurantRepository.findById(entity.getRestaurant().getId())
                 .orElseThrow(() -> new EntityNotFoundException());
 
-        List<Reservation> allReservationForRestraunt = ((ReservationRepository) baseRepository)
+        List<Reservation> allReservationForRestraunt = getBaseRepository()
                 .findByIsEnteredAndRestaurantAndCreatedAtBetweenOrderByIdAsc(null, restaurant, DateUtil.getStartOfDay(), DateUtil.getEndOfDay());
 
         for (Reservation reservation : allReservationForRestraunt) {
@@ -170,8 +167,8 @@ public class ReservationService extends BaseService<ReservationRequest, Reservat
         // 식당을 예약한 손님 조회
         // --> 필요한 정보 : reservationNumber(대기번호), people(인원), User.contactNumber(예약자 전화번호)
         Restaurant restaurant = restaurantRepository.findById(restaurantId).get();
-        List<Reservation> reservationList = ((ReservationRepository)baseRepository)
-                .findByRestaurant(restaurant).orElseThrow(()-> new EntityNotFoundException());
+        List<Reservation> reservationList = getBaseRepository().findByRestaurant(restaurant)
+                .orElseThrow(()-> new EntityNotFoundException());
 
         return Header.OK(responseList(reservationList));
     }
@@ -180,8 +177,8 @@ public class ReservationService extends BaseService<ReservationRequest, Reservat
         // 유저가 예약했던 정보 조회
         // --> 유저가 예약했던 식당을 조회하는 방식으로 변경 건의
         User user = userRepository.findById(userId).get();
-        List<Reservation> reservationList = ((ReservationRepository)baseRepository)
-                .findByUser(user).orElseThrow(()-> new EntityNotFoundException());
+        List<Reservation> reservationList = getBaseRepository().findByUser(user)
+                .orElseThrow(()-> new EntityNotFoundException());
 
         return Header.OK(responseList(reservationList));
     }
