@@ -75,7 +75,7 @@ function requestUserReviewApi() {
                     `
                     <div class="card">
                         <div class="card-body">
-                            <p>${review.restaurant.id}</p>
+                            <p>${review.restaurant.name}</p>
                             <p>${starIcons}<small>&nbsp;&nbsp;${formattedDate}</small></p>
                             <p>${review.content}</p>
                         </div>
