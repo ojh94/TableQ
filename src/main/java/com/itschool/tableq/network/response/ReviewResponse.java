@@ -45,6 +45,7 @@ public class ReviewResponse {
                         .build())
                 .restaurant(RestaurantResponse.builder()
                         .id(restaurant.getId())
+                        .name(restaurant.getName())
                         .build())
                 .createdAt(review.getCreatedAt())
                 .lastModifiedAt(review.getLastModifiedAt())
