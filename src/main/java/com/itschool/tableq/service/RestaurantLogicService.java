@@ -1,10 +1,11 @@
 package com.itschool.tableq.service;
 
+import com.itschool.tableq.domain.MenuItem;
 import com.itschool.tableq.domain.Restaurant;
+import com.itschool.tableq.domain.RestaurantAmenity;
+import com.itschool.tableq.domain.RestaurantKeyword;
 import com.itschool.tableq.network.Header;
-import com.itschool.tableq.network.request.BreakHourRequest;
-import com.itschool.tableq.network.request.OpeningHourRequest;
-import com.itschool.tableq.network.request.RestaurantRequest;
+import com.itschool.tableq.network.request.*;
 import com.itschool.tableq.network.request.update.RestaurantUpdateAllRequest;
 import com.itschool.tableq.network.response.RestaurantResponse;
 import com.itschool.tableq.repository.BusinessInformationRepository;
@@ -52,56 +53,55 @@ public class RestaurantLogicService extends RestaurantService {
     public Header<RestaurantResponse> updateAll(Long id,
                                                 RestaurantUpdateAllRequest request) {
 
-        try {
-            
-            // 레스토랑 찾기
-            Restaurant restaurant = getBaseRepository().findById(id)
-                    .orElseThrow(() -> new EntityNotFoundException());
-            
-            
-            // 레트토랑 기본 정보 업데이트
-            restaurant.update(request);
+        // 레스토랑 찾기
+        Restaurant restaurant = getBaseRepository().findById(id)
+                .orElseThrow(() -> new EntityNotFoundException());
 
 
-            // 운영시간 업데이트 (delete 후 insert)
-            for (OpeningHourRequest openingHour : request.getOpeningHourList())
-                openingHour.setRestaurant(RestaurantRequest.builder().id(id).build());
-
-            openingHourService.deleteAllByRestaurantId(id);
-            openingHourService.createByList(request.getOpeningHourList());
+        // 레트토랑 기본 정보 업데이트
+        restaurant.update(request);
 
 
-            // 브레이크 타임 업데이트 (delete 후 insert)
-            for (BreakHourRequest breakHour : request.getBreakHourList())
-                breakHour.setRestaurant(RestaurantRequest.builder().id(id).build());
-
-            breakHourService.deleteAllByRestaurantId(id);
-            breakHourService.createByList(request.getBreakHourList());
+        // 운영시간 업데이트 (read 성공 : update, read 실패 : insert)
+        openingHourService.upsertListByDayOfWeek(restaurant, request.getOpeningHourList());
 
 
-            // 편의시설 업데이트 (delete 후 insert)
-            // restaurantAmenityService.upsertList(request.getRestaurantAmenityList());
-            restaurantAmenityService.deleteAllByRestaurantId(id);
-            restaurantAmenityService.createByList(request.getRestaurantAmenityList());
+        // 브레이크 타임 업데이트 (read 성공 : update, read 실패 : insert)
+        breakHourService.upsertListByDayOfWeek(restaurant, request.getBreakHourList());
 
 
-            // 키워드 업데이트 (delete 후 insert)
-            // restaurantKeywordService.upsertList(request.getRestaurantKeywordList());
-            restaurantKeywordService.deleteAllByRestaurantId(id);
-            restaurantKeywordService.createByList(request.getRestaurantKeywordList());
+        // 편의시설 업데이트 (delete 후 insert)
+        for (RestaurantAmenityRequest restaurantAmenity : request.getRestaurantAmenityList())
+            restaurantAmenity.setRestaurant(RestaurantRequest.builder().id(id).build());
+
+        restaurantAmenityService.deleteAllByRestaurant(restaurant);
+        restaurantAmenityService.createByList(request.getRestaurantAmenityList());
 
 
-            // 메뉴 업데이트 (있으면 업데이트 없으면 insert)
-            // menuItemService.upsertList(request.getMenuItemList());
+        // 키워드 업데이트 (delete 후 insert)
+        for (RestaurantKeywordRequest restaurantKeyword : request.getRestaurantKeywordList())
+            restaurantKeyword.setRestaurant(RestaurantRequest.builder().id(id).build());
 
-            // 레스토랑 이미지 업데이트 (있으면 업데이트 없으면 insert)
-            // restaurantImageService.upsertList(request.getRestaurantImageList());
+        restaurantKeywordService.deleteAllByRestaurant(restaurant);
+        restaurantKeywordService.createByList(request.getRestaurantKeywordList());
 
+        // 메뉴 업데이트 (있으면 업데이트 없으면 insert)
+        if (request.getMenuItemList().size() >= 1) {
+            for (MenuItemRequestWithFile menuItem : request.getMenuItemList())
+                menuItem.setRestaurant(RestaurantRequest.builder().id(id).build());
 
-            return Header.OK(response(restaurant));
-
-        } catch (Exception e) {
-            throw new RuntimeException(e);
+            menuItemService.deleteAllByRestaurant(restaurant);
+            menuItemService.createByList(request.getMenuItemList());
         }
+
+        // 레스토랑 이미지 업데이트 (있으면 업데이트 없으면 insert)
+        if (request.getRestaurantImageList().size() >= 1) {
+            for (RestaurantImageRequestWithFile restaurantImage : request.getRestaurantImageList())
+                restaurantImage.setRestaurant(RestaurantRequest.builder().id(id).build());
+            restaurantImageService.deleteAllByRestaurant(restaurant);
+            restaurantImageService.createByList(request.getRestaurantImageList());
+        }
+
+        return Header.OK(response(restaurant));
     }
 }

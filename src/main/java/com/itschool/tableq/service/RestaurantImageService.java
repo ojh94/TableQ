@@ -2,6 +2,7 @@ package com.itschool.tableq.service;
 
 import com.itschool.tableq.domain.Restaurant;
 import com.itschool.tableq.domain.RestaurantImage;
+import com.itschool.tableq.domain.RestaurantKeyword;
 import com.itschool.tableq.network.Header;
 import com.itschool.tableq.network.request.RestaurantImageRequestWithFile;
 import com.itschool.tableq.network.response.RestaurantImageResponse;
@@ -12,6 +13,7 @@ import com.itschool.tableq.service.base.S3Service;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -56,5 +58,14 @@ public class RestaurantImageService extends BaseServiceWithS3<RestaurantImageReq
         List<RestaurantImage> imageList = getBaseRepository().findByRestaurant(restaurant);
 
         return Header.OK(responseList(imageList));
+    }
+
+    @Transactional
+    public void deleteAllByRestaurant(Restaurant restaurant) {
+        List<RestaurantImage> restaurantImages = getBaseRepository().findByRestaurant(restaurant);
+
+        for (RestaurantImage restaurantImage : restaurantImages) {
+            delete(restaurantImage.getId());
+        }
     }
 }

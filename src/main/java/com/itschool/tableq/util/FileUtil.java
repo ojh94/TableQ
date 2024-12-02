@@ -61,13 +61,13 @@ public class FileUtil {
     }
 
     // 이미지 리스트 유효성 검사
-    public static void validateImages(List<MultipartFile> images, String imageType, Long imageSize) {
+    public static void validateImages(List<MultipartFile> images, Long imageSize) {
         if (images != null && !images.isEmpty()) {
             try {
                 FileUtil.validateFileList(images, imageSize);
             } catch (Exception e) {
                 // log.error("File validation failed for {}: {}", imageType, e.getMessage(), e);
-                throw new RuntimeException(imageType + " validation failed: " + e.getMessage());
+                throw new RuntimeException("image file validation failed: " + e.getMessage());
             }
         }
     }

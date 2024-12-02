@@ -14,8 +14,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -72,15 +75,30 @@ public class BreakHourService extends BaseService<BreakHourRequest, BreakHourRes
         return Header.OK(BreakHourList, pagination);
     }
 
-    public void deleteAllByRestaurantId(Long id) {
+    @Transactional
+    public List<BreakHourResponse> upsertListByDayOfWeek(Restaurant restaurant, List<BreakHourRequest> requestedEntities) {
+        List<BreakHour> upsertedEntityList = new ArrayList<>();
 
-        Restaurant restaurant = restaurantRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException());
+        for(BreakHourRequest requestedEntity : requestedEntities){
+
+            Optional<BreakHour> needUpsertEntity = getBaseRepository().findByRestaurantAndDayOfWeek(restaurant, requestedEntity.getDayOfWeek());
+
+            if (needUpsertEntity.isPresent()) {
+                needUpsertEntity.get().update(requestedEntity);
+                upsertedEntityList.add(needUpsertEntity.get());
+            } else {
+                BreakHour createdEntity = baseRepository.save(convertBaseEntityFromRequest(requestedEntity));
+                upsertedEntityList.add(createdEntity);
+            }
+        }
+
+        return responseList(upsertedEntityList);
+    }
+
+    public void deleteAllByRestaurant(Restaurant restaurant) {
 
         List<BreakHour> breakHourList = getBaseRepository().findAllByRestaurant(restaurant);
 
         getBaseRepository().deleteAll(breakHourList);
     }
-
-
 }

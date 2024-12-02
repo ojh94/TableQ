@@ -1,5 +1,7 @@
 package com.itschool.tableq.service.base;
 
+import com.itschool.tableq.domain.BreakHour;
+import com.itschool.tableq.domain.Restaurant;
 import com.itschool.tableq.domain.base.IncludeFileUrl;
 import com.itschool.tableq.network.Header;
 import com.itschool.tableq.network.request.base.RequestWithFile;
@@ -10,6 +12,9 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Component
 public abstract class BaseServiceWithS3<Req extends RequestWithFile, Res, Entity extends IncludeFileUrl> extends BaseService<Req, Res, Entity>{
@@ -48,6 +53,17 @@ public abstract class BaseServiceWithS3<Req extends RequestWithFile, Res, Entity
         }
     }
 
+    @Transactional
+    @Override
+    public List<Res> createByList(List<Req> requestList) {
+        List<Res> entities = new ArrayList<>();
+
+        for(Req request : requestList) {
+            entities.add(create(Header.OK(request)).getData());
+        }
+
+        return entities;
+    }
 
     @Transactional
     @Override
@@ -62,15 +78,15 @@ public abstract class BaseServiceWithS3<Req extends RequestWithFile, Res, Entity
 
             String existingUrl = findEntity.getFileUrl();
 
-            if (menuItemRequest.isNeedFileChange()) { // 프론트에서 파일 변경이 필요하다 한 경우
-                if (file.isEmpty() && existingUrl != null) { // 대체 파일이 없고 기존 url이 있는 경우
-                    s3Service.deleteFile(existingUrl); // 기존 파일 삭제
-                    findEntity.updateFileUrl(null); // 파일 URL 삭제
-                } else if (!file.isEmpty()) { // 대체 파일이 있는 경우
-                    String newUrl = s3Service.updateFile(existingUrl, file); // 새 파일 업로드
-                    findEntity.updateFileUrl(newUrl); // 새 파일 URL 설정
-                }
+            // if (menuItemRequest.isNeedFileChange()) { // 프론트에서 파일 변경이 필요하다 한 경우
+            if (file.isEmpty() && existingUrl != null) { // 대체 파일이 없고 기존 url이 있는 경우
+                s3Service.deleteFile(existingUrl); // 기존 파일 삭제
+                findEntity.updateFileUrl(null); // 파일 URL 삭제
+            } else if (!file.isEmpty()) { // 대체 파일이 있는 경우
+                String newUrl = s3Service.updateFile(existingUrl, file); // 새 파일 업로드
+                findEntity.updateFileUrl(newUrl); // 새 파일 URL 설정
             }
+            // }
 
             findEntity.updateWithoutFileUrl(menuItemRequest);
 

@@ -13,5 +13,5 @@ import org.springframework.web.multipart.MultipartFile;
 public class RequestWithFile extends SingleKeyRequest {
     protected MultipartFile file;
 
-    protected boolean needFileChange;
+    // protected boolean needFileChange;
 }

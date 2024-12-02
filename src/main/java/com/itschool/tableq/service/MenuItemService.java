@@ -2,6 +2,7 @@ package com.itschool.tableq.service;
 
 import com.itschool.tableq.domain.MenuItem;
 import com.itschool.tableq.domain.Restaurant;
+import com.itschool.tableq.domain.RestaurantImage;
 import com.itschool.tableq.network.Header;
 import com.itschool.tableq.network.request.MenuItemRequestWithFile;
 import com.itschool.tableq.network.response.MenuItemResponse;
@@ -57,7 +58,14 @@ public class MenuItemService extends BaseServiceWithS3<MenuItemRequestWithFile, 
     public Header<List<MenuItemResponse>> readByRestaurantId(Long restaurantId) {
         Restaurant restaurant = restaurantRepository.findById(restaurantId).orElseThrow();
 
-        return Header.OK(responseList(getBaseRepository().findByRestaurant(restaurant)
-                .orElseThrow(() -> new EntityNotFoundException())));
+        return Header.OK(responseList(getBaseRepository().findByRestaurant(restaurant)));
+    }
+
+    public void deleteAllByRestaurant(Restaurant restaurant) {
+        List<MenuItem> menuItemList = getBaseRepository().findByRestaurant(restaurant);
+
+        for (MenuItem menuItem : menuItemList) {
+            delete(menuItem.getId());
+        }
     }
 }

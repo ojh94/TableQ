@@ -76,7 +76,7 @@ public abstract class BaseService<Req extends SingleKeyRequest, Res, Entity exte
     }
 
     @Transactional
-    public final List<Res> upsertList(List<Req> requestedEntities) {
+    public List<Res> upsertListById(List<Req> requestedEntities) {
         List<Entity> updateEntityList = new ArrayList<>();
 
         Entity upsertedEntity;

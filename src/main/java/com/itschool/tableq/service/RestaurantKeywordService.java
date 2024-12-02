@@ -1,6 +1,5 @@
 package com.itschool.tableq.service;
 
-import com.itschool.tableq.domain.BreakHour;
 import com.itschool.tableq.domain.Restaurant;
 import com.itschool.tableq.domain.RestaurantKeyword;
 import com.itschool.tableq.network.Header;
@@ -72,11 +71,30 @@ public class RestaurantKeywordService extends BaseService<RestaurantKeywordReque
         return Header.OK(responseList(keywordList));
     }
 
-    public void deleteAllByRestaurantId(Long id) {
-        Restaurant restaurant = restaurantRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException());
+    /*@Transactional
+    public List<RestaurantKeywordResponse> upsertListByRestaurant(Restaurant restaurant, List<RestaurantKeywordRequest> requestedEntities) {
 
-        List<RestaurantKeyword> restaurantKeywords = getBaseRepository().findAllByRestaurant(restaurant);
+        List<RestaurantKeyword> upsertedEntityList = new ArrayList<>();
+
+        for(RestaurantKeywordRequest requestedEntity : requestedEntities){
+
+            Optional<RestaurantKeyword> needUpsertEntity = getBaseRepository().findByRestaurantAndKeyword(restaurant,
+                    keywordRepository.findById(requestedEntity.getKeyword().getId())
+                            .orElseThrow(() -> new EntityNotFoundException("해당 키워드 Entity가 없음")));
+
+            if (needUpsertEntity.isPresent()) {
+                upsertedEntityList.add(needUpsertEntity.get());
+            } else {
+                RestaurantKeyword createdEntity = baseRepository.save(convertBaseEntityFromRequest(requestedEntity));
+                upsertedEntityList.add(createdEntity);
+            }
+        }
+
+        return responseList(upsertedEntityList);
+    }*/
+    public void deleteAllByRestaurant(Restaurant restaurant) {
+
+        List<RestaurantKeyword> restaurantKeywords = getBaseRepository().findByRestaurant(restaurant);
 
         getBaseRepository().deleteAll(restaurantKeywords);
     }

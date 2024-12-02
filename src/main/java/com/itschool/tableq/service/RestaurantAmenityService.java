@@ -1,6 +1,5 @@
 package com.itschool.tableq.service;
 
-import com.itschool.tableq.domain.BreakHour;
 import com.itschool.tableq.domain.Restaurant;
 import com.itschool.tableq.domain.RestaurantAmenity;
 import com.itschool.tableq.network.Header;
@@ -14,8 +13,11 @@ import groovy.lang.DeprecationException;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class RestaurantAmenityService extends BaseService<RestaurantAmenityRequest, RestaurantAmenityResponse, RestaurantAmenity> {
@@ -63,15 +65,34 @@ public class RestaurantAmenityService extends BaseService<RestaurantAmenityReque
     public Header<List<RestaurantAmenityResponse>> readByRestaurantId(Long restaurantId) {
         Restaurant restaurant = restaurantRepository.findById(restaurantId).orElseThrow();
 
-        return Header.OK(responseList(getBaseRepository().findByRestaurant(restaurant)
-                                .orElseThrow(() -> new EntityNotFoundException())));
+        return Header.OK(responseList(getBaseRepository().findByRestaurant(restaurant)));
     }
 
-    public void deleteAllByRestaurantId(Long id) {
-        Restaurant restaurant = restaurantRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException());
+    /*@Transactional
+    public List<RestaurantAmenityResponse> upsertListByRestaurant(Restaurant restaurant, List<RestaurantAmenityRequest> requestedEntities) {
 
-        List<RestaurantAmenity> restaurantAmenities = getBaseRepository().findAllByRestaurant(restaurant);
+        List<RestaurantAmenity> upsertedEntityList = new ArrayList<>();
+
+        for(RestaurantAmenityRequest requestedEntity : requestedEntities){
+
+            Optional<RestaurantAmenity> needUpsertEntity = getBaseRepository().findByRestaurantAndAmenity(restaurant,
+                            amenityRepository.findById(requestedEntity.getAmenity().getId())
+                                    .orElseThrow(() -> new EntityNotFoundException("해당 편의시설 Entity가 없음")));
+
+            if (needUpsertEntity.isPresent()) {
+                upsertedEntityList.add(needUpsertEntity.get());
+            } else {
+                RestaurantAmenity createdEntity = baseRepository.save(convertBaseEntityFromRequest(requestedEntity));
+                upsertedEntityList.add(createdEntity);
+            }
+        }
+
+        return responseList(upsertedEntityList);
+    }*/
+
+    public void deleteAllByRestaurant(Restaurant restaurant) {
+
+        List<RestaurantAmenity> restaurantAmenities = getBaseRepository().findByRestaurant(restaurant);
 
         getBaseRepository().deleteAll(restaurantAmenities);
     }

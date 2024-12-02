@@ -85,10 +85,12 @@ $(document).ready(function() {
 
         // 메뉴 수정 요청
         $('#modify').on('click', function() {
-            requestRestaurantUpdateAllApi();
-            requestRestaurantUpdateApi();
-            requestKeywordUpdateApi();
-            requestAmenityUpdateApi();
+            if(confirm("수정이 완료된 후 되돌릴 수 없습니다. 계속 진행하시겠습니까?")) {
+                requestRestaurantUpdateAllApi();
+                /*requestRestaurantUpdateApi();
+                requestKeywordUpdateApi();
+                requestAmenityUpdateApi();*/
+            }
         });
     }
 
@@ -1603,64 +1605,40 @@ function requestAmenityDeleteApi() {
 
 // 레스토랑 관련 전체 수정
 function requestRestaurantUpdateAllApi() {
+
     const restaurantId = $('#restaurant-id').val();
 
-    const openingHourList = getTimeList(true);
-    const breakHourList = getTimeList(false);
-    const restaurantAmenityList = [];
-    /*[{
-         "id":0,
-         "amenity":{
-            "id":0,
-            "name":"string"
-         }
-    }]*/
-    const restaurantKeywordList = [];
-    /*[{
-         "id":0,
-         "keyword":{
-            "id":0,
-            "name":"string"
-         }
-    }]*/
-    const restaurantImageList = [];
-    /*[{
-        "needFileChange":true,
-        "id": 1
-    }]*/
-    const menuItemList = [];
-    /*[{
-         "needFileChange":true,
-         "id":0,
-         "name":"string",
-         "price":"string",
-         "description":"string",
-         "recommendation":true
-      }]*/
+    const restaurantImageList = []; // [{"id": 1, "needFileChange":true}]
 
-
-    const request = {
-       "name": $('#restaurant-name').val(),
-       "address": $('#restaurant-address').val(),
-       "information": $('#information').val(),
-       "contact_number": $('#restaurant-number').val(),
-       "openingHourList": openingHourList,
-       "breakHourList": breakHourList,
-       "restaurantAmenityList": restaurantAmenityList,
-       "restaurantKeywordList":restaurantKeywordList,
-       "restaurantImageList": restaurantImageList,
-       "menuItemList": menuItemList
-    };
+    const menuItemList = []; // [{"id":0, "needFileChange":true, "name":"string", "price":"string", "description":"string", "recommendation":true}]
 
     const formData = new FormData();
 
-    formData.append('data', JSON.stringify(request));
+    const restaurantImageFiles = document.getElementById('restaurant-image-input').files;
 
-    const file = $('#carouselExampleControls > input')[0].files[0];
-
-    if (file) {
-        formData.append('file', file);
+    for (const restaurantImageFile of restaurantImageFiles) {
+        restaurantImageList.push({ "needFileChange": true });
+        formData.append('restaurantImages', restaurantImageFile);
     }
+
+    if (restaurantImageFiles) {
+        formData.append('restaurantImages', restaurantImageFiles);
+    }
+
+    const request = {
+           "name": $('#restaurant-name').val(),
+           "address": $('#restaurant-address').val(),
+           "information": $('#information').val(),
+           "contact_number": $('#restaurant-number').val(),
+           "openingHourList": getTimeList(true),
+           "breakHourList": getTimeList(false),
+           "restaurantAmenityList": getCheckedAmenities(),
+           "restaurantKeywordList":getCheckedKeywords(),
+           "restaurantImageList": restaurantImageList,
+           "menuItemList": menuItemList
+        };
+
+    formData.append('data', JSON.stringify(request));
 
     $.ajax({
         url: `/api/restaurant/all/${restaurantId}`,
@@ -1668,11 +1646,15 @@ function requestRestaurantUpdateAllApi() {
         data: formData,
         processData: false,
         contentType: false,
-        success: function(data) {
-            if ('scrollRestoration' in history) {
-                history.scrollRestoration = 'manual'; // 자동 복원을 방지
+        success: function(response) {
+            if(response.resultCode === 'OK') {
+                if ('scrollRestoration' in history) {
+                    history.scrollRestoration = 'manual'; // 자동 복원을 방지
+                }
+                window.location.reload();
+            } else {
+                alert('수정에 실패하였습니다.');
             }
-            window.location.reload();
         },
         error: function(xhr, status, error) {
             alert(`${xhr}
@@ -1719,4 +1701,55 @@ function getTimeList(isOpeningHours) {
             dayOfWeek: day.name
         };
     }).filter(entry => entry !== null); // 유효한 항목만 포함
+}
+
+
+
+function getCheckedAmenities() {
+    // 'amenity' 요소를 가져옴
+    let $amenity = document.getElementById('amenity');
+    // 'form-check-input' 클래스를 가진 모든 자식 요소를 가져옴
+    let inputs = $amenity.getElementsByClassName('form-check-input');
+
+    let result = [];
+
+    // 모든 input 요소를 순회
+    Array.from(inputs).forEach((input, index) => {
+                   // 체크되어 있는 경우만 처리
+                   if (input.checked) {
+                       // JSON 형식으로 추가
+                       result.push({
+                           "amenity": {
+                               "id": parseInt(input.value) // value를 숫자로 변환
+                           }
+                       });
+                   }
+               });
+
+    return result;
+}
+
+function getCheckedKeywords() {
+
+    // 'amenity' 요소를 가져옴
+    let $keyword = document.getElementById('keyword');
+    // 'form-check-input' 클래스를 가진 모든 자식 요소를 가져옴
+    let inputs = $keyword.getElementsByClassName('form-check-input');
+
+    let result = [];
+
+    // 모든 input 요소를 순회
+    Array.from(inputs).forEach((input, index) => {
+                   // 체크되어 있는 경우만 처리
+                   if (input.checked) {
+                       // JSON 형식으로 추가
+                       result.push({
+                           "keyword": {
+                               "id": parseInt(input.value) // value를 숫자로 변환
+                           }
+                       });
+                   }
+               });
+
+    return result;
 }

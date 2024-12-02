@@ -88,8 +88,8 @@ public class RestaurantApiController extends CrudController<RestaurantRequest, R
         RestaurantUpdateAllRequest request = parseRequestToJson(requestJson, RestaurantUpdateAllRequest.class);
 
         // 이미지 파일 검증
-        FileUtil.validateImages(restaurantImages, "Restaurant Images", MAX_IMAGE_FILE_SIZE);
-        FileUtil.validateImages(menuItemImages, "Menu Images", MAX_IMAGE_FILE_SIZE);
+        FileUtil.validateImages(restaurantImages, MAX_IMAGE_FILE_SIZE);
+        FileUtil.validateImages(menuItemImages, MAX_IMAGE_FILE_SIZE);
 
         // 파일을 객체로 옮기기
         if(restaurantImages != null && restaurantImages.size() > 0)
