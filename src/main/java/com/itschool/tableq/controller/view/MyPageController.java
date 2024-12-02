@@ -50,7 +50,7 @@ public class MyPageController {
     @GetMapping("/history")
     public String getHistoryPage(@AuthenticationPrincipal User user, Model model) {
         model.addAttribute("user", user);
-        return "history";
+        return "mypage-history";
     }
 
     @GetMapping("/review")

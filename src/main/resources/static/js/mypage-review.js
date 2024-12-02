@@ -17,7 +17,7 @@ function requestUserReviewApi() {
         contentType: 'application/json', // JSON 형식으로 데이터 전송
         data: {
                "page" : 0,
-               "size" : 5
+               "size" : 3
               },
         success: function(response) {
             // 요청 성공 시 동작
@@ -25,7 +25,9 @@ function requestUserReviewApi() {
                 return;
             }
 
-            $('#empty-1').remove();
+            $('#my-review-empty').remove();
+
+            response.data.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)); // 유저별 리뷰 데이터 배열(최신순)
 
             response.data.forEach((review) => {
 
@@ -73,18 +75,29 @@ function requestUserReviewApi() {
 
                 let reviewHtml =
                     `
-                    <div class="card">
+                    <div class="card mb-2">
                         <div class="card-body">
-                            <p>${review.restaurant.name}</p>
+                            <h6 class="fw-bold mt-3 restaurant-link" data-restaurant-id="${review.restaurant.id}">
+                                ${review.restaurant.name} <i class="bi bi-chevron-right"></i>
+                            </h6>
                             <p>${starIcons}<small>&nbsp;&nbsp;${formattedDate}</small></p>
                             <p>${review.content}</p>
                         </div>
                     </div>
                     `;
 
-                // my-review 요소(외부) 끝에 추가
-                $('#my-review').append(reviewHtml);
+                // my-review 요소(내부) 시작 부분에 추가
+                $('#my-review').prepend(reviewHtml);
             });
+
+            $(document).on('click', '.restaurant-link', function () {
+                const restaurantId = $(this).data('restaurant-id');
+                if (restaurantId) {
+                    location.href = '/restaurant/' + restaurantId;
+                }
+            });
+
+            $('#my-review-page').show();
 
             console.log('내 리뷰 set 완료');
         },
