@@ -395,7 +395,7 @@ function requestReviewApi() {
 // 상세 페이지 속 '작성 가능 리뷰' 화면 출력
 function requestReviewPossibleApi() {
     const restaurantId = document.getElementById("restaurant-id").value;
-    const userId = document.getElementById("user-id").value;
+    const userId = document.getElementById("userId").value;
 
     let reservationCount;
     let reviewCount;
@@ -472,7 +472,7 @@ function requestReviewCreateAPI() {
 
         const starCount = document.querySelectorAll('.star_rating .star.on').length;
         const restaurantId = document.getElementById("restaurant-id").value;
-        const userId = document.getElementById("user-id").value;
+        const userId = document.getElementById("userId").value;
 
         if($('#review-textarea').val() === "") {
             alert('내용을 입력해주세요.');
@@ -1608,9 +1608,36 @@ function requestRestaurantUpdateAllApi() {
     const openingHourList = getTimeList(true);
     const breakHourList = getTimeList(false);
     const restaurantAmenityList = [];
+    /*[{
+         "id":0,
+         "amenity":{
+            "id":0,
+            "name":"string"
+         }
+    }]*/
     const restaurantKeywordList = [];
+    /*[{
+         "id":0,
+         "keyword":{
+            "id":0,
+            "name":"string"
+         }
+    }]*/
     const restaurantImageList = [];
+    /*[{
+        "needFileChange":true,
+        "id": 1
+    }]*/
     const menuItemList = [];
+    /*[{
+         "needFileChange":true,
+         "id":0,
+         "name":"string",
+         "price":"string",
+         "description":"string",
+         "recommendation":true
+      }]*/
+
 
     const request = {
        "name": $('#restaurant-name').val(),
@@ -1619,40 +1646,10 @@ function requestRestaurantUpdateAllApi() {
        "contact_number": $('#restaurant-number').val(),
        "openingHourList": openingHourList,
        "breakHourList": breakHourList,
-       "restaurantAmenityList":[
-          /*{
-             "id":0,
-             "amenity":{
-                "id":0,
-                "name":"string"
-             }
-          }*/
-       ],
-       "restaurantKeywordList":[
-          /*{
-             "id":0,
-             "keyword":{
-                "id":0,
-                "name":"string"
-             }
-          }*/
-       ],
-       "restaurantImageList":[
-                 /*{
-                    "needFileChange":true,
-                    "id": 1
-                 }*/
-              ],
-       "menuItemList":[
-          /*{
-             "needFileChange":true,
-             "id":0,
-             "name":"string",
-             "price":"string",
-             "description":"string",
-             "recommendation":true
-          }*/
-       ]
+       "restaurantAmenityList": restaurantAmenityList,
+       "restaurantKeywordList":restaurantKeywordList,
+       "restaurantImageList": restaurantImageList,
+       "menuItemList": menuItemList
     };
 
     const formData = new FormData();
