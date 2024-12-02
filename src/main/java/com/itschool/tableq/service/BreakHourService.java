@@ -1,7 +1,6 @@
 package com.itschool.tableq.service;
 
 import com.itschool.tableq.domain.BreakHour;
-import com.itschool.tableq.domain.OpeningHour;
 import com.itschool.tableq.domain.Restaurant;
 import com.itschool.tableq.network.Header;
 import com.itschool.tableq.network.Pagination;
@@ -11,13 +10,11 @@ import com.itschool.tableq.repository.BreakHourRepository;
 import com.itschool.tableq.repository.RestaurantRepository;
 import com.itschool.tableq.service.base.BaseService;
 import jakarta.persistence.EntityNotFoundException;
-import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -50,6 +47,8 @@ public class BreakHourService extends BaseService<BreakHourRequest, BreakHourRes
                 .breakStart(requestEntity.getBreakStart())
                 .breakEnd(requestEntity.getBreakEnd())
                 .dayOfWeek(requestEntity.getDayOfWeek())
+                .restaurant(restaurantRepository.findById(requestEntity.getRestaurant().getId())
+                        .orElseThrow(() -> new EntityNotFoundException()))
                 .build();
     }
 
@@ -73,7 +72,7 @@ public class BreakHourService extends BaseService<BreakHourRequest, BreakHourRes
         return Header.OK(BreakHourList, pagination);
     }
 
-    public void deleteByRestaurantId(Long id) {
+    public void deleteAllByRestaurantId(Long id) {
 
         Restaurant restaurant = restaurantRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException());

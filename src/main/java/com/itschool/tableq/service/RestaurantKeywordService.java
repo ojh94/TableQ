@@ -1,5 +1,6 @@
 package com.itschool.tableq.service;
 
+import com.itschool.tableq.domain.BreakHour;
 import com.itschool.tableq.domain.Restaurant;
 import com.itschool.tableq.domain.RestaurantKeyword;
 import com.itschool.tableq.network.Header;
@@ -69,5 +70,14 @@ public class RestaurantKeywordService extends BaseService<RestaurantKeywordReque
         List<RestaurantKeyword> keywordList = getBaseRepository().findByRestaurant(restaurant);
 
         return Header.OK(responseList(keywordList));
+    }
+
+    public void deleteAllByRestaurantId(Long id) {
+        Restaurant restaurant = restaurantRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException());
+
+        List<RestaurantKeyword> restaurantKeywords = getBaseRepository().findAllByRestaurant(restaurant);
+
+        getBaseRepository().deleteAll(restaurantKeywords);
     }
 }

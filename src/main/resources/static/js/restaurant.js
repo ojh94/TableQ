@@ -1,10 +1,3 @@
-const restaurantImageList = [];
-const openingHourList = [];
-const breakHourList = [];
-const restaurantAmenityList = [];
-const restaurantKeywordList = [];
-const menuItemList = [];
-
 $(document).ready(function() {
     requestRestaurantImageApi();
 
@@ -1612,80 +1605,53 @@ function requestAmenityDeleteApi() {
 function requestRestaurantUpdateAllApi() {
     const restaurantId = $('#restaurant-id').val();
 
+    const openingHourList = getTimeList(true);
+    const breakHourList = getTimeList(false);
+    const restaurantAmenityList = [];
+    const restaurantKeywordList = [];
+    const restaurantImageList = [];
+    const menuItemList = [];
+
     const request = {
-       "name": restaurantId,
-       "address":"string",
-       "information":"string",
-       "contact_number":"string",
-       "restaurantImageList":[
-          {
-             "needFileChange":true,
-             "id":0
-          }
-       ],
-       "openingHourList":[
-          {
-             "id":0,
-             "openAt": undefined/*{
-                "hour":0,
-                "minute":0,
-                "second":0,
-                "nano":0
-             }*/,
-             "closeAt": undefined/*{
-                "hour":0,
-                "minute":0,
-                "second":0,
-                "nano":0
-             }*/,
-             "dayOfWeek":"MONDAY"
-          }
-       ],
-       "breakHourList":[
-          {
-             "id":0,
-             "breakStart": undefined /*{
-                "hour":0,
-                "minute":0,
-                "second":0,
-                "nano":0
-             }*/,
-             "breakEnd": undefined /*{
-                "hour":0,
-                "minute":0,
-                "second":0,
-                "nano":0
-             }*/,
-             "dayOfWeek":"MONDAY"
-          }
-       ],
+       "name": $('#restaurant-name').val(),
+       "address": $('#restaurant-address').val(),
+       "information": $('#information').val(),
+       "contact_number": $('#restaurant-number').val(),
+       "openingHourList": openingHourList,
+       "breakHourList": breakHourList,
        "restaurantAmenityList":[
-          {
+          /*{
              "id":0,
              "amenity":{
                 "id":0,
                 "name":"string"
              }
-          }
+          }*/
        ],
        "restaurantKeywordList":[
-          {
+          /*{
              "id":0,
              "keyword":{
                 "id":0,
                 "name":"string"
              }
-          }
+          }*/
        ],
+       "restaurantImageList":[
+                 /*{
+                    "needFileChange":true,
+                    "id": 1
+                 }*/
+              ],
        "menuItemList":[
-          {
+          /*{
              "needFileChange":true,
              "id":0,
              "name":"string",
              "price":"string",
              "description":"string",
              "recommendation":true
-          }
+          }*/
        ]
     };
 
@@ -1717,4 +1683,43 @@ function requestRestaurantUpdateAllApi() {
                    ${error}`)
         }
     });
+}
+
+function getTimeList(isOpeningHours) {
+    const startColumnName = isOpeningHours? 'openAt' : 'breakStart';
+    const endColumnName = isOpeningHours? 'closeAt' : 'breakEnd';
+
+    const daysOfWeek = [
+        { id: "monday", name: "MONDAY" },
+        { id: "tuesday", name: "TUESDAY" },
+        { id: "wednesday", name: "WEDNESDAY" },
+        { id: "thursday", name: "THURSDAY" },
+        { id: "friday", name: "FRIDAY" },
+        { id: "saturday", name: "SATURDAY" },
+        { id: "sunday", name: "SUNDAY" },
+    ];
+
+    return daysOfWeek.map(day => {
+
+        let startTime;
+        let endTime;
+
+        if(isOpeningHours) {
+            startTime = $(`#${day.id}-open`).val();
+            endTime = $(`#${day.id}-close`).val();
+        } else {
+            startTime = $(`#${day.id}-break-start`).val();
+            endTime = $(`#${day.id}-break-end`).val();
+        }
+
+
+        // 입력값이 없는 경우 건너뛰기
+        if (!startTime || !endTime) return null;
+
+        return {
+            [startColumnName]: startTime, // 계산된 속성 이름
+            [endColumnName]: endTime,    // 계산된 속성 이름
+            dayOfWeek: day.name
+        };
+    }).filter(entry => entry !== null); // 유효한 항목만 포함
 }

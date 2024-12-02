@@ -1,5 +1,6 @@
 package com.itschool.tableq.service;
 
+import com.itschool.tableq.domain.BreakHour;
 import com.itschool.tableq.domain.Restaurant;
 import com.itschool.tableq.domain.RestaurantAmenity;
 import com.itschool.tableq.network.Header;
@@ -64,5 +65,14 @@ public class RestaurantAmenityService extends BaseService<RestaurantAmenityReque
 
         return Header.OK(responseList(getBaseRepository().findByRestaurant(restaurant)
                                 .orElseThrow(() -> new EntityNotFoundException())));
+    }
+
+    public void deleteAllByRestaurantId(Long id) {
+        Restaurant restaurant = restaurantRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException());
+
+        List<RestaurantAmenity> restaurantAmenities = getBaseRepository().findAllByRestaurant(restaurant);
+
+        getBaseRepository().deleteAll(restaurantAmenities);
     }
 }

@@ -4,7 +4,6 @@ import com.itschool.tableq.domain.base.AuditableEntity;
 import com.itschool.tableq.network.request.OpeningHourRequest;
 import jakarta.persistence.*;
 import lombok.*;
-import lombok.experimental.SuperBuilder;
 
 import java.time.DayOfWeek;
 import java.time.LocalTime;
