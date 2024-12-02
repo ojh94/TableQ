@@ -385,7 +385,7 @@ let sortType = 'id';        // 기본 정렬 기준
 
 // 레스토랑 데이터를 가져오는 함수
 async function fetchRestaurants(sortType, page = currentPage) {
-
+    console.log('Fetching with sort:', sortType, 'Page:', page);
      let apiUrl;
 
         // sortType에 따라 다른 API 주소로 요청
@@ -506,7 +506,8 @@ function updatePagination(totalPages) {
 
 $(document).ready(function () {
     // 초기 레스토랑 데이터 불러오기 (ID 순)
-    fetchRestaurants('id', 0);
+    const initialSortType = $('#sortId').val();
+    fetchRestaurants(initialSortType, 0);
 
     // 페이지네이션 버튼 이벤트 리스너
 
@@ -515,6 +516,7 @@ $(document).ready(function () {
         if (currentPage > 0) {
             currentPage--;
             console.log("이전 페이지, 커런트 페이지", currentPage); // currentPage 값 확인
+            const sortType = $('#sortId').val(); // 현재 드롭다운 값 읽기
             fetchRestaurants(sortType , currentPage);
         }
     });
@@ -524,14 +526,17 @@ $(document).ready(function () {
         if (currentPage < totalPages - 1) {
             currentPage++;
             console.log("Next Page, currentPage:", currentPage); // currentPage 값 확인
+            const sortType = $('#sortId').val(); // 현재 드롭다운 값 읽기
             fetchRestaurants(sortType , currentPage);
         }
     });
 
     // 정렬 기준 변경
     $('#sortId').on('change', function () {
+        console.log('Dropdown value:', $(this).val());
         const sortType = $(this).val(); // 드롭다운에서 선택된 정렬 기준
         currentPage = 0; // 정렬 변경 시 첫 페이지로 이동
+        console.log('Selected sort value:', sortType);
         fetchRestaurants(sortType, currentPage);
     });
 
