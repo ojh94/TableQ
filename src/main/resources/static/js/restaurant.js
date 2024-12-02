@@ -371,8 +371,8 @@ function requestReviewApi() {
                     <hr style="margin: 1.5rem 0;">
                     <div class="d-flex">
                         <div class="ms-3">
-                            <div>${starIcons}</div>
-                            <div class="fw-bold mt-2 mb-3">${review.user.email}<small>&nbsp;(${formattedDate})</small></div>
+                            <div>${starIcons}<small>&nbsp;&nbsp;${formattedDate}</small></div>
+                            <div class="fw-bold mt-2 mb-3">${review.user.email}</div>
                             <p style="margin: 0;">${review.content}</p>
                         </div>
                     </div>
