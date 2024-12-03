@@ -11,8 +11,7 @@ permissions:
     owner: ec2-user
     group: ec2-user
 
-#/TableQ-*-SNAPSHOT.jar
-#hooks:
-#  AfterInstall: # 배포가 끝나면 아래 명령어를 실행
-#    - location: execute-deploy.sh
-#      timeout: 180
+hooks:
+  AfterInstall: # 배포가 끝나면 아래 명령어를 실행
+    - location: execute-deploy.sh
+      timeout: 180
