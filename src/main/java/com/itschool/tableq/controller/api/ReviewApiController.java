@@ -60,4 +60,11 @@ public class ReviewApiController extends CrudController<ReviewRequest, ReviewRes
         log.info("read: ",userId, restaurantId);
         return ((ReviewService)baseService).countUserReviewsFor3Days(restaurantId,userId);
     }
+
+    @Operation(summary = "리뷰 작성 가능여부 조회", description = "Reservation ID로 리뷰 작성 가능한 예약인지 조회")
+    @GetMapping("/reviewable/{reservationId}")
+    public Header<Boolean> isReviewable(@PathVariable(name="reservationId") Long reservationId) {
+        log.info("read: ",reservationId);
+        return ((ReviewService)baseService).isReviewable((reservationId));
+    }
 }
