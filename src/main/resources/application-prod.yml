@@ -33,9 +33,12 @@ spring:
       #properties:
       #hibernate.dialect: org.hibernate.dialect.PostgreSQLDialect  # PostgreSQL 방언 사용
 
-    // 패스워드 인코더로 사용할 빈 등록
-    @Bean
-    public BCryptPasswordEncoder bCryptPasswordEncoder() {
-    return new BCryptPasswordEncoder();
-  }
-  }
+cloud:
+  aws:
+    s3:
+      bucket: tableq-file-bucket
+    stack.auto: false
+    region.static: ap-northeast-2
+    credentials:
+      access-Key: ${AWS_ACCESS_KEY_ID}
+      secret-Key: ${AWS_SECRET_ACCESS_KEY}
