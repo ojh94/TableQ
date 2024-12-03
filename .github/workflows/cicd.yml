@@ -35,9 +35,6 @@ jobs:
           distribution: 'corretto'
           java-version: 17
 
-      - name: Add execute permission to deploy script
-        run: chmod +x execute-deploy.sh
-
       - name: gradlew 실행 권한 부여
         run: chmod +x gradlew
         shell: bash
@@ -49,6 +46,10 @@ jobs:
       # 배포용 패키지 경로 저장
       - name: Set artifact
         run: echo "artifact=$(ls ./build/libs)" >> $GITHUB_ENV
+
+      - name: Add execute permission to deploy script
+        run: chmod +x execute-deploy.sh
+        shell: bash
 
       - name: zip 파일 생성
         run: |
