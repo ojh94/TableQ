@@ -55,8 +55,8 @@ $(document).ready(function() {
                     <i class="bi bi-x-square px-4" style="font-size: 25px; cursor: pointer;" onclick="deleteMenuItem(this)"></i>
                 </div>
             `;
-
-            document.getElementById('addMenu').insertAdjacentHTML('beforebegin', menuItemHTML);
+            document.getElementById('menu-list').insertAdjacentHTML('beforeend', menuItemHTML);
+            // document.getElementById('addMenu').insertAdjacentHTML('beforebegin', menuItemHTML);
         });
 
         // keyword 취소 버튼 클릭 시 초기 상태로 복원
@@ -1607,10 +1607,7 @@ function requestAmenityDeleteApi() {
 function requestRestaurantUpdateAllApi() {
 
     const restaurantId = $('#restaurant-id').val();
-
-    const restaurantImageList = []; // [{"id": 1, "needFileChange":true}]
-
-    const menuItemList = []; // [{"id":0, "needFileChange":true, "name":"string", "price":"string", "description":"string", "recommendation":true}]
+    const restaurantImageList = [];
 
     const formData = new FormData();
 
@@ -1624,6 +1621,42 @@ function requestRestaurantUpdateAllApi() {
     if (restaurantImageFiles) {
         formData.append('restaurantImages', restaurantImageFiles);
     }
+
+    // 메뉴 데이터를 수집
+    const menuItems = document.getElementById('menu-list').getElementsByClassName('menu-item');
+    const menuItemList = [];
+
+    // 메뉴 항목을 순회하며 데이터와 이미지 처리
+    Array.from(menuItems).forEach((menuItem, index) => {
+        // 메뉴 데이터 수집
+        const nameInput = menuItem.querySelector('input[placeholder="메뉴명"]');
+        const priceInput = menuItem.querySelector('input[placeholder="가격"]');
+        const recommendationCheckbox = menuItem.querySelector('input[type="checkbox"]');
+
+        // 메뉴 이미지 처리
+        const imageInput = menuItem.querySelector('input[type="file"]');
+
+        let needFileChange = false;
+
+        if (imageInput && imageInput.files.length > 0) {
+            const menuImageFile = imageInput.files[0];
+            formData.append('menuImages', menuImageFile); // 실제 파일 추가
+
+            needFileChange = true;
+        } else {
+            // 빈 파일에 대한 자리 맞추기
+            formData.append('menuImages', new Blob(), null); // 더미 데이터 추가
+        }
+
+        menuItemList.push({
+            // id: 0, // 기본값
+            needFileChange: needFileChange, // 파일 변경 필요 여부 기본값
+            name: nameInput ? nameInput.value : "", // 메뉴명 값 설정
+            price: priceInput.value.endsWith("원") ? priceInput.value.slice(0, -1) : "",  // 가격 값 설정
+            description: "", // description은 화면 입력값이 없으므로 기본값
+            recommendation: recommendationCheckbox ? recommendationCheckbox.checked : false // 추천 여부
+        });
+    });
 
     const request = {
            "name": $('#restaurant-name').val(),
@@ -1706,7 +1739,7 @@ function getTimeList(isOpeningHours) {
 
 
 function getCheckedAmenities() {
-    // 'amenity' 요소를 가져옴
+
     let $amenity = document.getElementById('amenity');
     // 'form-check-input' 클래스를 가진 모든 자식 요소를 가져옴
     let inputs = $amenity.getElementsByClassName('form-check-input');
@@ -1731,7 +1764,7 @@ function getCheckedAmenities() {
 
 function getCheckedKeywords() {
 
-    // 'amenity' 요소를 가져옴
+
     let $keyword = document.getElementById('keyword');
     // 'form-check-input' 클래스를 가진 모든 자식 요소를 가져옴
     let inputs = $keyword.getElementsByClassName('form-check-input');

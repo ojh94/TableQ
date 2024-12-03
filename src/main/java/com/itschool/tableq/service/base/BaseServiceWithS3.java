@@ -40,10 +40,12 @@ public abstract class BaseServiceWithS3<Req extends RequestWithFile, Res, Entity
 
             entity = getBaseRepository().save(entity);
 
-            String fileUrl = s3Service.uploadFile(requestEntity.getFile(), getDirectoryNameOfS3Bucket(),
-                    entity.getId() + FileUtil.getFileExtension(request.getData().getFile()));
+            if(requestEntity.getFile() != null) {
+                String fileUrl = s3Service.uploadFile(requestEntity.getFile(), getDirectoryNameOfS3Bucket(),
+                        entity.getId() + FileUtil.getFileExtension(request.getData().getFile()));
 
-            entity.updateFileUrl(fileUrl);
+                entity.updateFileUrl(fileUrl);
+            }
 
             Res menuItemResponse = response(entity);
 
@@ -69,26 +71,26 @@ public abstract class BaseServiceWithS3<Req extends RequestWithFile, Res, Entity
     @Override
     public Header<Res> update(Long id, Header<Req> request) {
         try {
-            Req menuItemRequest = request.getData();
+            Req entityRequest = request.getData();
 
-            MultipartFile file = menuItemRequest.getFile();
+            MultipartFile file = entityRequest.getFile();
 
             Entity findEntity = getBaseRepository().findById(id)
                     .orElseThrow(() -> new EntityNotFoundException());
 
             String existingUrl = findEntity.getFileUrl();
 
-            // if (menuItemRequest.isNeedFileChange()) { // 프론트에서 파일 변경이 필요하다 한 경우
-            if (file.isEmpty() && existingUrl != null) { // 대체 파일이 없고 기존 url이 있는 경우
-                s3Service.deleteFile(existingUrl); // 기존 파일 삭제
-                findEntity.updateFileUrl(null); // 파일 URL 삭제
-            } else if (!file.isEmpty()) { // 대체 파일이 있는 경우
-                String newUrl = s3Service.updateFile(existingUrl, file); // 새 파일 업로드
-                findEntity.updateFileUrl(newUrl); // 새 파일 URL 설정
+            if (entityRequest.isNeedFileChange()) { // 프론트에서 파일 변경이 필요하다 한 경우
+                if (file.isEmpty() && existingUrl != null) { // 대체 파일이 없고 기존 url이 있는 경우
+                    s3Service.deleteFile(existingUrl); // 기존 파일 삭제
+                    findEntity.updateFileUrl(null); // 파일 URL 삭제
+                } else if (!file.isEmpty()) { // 대체 파일이 있는 경우
+                    String newUrl = s3Service.updateFile(existingUrl, file); // 새 파일 업로드
+                    findEntity.updateFileUrl(newUrl); // 새 파일 URL 설정
+                }
             }
-            // }
 
-            findEntity.updateWithoutFileUrl(menuItemRequest);
+            findEntity.updateWithoutFileUrl(entityRequest);
 
             return Header.OK(response(findEntity));
         } catch (Exception e){

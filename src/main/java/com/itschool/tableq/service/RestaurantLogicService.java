@@ -85,7 +85,7 @@ public class RestaurantLogicService extends RestaurantService {
         restaurantKeywordService.deleteAllByRestaurant(restaurant);
         restaurantKeywordService.createByList(request.getRestaurantKeywordList());
 
-        // 메뉴 업데이트 (있으면 업데이트 없으면 insert)
+        // 메뉴 업데이트 (전부 삭제 후 다시 insert 향후 update로 변경 필요)
         if (request.getMenuItemList().size() >= 1) {
             for (MenuItemRequestWithFile menuItem : request.getMenuItemList())
                 menuItem.setRestaurant(RestaurantRequest.builder().id(id).build());
@@ -94,7 +94,7 @@ public class RestaurantLogicService extends RestaurantService {
             menuItemService.createByList(request.getMenuItemList());
         }
 
-        // 레스토랑 이미지 업데이트 (있으면 업데이트 없으면 insert)
+        // 레스토랑 이미지 업데이트 (전부 삭제 후 다시 insert 향후 update로 변경 필요)
         if (request.getRestaurantImageList().size() >= 1) {
             for (RestaurantImageRequestWithFile restaurantImage : request.getRestaurantImageList())
                 restaurantImage.setRestaurant(RestaurantRequest.builder().id(id).build());

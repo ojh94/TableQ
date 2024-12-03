@@ -31,7 +31,7 @@ public class FileUtil {
     public static boolean validateImageFileExtension(MultipartFile file) {
         String extension = getFileExtension(file);
 
-        return ALLOWED_IMAGE_EXTENSIONS.contains(extension) && isValidFileType(file, "image/");
+        return file.getName() != null || (ALLOWED_IMAGE_EXTENSIONS.contains(extension) && isValidFileType(file, "image/"));
     }
 
     public static void validateFileList(List<MultipartFile> fileList, long maxImageFileSize) {
@@ -73,7 +73,7 @@ public class FileUtil {
     }
 
     public static <T extends RequestWithFile> void saveFileInObject(T object, MultipartFile file) {
-        if(file != null && !file.isEmpty() && file.getSize() != 0L)
+        if(file != null && !file.isEmpty() && file.getSize() != 0L && file.getName() != null)
             object.setFile(file);
         /*else
             throw new RuntimeException("파일이 존재하지 않습니다.");*/
