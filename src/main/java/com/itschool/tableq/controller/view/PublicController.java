@@ -14,15 +14,15 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/")
 public class PublicController {
 
-    @Value("${app.version}")
-    private String appVersion;
-
     private final UserService userService;
 
     @Autowired
     public PublicController(UserService userService) {
         this.userService = userService;
     }
+
+    @Value("${app.version}")
+    private String appVersion;
 
     // 버전 확인용 페이지
     @GetMapping("/version")
