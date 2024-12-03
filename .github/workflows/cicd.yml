@@ -54,6 +54,7 @@ jobs:
         run: |
           mkdir -p deploy
           cp appspec.yml deploy/
+          cp execute-deploy.sh deploy/  # 스크립트 파일 포함
           cp build/libs/*.jar deploy/
           cd deploy && zip -r ./$GITHUB_SHA.zip *
           cd ../
