@@ -70,3 +70,13 @@ springdoc:
   # 해당 패턴에 매칭되는 controller만 swagger-ui에 노출한다.
   paths-to-match:
     - /api/**
+
+cloud:
+  aws:
+    s3:
+      bucket: tableq-bucket             # 버킷 이름
+    stack.auto: false                   # 자동 스택 관리 여부 (true로 설정하면 자동 관리)
+    region.static: ap-northeast-2       # AWS 서울 지역 (ap-northeast-2)
+    credentials:
+      access-Key: ${AWS_ACCESS_KEY_ID}
+      secret-Key: ${AWS_SECRET_ACCESS_KEY}
