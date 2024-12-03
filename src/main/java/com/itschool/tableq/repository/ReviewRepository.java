@@ -1,5 +1,6 @@
 package com.itschool.tableq.repository;
 
+import com.itschool.tableq.domain.Reservation;
 import com.itschool.tableq.domain.Restaurant;
 import com.itschool.tableq.domain.Review;
 import com.itschool.tableq.domain.User;
@@ -18,6 +19,8 @@ public interface ReviewRepository extends JpaRepository<Review, Long> {
     Page<Review> findByUser(User user, Pageable pageable);
 
     List<Review> findByUserAndRestaurantAndCreatedAtBetween(User user, Restaurant restaurant, LocalDateTime startOfDay, LocalDateTime endOfDay);
+
+    Review findByReservation(Reservation reservation);
 
     Optional<Review> getFirstByOrderByIdDesc();
 
