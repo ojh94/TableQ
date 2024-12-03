@@ -28,9 +28,9 @@ spring:
     properties:
       hibernate.dialect: org.hibernate.dialect.PostgreSQLDialect  # PostgreSQL 방언 사용
 
-    #hibernate:
+      #hibernate:
       #ddl-auto: create  # 운영 환경에서는 update로 변경
-    #properties:
+      #properties:
       #hibernate.dialect: org.hibernate.dialect.PostgreSQLDialect  # PostgreSQL 방언 사용
 
 cloud:
