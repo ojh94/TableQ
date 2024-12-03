@@ -32,7 +32,6 @@ public class User extends AuditableEntity<UserRequest> implements UserDetails {
     @Column(nullable = false, unique = true)
     private String phoneNumber;
 
-    @Column(nullable = false)
     private LocalDateTime lastLoginAt;
 
     private String address;
