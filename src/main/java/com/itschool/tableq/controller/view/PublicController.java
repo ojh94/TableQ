@@ -16,9 +16,13 @@ public class PublicController {
 
     @Value("${app.version}")
     private String appVersion;
-    
+
+    private final UserService userService;
+
     @Autowired
-    UserService userService;
+    public PublicController(UserService userService) {
+        this.userService = userService;
+    }
 
     // 버전 확인용 페이지
     @GetMapping("/version")
