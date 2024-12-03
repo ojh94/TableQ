@@ -11,10 +11,11 @@ spring:
       password: ${SPRING_DATASOURCE_PASSWORD}
   jpa:
     # show-sql: false  # 운영 환경에서는 SQL 로그를 출력하지 않는 것이 좋음
-    hibernate:
-      ddl-auto: create
     properties:
-      hibernate.dialect: org.hibernate.dialect.PostgreSQLDialect
+      hibernate:
+        format_sql: true
+        ddl-auto: create  # 스키마 자동 변경
+        dialect: org.hibernate.dialect.PostgreSQLDialect  # PostgreSQL 방언 사용
 
 cloud:
   aws:
