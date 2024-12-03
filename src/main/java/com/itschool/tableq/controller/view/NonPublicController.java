@@ -17,4 +17,11 @@ public class NonPublicController {
             model.addAttribute("user", user);
         return "favorites";
     }
+
+    @GetMapping("/search")
+    public String search(@AuthenticationPrincipal User user, Model model) {
+        if(user != null)
+            model.addAttribute("user", user);
+        return  "search";
+    }
 }

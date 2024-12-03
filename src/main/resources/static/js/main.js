@@ -229,7 +229,17 @@ function displayReservedRestaurants(userId) {
 document.addEventListener('DOMContentLoaded', () => {
     const userIdInput = document.getElementById("userId");
     const userId = userIdInput ? userIdInput.value : null;
+
+    // userId가 null이 아니면 즐겨찾기 데이터 불러오기
+    if (userId) {
+        loadUserBookmarks(userId);  // 유저의 즐겨찾기 데이터 불러오기
+    } else {
+        console.error("User ID is not available");
+    }
+
     const url = `/api/reservation/user/${userId}?page=0&size=10&sort=createdAt,desc`;
+
+
 
     fetch(url)
       .then(response => response.json())
@@ -309,6 +319,37 @@ document.addEventListener('DOMContentLoaded', () => {
   console.log("main.js DOMContentLoaded 완료");
 });
 
+// 즐겨찾기 상태 업데이트 함수
+function updateFavoriteButton(restaurantId) {
+    const favoriteButton = document.querySelector(`#favorite-btn-${restaurantId}`);
+
+    const favorites = JSON.parse(localStorage.getItem('favorites')) || [];
+
+    if (button) {
+        // 북마크 ID를 버튼에 저장
+        button.setAttribute('data-bookmark-id', bookmark.id);
+        button.setAttribute('data-favorite', true);
+        button.querySelector('i').classList.add('fa-solid');
+        button.querySelector('i').classList.remove('fa-regular');
+    }
+}
+
+// 유저의 즐겨찾기 데이터 불러오기
+function loadUserBookmarks(userId) {
+    $.ajax({
+        url: `/api/bookmark/user/${userId}`,
+        type: 'GET',
+        success: function (response) {
+            response.data.forEach(bookmark => {
+                updateFavoriteStatus(bookmark);  // 즐겨찾기 상태 반영
+            });
+        },
+        error: function (xhr, status, error) {
+            console.error("Error loading bookmarks:", error);
+        }
+    });
+}
+
 // 즐겨찾기 버튼 토글여부 확인
 function toggleFavoriteButton(button, isFavorite) {
     button[0].setAttribute('data-favorite', !isFavorite);
@@ -321,26 +362,37 @@ function addToFavorites(restaurantId, userId) {
     const button = document.querySelector(`[data-id="${restaurantId}"]`);
     const isFavorite = button.getAttribute('data-favorite') === 'true';
 
-    // UI에서 즉시 변경 (버튼 상태 반영)
-    button.setAttribute('data-favorite', !isFavorite);
-    button.querySelector('i').classList.toggle("fa-solid");
-    button.querySelector('i').classList.toggle("fa-regular");
+    // 요청 데이터
+    const requestBody = {
+        data: {
+            restaurant: {
+                id: restaurantId
+            },
+            user: {
+                id: userId
+            }
+        }
+    };
 
     // 동기식 Ajax 요청
     $.ajax({
         url: '/api/bookmark',
         type: 'POST',
         contentType: 'application/json',
-        data: JSON.stringify({ restaurantId, userId }),
+        data: JSON.stringify(requestBody),
         async: false, // 동기식으로 요청
         success: function () {
-            console.log("Added to favorites");
+            button.setAttribute('data-favorite', isFavorite);
+            button.querySelector('i').classList.toggle("fa-solid");
+            button.querySelector('i').classList.toggle("fa-regular");
+            console.log(isFavorite ? "Removed from favorites" : "Added to favorites");
+
         },
         error: function (xhr, status, error) {
             console.error("Error adding to favorites:", error);
 
             // 실패 시, UI 상태 원복 (에러 발생 시)
-            button.setAttribute('data-favorite', isFavorite);
+            button.setAttribute('data-favorite', !isFavorite);
             button.querySelector('i').classList.toggle("fa-solid");
             button.querySelector('i').classList.toggle("fa-regular");
         }
@@ -349,21 +401,19 @@ function addToFavorites(restaurantId, userId) {
 
 
 // 즐겨찾기 삭제
-function removeFromFavorites(restaurantId, userId) {
-    const button = document.querySelector(`[data-id="${restaurantId}"]`);
-    const isFavorite = button.getAttribute('data-favorite') === 'true';
-
-    // UI에서 즉시 변경 (버튼 상태 반영)
-    button.setAttribute('data-favorite', !isFavorite);
-    button.querySelector('i').classList.toggle("fa-solid");
-    button.querySelector('i').classList.toggle("fa-regular");
+function removeFromFavorites(button) {
+    const bookmarkId = button.getAttribute('data-bookmark-id'); // 버튼에서 북마크 ID 가져오기
+    const isFavorite = button.getAttribute('data-favorite') === 'false';
 
     // 동기식 Ajax 요청
     $.ajax({
-        url: `/api/bookmark/${restaurantId}`,
+        url: `/api/bookmark/${bookmarkId}`,
         type: 'DELETE',
         async: false, // 동기식으로 요청
         success: function () {
+            button.setAttribute('data-favorite', !isFavorite);
+            button.querySelector('i').classList.toggle("fa-solid");
+            button.querySelector('i').classList.toggle("fa-regular");
             console.log("Removed from favorites");
         },
         error: function (xhr, status, error) {
@@ -502,6 +552,8 @@ function updatePagination(totalPages) {
     $('#currentPage').text(currentPage + 1); // 현재 페이지 표시
     $('#totalPages').text(totalPages); // 전체 페이지 수 표시
 }
+
+
 
 
 $(document).ready(function () {
