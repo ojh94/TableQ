@@ -33,7 +33,7 @@ public class Restaurant extends AuditableEntity<RestaurantRequest> {
     private boolean isAvailable;
     
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "buisness_id", updatable = false)
+    @JoinColumn(name = "business_id", updatable = false)
     private BusinessInformation businessInformation;
 
     public void update(RestaurantRequest requestEntity) {

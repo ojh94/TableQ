@@ -55,7 +55,7 @@ public class BusinessInformationService extends BaseService<BusinessInformationR
         User user = userRepository.findById(userId)
                 .orElseThrow(()->new NotFoundException("Not Found Owner Id: "+userId));
 
-        List<BusinessInformation> businessInformationList = getBaseRepository().findByUser(user).orElseThrow(()-> new EntityNotFoundException());
+        List<BusinessInformation> businessInformationList = getBaseRepository().findByUser(user);
 
         return Header.OK(responseList(businessInformationList));
     }

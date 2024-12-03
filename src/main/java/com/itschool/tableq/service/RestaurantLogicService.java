@@ -10,6 +10,7 @@ import com.itschool.tableq.network.request.update.RestaurantUpdateAllRequest;
 import com.itschool.tableq.network.response.RestaurantResponse;
 import com.itschool.tableq.repository.BusinessInformationRepository;
 import com.itschool.tableq.repository.RestaurantRepository;
+import com.itschool.tableq.repository.UserRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -31,6 +32,7 @@ public class RestaurantLogicService extends RestaurantService {
 
     public RestaurantLogicService(RestaurantRepository baseRepository,
                                   BusinessInformationRepository businessInformationRepository,
+                                  UserRepository userRepository,
                                   RestaurantImageService restaurantImageService,
                                   OpeningHourService openingHourService,
                                   BreakHourService breakHourService,
@@ -38,7 +40,7 @@ public class RestaurantLogicService extends RestaurantService {
                                   RestaurantKeywordService restaurantKeywordService,
                                   MenuItemService menuItemService) {
 
-        super(baseRepository, businessInformationRepository);
+        super(baseRepository, businessInformationRepository, userRepository);
         this.restaurantImageService = restaurantImageService;
         this.openingHourService = openingHourService;
         this.breakHourService = breakHourService;

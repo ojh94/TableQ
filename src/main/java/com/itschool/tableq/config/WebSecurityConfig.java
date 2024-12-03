@@ -52,15 +52,16 @@ public class WebSecurityConfig {
                                 new AntPathRequestMatcher("/signup"),
                                 new AntPathRequestMatcher("/api/user"), // 비회원도 회원 가입 시 필요
                                 new AntPathRequestMatcher("/api/user/check-email"), // 비회원도 회원 가입 시 필요
-                                new AntPathRequestMatcher("/api/user/check-phonenumber") // 비회원도 회원 가입 시 필요
+                                new AntPathRequestMatcher("/api/user/check-phonenumber"), // 비회원도 회원 가입 시 필요
                                 // 운영 배포 시 삭제 요망
-                                // new AntPathRequestMatcher("/api/**"),
-                                // new AntPathRequestMatcher("/api-docs"),
-                                // new AntPathRequestMatcher("/api-docs/**"),
-                                // new AntPathRequestMatcher("/v3/api-docs/**"),
-                                // new AntPathRequestMatcher("/swagger*/**"),
-                                // new AntPathRequestMatcher("/swagger-resources/**")
+                                new AntPathRequestMatcher("/api/**"),
+                                new AntPathRequestMatcher("/api-docs"),
+                                new AntPathRequestMatcher("/api-docs/**"),
+                                new AntPathRequestMatcher("/v3/api-docs/**"),
+                                new AntPathRequestMatcher("/swagger*/**"),
+                                new AntPathRequestMatcher("/swagger-resources/**")
                         ).permitAll()
+                        /*
                         .requestMatchers("/admin/**",
                                          "/api/user/owner-role")
                         .hasRole(MemberRole.ADMIN.name())
@@ -71,6 +72,7 @@ public class WebSecurityConfig {
                         .requestMatchers("/user/**",
                                          "/api/**")
                         .hasRole(MemberRole.USER.name())
+                        */
                         .anyRequest().authenticated()
                 )
                 .formLogin(formLogin -> formLogin // 폼 기반 로그인 설정

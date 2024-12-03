@@ -1,6 +1,8 @@
 package com.itschool.tableq.service;
 
+import com.itschool.tableq.domain.BusinessInformation;
 import com.itschool.tableq.domain.Restaurant;
+import com.itschool.tableq.domain.User;
 import com.itschool.tableq.network.Header;
 import com.itschool.tableq.network.request.RestaurantRequest;
 import com.itschool.tableq.network.request.update.RestaurantUpdateAllRequest;
@@ -16,21 +18,25 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Component
 public class RestaurantService extends BaseService<RestaurantRequest, RestaurantResponse, Restaurant> {
+
+    private final UserRepository userRepository;
 
     private final BusinessInformationRepository businessInformationRepository;
 
     // 생성자
     @Autowired
     public RestaurantService(RestaurantRepository baseRepository,
-                                BusinessInformationRepository businessInformationRepository) {
+                             BusinessInformationRepository businessInformationRepository,
+                             UserRepository userRepository) {
         super(baseRepository);
         this.businessInformationRepository = businessInformationRepository;
+        this.userRepository = userRepository;
     }
-
 
     @Override
     protected RestaurantRepository getBaseRepository() {
@@ -75,5 +81,21 @@ public class RestaurantService extends BaseService<RestaurantRequest, Restaurant
         Page<Restaurant> searchedList = getBaseRepository().searchByAddress(address, pageable);
 
         return convertPageToList(searchedList);
+    }
+
+    public Header<List<RestaurantResponse>> readAllMyRestaurant(Long userId){
+        List<BusinessInformation> myInfo = businessInformationRepository.findByUser(userRepository.findById(userId)
+                .orElseThrow(() -> new EntityNotFoundException())
+        );
+
+        List<Restaurant> myRestaurants = new ArrayList<>();
+
+        for(BusinessInformation businessInformation : myInfo){
+            myRestaurants.add(getBaseRepository().findByBusinessInformation(businessInformation)
+                    .orElse(null)
+            );
+        }
+
+        return Header.OK(responseList(myRestaurants));
     }
 }

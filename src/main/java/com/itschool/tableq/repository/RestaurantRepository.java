@@ -1,5 +1,6 @@
 package com.itschool.tableq.repository;
 
+import com.itschool.tableq.domain.BusinessInformation;
 import com.itschool.tableq.domain.Restaurant;
 import com.itschool.tableq.network.response.RestaurantResponse;
 import org.springframework.data.domain.Page;
@@ -8,6 +9,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.util.List;
 import java.util.Optional;
 
 public interface RestaurantRepository extends JpaRepository<Restaurant, Long> {
@@ -25,6 +27,8 @@ public interface RestaurantRepository extends JpaRepository<Restaurant, Long> {
 
     @Query("SELECT r FROM Restaurant r LEFT JOIN Review rev on rev.restaurant.id = r.id GROUP BY r.id ORDER BY SUM(rev.starRating) desc NULLS LAST")
     Page<Restaurant> findTopRatedRestaurants(Pageable pageable);
+
+    Optional<Restaurant> findByBusinessInformation(BusinessInformation businessInformation);
 
     Optional<Long> countBy();
 }

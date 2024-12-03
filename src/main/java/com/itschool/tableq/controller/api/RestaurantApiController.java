@@ -101,4 +101,11 @@ public class RestaurantApiController extends CrudController<RestaurantRequest, R
         // 업데이트 서비스 호출
         return ((RestaurantLogicService) baseService).updateAll(id, request);
     }
+
+    @Operation(summary = "내가 운영중인 식당 조회", description = "User ID로 내가 운영중인 식당 조회")
+    @GetMapping("/owner/my-restaurants/{userId}")
+    public Header<List<RestaurantResponse>> readMyRestaurants(@PathVariable(name = "userId") Long userId){
+        log.info("read: ",userId);
+        return ((RestaurantService)baseService).readAllMyRestaurant(userId);
+    }
 }

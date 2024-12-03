@@ -11,5 +11,5 @@ public interface BusinessInformationRepository extends JpaRepository<BusinessInf
 
     Optional<Long> countBy();
     Optional<BusinessInformation> findByBusinessNumber(String businessNumber);
-    Optional<List<BusinessInformation>> findByUser(User user);
+    List<BusinessInformation> findByUser(User user);
 }
