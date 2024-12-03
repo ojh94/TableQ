@@ -79,4 +79,4 @@ cloud:
     region.static: ap-northeast-2       # AWS 서울 지역 (ap-northeast-2)
     credentials:
       access-Key: ${AWS_ACCESS_KEY_ID}
-      secret-Key: ${AWS_SECRET_ACCESS_KEY_ID}
+      secret-Key: ${AWS_SECRET_ACCESS_KEY}
