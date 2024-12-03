@@ -44,6 +44,7 @@ public class UserResponse {
     public static UserResponse of(User user) {
         return UserResponse.builder()
             .id(user.getId())
+            .email(user.getEmail())
             .nickname(user.getNickname())
             .phoneNumber(user.getPhoneNumber())
             .lastLoginAt(user.getLastLoginAt())
