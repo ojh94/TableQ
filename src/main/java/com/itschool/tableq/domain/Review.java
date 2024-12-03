@@ -28,6 +28,10 @@ public class Review extends AuditableEntity<ReviewRequest> {
     @JoinColumn(name = "user_id", updatable = false)
     private User user;
 
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "reservation_id", updatable = false)
+    private Reservation reservation;
+
     public void update(ReviewRequest reviewRequest) {
         this.content = reviewRequest.getContent() == null? this.content : reviewRequest.getContent();;
         this.starRating = reviewRequest.getStarRating() == null? this.starRating : reviewRequest.getStarRating();;

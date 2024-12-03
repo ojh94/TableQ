@@ -30,9 +30,7 @@ public class ReviewService extends BaseService<ReviewRequest, ReviewResponse, Re
     ReservationRepository reservationRepository;
 
     private final UserRepository userRepository;
-
     // 생성자
-
     private final RestaurantRepository restaurantRepository;
 
     @Autowired
@@ -65,6 +63,15 @@ public class ReviewService extends BaseService<ReviewRequest, ReviewResponse, Re
                 .user(userRepository.findById(requestEntity.getUser().getId())
                         .orElseThrow(() -> new EntityNotFoundException("유저를 찾을 수 없습니다.")))
                 .build();
+    }
+
+    public Header<Boolean> isReviewable(Long reservationId){
+
+        Review review = getBaseRepository().findByReservation(reservationRepository.findById(reservationId)
+                .orElseThrow(()->new EntityNotFoundException("not found reservation"))
+        );
+        if(review == null) return Header.OK(true);
+        else return Header.OK(false);
     }
 
     public Header<Long> countUserReviewsFor3Days(Long restaurantId, Long userId){

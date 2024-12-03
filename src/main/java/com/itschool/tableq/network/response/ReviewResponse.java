@@ -1,5 +1,6 @@
 package com.itschool.tableq.network.response;
 
+import com.itschool.tableq.domain.Reservation;
 import com.itschool.tableq.domain.Restaurant;
 import com.itschool.tableq.domain.Review;
 import com.itschool.tableq.domain.User;
@@ -26,6 +27,8 @@ public class ReviewResponse {
 
     private RestaurantResponse restaurant;
 
+    private ReservationResponse reservation;
+
     private LocalDateTime createdAt;
 
     private LocalDateTime lastModifiedAt;
@@ -33,6 +36,7 @@ public class ReviewResponse {
     public static ReviewResponse of(Review review){
         User user = review.getUser();
         Restaurant restaurant = review.getRestaurant();
+        Reservation reservation = review.getReservation();
 
         return ReviewResponse.builder()
                 .id(review.getId())
@@ -46,6 +50,9 @@ public class ReviewResponse {
                 .restaurant(RestaurantResponse.builder()
                         .id(restaurant.getId())
                         .name(restaurant.getName())
+                        .build())
+                .reservation(ReservationResponse.builder()
+                        .id(reservation.getId())
                         .build())
                 .createdAt(review.getCreatedAt())
                 .lastModifiedAt(review.getLastModifiedAt())
