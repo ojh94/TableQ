@@ -8,7 +8,7 @@ spring:
       root: INFO  # 전체 애플리케이션의 기본 로그 레벨
       com.itschool.tableq: DEBUG  # 특정 패키지의 로그 레벨 설정 (예: 디버깅이 필요한 패키지에 대해 DEBUG)
     file:
-      name: /var/log/tableq/application.log  # 로그 파일 경로 설정
+      name: /home/ec2-user/app/log/application.log  # 로그 파일 경로 설정
     pattern:
       console: "%d{yyyy-MM-dd HH:mm:ss} - %5p [%t] %c{1}:%L - %m%n"  # 콘솔 출력 패턴
       file: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n"  # 파일 출력 패턴
