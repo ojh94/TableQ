@@ -1,4 +1,6 @@
 console.log("index.js 시작");
+
+
 $(document).ready(function () {
     console.log("DOM fully loaded.");
 
@@ -55,14 +57,14 @@ console.log("index.js 끝");
 //    return card;
 //}
 
-   // 검색 및 정렬 기능 처리
-    const searchForm = document.getElementById("searchForm");
-    const searchInput = document.getElementById("searchInput");
-    searchForm.addEventListener("submit", (e) => {
-        e.preventDefault();
-        console.log("Searching for:", searchInput.value);
-        // 여기에 검색 로직 추가
-    });
+//   // 검색 및 정렬 기능 처리
+//    const searchForm = document.getElementById("searchForm");
+//    const searchInput = document.getElementById("searchInput");
+//    searchForm.addEventListener("submit", (e) => {
+//        e.preventDefault();
+//        console.log("Searching for:", searchInput.value);
+//        // 여기에 검색 로직 추가
+//    });
 
 //    const sortSelect = document.getElementById("sortSelect");
 //    sortSelect.addEventListener("change", () => {
