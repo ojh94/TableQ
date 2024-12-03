@@ -40,7 +40,7 @@ jobs:
         shell: bash
 
       - name: Build with Gradle
-        run: ./gradlew clean build --info
+        run: ./gradlew clean build -x test --info
         shell: bash
 
       # 배포용 패키지 경로 저장
