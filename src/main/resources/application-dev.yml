@@ -65,9 +65,9 @@ springdoc:
   paths-to-match:
     - /api/**
 
-logging:
-  level:
-    org.springframework.security: DEBUG
+#logging:
+#  level:
+#    org.springframework.security: DEBUG
 
 
 cloud:
@@ -77,5 +77,5 @@ cloud:
     stack.auto: false                   # 자동 스택 관리 여부 (true로 설정하면 자동 관리)
     region.static: ap-northeast-2       # AWS 서울 지역 (ap-northeast-2)
     credentials:
-      access-Key:
-      secret-Key:
+      access-Key: ${AWS_ACCESS_KEY_ID}
+      secret-Key: ${AWS_SECRET_ACCESS_KEY}

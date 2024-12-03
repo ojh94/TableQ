@@ -1,0 +1,27 @@
+spring:
+  config:
+    activate:
+      on-profile: prod
+  h2:
+    console:
+      enabled: false
+  datasource:
+    url: ${{ secrets.RDS_HOST }}
+    username: ${{ secrets.RDS_USERNAME }}
+    password: ${{ secrets.RDS_PASSWORD }}
+  jpa:
+    # show-sql: false  # 운영 환경에서는 SQL 로그를 출력하지 않는 것이 좋음
+    hibernate:
+      ddl-auto: validate
+    properties:
+      hibernate.dialect: org.hibernate.dialect.PostgreSQLDialect
+
+cloud:
+  aws:
+    s3:
+      bucket: tableq-bucket             # 버킷 이름
+    stack.auto: false                   # 자동 스택 관리 여부 (true로 설정하면 자동 관리)
+    region.static: ap-northeast-2       # AWS 서울 지역 (ap-northeast-2)
+    credentials:
+      access-Key: ${AWS_ACCESS_KEY_ID}
+      secret-Key: ${AWS_SECRET_ACCESS_KEY}
