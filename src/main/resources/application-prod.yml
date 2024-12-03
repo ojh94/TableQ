@@ -13,7 +13,6 @@ spring:
     # show-sql: false  # 운영 환경에서는 SQL 로그를 출력하지 않는 것이 좋음
     properties:
       hibernate:
-        format_sql: true
         ddl-auto: create  # 스키마 자동 변경
         dialect: org.hibernate.dialect.PostgreSQLDialect  # PostgreSQL 방언 사용
 
