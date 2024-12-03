@@ -4,6 +4,7 @@ import com.itschool.tableq.domain.User;
 import com.itschool.tableq.domain.enumclass.MemberRole;
 import com.itschool.tableq.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -13,9 +14,19 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/")
 public class PublicController {
 
+    @Value("${app.version}")
+    private String appVersion;
+    
     @Autowired
     UserService userService;
 
+    // 버전 확인용 페이지
+    @GetMapping("/version")
+    public String getVersion(Model model) {
+        model.addAttribute("version", appVersion);
+        return "version"; // version.html로 리턴
+    }
+    
     // 홈
     @GetMapping("/")
     public String home(@AuthenticationPrincipal User user, Model model) {
