@@ -10,11 +10,15 @@ spring:
     username: ${SPRING_DATASOURCE_USERNAME}
     password: ${SPRING_DATASOURCE_PASSWORD}
   jpa:
-    # 운영 환경에서는 SQL 로그를 출력하지 않는 것이 좋음
-    ddl-auto: create  # 운영 환경에서는 update로 변경
+    hibernate:
+      ddl-auto: validate  # 운영 환경에서는 update로 변경
     properties:
-      hibernate:
-        dialect: org.hibernate.dialect.PostgreSQLDialect  # PostgreSQL 방언 사용
+      hibernate.dialect: org.hibernate.dialect.PostgreSQLDialect  # PostgreSQL 방언 사용
+
+    #hibernate:
+      #ddl-auto: create  # 운영 환경에서는 update로 변경
+    #properties:
+      #hibernate.dialect: org.hibernate.dialect.PostgreSQLDialect  # PostgreSQL 방언 사용
 
 cloud:
   aws:
