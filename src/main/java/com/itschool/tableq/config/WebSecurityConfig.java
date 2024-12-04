@@ -47,6 +47,7 @@ public class WebSecurityConfig {
                                 new AntPathRequestMatcher("/img/**"),
                                 new AntPathRequestMatcher("/js/**"),
                                 new AntPathRequestMatcher("/version"),
+                                new AntPathRequestMatcher("/profile"),
                                 new AntPathRequestMatcher("/auth"),
                                 new AntPathRequestMatcher("/login"),
                                 new AntPathRequestMatcher("/signup"),
