@@ -1,5 +1,5 @@
 app:
-  version: 1.0.5
+  version: 1.0.6
 
 server:
   port: 8080
@@ -10,5 +10,3 @@ spring:
     default-property-inclusion: non_null
   profiles:
     active: prod
-  # config:
-  # location: classpath:/application-dev.yml
