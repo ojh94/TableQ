@@ -62,6 +62,8 @@ public class ReviewService extends BaseService<ReviewRequest, ReviewResponse, Re
                         .orElseThrow(() -> new EntityNotFoundException("레스토랑을 찾을 수 없습니다.")))
                 .user(userRepository.findById(requestEntity.getUser().getId())
                         .orElseThrow(() -> new EntityNotFoundException("유저를 찾을 수 없습니다.")))
+                .reservation(reservationRepository.findById(requestEntity.getReservation().getId())
+                        .orElseThrow(() -> new EntityNotFoundException("예약을 찾을 수 없습니다.")))
                 .build();
     }
 
