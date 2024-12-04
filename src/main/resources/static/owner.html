@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Owner API Test</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+<h1>Owner API Test</h1>
+
+<!-- Owner 생성 -->
+<div>
+    <h2>Owner 생성</h2>
+    <label for="ownerEmail">이메일:</label>
+    <input type="text" id="ownerEmail" required><br><br>
+
+    <label for="ownerPassword">비밀번호:</label>
+    <input type="password" id="ownerPassword" required><br><br>
+
+    <label for="ownerName">이름:</label>
+    <input type="text" id="ownerName"><br><br>
+
+    <label for="ownerNickname">닉네임:</label>
+    <input type="text" id="ownerNickname" required><br><br>
+
+    <label for="ownerPhoneNumber">전화번호:</label>
+    <input type="text" id="ownerPhoneNumber" required><br><br>
+
+    <label for="ownerAddress">주소:</label>
+    <input type="text" id="ownerAddress" required><br><br>
+
+    <button id="createOwnerBtn">Owner 생성</button>
+
+    <div id="createOwnerResult"></div>
+</div>
+
+<!-- Owner 조회 -->
+<div>
+    <h2>Owner 조회</h2>
+    <label for="ownerId">Owner ID:</label>
+    <input type="text" id="ownerId" required><br><br>
+
+    <button id="fetchOwnerBtn">Owner 조회</button><br><br>
+
+    <div id="ownerDetails">
+        <p><strong>조회된 Owner:</strong></p>
+        <div id="ownerDetailsContent"></div>
+    </div>
+</div>
+
+<!-- Owner 수정 -->
+<div>
+    <h2>Owner 수정</h2>
+    <label for="ownerEmailUpdate">이메일:</label>
+    <input type="text" id="ownerEmailUpdate"><br><br>
+
+    <label for="ownerPasswordUpdate">비밀번호:</label>
+    <input type="password" id="ownerPasswordUpdate"><br><br>
+
+    <label for="ownerNameUpdate">이름:</label>
+    <input type="text" id="ownerNameUpdate"><br><br>
+
+    <label for="ownerNicknameUpdate">닉네임:</label>
+    <input type="text" id="ownerNicknameUpdate"><br><br>
+
+    <label for="ownerPhoneNumberUpdate">전화번호:</label>
+    <input type="text" id="ownerPhoneNumberUpdate"><br><br>
+
+    <label for="ownerAddressUpdate">주소:</label>
+    <input type="text" id="ownerAddressUpdate"><br><br>
+
+    <button id="updateOwnerBtn">Owner 수정</button>
+
+    <div id="updateOwnerResult"></div>
+</div>
+
+<!-- Owner 삭제 -->
+<div>
+    <h2>Owner 삭제</h2>
+    <label for="ownerIdDelete">삭제할 Owner ID:</label>
+    <input type="text" id="ownerIdDelete" required><br><br>
+
+    <button id="deleteOwnerBtn">Owner 삭제</button>
+
+    <div id="deleteOwnerResult"></div>
+</div>
+
+<script>
+    // Owner 생성
+    $('#createOwnerBtn').on('click', function() {
+        const request = {
+            'id': 0,
+            'password': $('#ownerPassword').val(),
+            'email': $('#ownerEmail').val(),
+            'name': $('#ownerName').val(),
+            'nickname': $('#ownerNickname').val(),
+            'phoneNumber': $('#ownerPhoneNumber').val(),
+            'address': $('#ownerAddress').val()
+        };
+
+        $.ajax({
+            url: '/api/user/owner-role',
+            method: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify({ data: request }),
+            success: function(data) {
+                $('#createOwnerResult').html('<p><strong>생성 성공:</strong></p><pre>' + JSON.stringify(data, null, 2) + '</pre>');
+            },
+            error: function(xhr, status, error) {
+                $('#createOwnerResult').html('<p>오류 발생: ' + error + '</p>');
+            }
+        });
+    });
+
+    // Owner 조회
+    $('#fetchOwnerBtn').on('click', function() {
+        const ownerId = $('#ownerId').val();
+        if (!ownerId) {
+            alert('Owner ID를 입력해주세요.');
+            return;
+        }
+
+        $.ajax({
+            url: `/api/user/${ownerId}`,
+            method: 'GET',
+            success: function(data) {
+                const ownerData = data.data;
+                const resultHtml = `
+                    <p><strong>이메일:</strong> ${ownerData.email}</p>
+                    <p><strong>닉네임:</strong> ${ownerData.nickname}</p>
+                    <p><strong>전화번호:</strong> ${ownerData.phoneNumber}</p>
+                    <p><strong>주소:</strong> ${ownerData.address}</p>
+                `;
+                $('#ownerDetailsContent').html(resultHtml);
+
+                // 수정할 수 있도록 기본 값 설정
+                $('#ownerEmailUpdate').val(ownerData.email);
+                $('#ownerNicknameUpdate').val(ownerData.nickname);
+                $('#ownerPhoneNumberUpdate').val(ownerData.phoneNumber);
+                $('#ownerAddressUpdate').val(ownerData.address);
+            },
+            error: function(xhr, status, error) {
+                $('#ownerDetailsContent').html('<p>오류 발생: ' + error + '</p>');
+            }
+        });
+    });
+
+    // Owner 수정
+    $('#updateOwnerBtn').on('click', function() {
+        const ownerId = $('#ownerId').val();
+        if (!ownerId) {
+            alert('Owner ID를 입력해주세요.');
+            return;
+        }
+
+        const request = {
+            'id': 0,
+            'password': $('#ownerPasswordUpdate').val(),
+            'email': $('#ownerEmailUpdate').val(),
+            'name': $('#ownerNameUpdate').val(),
+            'nickname': $('#ownerNicknameUpdate').val(),
+            'phoneNumber': $('#ownerPhoneNumberUpdate').val(),
+            'address': $('#ownerAddressUpdate').val()
+        };
+
+        $.ajax({
+            url: `/api/user/${ownerId}`,
+            method: 'PUT',
+            contentType: 'application/json',
+            data: JSON.stringify({ data: request }),
+            success: function(data) {
+                $('#updateOwnerResult').html('<p><strong>수정 성공:</strong></p><pre>' + JSON.stringify(data, null, 2) + '</pre>');
+            },
+            error: function(xhr, status, error) {
+                $('#updateOwnerResult').html('<p>오류 발생: ' + error + '</p>');
+            }
+        });
+    });
+
+    // Owner 삭제
+    $('#deleteOwnerBtn').on('click', function() {
+        const ownerId = $('#ownerIdDelete').val();
+        if (!ownerId) {
+            alert('Owner ID를 입력해주세요.');
+            return;
+        }
+
+        $.ajax({
+            url: `/api/user/${ownerId}`,
+            method: 'DELETE',
+            success: function(data) {
+                $('#deleteOwnerResult').html('<p><strong>삭제 성공:</strong></p><pre>' + JSON.stringify(data, null, 2) + '</pre>');
+            },
+            error: function(xhr, status, error) {
+                $('#deleteOwnerResult').html('<p>오류 발생: ' + error + '</p>');
+            }
+        });
+    });
+</script>
+
+</body>
+</html>

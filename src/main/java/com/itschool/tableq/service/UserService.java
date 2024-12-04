@@ -47,6 +47,7 @@ public class UserService extends BaseService<UserRequest, UserResponse, User> {
                 .password(bCryptPasswordEncoder.encode(requestEntity.getPassword()))
                 .name(requestEntity.getName())
                 .phoneNumber(requestEntity.getPhoneNumber())
+                .address(requestEntity.getAddress())
                 .memberRole(requestEntity.getMemberRole())
                 .build();
     }
