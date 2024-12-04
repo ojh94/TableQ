@@ -2,7 +2,7 @@ app:
   version: 1.0.5
 
 server:
-  port: 80
+  port: 8080
 
 # Choose Environment
 spring:
