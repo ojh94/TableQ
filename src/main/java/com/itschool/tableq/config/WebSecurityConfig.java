@@ -15,8 +15,6 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.header.writers.frameoptions.XFrameOptionsHeaderWriter;
-import org.springframework.security.web.savedrequest.HttpSessionRequestCache;
-import org.springframework.security.web.savedrequest.RequestCache;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 @Configuration
@@ -25,14 +23,13 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 public class WebSecurityConfig {
 
     private final UserDetailService userDetailService;
-
     private final CustomAuthenticationSuccessHandler customSuccessHandler;
 
     // 스프링 시큐리티 기능 비활성화 : 인증과 인가를 적용하지 않는 곳 명시
     @Bean
     public WebSecurityCustomizer configure() {
         return (web -> web.ignoring()
-                .requestMatchers("/h2-console/**") // h2-console는 url은 막지마라
+                .requestMatchers("/h2-console/**") // h2-console은 url은 막지마라
                 .requestMatchers(new AntPathRequestMatcher("/js/**")) // 정적 파일 url은 막지마라
                 .requestMatchers(new AntPathRequestMatcher("/css/**")));
     }
@@ -64,23 +61,25 @@ public class WebSecurityConfig {
                                 //new AntPathRequestMatcher("/swagger*/**"),
                                 //new AntPathRequestMatcher("/swagger-resources/**")
                         ).permitAll()
+
                         .requestMatchers("/admin/**",
-                                         "/api/user/owner-role")
+                                "/api/user/owner-role")
                         .hasRole(MemberRole.ADMIN.name())
                         .requestMatchers("/owner/**",
-                                         "/api/**",
-                                         "/restaurant/modify/**")
+                                "/restaurant/modify/**")
                         .hasRole(MemberRole.OWNER.name())
-                        .requestMatchers("/user/**",
-                                         "/api/**")
+                        .requestMatchers("/user/**")
                         .hasRole(MemberRole.USER.name())
+
+                        .requestMatchers("/api/**")
+                        .hasAnyRole(MemberRole.ADMIN.name(), MemberRole.OWNER.name(), MemberRole.USER.name())
                         .anyRequest().authenticated()
                 )
                 .formLogin(formLogin -> formLogin // 폼 기반 로그인 설정
                         .loginPage("/login")
                         .usernameParameter("email")
-                        .defaultSuccessUrl("/")
-                        .successHandler(customSuccessHandler)
+                        .defaultSuccessUrl("/") // 기본 로그인 성공 URL
+                        .successHandler(customSuccessHandler) // 로그인 성공 핸들러 설정
                 )
                 .logout(logout -> logout // 로그아웃 설정
                         .logoutUrl("/logout")
@@ -100,7 +99,7 @@ public class WebSecurityConfig {
                 .build();
     }
 
-    // 인증 관리자 관련 설정 : 사용자 정보를 가져올 서비스를 재정의하거나 인증방법 등을 설정
+    // 인증 관리자 관련 설정
     @Bean
     public AuthenticationManager authenticationManager(HttpSecurity http,
                                                        BCryptPasswordEncoder bCryptPasswordEncoder,
@@ -116,11 +115,5 @@ public class WebSecurityConfig {
     @Bean
     public BCryptPasswordEncoder bCryptPasswordEncoder() {
         return new BCryptPasswordEncoder();
-    }
-
-    // RequestCache 빈 등록
-    @Bean
-    public RequestCache requestCache() {
-        return new HttpSessionRequestCache(); // 기본적으로 HttpSessionRequestCache 사용
     }
 }
