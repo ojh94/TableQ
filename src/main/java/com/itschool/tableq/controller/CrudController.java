@@ -9,6 +9,7 @@ import com.itschool.tableq.network.request.update.RestaurantUpdateAllRequest;
 import com.itschool.tableq.service.base.BaseService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
+import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -96,7 +97,7 @@ public abstract class CrudController<Req extends SingleKeyRequest, Res, Entity e
     @ExceptionHandler(Exception.class)
     public Header handleException(Exception e) {
 
-        log.error(e.getClass().getSimpleName() + " : " + e.getMessage() + "\n" + e.getCause());
+        log.error(e.getClass().getSimpleName() + " : " + e.getMessage() + "\n" + e.getCause() + ExceptionUtils.getStackTrace(e));
 
         return Header.ERROR(e.getClass().getSimpleName() + " : " + e.getCause());
     }
