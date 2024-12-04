@@ -7,14 +7,12 @@ import com.itschool.tableq.network.request.UserRequest;
 import com.itschool.tableq.network.response.UserResponse;
 import com.itschool.tableq.repository.UserRepository;
 import com.itschool.tableq.service.base.BaseService;
-import jakarta.persistence.EntityNotFoundException;
+import groovy.lang.DeprecationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -52,14 +50,13 @@ public class UserService extends BaseService<UserRequest, UserResponse, User> {
                 .build();
     }
 
-    public Long signup(UserRequest userRequest) {
-        return getBaseRepository().save(User.builder()
-                .email(userRequest.getEmail())
-                .password(bCryptPasswordEncoder.encode(userRequest.getPassword()))
-                .name(userRequest.getName())
-                .phoneNumber(userRequest.getPhoneNumber())
-                .lastLoginAt(LocalDateTime.now())
-                .build()).getId();
+    @Override
+    public Header<UserResponse> update(Long id, Header<UserRequest> request) throws DeprecationException {
+        UserRequest userRequest = request.getData();
+
+        userRequest.setPassword(bCryptPasswordEncoder.encode(userRequest.getPassword()));
+
+        return super.update(id, request);
     }
 
     public Boolean checkEmail(Header<UserRequest> request) {
