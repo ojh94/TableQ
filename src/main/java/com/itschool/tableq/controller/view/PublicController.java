@@ -21,7 +21,7 @@ public class PublicController {
         this.userService = userService;
     }
 
-    @Value("${app.version}")
+    @Value("${app.version:로컬 버전}")
     private String appVersion;
 
     // 버전 확인용 페이지
