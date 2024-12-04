@@ -29,7 +29,7 @@ public class Review extends AuditableEntity<ReviewRequest> {
     private User user;
 
     @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "reservation_id", updatable = false)
+    @JoinColumn(name = "reservation_id", updatable = false, unique = true, nullable = false)
     private Reservation reservation;
 
     public void update(ReviewRequest reviewRequest) {
