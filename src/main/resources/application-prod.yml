@@ -42,3 +42,9 @@ cloud:
     credentials:
       access-Key: ${AWS_ACCESS_KEY_ID}
       secret-Key: ${AWS_SECRET_ACCESS_KEY}
+
+server:
+  port: 8080
+
+app:
+  version: 1.0.7
