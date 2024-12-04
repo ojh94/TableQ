@@ -56,8 +56,8 @@ public class RestaurantService extends BaseService<RestaurantRequest, Restaurant
                 .information(requestEntity.getInformation())
                 .contactNumber(requestEntity.getContact_number())
                 .isAvailable(requestEntity.isAvailable())
-                /*.businessInformation(businessInformationRepository.findById(restaurantRequest.getBusinessInformation().getId())
-                        .orElseThrow(() -> new EntityNotFoundException()))*/
+                .businessInformation(businessInformationRepository.findById(requestEntity.getBusinessInformation().getId())
+                        .orElseThrow(() -> new EntityNotFoundException()))
                 .build();
     }
 

@@ -22,5 +22,5 @@ public class RestaurantRequest extends SingleKeyRequest {
 
     private boolean isAvailable;
 
-    // private BusinessInformationRequest businessInformation;
+    private BusinessInformationRequest businessInformation;
 }
