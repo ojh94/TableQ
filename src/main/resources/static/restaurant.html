@@ -94,12 +94,12 @@
                 "name": $('#restaurantName').val(),
                 "address": $('#restaurantAddress').val(),
                 "information": $('#restaurantInformation').val(),
-                "contact_number": $('#restaurantContactNumber').val(),
+                "contactNumber": $('#restaurantContactNumber').val(),
                 "businessInformation": {
                     "id": $('#businessInformationId').val()
                 }
             },
-            "available": $('#restaurantAvailable').is(':checked')
+            "isAvailable": $('#restaurantAvailable').is(':checked')
         };
 
         $.ajax({
@@ -133,8 +133,8 @@
                     <p><strong>이름:</strong> ${restaurantData.name}</p>
                     <p><strong>주소:</strong> ${restaurantData.address}</p>
                     <p><strong>정보:</strong> ${restaurantData.information}</p>
-                    <p><strong>연락처:</strong> ${restaurantData.contact_number}</p>
-                    <p><strong>운영 여부:</strong> ${restaurantData.available ? '운영 중' : '운영 중지'}</p>
+                    <p><strong>연락처:</strong> ${restaurantData.contactNumber}</p>
+                    <p><strong>운영 여부:</strong> ${restaurantData.isAvailable ? '운영 중' : '운영 중지'}</p>
                     <p><strong>사업자 정보 ID:</strong> ${restaurantData.businessInformation.id}</p>
                 `;
                 $('#restaurantDetailsContent').html(resultHtml);
@@ -143,9 +143,9 @@
                 $('#restaurantNameUpdate').val(restaurantData.name);
                 $('#restaurantAddressUpdate').val(restaurantData.address);
                 $('#restaurantInformationUpdate').val(restaurantData.information);
-                $('#restaurantContactNumberUpdate').val(restaurantData.contact_number);
+                $('#restaurantContactNumberUpdate').val(restaurantData.contactNumber);
                 $('#businessInformationIdUpdate').val(restaurantData.businessInformation.id);
-                $('#restaurantAvailableUpdate').prop('checked', restaurantData.available);
+                $('#restaurantAvailableUpdate').prop('checked', restaurantData.isAvailable);
             },
             error: function(xhr, status, error) {
                 $('#restaurantDetailsContent').html(`<div class="error">오류 발생: ${error}</div>`);
@@ -166,12 +166,12 @@
                 "name": $('#restaurantNameUpdate').val(),
                 "address": $('#restaurantAddressUpdate').val(),
                 "information": $('#restaurantInformationUpdate').val(),
-                "contact_number": $('#restaurantContactNumberUpdate').val(),
+                "contactNumber": $('#restaurantContactNumberUpdate').val(),
                 "businessInformation": {
                     "id": $('#businessInformationIdUpdate').val()
                 }
             },
-            "available": $('#restaurantAvailableUpdate').is(':checked')
+            "isAvailable": $('#restaurantAvailableUpdate').is(':checked')
         };
 
         $.ajax({
