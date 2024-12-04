@@ -88,6 +88,7 @@ public class UserApiController extends CrudController<UserRequest, UserResponse,
                     .name(userResponse.getName())
                     .socialType(userResponse.getSocialType())
                     .socialId(userResponse.getSocialId())
+                    .memberRole(userResponse.getMemberRole())
                     .build();
 
             // 새로운 인증 객체 설정
