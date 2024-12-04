@@ -7,7 +7,7 @@ files:
 
 permissions:
   - object: /home/ec2-user/app/deploy/
-    pattern: "*.jar"
+    pattern: "*"
     owner: ec2-user
     group: ec2-user
     mode: 755
