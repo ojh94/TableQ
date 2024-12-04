@@ -71,7 +71,7 @@ public class ReviewService extends BaseService<ReviewRequest, ReviewResponse, Re
 
         Review review = getBaseRepository().findByReservation(reservationRepository.findById(reservationId)
                 .orElseThrow(()->new EntityNotFoundException("not found reservation"))
-        );
+        ).orElseGet(null);;
         if(review == null) return Header.OK(true);
         else return Header.OK(false);
     }
@@ -95,45 +95,15 @@ public class ReviewService extends BaseService<ReviewRequest, ReviewResponse, Re
 
     // ID에 해당하는 식당에 대한 리뷰 조회
     public Header<List<ReviewResponse>> readByRestaurantId(Long restaurantId, Pageable pageable){
-        // 레스토랑 ID로 레스토랑 먼저 조회
-        Restaurant restaurant = restaurantRepository.findById(restaurantId)
-                .orElseThrow(() -> new EntityNotFoundException("레스토랑을 찾을 수 없습니다. ID: " + restaurantId));
+        Page<Review> entities = getBaseRepository().findByRestaurantId(restaurantId, pageable);
 
-        // 레스토랑에 해당하는 리뷰 목록 조회
-        Page<Review> entities = getBaseRepository().findByRestaurant(restaurant, pageable);
-
-        List<ReviewResponse> reviewList = entities.stream()
-                .map(entity -> response(entity))
-                .collect(Collectors.toList());
-
-        Pagination pagination = Pagination.builder()
-                .totalPages(entities.getTotalPages())
-                .totalElements(entities.getTotalElements())
-                .currentPage(entities.getNumber())
-                .currentElements(entities.getNumberOfElements())
-                .build();
-
-        return Header.OK(reviewList, pagination);
+        return convertPageToList(entities);
     }
 
     // ID에 해당하는 유저가 남긴 리뷰 조회
     public Header<List<ReviewResponse>> readByUserId(Long userId, Pageable pageable){
-        User user = userRepository.findById(userId)
-                .orElseThrow(() -> new EntityNotFoundException("유저를 찾을 수 없습니다. ID: " + userId));
+        Page<Review> entities = getBaseRepository().findByUserId(userId, pageable);
 
-        Page<Review> entities = getBaseRepository().findByUser(user, pageable);
-
-        List<ReviewResponse> reviewList = entities.stream()
-                .map(entity -> response(entity))
-                .collect(Collectors.toList());
-
-        Pagination pagination = Pagination.builder()
-                .totalPages(entities.getTotalPages())
-                .totalElements(entities.getTotalElements())
-                .currentPage(entities.getNumber())
-                .currentElements(entities.getNumberOfElements())
-                .build();
-
-        return Header.OK(reviewList, pagination);
+        return convertPageToList(entities);
     }
 }
