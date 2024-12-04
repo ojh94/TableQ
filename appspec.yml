@@ -6,10 +6,11 @@ files:
     overwrite: yes
 
 permissions:
-  - object: /home/ec2-user/app/deploy/*
-    pattern: "*.jar"
+  - object: /home/ec2-user/app/deploy/
+    pattern: "*"
     owner: ec2-user
     group: ec2-user
+    mode: 755
 
 hooks:
   AfterInstall: # 배포가 끝나면 아래 명령어를 실행
