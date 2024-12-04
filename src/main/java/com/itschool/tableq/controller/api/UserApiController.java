@@ -91,7 +91,7 @@ public class UserApiController extends CrudController<UserRequest, UserResponse,
                     .build();
 
             // 새로운 인증 객체 설정
-            authentication = new UsernamePasswordAuthenticationToken(newUserDetails, authentication.getCredentials(), newUserDetails.getAuthorities());
+            authentication = new UsernamePasswordAuthenticationToken(newUserDetails, authentication.getCredentials(), ((User)newUserDetails).getAuthorities());
 
             // SecurityContext에 새로운 인증 객체 설정
             SecurityContextHolder.getContext().setAuthentication(authentication);
