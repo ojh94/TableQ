@@ -4,19 +4,37 @@ console.log("index.js 시작");
 $(document).ready(function () {
     console.log("DOM fully loaded.");
 
+    const userIdInput = document.getElementById("userId");
+    const userId = userIdInput ? userIdInput.value : null;
+
+    if (!userId) {
+        console.error("User ID 값이 비어 있습니다.");
+        return;
+    }
+
     // 즐겨찾기 버튼 이벤트 처리
     $("body").on("click", ".favorite-btn", function () {
         const button = $(this);
-        const restaurantId = button.data("id");
+        const bookmarkId = button.data("bookmark-id"); // data-bookmark-id 값 가져오기
         const isFavorite = button.data("favorite");
+        const restaurantId = button.data("id");
 
-        if (isFavorite) {
-            removeFromFavorites(restaurantId, userId);
-        } else {
-            addToFavorites(restaurantId, userId);
-        }
+    console.log("restaurantId:", restaurantId);  // 로그로 restaurantId 값 확인
+    console.log("bookmarkId:", bookmarkId);  // 로그로 bookmarkId 값 확인
+    console.log("isFavorite:", isFavorite);  // isFavorite 값 확인
 
-        toggleFavoriteButton(button, isFavorite);
+    if (!restaurantId || !bookmarkId) {
+        console.error("Restaurant ID 또는 Bookmark ID가 정의되지 않았습니다.");
+        return;
+    }
+
+    if (isFavorite) {
+        removeFromFavorites(button);
+    } else {
+        addToFavorites(restaurantId, userId);
+    }
+
+    toggleFavoriteButton(button, isFavorite);
     });
 
     console.log("request URL:", `http://localhost/api/reservation/user/${userId}?page=0&size=10&sort=string`);

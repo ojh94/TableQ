@@ -1,5 +1,17 @@
 console.log("main.js 시작");
 
+function updateFavoriteButtonState(button, isFavorite) {
+    if (isFavorite) {
+        button.dataset.favorite = 'true';
+        button.querySelector('i').classList.remove('fa-regular', 'fa-heart');
+        button.querySelector('i').classList.add('fa-solid', 'fa-heart');
+    } else {
+        button.dataset.favorite = 'false';
+        button.querySelector('i').classList.remove('fa-solid', 'fa-heart');
+        button.querySelector('i').classList.add('fa-regular', 'fa-heart');
+    }
+}
+
 // 레스토랑 카드 생성 함수
 function createRestaurantCard(restaurant, rating = 0, reviewsCount =0) {
     const card = document.createElement('div');
@@ -16,7 +28,7 @@ function createRestaurantCard(restaurant, rating = 0, reviewsCount =0) {
 
     card.innerHTML =`
         <div class="card-header">
-            <button id="favorite-btn-${restaurant.id}" class="favorite-btn" data-id="${restaurant.id}" data-favorite="false"  >
+            <button id="favorite-btn-${restaurant.id}" class="favorite-btn" data-id="${restaurant.id}" data-favorite="${restaurant.isFavorite}">
                 <i class="fa-regular fa-heart"></i>
             </button>
             <h4 class="card-title">${restaurant.name}</h4>
@@ -42,31 +54,45 @@ function createRestaurantCard(restaurant, rating = 0, reviewsCount =0) {
 
     // 찜 버튼 상태 업데이트
     const favoriteButton = card.querySelector(`#favorite-btn-${restaurant.id}`);
-    updateFavoriteButtonState(favoriteButton, restaurant.id);
+    updateFavoriteButtonState(favoriteButton, restaurant.isFavorite);
 
     // 찜 버튼 클릭 시 처리
     favoriteButton.addEventListener('click', () => {
-        toggleFavorite(restaurant.id);
-        updateFavoriteButtonState(favoriteButton, restaurant.id);
+        const isFavorite = favoriteButton.dataset.favorite === 'true';
+        toggleFavoriteButton(favoriteButton, isFavorite);
+//        updateFavoriteButtonState(favoriteButton, restaurant.id);
     });
 
 
     return card;
 }
 
-// 즐겨찾기 상태를 토글하는 함수
-function toggleFavorite(restaurantId) {
-    let favorites = JSON.parse(localStorage.getItem('favorites')) || [];
-
-    const index = favorites.indexOf(restaurantId);
-    if (index === -1) {
-        favorites.push(restaurantId);  // 찜 추가
-    } else {
-        favorites.splice(index, 1);  // 찜 취소
-    }
-
-    localStorage.setItem('favorites', JSON.stringify(favorites));
-}
+//// 즐겨찾기 상태를 토글하는 함수
+//function toggleFavorite(button, isFavorite) {
+//    // 찜 상태 토글
+//        if (isFavorite) {
+//            // 찜을 해제
+//            button.dataset.favorite = 'false';
+//            button.querySelector('i').classList.remove('fa-solid', 'fa-heart');
+//            button.querySelector('i').classList.add('fa-regular', 'fa-heart');
+//        } else {
+//            // 찜을 추가
+//            button.dataset.favorite = 'true';
+//            button.querySelector('i').classList.remove('fa-regular', 'fa-heart');
+//            button.querySelector('i').classList.add('fa-solid', 'fa-heart');
+//        }
+//
+//    let favorites = JSON.parse(localStorage.getItem('favorites')) || [];
+//
+//    const index = favorites.indexOf(restaurantId);
+//    if (index === -1) {
+//        favorites.push(restaurantId);  // 찜 추가
+//    } else {
+//        favorites.splice(index, 1);  // 찜 취소
+//    }
+//
+//    localStorage.setItem('favorites', JSON.stringify(favorites));
+//}
 
 // 그리드를 나누기 위한 함수
 function renderGrids() {
@@ -352,45 +378,49 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
 
-// 찜 버튼의 상태를 업데이트하는 함수
-function updateFavoriteButtonState(button, restaurantId) {
-    // localStorage에서 즐겨찾기 데이터를 가져옵니다.
-    let favorites;
-    try {
-        favorites = JSON.parse(localStorage.getItem('favorites')) || [];
-    } catch (e) {
-        // localStorage 데이터가 JSON 파싱에 실패하면 빈 배열로 초기화
-        favorites = [];
-        localStorage.setItem('favorites', JSON.stringify(favorites));
-    }
-
-    // favorites가 배열인지 확인
-    if(!Array.isArray(favorites)) {
-        favorites = [];
-        localStorage.setItem('favorites', JSON.stringify(favorites));
-    }
-
-    // 레스토랑 ID가 favorites에 있는지 확인
-    const isFavorite = favorites.includes(restaurantId);
-
-    if (isFavorite) {
-        button.classList.add('favorited');
-        button.setAttribute('data-favorite', 'true');
-    } else {
-        button.classList.remove('favorited');
-        button.setAttribute('data-favorite', 'false');
-    }
-}
+//// 찜 버튼의 상태를 업데이트하는 함수
+//function updateFavoriteButtonState(button, isFavorite) {
+//    // localStorage에서 즐겨찾기 데이터를 가져옵니다.
+//    let favorites;
+//    try {
+//        favorites = JSON.parse(localStorage.getItem('favorites')) || [];
+//    } catch (e) {
+//        // localStorage 데이터가 JSON 파싱에 실패하면 빈 배열로 초기화
+//        favorites = [];
+//        localStorage.setItem('favorites', JSON.stringify(favorites));
+//    }
+//
+//    // favorites가 배열인지 확인
+//    if(!Array.isArray(favorites)) {
+//        favorites = [];
+//        localStorage.setItem('favorites', JSON.stringify(favorites));
+//    }
+//
+//    // 레스토랑 ID가 favorites에 있는지 확인
+//    const isFavorite = favorites.includes(restaurantId);
+//
+//    if (isFavorite) {
+//        button.classList.add('favorited');
+//        button.setAttribute('data-favorite', 'true');
+//    } else {
+//        button.classList.remove('favorited');
+//        button.setAttribute('data-favorite', 'false');
+//    }
+//}
 
 // 즐겨찾기 버튼 토글여부 확인
 function toggleFavoriteButton(button, isFavorite) {
   if (isFavorite) {
-        button.classList.add('favorited');
-        button.textContent = '찜 취소';
-    } else {
-        button.classList.remove('favorited');
-        button.textContent = '찜';
-    }
+          // 찜을 해제
+          button.dataset.favorite = 'false';
+          button.querySelector('i').classList.remove('fa-solid', 'fa-heart');
+          button.querySelector('i').classList.add('fa-regular', 'fa-heart');
+      } else {
+          // 찜을 추가
+          button.dataset.favorite = 'true';
+          button.querySelector('i').classList.remove('fa-regular', 'fa-heart');
+          button.querySelector('i').classList.add('fa-solid', 'fa-heart');
+      }
 }
 
 // 즐겨찾기 상태를 토글하는 함수
@@ -428,7 +458,12 @@ function loadUserBookmarks(userId) {
 //즐겨찾기 추가
 function addToFavorites(restaurantId, userId) {
     const button = document.querySelector(`[data-id="${restaurantId}"]`);
-    const isFavorite = button.getAttribute('data-favorite') === 'true';
+    const isFavorite = button.getAttribute('data-favorite') === 'false';
+
+    if (!restaurantId || !userId) {
+        console.error("Restaurant ID 또는 User ID가 정의되지 않았습니다.");
+        return;
+    }
 
     // 요청 데이터
     const requestBody = {
@@ -471,7 +506,13 @@ function addToFavorites(restaurantId, userId) {
 // 즐겨찾기 삭제
 function removeFromFavorites(button) {
     const bookmarkId = button.getAttribute('data-bookmark-id'); // 버튼에서 북마크 ID 가져오기
-    const isFavorite = button.getAttribute('data-favorite') === 'false';
+    const isFavorite = button.getAttribute('data-favorite') === 'true';
+
+     if (!bookmarkId) {
+        console.error("Bookmark ID is missing!");
+        return;
+     }
+
 
     // 동기식 Ajax 요청
     $.ajax({
