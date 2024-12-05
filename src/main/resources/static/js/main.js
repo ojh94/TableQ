@@ -521,7 +521,8 @@ function requestToDeleteBookmark(button) {
 
 // 기본 페이지와 페이지 크기 설정
 let currentPage = 0;
-const pageSize = 10;
+// 1페이지 당 뜨는 개수
+const pageSize = 6;
 let totalPages = 1;
 let sortType = 'id';        // 기본 정렬 기준
 
