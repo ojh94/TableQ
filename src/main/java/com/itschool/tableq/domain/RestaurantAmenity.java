@@ -13,7 +13,8 @@ import lombok.experimental.SuperBuilder;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 @Entity
-@Table(name = "restaurant_amenities")
+@Table(name = "restaurant_amenities",
+    uniqueConstraints = @UniqueConstraint(columnNames = {"restaurant_id", "amenity_id"}))
 public class RestaurantAmenity extends AuditableEntity<RestaurantRequest> {
 
     @ManyToOne(fetch = FetchType.EAGER)
