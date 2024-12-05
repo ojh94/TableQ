@@ -5,16 +5,32 @@ lucide.createIcons();
 // 레스토랑 카드 생성 함수
 function createRestaurantCard(restaurant, rating = 0, reviewsCount =0) {
     const card = document.createElement('div');
+    const restaurantId = restaurant.id;
+    let imageUrl = 'https://dummyimage.com/900x400/ced4da/6c757d.jpg';
     card.className = 'card';
     console.log('Received rating:', restaurant.rating);  // rating 값 확인
     console.log('Received reviewsCount:', restaurant.reviewsCount);  // reviewsCount 값 확인
-
 
 
     // rating 값이 유효한지 확인하고, 없으면 0으로 설정
     const validRating = (rating && !isNaN(rating)) ? rating : 0; // rating이 없거나 NaN이면 0으로 설정
     console.log('Valid rating:', validRating);  // validRating 값 확인
 
+    $.ajax({
+            url: `/api/restaurant-image/restaurant/${restaurantId}`,
+            type: 'GET',
+            async: false,
+            success: function (response) {
+                if("ERROR" !== response.resultCode) {
+                    imageUrl = response.data[0].fileUrl;
+                } else {
+                    // 에러 발생 시
+                }
+            },
+            error: function (xhr, status, error) {
+
+            }
+    });
 
     card.innerHTML =`
         <div class="card-header">
@@ -24,7 +40,7 @@ function createRestaurantCard(restaurant, rating = 0, reviewsCount =0) {
             <h4 class="card-title">${restaurant.name}</h4>
         </div>
         <div class="card-content">
-            <img src="/img/test-img/텐동.jpg" alt="${restaurant.name}" class="card-image">
+            <img src="${imageUrl}" alt="${restaurant.name}" class="card-image">
             <div class="rating">
                 <i data-lucide="star" class="rating-star"></i>
                 <span class="rating-value">${validRating.toFixed(1)}</span>
