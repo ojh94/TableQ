@@ -1,9 +1,9 @@
 $(document).ready(function() {
-    requestRestaurantImageApi();
 
     if (window.location.pathname
     === '/restaurant/' + document.getElementById("restaurant-id").value) {
         requestRestaurantApi(false);
+        requestRestaurantImageApi();
         requestReviewApi();
         requestMenuApi();
         requestOpeningHourApi();
@@ -28,6 +28,7 @@ $(document).ready(function() {
     if (window.location.pathname
     === '/restaurant/modify/' + document.getElementById("restaurant-id").value) {
         requestRestaurantApi(true);
+        requestRestaurantImageApi();
         requestReviewApi();
         requestMenuModifyApi();
         requestOpeningHourModifyApi();
@@ -184,6 +185,12 @@ function requestRestaurantApi(isModifyMode) {
         type: 'GET', // 필요한 HTTP 메서드로 변경
         contentType: 'application/json', // JSON 형식으로 데이터 전송
         success: function(response) {
+            if (response.resultCode === "ERROR") {
+                alert('유효하지 않은 페이지입니다. 이전 페이지로 이동합니다.');
+                window.history.back(); // 이전 페이지로 이동
+                return; // 이후 코드 실행 방지
+            }
+
             // 요청 성공 시 동작
             const rName = $('#restaurant-name');
             const rAddress = $('#restaurant-address');
