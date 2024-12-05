@@ -16,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.awt.print.Book;
 import java.util.List;
 
 @Service
@@ -80,13 +81,16 @@ public class BookmarkService extends BaseService<BookmarkRequest, BookmarkRespon
         return Header.OK(bookmarkList.size());
     }
 
-    public Header<Boolean> isExist(Long userId, Long restaurantId){
+    public Header<BookmarkResponse> isExist(Long userId, Long restaurantId){
         User user = userRepository.findById(userId)
                 .orElseThrow(()-> new EntityNotFoundException());
 
         Restaurant restaurant = restaurantRepository.findById(restaurantId)
                 .orElseThrow(()-> new EntityNotFoundException());
 
-        return Header.OK(Boolean.valueOf(getBaseRepository().existsByUserAndRestaurant(user, restaurant)));
+        Bookmark bookmark = getBaseRepository().findByUserAndRestaurant(user, restaurant)
+                .orElseThrow(() -> new EntityNotFoundException());
+
+        return Header.OK(response(bookmark));
     }
 }

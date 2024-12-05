@@ -15,7 +15,8 @@ import lombok.experimental.SuperBuilder;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 @Entity
-@Table(name = "restaurant_keywords")
+@Table(name = "restaurant_keywords",
+    uniqueConstraints = @UniqueConstraint(columnNames = {"restaurant_id", "keyword_id"}))
 public class RestaurantKeyword extends AuditableEntity<RestaurantKeywordRequest> {
 
     @ManyToOne(fetch = FetchType.LAZY)
