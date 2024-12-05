@@ -1,6 +1,7 @@
 console.log("index.js 시작");
 
 $(document).ready(function () {
+
     console.log("DOM fully loaded.");
 
     const userIdInput = document.getElementById("userId");
