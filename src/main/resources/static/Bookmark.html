@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bookmark API Test</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+<h1>Bookmark API Test</h1>
+
+<!-- 북마크 추가 -->
+<div>
+    <h2>북마크 추가</h2>
+    <label for="restaurantId">레스토랑 ID:</label>
+    <input type="text" id="restaurantId" required><br><br>
+
+    <label for="userIdCreate">사용자 ID:</label>
+    <input type="text" id="userIdCreate" required><br><br>
+
+    <button id="createBookmarkBtn">북마크 추가</button>
+
+    <div id="createBookmarkResult"></div>
+</div>
+
+<!-- 북마크 조회 -->
+<div>
+    <h2>북마크 조회</h2>
+    <label for="bookmarkId">북마크 ID:</label>
+    <input type="text" id="bookmarkId" required><br><br>
+
+    <button id="fetchBookmarkBtn">북마크 조회</button><br><br>
+
+    <div id="bookmarkDetails">
+        <p><strong>조회된 북마크 정보:</strong></p>
+        <div id="bookmarkDetailsContent"></div><br><br>
+    </div>
+</div>
+
+<!-- 북마크 수정 -->
+<div>
+    <h2>북마크 수정</h2>
+    <h3>수정할 항목</h3>
+
+    <label for="restaurantIdUpdate">레스토랑 ID:</label>
+    <input type="text" id="restaurantIdUpdate"><br><br>
+
+    <label for="userIdUpdate">사용자 ID:</label>
+    <input type="text" id="userIdUpdate"><br><br>
+
+    <label for="availableUpdate">사용 여부:</label>
+    <input type="checkbox" id="availableUpdate"><br><br>
+
+    <button id="updateBookmarkBtn">북마크 수정</button>
+
+    <div id="updateBookmarkResult"></div>
+</div>
+
+<!-- 북마크 삭제 -->
+<div>
+    <h2>북마크 삭제</h2>
+    <label for="bookmarkIdDelete">삭제할 북마크 ID:</label>
+    <input type="text" id="bookmarkIdDelete" required><br><br>
+
+    <button id="deleteBookmarkBtn">북마크 삭제</button>
+
+    <div id="deleteBookmarkResult"></div>
+</div>
+
+<script>
+    // 북마크 추가 요청
+    $('#createBookmarkBtn').on('click', function() {
+        const request = {
+            'restaurant': {
+                'id': $('#restaurantId').val()
+            },
+            'available': $('#available').is(':checked'),
+            'user': {
+                'id': $('#userIdCreate').val()
+            }
+        };
+
+        $.ajax({
+            url: '/api/bookmark',
+            method: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify({ data: request }),
+            success: function(data) {
+                const resultHtml = `<div class="response"><p><strong>성공:</strong></p><pre>${JSON.stringify(data, null, 2)}</pre></div>`;
+                $('#createBookmarkResult').html(resultHtml);
+            },
+            error: function(xhr, status, error) {
+                $('#createBookmarkResult').html('<div class="error">오류 발생: ' + error + '</div>');
+            }
+        });
+    });
+
+    // 북마크 조회 요청
+    $('#fetchBookmarkBtn').on('click', function() {
+        const bookmarkId = $('#bookmarkId').val();
+        if (!bookmarkId) {
+            alert('북마크 ID를 입력해주세요.');
+            return;
+        }
+
+        $.ajax({
+            url: `/api/bookmark/${bookmarkId}`,
+            method: 'GET',
+            success: function(data) {
+                const bookmarkData = data.data;
+                const resultHtml = `
+                    <p><strong>레스토랑 ID:</strong> ${bookmarkData.restaurant.id}</p>
+                    <p><strong>사용자 ID:</strong> ${bookmarkData.user.id}</p>
+                    <p><strong>사용 여부:</strong> ${bookmarkData.available}</p>
+                `;
+                $('#bookmarkDetailsContent').html(resultHtml);
+
+                // 수정할 수 있도록 기본 값 설정
+                $('#restaurantIdUpdate').val(bookmarkData.restaurant.id);
+                $('#userIdUpdate').val(bookmarkData.user.id);
+                $('#availableUpdate').prop('checked', bookmarkData.available);
+            },
+            error: function(xhr, status, error) {
+                $('#bookmarkDetailsContent').html('<div class="error">오류 발생: ' + error + '</div>');
+            }
+        });
+    });
+
+    // 북마크 수정 요청
+    $('#updateBookmarkBtn').on('click', function() {
+        const bookmarkId = $('#bookmarkId').val();
+        if (!bookmarkId) {
+            alert('북마크 ID를 입력해주세요.');
+            return;
+        }
+
+        const request = {
+            'restaurant': {
+                'id': $('#restaurantIdUpdate').val(),
+                'name': 'Updated Restaurant',  // 필요시 수정
+                'address': 'Updated Address',  // 필요시 수정
+                'information': 'Updated Information',  // 필요시 수정
+                'contactNumber': 'Updated Contact',  // 필요시 수정
+                'businessInformation': {
+                    'id': 0,  // 예시로 비워둠, 실제 값 필요
+                    'businessNumber': 'Updated Business Number',  // 필요시 수정
+                    'businessName': 'Updated Business Name',  // 필요시 수정
+                    'contactNumber': 'Updated Business Contact',  // 필요시 수정
+                    'userRequest': {
+                        'id': $('#userIdCreate').val(),
+                        'password': 'Updated Password',  // 필요시 수정
+                        'email': 'updated@example.com',  // 필요시 수정
+                        'name': 'Updated Name',  // 필요시 수정
+                        'nickname': 'Updated Nickname',  // 필요시 수정
+                        'phoneNumber': 'Updated Phone Number',  // 필요시 수정
+                        'address': 'Updated Address',  // 필요시 수정
+                        'memberRole': 'USER'  // 필요시 수정
+                    }
+                }
+            },
+            'available': $('#availableUpdate').is(':checked'),
+            'user': {
+                'id': $('#userIdUpdate').val(),
+                'password': 'Updated User Password',  // 필요시 수정
+                'email': 'updateduser@example.com',  // 필요시 수정
+                'name': 'Updated User Name',  // 필요시 수정
+                'nickname': 'Updated User Nickname',  // 필요시 수정
+                'phoneNumber': 'Updated Phone Number',  // 필요시 수정
+                'address': 'Updated User Address',  // 필요시 수정
+                'memberRole': 'USER'  // 필요시 수정
+            }
+        };
+
+        $.ajax({
+            url: `/api/bookmark/${bookmarkId}`,
+            method: 'PUT',
+            contentType: 'application/json',
+            data: JSON.stringify({ data: request }),
+            success: function(data) {
+                const resultHtml = `<div class="response"><p><strong>성공:</strong></p><pre>${JSON.stringify(data, null, 2)}</pre></div>`;
+                $('#updateBookmarkResult').html(resultHtml);
+            },
+            error: function(xhr, status, error) {
+                $('#updateBookmarkResult').html('<div class="error">오류 발생: ' + error + '</div>');
+            }
+        });
+    });
+
+    // 북마크 삭제 요청
+    $('#deleteBookmarkBtn').on('click', function() {
+        const bookmarkId = $('#bookmarkIdDelete').val();
+        if (!bookmarkId) {
+            alert('북마크 ID를 입력해주세요.');
+            return;
+        }
+
+        $.ajax({
+            url: `/api/bookmark/${bookmarkId}`,
+            method: 'DELETE',
+            success: function(data) {
+                const resultHtml = `<div class="response"><p><strong>성공:</strong></p><pre>${JSON.stringify(data, null, 2)}</pre></div>`;
+                $('#deleteBookmarkResult').html(resultHtml);
+            },
+            error: function(xhr, status, error) {
+                $('#deleteBookmarkResult').html('<div class="error">오류 발생: ' + error + '</div>');
+            }
+        });
+    });
+</script>
+
+</body>
+</html>
