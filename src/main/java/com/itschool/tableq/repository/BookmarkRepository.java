@@ -11,4 +11,5 @@ import java.util.Optional;
 public interface BookmarkRepository extends JpaRepository<Bookmark, Long> {
     List<Bookmark> findByRestaurant(Restaurant restaurant);
     Optional<List<Bookmark>> findByUser(User user);
+    boolean existsByUserAndRestaurant(User user, Restaurant restaurant);
 }
