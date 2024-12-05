@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User API Test</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+<h1>User API Test</h1>
+
+<!-- 사용자 추가 (생성) -->
+<div>
+    <h2>사용자 추가</h2>
+    <label for="emailCreate">이메일:</label>
+    <input type="email" id="emailCreate" required><br><br>
+
+    <label for="passwordCreate">비밀번호:</label>
+    <input type="password" id="passwordCreate" required><br><br>
+
+    <label for="nameCreate">이름:</label>
+    <input type="text" id="nameCreate" required><br><br>
+
+    <label for="nicknameCreate">닉네임:</label>
+    <input type="text" id="nicknameCreate" required><br><br>
+
+    <label for="phoneNumberCreate">전화번호:</label>
+    <input type="text" id="phoneNumberCreate" required><br><br>
+
+    <label for="addressCreate">주소:</label>
+    <input type="text" id="addressCreate" required><br><br>
+
+    <button id="createUserBtn">사용자 추가</button>
+
+    <div id="createUserResult"></div>
+</div>
+
+<!-- 사용자 조회 -->
+<div>
+    <h2>사용자 조회</h2>
+    <label for="userId">사용자 ID:</label>
+    <input type="text" id="userId" required><br><br>
+
+    <button id="fetchUserBtn">사용자 조회</button><br><br>
+
+    <div id="userDetails">
+        <p><strong>조회된 사용자:</strong></p>
+        <div id="userDetailsContent"></div><br><br>
+    </div>
+</div>
+
+<!-- 사용자 수정 -->
+<div>
+    <h2>사용자 수정</h2>
+    <h3>수정할 항목</h3>
+
+    <label for="emailUpdate">이메일:</label>
+    <input type="email" id="emailUpdate"><br><br>
+
+    <label for="passwordUpdate">비밀번호:</label>
+    <input type="password" id="passwordUpdate"><br><br>
+
+    <label for="nameUpdate">이름:</label>
+    <input type="text" id="nameUpdate"><br><br>
+
+    <label for="nicknameUpdate">닉네임:</label>
+    <input type="text" id="nicknameUpdate"><br><br>
+
+    <label for="phoneNumberUpdate">전화번호:</label>
+    <input type="text" id="phoneNumberUpdate"><br><br>
+
+    <label for="addressUpdate">주소:</label>
+    <input type="text" id="addressUpdate"><br><br>
+
+    <button id="updateUserBtn">사용자 수정</button>
+
+    <div id="updateUserResult"></div>
+</div>
+
+<!-- 사용자 삭제 -->
+<div>
+    <h2>사용자 삭제</h2>
+    <label for="userIdDelete">삭제할 사용자 ID:</label>
+    <input type="text" id="userIdDelete" required><br><br>
+
+    <button id="deleteUserBtn">사용자 삭제</button>
+
+    <div id="deleteUserResult"></div>
+</div>
+
+<script>
+    // 사용자 추가 요청
+    $('#createUserBtn').on('click', function() {
+        const request = {
+            'password': $('#passwordCreate').val(),
+            'email': $('#emailCreate').val(),
+            'name': $('#nameCreate').val(),
+            'nickname': $('#nicknameCreate').val(),
+            'phoneNumber': $('#phoneNumberCreate').val(),
+            'address': $('#addressCreate').val()
+        };
+
+        $.ajax({
+            url: '/api/user',
+            method: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify({ data: request }),
+            success: function(data) {
+                const resultHtml = `
+                    <div class="response">
+                        <p><strong>성공:</strong></p>
+                        <pre>${JSON.stringify(data, null, 2)}</pre>
+                    </div>
+                `;
+                $('#createUserResult').html(resultHtml);
+            },
+            error: function(xhr, status, error) {
+                $('#createUserResult').html('<div class="error">오류 발생: ' + error + '</div>');
+            }
+        });
+    });
+
+    // 사용자 조회 요청
+    $('#fetchUserBtn').on('click', function() {
+        const userId = $('#userId').val();
+        if (!userId) {
+            alert('사용자 ID를 입력해주세요.');
+            return;
+        }
+
+        $.ajax({
+            url: `/api/user/${userId}`,
+            method: 'GET',
+            success: function(data) {
+                const userData = data.data;
+                const resultHtml = `
+                    <p><strong>이메일:</strong> ${userData.email}</p>
+                    <p><strong>이름:</strong> ${userData.name}</p>
+                    <p><strong>닉네임:</strong> ${userData.nickname}</p>
+                    <p><strong>전화번호:</strong> ${userData.phoneNumber}</p>
+                    <p><strong>주소:</strong> ${userData.address}</p>
+                `;
+                $('#userDetailsContent').html(resultHtml);
+
+                // 수정할 수 있도록 기본 값 설정
+                $('#emailUpdate').val(userData.email);
+                $('#passwordUpdate').val(userData.password);
+                $('#nameUpdate').val(userData.name);
+                $('#nicknameUpdate').val(userData.nickname);
+                $('#phoneNumberUpdate').val(userData.phoneNumber);
+                $('#addressUpdate').val(userData.address);
+            },
+            error: function(xhr, status, error) {
+                $('#userDetailsContent').html('<div class="error">오류 발생: ' + error + '</div>');
+            }
+        });
+    });
+
+    // 사용자 수정 요청
+    $('#updateUserBtn').on('click', function() {
+        const userId = $('#userId').val();
+        if (!userId) {
+            alert('사용자 ID를 입력해주세요.');
+            return;
+        }
+
+        const request = {
+            'id': userId,
+            'password': $('#passwordUpdate').val(),
+            'email': $('#emailUpdate').val(),
+            'name': $('#nameUpdate').val(),
+            'nickname': $('#nicknameUpdate').val(),
+            'phoneNumber': $('#phoneNumberUpdate').val(),
+            'address': $('#addressUpdate').val()
+        };
+
+        $.ajax({
+            url: `/api/user/${userId}`,
+            method: 'PUT',
+            contentType: 'application/json',
+            data: JSON.stringify({ data: request }),
+            success: function(data) {
+                const resultHtml = `
+                    <div class="response">
+                        <p><strong>성공:</strong></p>
+                        <pre>${JSON.stringify(data, null, 2)}</pre>
+                    </div>
+                `;
+                $('#updateUserResult').html(resultHtml);
+            },
+            error: function(xhr, status, error) {
+                $('#updateUserResult').html('<div class="error">오류 발생: ' + error + '</div>');
+            }
+        });
+    });
+
+    // 사용자 삭제 요청
+    $('#deleteUserBtn').on('click', function() {
+        const userId = $('#userIdDelete').val();
+        if (!userId) {
+            alert('사용자 ID를 입력해주세요.');
+            return;
+        }
+
+        $.ajax({
+            url: `/api/user/${userId}`,
+            method: 'DELETE',
+            success: function(data) {
+                const resultHtml = `
+                    <div class="response">
+                        <p><strong>성공:</strong></p>
+                        <pre>${JSON.stringify(data, null, 2)}</pre>
+                    </div>
+                `;
+                $('#deleteUserResult').html(resultHtml);
+            },
+            error: function(xhr, status, error) {
+                $('#deleteUserResult').html('<div class="error">오류 발생: ' + error + '</div>');
+            }
+        });
+    });
+</script>
+
+</body>
+</html>
