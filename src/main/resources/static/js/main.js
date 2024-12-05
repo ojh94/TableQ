@@ -54,7 +54,7 @@ function createRestaurantCard(restaurant, rating = 0, reviewsCount =0) {
 
     // 찜 버튼 상태 업데이트
     const favoriteButton = card.querySelector(`#favorite-btn-${restaurant.id}`);
-    updateFavoriteButtonState(favoriteButton, restaurant.isFavorite);
+    updateFavoriteButtonState(favoriteButton, restaurant.id);
 
 //    // 찜 버튼 클릭 시 처리
 //    favoriteButton.addEventListener('click', () => {
@@ -385,9 +385,25 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
 // 찜 버튼의 상태를 업데이트하는 함수
-function updateFavoriteButtonState(button, isFavorite) {
+function updateFavoriteButtonState(button, restaurantId) {
     // localStorage에서 즐겨찾기 데이터를 가져옵니다.
-    let favorites;
+    const userId = document.getElementById("userId").value;
+    let isFavorite = false ;
+    $.ajax({
+        url: `/api/bookmark/is-exist/${userId}/${restaurantId}`,
+        type: 'GET',
+        async: false,  // 동기식 요청
+        success: function (response) {
+            if(response.data){
+               isFavorite = true;
+               button.setAttribute('data-bookmark-id',response.data.id);
+            }
+        },
+        error: function (xhr, status, error) {
+
+        }
+    });
+
     // const button = document.querySelector(`#favorite-btn-${restaurantId.dataset.id}`);
 
     // 버튼이 존재하지 않으면 경고 출력 후 함수 종료
@@ -396,56 +412,58 @@ function updateFavoriteButtonState(button, isFavorite) {
         return;
     }
 
+    if (isFavorite) {
+        button.classList.add('favorited');
+    } else {
+        button.classList.remove('favorited');
+    }
+
     button.dataset.favorite = isFavorite; // 이 부분에서 button이 undefined일 가능성이 있음
     button.innerHTML = isFavorite
         ? '<i class="fa-solid fa-heart"></i>'
         : '<i class="fa-regular fa-heart"></i>';
 
-    try {
-        favorites = JSON.parse(localStorage.getItem('favorites')) || [];
-    } catch (e) {
-        // localStorage 데이터가 JSON 파싱에 실패하면 빈 배열로 초기화
-        favorites = [];
-        localStorage.setItem('favorites', JSON.stringify(favorites));
-    }
+//    try {
+//        isFavorite = JSON.parse(localStorage.getItem('favorites')) || [];
+//    } catch (e) {
+//        // localStorage 데이터가 JSON 파싱에 실패하면 빈 배열로 초기화
+//        favorites = [];
+//        localStorage.setItem('favorites', JSON.stringify(isFavorite));
+//    }
+//
+//    // favorites가 배열인지 확인
+//    if(!Array.isArray(isFavorite)) {
+//        favorites = [];
+//        localStorage.setItem('favorites', JSON.stringify(isFavorite));
+//    }
 
-    // favorites가 배열인지 확인
-    if(!Array.isArray(favorites)) {
-        favorites = [];
-        localStorage.setItem('favorites', JSON.stringify(favorites));
-    }
-
-    // 레스토랑 ID가 favorites에 있는지 확인
-    isFavorite = favorites.includes(button.dataset.id);
+//     레스토랑 ID가 favorites에 있는지 확인
+//    isFavorite = isFavorite.includes(button.dataset.id);
 
     if (isFavorite) {
         button.classList.add('favorited');
         button.setAttribute('data-favorite', 'true');
-        button.dataset.favorite = 'true';
-        button.querySelector('i').classList.remove('fa-regular', 'fa-heart');
-        button.querySelector('i').classList.add('fa-solid', 'fa-heart');
+        toggleFavoriteButton(button,'true');
     } else {
         button.classList.remove('favorited');
         button.setAttribute('data-favorite', 'false');
-        button.dataset.favorite = 'false';
-        button.querySelector('i').classList.remove('fa-solid', 'fa-heart');
-        button.querySelector('i').classList.add('fa-regular', 'fa-heart');
+        toggleFavoriteButton(button,'false');
     }
 }
 
 // 즐겨찾기 버튼 토글여부 확인
 function toggleFavoriteButton(button, isFavorite) {
-  if (isFavorite) {
-          // 찜을 해제
-          button.dataset.favorite = 'false';
-          button.querySelector('i').classList.remove('fa-solid', 'fa-heart');
-          button.querySelector('i').classList.add('fa-regular', 'fa-heart');
-      } else {
-          // 찜을 추가
-          button.dataset.favorite = 'true';
-          button.querySelector('i').classList.remove('fa-regular', 'fa-heart');
-          button.querySelector('i').classList.add('fa-solid', 'fa-heart');
-      }
+    if (isFavorite) {
+        // 찜을 추가
+        button.dataset.favorite = 'true';
+//        button.querySelector('i').classList.remove('fa-regular', 'fa-heart');
+        button.querySelector('i').classList.add('fa-solid', 'fa-heart');
+    } else {
+        // 찜을 해제
+        button.dataset.favorite = 'false';
+        button.querySelector('i').classList.remove('fa-solid', 'fa-heart');
+//        button.querySelector('i').classList.add('fa-regular', 'fa-heart');
+    }
 }
 
 // 즐겨찾기 상태를 토글하는 함수
@@ -483,7 +501,8 @@ function loadUserBookmarks(userId) {
 //즐겨찾기 추가
 function addToFavorites(button, userId) {
     // const button = document.querySelector(`[data-id="${restaurantId}"]`);
-    const isFavorite = button.getAttribute('data-favorite') === 'false';
+    button.setAttribute('data-favorite', 'true');
+    const isFavorite = button.getAttribute('data-favorite');
     const userIdInput = document.getElementById("userId");
 
     if (!button || !userIdInput.value) {
@@ -512,10 +531,10 @@ function addToFavorites(button, userId) {
         async: false, // 동기식으로 요청
         success: function (response) {
             button.setAttribute('data-favorite', isFavorite);
-            button.setAttribute('data-bookmark-id', response.bookmarkId); // 새로운 bookmarkId를 설정
+            button.setAttribute('data-bookmark-id', response.data.id); // 새로운 bookmarkId를 설정
             button.querySelector('i').classList.toggle("fa-solid");
             button.querySelector('i').classList.toggle("fa-regular");
-            console.log(isFavorite ? "Removed from favorites" : "Added to favorites");
+            console.log(isFavorite ? "Added to favorites" : "Removed from favorites");
 
         },
         error: function (xhr, status, error) {
@@ -540,7 +559,8 @@ function removeFromFavorites(button) {
     }
 
     const bookmarkId = button.getAttribute('data-bookmark-id'); // 버튼에서 북마크 ID 가져오기
-//    const isFavorite = button.getAttribute('data-favorite') === 'true';
+    button.setAttribute('data-favorite', 'false');
+    const isFavorite = button.getAttribute('data-favorite');
 
      if (!bookmarkId || bookmarkId === 'no-id') {
         console.error("Bookmark ID is missing!");

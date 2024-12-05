@@ -28,7 +28,7 @@ $(document).ready(function () {
         }
 
         if (isFavorite) {
-            removeFromFavorites(button);
+            removeFromFavorites(button[0]);
         } else {
             addToFavorites(button[0], userId, restaurantId, bookmarkId);
         }
@@ -46,6 +46,7 @@ console.log("index.js 끝");
 // 버튼 상태 토글 함수
 function toggleFavoriteButton(button, isFavorite) {
     if (isFavorite) {
+        
         button.innerHTML = '<i class="fa-solid fa-heart"></i>';  // 찜한 상태
     } else {
         button.innerHTML = '<i class="fa-regular fa-heart"></i>';  // 찜하지 않은 상태
