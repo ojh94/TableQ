@@ -20,7 +20,7 @@ public class RestaurantRequest extends SingleKeyRequest {
 
     private String contactNumber;
 
-    private boolean isAvailable;
+    private Boolean isAvailable;
 
     private BusinessInformationRequest businessInformation;
 }

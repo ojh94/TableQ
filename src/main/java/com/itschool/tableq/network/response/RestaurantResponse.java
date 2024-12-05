@@ -17,7 +17,7 @@ public class RestaurantResponse {
     private String address;
     private String information;
     private String contactNumber;
-    private boolean isAvailable;
+    private Boolean isAvailable;
     private BusinessInformationResponse businessInformation;
 
     public static RestaurantResponse of(Restaurant restaurant) {
@@ -29,7 +29,7 @@ public class RestaurantResponse {
                 .address(restaurant.getAddress())
                 .information(restaurant.getInformation())
                 .contactNumber(restaurant.getContactNumber())
-                .isAvailable(restaurant.isAvailable())
+                .isAvailable(restaurant.getIsAvailable())
                 .businessInformation(BusinessInformationResponse.builder()
                         .id(businessInformation.getId())
                         .build())

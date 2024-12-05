@@ -48,6 +48,7 @@ public class RestaurantService extends BaseService<RestaurantRequest, Restaurant
         return RestaurantResponse.of(restaurant);
     }
 
+
     @Override
     protected Restaurant convertBaseEntityFromRequest(RestaurantRequest requestEntity) {
         return Restaurant.builder()
@@ -55,7 +56,7 @@ public class RestaurantService extends BaseService<RestaurantRequest, Restaurant
                 .address(requestEntity.getAddress())
                 .information(requestEntity.getInformation())
                 .contactNumber(requestEntity.getContactNumber())
-                .isAvailable(requestEntity.isAvailable())
+                .isAvailable(requestEntity.getIsAvailable())
                 .businessInformation(businessInformationRepository.findById(requestEntity.getBusinessInformation().getId())
                         .orElseThrow(() -> new EntityNotFoundException()))
                 .build();

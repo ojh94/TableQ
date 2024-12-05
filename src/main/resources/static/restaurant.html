@@ -97,9 +97,9 @@
                 "contactNumber": $('#restaurantContactNumber').val(),
                 "businessInformation": {
                     "id": $('#businessInformationId').val()
-                }
-            },
-            "isAvailable": $('#restaurantAvailable').is(':checked')
+                },
+                "isAvailable": $('#restaurantAvailable').is(':checked')
+            }
         };
 
         $.ajax({
@@ -154,6 +154,7 @@
     });
 
     // 레스토랑 수정
+
     $('#updateRestaurantBtn').on('click', function() {
         const restaurantId = $('#restaurantId').val();
         if (!restaurantId) {
@@ -169,9 +170,9 @@
                 "contactNumber": $('#restaurantContactNumberUpdate').val(),
                 "businessInformation": {
                     "id": $('#businessInformationIdUpdate').val()
-                }
-            },
-            "isAvailable": $('#restaurantAvailableUpdate').is(':checked')
+                },
+                "isAvailable": $('#restaurantAvailableUpdate').is(':checked')
+            }
         };
 
         $.ajax({
