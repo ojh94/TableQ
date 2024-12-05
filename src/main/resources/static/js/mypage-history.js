@@ -23,7 +23,6 @@ function requestUserHistoryApi() {
             // 요청 성공 시 동작
             if (response.data.length === 0) {
                 return;
-
             }
 
             if (response.data.filter(item => item.isEntered == null).length > 0) {

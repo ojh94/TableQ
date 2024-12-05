@@ -1800,7 +1800,8 @@ function getCheckedKeywords() {
 
 // 점주 별 레스토랑 정보 조회
 function requestOwnerNavApi() {
-    const userId = $('#userId').val();
+    /*const userId = $('#userId').val();*/
+    const userId = 3;
 
     $.ajax({
         url: `/api/restaurant/owner/my-restaurants/${userId}`,
@@ -1815,13 +1816,13 @@ function requestOwnerNavApi() {
                     `;
 
                 // information 요소(내부) 끝에 추가
-                $('.dropdown-menu').prepend(restaurantImageHtml);
+                $('.dropdown-menu').prepend(restaurantHtml);
             });
         },
         error: function(xhr, status, error) {
         // 요청 실패 시 동작
-        console.error('편의시설 불러오기 실패:', error);
-        alert('편의시설 불러오기 중 오류가 발생했습니다.');
+        console.error('점주 레스토랑 불러오기 실패:', error);
+        alert('점주 레스토랑 불러오기 중 오류가 발생했습니다.');
         }
     });
 }
