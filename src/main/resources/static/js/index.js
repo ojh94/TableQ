@@ -1,6 +1,5 @@
 console.log("index.js 시작");
 
-
 $(document).ready(function () {
     console.log("DOM fully loaded.");
 
@@ -19,28 +18,39 @@ $(document).ready(function () {
         const isFavorite = button.data("favorite");
         const restaurantId = button.data("id");
 
-    console.log("restaurantId:", restaurantId);  // 로그로 restaurantId 값 확인
-    console.log("bookmarkId:", bookmarkId);  // 로그로 bookmarkId 값 확인
-    console.log("isFavorite:", isFavorite);  // isFavorite 값 확인
+        console.log("restaurantId:", restaurantId);  // 로그로 restaurantId 값 확인
+        console.log("bookmarkId:", bookmarkId);  // 로그로 bookmarkId 값 확인
+        console.log("isFavorite:", isFavorite);  // isFavorite 값 확인
 
-    if (!restaurantId || !bookmarkId) {
-        console.error("Restaurant ID 또는 Bookmark ID가 정의되지 않았습니다.");
-        return;
-    }
+        if (!restaurantId || !bookmarkId) {
+            console.error("Restaurant ID 또는 Bookmark ID가 정의되지 않았습니다.");
+            return;
+        }
 
-    if (isFavorite) {
-        removeFromFavorites(button);
-    } else {
-        addToFavorites(restaurantId, userId);
-    }
+        if (isFavorite) {
+            removeFromFavorites(button);
+        } else {
+            addToFavorites(button[0], userId, restaurantId, bookmarkId);
+        }
 
-    toggleFavoriteButton(button, isFavorite);
+        toggleFavoriteButton(button, !isFavorite); // 버튼 상태 토글
     });
 
     console.log("request URL:", `http://localhost/api/reservation/user/${userId}?page=0&size=10&sort=string`);
     console.log("index.js DOMContentLoaded 완료");
 });
 console.log("index.js 끝");
+
+
+
+// 버튼 상태 토글 함수
+function toggleFavoriteButton(button, isFavorite) {
+    if (isFavorite) {
+        button.innerHTML = '<i class="fa-solid fa-heart"></i>';  // 찜한 상태
+    } else {
+        button.innerHTML = '<i class="fa-regular fa-heart"></i>';  // 찜하지 않은 상태
+    }
+}
 
 
 //// 레스토랑 카드 생성 함수
