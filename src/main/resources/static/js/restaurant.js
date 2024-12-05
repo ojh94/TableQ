@@ -34,6 +34,7 @@ $(document).ready(function() {
         requestBreakHourModifyApi();
         requestKeywordModifyApi();
         requestAmenityModifyApi();
+        requestOwnerNavApi();
 
         // 새로운 메뉴 추가
         document.getElementById('addMenuButton').addEventListener('click', function() {
@@ -90,6 +91,14 @@ $(document).ready(function() {
                 /*requestRestaurantUpdateApi();
                 requestKeywordUpdateApi();
                 requestAmenityUpdateApi();*/
+            }
+        });
+
+        // 예약현황 버튼 클릭 시
+        $('#reservations').click(function() {
+            const restaurantId = document.getElementById("restaurant-id").value;
+            if (restaurantId) {
+                location.href = '/owner/reservation/' + restaurantId;
             }
         });
     }
@@ -191,11 +200,6 @@ function requestRestaurantApi(isModifyMode) {
             }
 
             if (isModifyMode) {
-                // nav 속 마이페이지 클릭 시
-                document.getElementById("nav-mypage").onclick = function() {
-                    location.href = '/owner/mypage/' + response.data.businessInformation.id;
-                }
-
                 rName.val(response.data.name);
                 rAddress.val(response.data.address);
                 rInformation.val(response.data.information);
@@ -1785,4 +1789,32 @@ function getCheckedKeywords() {
                });
 
     return result;
+}
+
+// 점주 별 레스토랑 정보 조회
+function requestOwnerNavApi() {
+    const userId = $('#userId').val();
+
+    $.ajax({
+        url: `/api/restaurant/owner/my-restaurants/${userId}`,
+        type: 'GET', // 필요한 HTTP 메서드로 변경
+        contentType: 'application/json', // JSON 형식으로 데이터 전송
+        success: function(response) {
+            // 요청 성공 시 동작
+            response.data.forEach((restaurant) => {
+                let restaurantHtml =
+                    `
+                    <li><a class="dropdown-item" href="/restaurant/modify/${restaurant.id}">${restaurant.name}</a></li>
+                    `;
+
+                // information 요소(내부) 끝에 추가
+                $('.dropdown-menu').prepend(restaurantImageHtml);
+            });
+        },
+        error: function(xhr, status, error) {
+        // 요청 실패 시 동작
+        console.error('편의시설 불러오기 실패:', error);
+        alert('편의시설 불러오기 중 오류가 발생했습니다.');
+        }
+    });
 }

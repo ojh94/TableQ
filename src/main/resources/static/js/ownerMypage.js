@@ -1,29 +1,20 @@
 $(document).ready(function() {
-    if (window.location.pathname
-    === '/owner/mypage/' + document.getElementById("owner-id").value) {
-        requestOwnerApi();
+    requestOwnerApi();
 
-        // 비밀번호 변경 클릭 시
-        document.getElementById("pass-card").onclick = function() {
-            const id = document.getElementById("owner-id").value;
-            location.href = '/owner/password/' + id;
-        };
-    }
-
-    // nav 속 마이페이지 클릭 시
-    document.getElementById("nav-mypage").onclick = function() {
-        const id = document.getElementById("owner-id").value;
-        location.href = '/owner/mypage/' + id;
-    }
+    // 비밀번호 변경 클릭 시
+    document.getElementById("pass-card").onclick = function() {
+        location.href = '/owner/password';
+    };
 });
 
 // owner API
 function requestOwnerApi() {
 
-    const id = document.getElementById("owner-id").value;
+    const id = document.getElementById("ownerId").value;
+    console.log(id);
 
     $.ajax({
-        url: `/api/owner/${id}`,
+        url: `/api/user/${id}`,
         type: 'GET', // 필요한 HTTP 메서드로 변경
         contentType: 'application/json', // JSON 형식으로 데이터 전송
         success: function(response) {

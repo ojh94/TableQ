@@ -1,14 +1,23 @@
 <!-- Responsive navbar-->
 <nav th:fragment="NavFragment"
      class="navbar navbar-expand-lg navbar-dark" style="background-color: rgba(237, 125, 49, 1) !important;">
+
+    <input type="hidden" th:value="${user.id}" id="userId">
+    <input type="hidden" id="restaurant-id" th:value="${id}">
+
     <div class="container">
-        <a class="navbar-brand" href="#">TableQ</a>
+        <a class="navbar-brand">TableQ</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
-                <li class="nav-item"><a id="nav-mypage" class="nav-link active" href="#">마이페이지</a></li>
+                <li class="nav-item">
+                    <!-- 로그인 한 경우 -->
+                    <a href="/owner/mypage" th:if="${user != null}" th:text="${user.nickname != null ? user.nickname + '님' : user.name + '님'}"></a>
+                    <a th:if="${user != null}" class="btn btn-light" href="/logout" aria-label="로그아웃">로그아웃</a>
+                </li>
+
                 <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" aria-current="page" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    <a class="nav-link dropdown-toggle" aria-current="page" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                         상세페이지
                     </a>
                     <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
