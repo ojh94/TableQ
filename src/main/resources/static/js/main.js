@@ -1,5 +1,7 @@
 console.log("main.js 시작");
 
+lucide.createIcons();
+
 // 레스토랑 카드 생성 함수
 function createRestaurantCard(restaurant, rating = 0, reviewsCount =0) {
     const card = document.createElement('div');
