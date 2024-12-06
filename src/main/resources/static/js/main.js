@@ -513,10 +513,26 @@ function renderRestaurantCards(restaurants) {
     const $restaurantGrid = $('#restaurantGrid3');
     $restaurantGrid.empty(); // 기존 카드 초기화
 
-    restaurants.forEach(restaurant => {
+    const renderedCards = restaurants.map(restaurant => {
         console.log('Restaurant to be rendered:', restaurant);  // 데이터 확인
         const $card = createRestaurantCard(restaurant, restaurant.rating, restaurant.reviewsCount);
         $restaurantGrid.append($card);
+        return { restaurant, $card }; // 카드와 데이터 함께 반환
+    });
+    return renderedCards;
+}
+
+// 즐겨찾기된 카드만 필터링하여 grid4에 렌더링
+function renderFavoritesToGrid4(renderedCards) {
+    const $restaurantGrid4 = $('#restaurantGrid4');
+    $restaurantGrid4.empty(); // grid4 초기화
+
+    // 즐겨찾기 필터링
+    const favoriteCards = renderedCards.filter(item => item.restaurant.isFavorite);
+
+    // grid4에 즐겨찾기 카드 추가
+    favoriteCards.forEach(item => {
+        $restaurantGrid4.append(item.$card);
     });
 }
 
