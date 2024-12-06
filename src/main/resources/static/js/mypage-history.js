@@ -35,7 +35,10 @@ function requestUserHistoryApi() {
                         `
                         <div class="card mb-2">
                             <div class="card-body">
-                                <p>${formatDate(plans.createdAt)}</p>
+                                <div class="flex-container">
+                                    <p>${formatDate(plans.createdAt)}</p>
+                                    <p class="reservation-link" data-reservation-id="${plans.id}">상세보기 <i class="bi bi-chevron-right"></i></p>
+                                </div>
                                 <p>대기중</p>
                                 <h6 class="fw-bold mt-3 restaurant-link" data-restaurant-id="${plans.restaurant.id}">
                                     ${plans.restaurant.name} <i class="bi bi-chevron-right"></i>
@@ -64,7 +67,10 @@ function requestUserHistoryApi() {
                         `
                         <div class="card mb-2">
                             <div class="card-body">
-                                <p>${formatDate(plans.createdAt)}</p>
+                                <div class="flex-container">
+                                    <p>${formatDate(plans.createdAt)}</p>
+                                    <p class="reservation-link" data-reservation-id="${plans.id}">상세보기 <i class="bi bi-chevron-right"></i></p>
+                                </div>
                                 <p>완료</p>
                                 <h6 class="fw-bold mt-3 restaurant-link" data-restaurant-id="${plans.restaurant.id}">
                                     ${plans.restaurant.name} <i class="bi bi-chevron-right"></i>
@@ -93,7 +99,10 @@ function requestUserHistoryApi() {
                         `
                         <div class="card mb-2">
                             <div class="card-body">
-                                <p>${formatDate(plans.createdAt)}</p>
+                                <div class="flex-container">
+                                    <p>${formatDate(plans.createdAt)}</p>
+                                    <p class="reservation-link" data-reservation-id="${plans.id}">상세보기 <i class="bi bi-chevron-right"></i></p>
+                                </div>
                                 <p>취소</p>
                                 <h6 class="fw-bold mt-3 restaurant-link" data-restaurant-id="${plans.restaurant.id}">
                                     ${plans.restaurant.name} <i class="bi bi-chevron-right"></i>
@@ -115,6 +124,13 @@ function requestUserHistoryApi() {
                 const restaurantId = $(this).data('restaurant-id');
                 if (restaurantId) {
                     location.href = '/restaurant/' + restaurantId;
+                }
+            });
+
+            $(document).on('click', '.reservation-link', function() {
+                const reservationId = $(this).data('reservation-id');
+                if (reservationId) {
+                    location.href = '/restaurant/reservation/detail/' + reservationId;
                 }
             });
 

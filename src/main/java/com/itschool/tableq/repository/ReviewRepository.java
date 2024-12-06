@@ -28,7 +28,7 @@ public interface ReviewRepository extends JpaRepository<Review, Long> {
 
     List<Review> findByUserAndRestaurantAndCreatedAtBetween(User user, Restaurant restaurant, LocalDateTime startOfDay, LocalDateTime endOfDay);
 
-    Optional<Review> findByReservation(Reservation reservation);
+    Review findByReservation(Reservation reservation);
 
     Optional<Review> getFirstByOrderByIdDesc();
 

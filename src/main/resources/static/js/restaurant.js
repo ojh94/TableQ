@@ -12,11 +12,6 @@ $(document).ready(function() {
         requestAmenityApi();
         requestReviewPossibleApi();
 
-        // 원격줄서기 버튼 숨기기
-        if ($('#today-open-1 strong').text() === '영업 전') {
-            $('#apply').hide().prop('disabled', true);
-        }
-
         // 원격줄서기 버튼 클릭 시
         document.getElementById("apply").onclick = function() {
             const restaurantId = document.getElementById("restaurant-id").value;
@@ -202,13 +197,12 @@ function requestRestaurantApi(isModifyMode) {
             const rInformation = $('#information');
             const rContactNumber = $('#restaurant-number');
 
-            if (response.data.available === false) {
+            if (response.data.isAvailable === false) {
                 $('#available').css("display" ,"none");
-                $("body > div > div.container.mt-5 > div > div > article:nth-child(1) > table > tbody > tr:nth-child(1) > td:nth-child(2)")[0]
-                .textContent = "현장대기 가능";
-            } else if (response.data.available === true) {
-                $("body > div > div.container.mt-5 > div > div > article:nth-child(1) > table > tbody > tr:nth-child(1) > td:nth-child(2)")[0]
-                .textContent = "원격줄서기, 현장대기 모두 가능";
+                $("#application")[0].textContent = "현장대기 가능";
+
+            } else if (response.data.isAvailable === true) {
+                $("#application")[0].textContent = "원격줄서기, 현장대기 모두 가능";
             }
 
             if (isModifyMode) {
@@ -830,6 +824,11 @@ function requestOpeningHourApi() {
                         break;
                 }
             });
+
+            // 원격줄서기 버튼 숨기기
+            if ($('#today-open-1 strong').text() === '영업 전') {
+                $('#apply').hide().prop('disabled', true);
+            }
 
             console.log('운영시간 set 완료');
         },
