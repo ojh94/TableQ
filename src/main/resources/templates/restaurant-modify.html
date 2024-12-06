@@ -1,8 +1,6 @@
 <div layout:decorate="~{common/layouts/ownerRestaurantLayout}"
      layout:fragment="Content">
 
-    <input type="hidden" id="restaurant-id" th:value="${id}">
-
     <!-- Page content-->
     <div class="container mt-5">
         <div class="row">
@@ -52,7 +50,7 @@
                     <table>
                         <tr>
                             <td>대기신청</td>
-                            <td></td>
+                            <td id="application"></td>
                         </tr>
                         <tr>
                             <td>순서미루기</td>
@@ -215,7 +213,7 @@
                     </div>
                 </article>
                 <div class="mt-5 px-5">
-                    <button class="btn btn-primary btn-lg btn-secondary" style="font-weight: bold;" type="button">예약현황</button>
+                    <button id="reservations" class="btn btn-primary btn-lg btn-secondary" style="font-weight: bold;" type="button">예약현황</button>
                     <button id="modify" class="btn btn-primary btn-lg btn-orange" style="float: right;" type="button">수정</button>
                 </div>
             </div>

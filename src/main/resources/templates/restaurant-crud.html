@@ -1,0 +1,205 @@
+<main layout:decorate="~{common/layouts/ownerLayout}"
+      layout:fragment="Content">
+<h1>Restaurant API Test</h1>
+
+<!-- 레스토랑 추가 -->
+<div>
+    <h2>레스토랑 추가</h2>
+    <label for="restaurantName">레스토랑 이름:</label>
+    <input type="text" id="restaurantName" required><br><br>
+
+    <label for="restaurantAddress">주소:</label>
+    <input type="text" id="restaurantAddress" required><br><br>
+
+    <label for="restaurantInformation">정보:</label>
+    <input type="text" id="restaurantInformation" required><br><br>
+
+    <label for="restaurantContactNumber">연락처:</label>
+    <input type="text" id="restaurantContactNumber" required><br><br>
+
+    <label for="businessInformationId">사업자 정보 ID:</label>
+    <input type="text" id="businessInformationId" required><br><br>
+
+    <label for="restaurantAvailable">운영 여부:</label>
+    <input type="checkbox" id="restaurantAvailable"><br><br>
+
+    <button id="createRestaurantBtn">레스토랑 추가</button>
+
+    <div id="createRestaurantResult"></div>
+</div>
+
+<!-- 레스토랑 조회 -->
+<div>
+    <h2>레스토랑 조회</h2>
+    <label for="restaurantId">레스토랑 ID:</label>
+    <input type="text" id="restaurantId" required><br><br>
+
+    <button id="fetchRestaurantBtn">레스토랑 조회</button><br><br>
+
+    <div id="restaurantDetails">
+        <p><strong>조회된 레스토랑:</strong></p>
+        <div id="restaurantDetailsContent"></div>
+    </div>
+</div>
+
+<!-- 레스토랑 수정 -->
+<div>
+    <h2>레스토랑 수정</h2>
+    <label for="restaurantNameUpdate">레스토랑 이름:</label>
+    <input type="text" id="restaurantNameUpdate"><br><br>
+
+    <label for="restaurantAddressUpdate">주소:</label>
+    <input type="text" id="restaurantAddressUpdate"><br><br>
+
+    <label for="restaurantInformationUpdate">정보:</label>
+    <input type="text" id="restaurantInformationUpdate"><br><br>
+
+    <label for="restaurantContactNumberUpdate">연락처:</label>
+    <input type="text" id="restaurantContactNumberUpdate"><br><br>
+
+    <label for="businessInformationIdUpdate">사업자 정보 ID:</label>
+    <input type="text" id="businessInformationIdUpdate"><br><br>
+
+    <label for="restaurantAvailableUpdate">운영 여부:</label>
+    <input type="checkbox" id="restaurantAvailableUpdate"><br><br>
+
+    <button id="updateRestaurantBtn">레스토랑 수정</button>
+
+    <div id="updateRestaurantResult"></div>
+</div>
+
+<!-- 레스토랑 삭제 -->
+<div>
+    <h2>레스토랑 삭제</h2>
+    <label for="restaurantIdDelete">삭제할 레스토랑 ID:</label>
+    <input type="text" id="restaurantIdDelete" required><br><br>
+
+    <button id="deleteRestaurantBtn">레스토랑 삭제</button>
+
+    <div id="deleteRestaurantResult"></div>
+</div>
+
+<script>
+    // 레스토랑 추가
+    $('#createRestaurantBtn').on('click', function() {
+        const request = {
+            "data": {
+                "name": $('#restaurantName').val(),
+                "address": $('#restaurantAddress').val(),
+                "information": $('#restaurantInformation').val(),
+                "contactNumber": $('#restaurantContactNumber').val(),
+                "businessInformation": {
+                    "id": $('#businessInformationId').val()
+                },
+                "isAvailable": $('#restaurantAvailable').is(':checked')
+            }
+        };
+
+        $.ajax({
+            url: '/api/restaurant',
+            method: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify(request),
+            success: function(data) {
+                $('#createRestaurantResult').html(`<pre>${JSON.stringify(data, null, 2)}</pre>`);
+            },
+            error: function(xhr, status, error) {
+                $('#createRestaurantResult').html(`<div class="error">오류 발생: ${error}</div>`);
+            }
+        });
+    });
+
+    // 레스토랑 조회
+    $('#fetchRestaurantBtn').on('click', function() {
+        const restaurantId = $('#restaurantId').val();
+        if (!restaurantId) {
+            alert('레스토랑 ID를 입력해주세요.');
+            return;
+        }
+
+        $.ajax({
+            url: `/api/restaurant/${restaurantId}`,
+            method: 'GET',
+            success: function(data) {
+                const restaurantData = data.data;
+                const resultHtml = `
+                    <p><strong>이름:</strong> ${restaurantData.name}</p>
+                    <p><strong>주소:</strong> ${restaurantData.address}</p>
+                    <p><strong>정보:</strong> ${restaurantData.information}</p>
+                    <p><strong>연락처:</strong> ${restaurantData.contactNumber}</p>
+                    <p><strong>운영 여부:</strong> ${restaurantData.isAvailable ? '운영 중' : '운영 중지'}</p>
+                    <p><strong>사업자 정보 ID:</strong> ${restaurantData.businessInformation.id}</p>
+                `;
+                $('#restaurantDetailsContent').html(resultHtml);
+
+                // 수정할 필드에 값 채우기
+                $('#restaurantNameUpdate').val(restaurantData.name);
+                $('#restaurantAddressUpdate').val(restaurantData.address);
+                $('#restaurantInformationUpdate').val(restaurantData.information);
+                $('#restaurantContactNumberUpdate').val(restaurantData.contactNumber);
+                $('#businessInformationIdUpdate').val(restaurantData.businessInformation.id);
+                $('#restaurantAvailableUpdate').prop('checked', restaurantData.isAvailable);
+            },
+            error: function(xhr, status, error) {
+                $('#restaurantDetailsContent').html(`<div class="error">오류 발생: ${error}</div>`);
+            }
+        });
+    });
+
+    // 레스토랑 수정
+
+    $('#updateRestaurantBtn').on('click', function() {
+        const restaurantId = $('#restaurantId').val();
+        if (!restaurantId) {
+            alert('레스토랑 ID를 입력해주세요.');
+            return;
+        }
+
+        const request = {
+            "data": {
+                "name": $('#restaurantNameUpdate').val(),
+                "address": $('#restaurantAddressUpdate').val(),
+                "information": $('#restaurantInformationUpdate').val(),
+                "contactNumber": $('#restaurantContactNumberUpdate').val(),
+                "businessInformation": {
+                    "id": $('#businessInformationIdUpdate').val()
+                },
+                "isAvailable": $('#restaurantAvailableUpdate').is(':checked')
+            }
+        };
+
+        $.ajax({
+            url: `/api/restaurant/${restaurantId}`,
+            method: 'PUT',
+            contentType: 'application/json',
+            data: JSON.stringify(request),
+            success: function(data) {
+                $('#updateRestaurantResult').html(`<pre>${JSON.stringify(data, null, 2)}</pre>`);
+            },
+            error: function(xhr, status, error) {
+                $('#updateRestaurantResult').html(`<div class="error">오류 발생: ${error}</div>`);
+            }
+        });
+    });
+
+    // 레스토랑 삭제
+    $('#deleteRestaurantBtn').on('click', function() {
+        const restaurantId = $('#restaurantIdDelete').val();
+        if (!restaurantId) {
+            alert('레스토랑 ID를 입력해주세요.');
+            return;
+        }
+
+        $.ajax({
+            url: `/api/restaurant/${restaurantId}`,
+            method: 'DELETE',
+            success: function(data) {
+                $('#deleteRestaurantResult').html(`<pre>${JSON.stringify(data, null, 2)}</pre>`);
+            },
+            error: function(xhr, status, error) {
+                $('#deleteRestaurantResult').html(`<div class="error">오류 발생: ${error}</div>`);
+            }
+        });
+    });
+</script>
+</main>

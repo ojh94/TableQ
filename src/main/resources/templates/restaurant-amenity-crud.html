@@ -1,0 +1,127 @@
+<main layout:decorate="~{common/layouts/ownerLayout}"
+      layout:fragment="Content">
+<h1>Restaurant Amenity API Test</h1>
+
+<!-- 레스토랑 편의시설 추가 (생성) -->
+<div>
+    <h2>레스토랑 편의시설 추가</h2>
+    <label for="restaurantIdCreate">레스토랑 ID:</label>
+    <input type="text" id="restaurantIdCreate" required><br><br>
+
+    <label for="amenityIdCreate">편의시설 ID:</label>
+    <input type="text" id="amenityIdCreate" required><br><br>
+
+    <button id="createRestaurantAmenityBtn">편의시설 추가</button>
+
+    <div id="createRestaurantAmenityResult"></div>
+</div>
+
+<!-- 레스토랑 편의시설 조회 -->
+<div>
+    <h2>레스토랑 편의시설 조회</h2>
+    <label for="restaurantAmenityId">레스토랑 편의시설 ID:</label>
+    <input type="text" id="restaurantAmenityId" required><br><br>
+
+    <button id="fetchRestaurantAmenityBtn">편의시설 조회</button><br><br>
+
+    <div id="restaurantAmenityDetails">
+        <p><strong>조회된 레스토랑 편의시설:</strong></p>
+        <div id="restaurantAmenityDetailsContent"></div><br><br>
+    </div>
+</div>
+
+<!-- 레스토랑 편의시설 삭제 -->
+<div>
+    <h2>레스토랑 편의시설 삭제</h2>
+    <label for="restaurantAmenityIdDelete">삭제할 레스토랑 편의시설 ID:</label>
+    <input type="text" id="restaurantAmenityIdDelete" required><br><br>
+
+    <button id="deleteRestaurantAmenityBtn">편의시설 삭제</button>
+
+    <div id="deleteRestaurantAmenityResult"></div>
+</div>
+
+<script>
+    // 레스토랑 편의시설 추가 요청
+    $('#createRestaurantAmenityBtn').on('click', function() {
+        const request = {
+            'restaurant': {
+                'id': $('#restaurantIdCreate').val()
+            },
+            'amenity': {
+                'id': $('#amenityIdCreate').val()
+            }
+        };
+
+        $.ajax({
+            url: '/api/restaurant-amenity',
+            method: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify({ data: request }),
+            success: function(data) {
+                const resultHtml = `
+                    <div class="response">
+                        <p><strong>성공:</strong></p>
+                        <pre>${JSON.stringify(data, null, 2)}</pre>
+                    </div>
+                `;
+                $('#createRestaurantAmenityResult').html(resultHtml);
+            },
+            error: function(xhr, status, error) {
+                $('#createRestaurantAmenityResult').html('<div class="error">오류 발생: ' + error + '</div>');
+            }
+        });
+    });
+
+    // 레스토랑 편의시설 조회 요청
+    $('#fetchRestaurantAmenityBtn').on('click', function() {
+        const restaurantAmenityId = $('#restaurantAmenityId').val();
+        if (!restaurantAmenityId) {
+            alert('레스토랑 편의시설 ID를 입력해주세요.');
+            return;
+        }
+
+        $.ajax({
+            url: `/api/restaurant-amenity/${restaurantAmenityId}`,
+            method: 'GET',
+            success: function(data) {
+                const restaurantAmenityData = data.data;
+                const resultHtml = `
+                    <p><strong>레스토랑 ID:</strong> ${restaurantAmenityData.restaurant.id}</p>
+                    <p><strong>편의시설 ID:</strong> ${restaurantAmenityData.amenity.id}</p>
+                `;
+                $('#restaurantAmenityDetailsContent').html(resultHtml);
+            },
+            error: function(xhr, status, error) {
+                $('#restaurantAmenityDetailsContent').html('<div class="error">오류 발생: ' + error + '</div>');
+            }
+        });
+    });
+
+    // 레스토랑 편의시설 삭제 요청
+    $('#deleteRestaurantAmenityBtn').on('click', function() {
+        const restaurantAmenityId = $('#restaurantAmenityIdDelete').val();
+        if (!restaurantAmenityId) {
+            alert('레스토랑 편의시설 ID를 입력해주세요.');
+            return;
+        }
+
+        $.ajax({
+            url: `/api/restaurant-amenity/${restaurantAmenityId}`,
+            method: 'DELETE',
+            success: function(data) {
+                const resultHtml = `
+                    <div class="response">
+                        <p><strong>성공:</strong></p>
+                        <pre>${JSON.stringify(data, null, 2)}</pre>
+                    </div>
+                `;
+                $('#deleteRestaurantAmenityResult').html(resultHtml);
+            },
+            error: function(xhr, status, error) {
+                $('#deleteRestaurantAmenityResult').html('<div class="error">오류 발생: ' + error + '</div>');
+            }
+        });
+    });
+</script>
+</main>

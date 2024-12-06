@@ -38,15 +38,14 @@ public class PublicController {
             // 로그인 안 한 상태
             return "welcome";
         } else {
+            model.addAttribute("user", user);
+
             switch (user.getMemberRole()) {
                 case USER:
-                    model.addAttribute("user", user);
                     return "index";
                 case OWNER:
-                    model.addAttribute("owner", user);
-                    return "owner-mypage";
+                    return "owner";
                 case ADMIN:
-                    model.addAttribute("admin", user);
                     return "admin";
             }
             throw new RuntimeException();

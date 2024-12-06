@@ -1,0 +1,179 @@
+<main layout:decorate="~{common/layouts/ownerLayout}"
+      layout:fragment="Content">
+<h1>Break Hour API Test</h1>
+
+<!-- Break Hour 정보 추가 -->
+<div>
+    <h2>Break Hour 정보 추가</h2>
+    <label for="breakStart">Break 시작 시간:</label>
+    <input type="text" id="breakStart" placeholder="HH:mm:ss" required><br><br>
+
+    <label for="breakEnd">Break 종료 시간:</label>
+    <input type="text" id="breakEnd" placeholder="HH:mm:ss" required><br><br>
+
+    <label for="dayOfWeek">요일:</label>
+    <input type="text" id="dayOfWeek" required><br><br>
+
+    <label for="restaurantId">레스토랑 ID:</label>
+    <input type="text" id="restaurantId" required><br><br>
+
+    <button id="createBreakHourBtn">Break Hour 정보 추가</button>
+
+    <div id="createBreakHourResult"></div>
+</div>
+
+<!-- Break Hour 정보 조회 -->
+<div>
+    <h2>Break Hour 정보 조회</h2>
+    <label for="breakHourId">Break Hour ID:</label>
+    <input type="text" id="breakHourId" required><br><br>
+
+    <button id="fetchBreakHourBtn">Break Hour 정보 조회</button><br><br>
+
+    <div id="breakHourDetails">
+        <p><strong>조회된 Break Hour 정보:</strong></p>
+        <div id="breakHourDetailsContent"></div><br><br>
+    </div>
+</div>
+
+<!-- Break Hour 정보 수정 -->
+<div>
+    <h2>Break Hour 정보 수정</h2>
+    <label for="breakHourIdUpdate">Break Hour ID:</label>
+    <input type="text" id="breakHourIdUpdate" required><br><br>
+
+    <label for="breakStartUpdate">Break 시작 시간:</label>
+    <input type="text" id="breakStartUpdate" placeholder="HH:mm:ss"><br><br>
+
+    <label for="breakEndUpdate">Break 종료 시간:</label>
+    <input type="text" id="breakEndUpdate" placeholder="HH:mm:ss"><br><br>
+
+    <label for="dayOfWeekUpdate">요일:</label>
+    <input type="text" id="dayOfWeekUpdate"><br><br>
+
+    <label for="restaurantIdUpdate">레스토랑 ID:</label>
+    <input type="text" id="restaurantIdUpdate"><br><br>
+
+    <button id="updateBreakHourBtn">Break Hour 정보 수정</button>
+
+    <div id="updateBreakHourResult"></div>
+</div>
+
+<!-- Break Hour 정보 삭제 -->
+<div>
+    <h2>Break Hour 정보 삭제</h2>
+    <label for="breakHourIdDelete">삭제할 Break Hour ID:</label>
+    <input type="text" id="breakHourIdDelete" required><br><br>
+
+    <button id="deleteBreakHourBtn">Break Hour 정보 삭제</button>
+
+    <div id="deleteBreakHourResult"></div>
+</div>
+
+<script>
+    // Break Hour 정보 추가 요청
+    $('#createBreakHourBtn').on('click', function() {
+        const request = {
+            'breakStart': $('#breakStart').val(),
+            'breakEnd': $('#breakEnd').val(),
+            'dayOfWeek': $('#dayOfWeek').val(),
+            'restaurant': {
+                'id': $('#restaurantId').val()
+            }
+        };
+
+        $.ajax({
+            url: '/api/breakhour',
+            method: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify({ data: request }),
+            success: function(data) {
+                const resultHtml = `<div class="response"><p><strong>성공:</strong></p><pre>${JSON.stringify(data, null, 2)}</pre></div>`;
+                $('#createBreakHourResult').html(resultHtml);
+            },
+            error: function(xhr, status, error) {
+                $('#createBreakHourResult').html('<div class="error">오류 발생: ' + error + '</div>');
+            }
+        });
+    });
+
+    // Break Hour 정보 조회 요청
+    $('#fetchBreakHourBtn').on('click', function() {
+        const breakHourId = $('#breakHourId').val();
+        if (!breakHourId) {
+            alert('Break Hour ID를 입력해주세요.');
+            return;
+        }
+
+        $.ajax({
+            url: `/api/breakhour/${breakHourId}`,
+            method: 'GET',
+            success: function(data) {
+                const breakHourData = data.data;
+                const resultHtml = `
+                    <p><strong>Break 시작 시간:</strong> ${breakHourData.breakStart}</p>
+                    <p><strong>Break 종료 시간:</strong> ${breakHourData.breakEnd}</p>
+                    <p><strong>요일:</strong> ${breakHourData.dayOfWeek}</p>
+                    <p><strong>레스토랑 ID:</strong> ${breakHourData.restaurant.id}</p>
+                `;
+                $('#breakHourDetailsContent').html(resultHtml);
+            },
+            error: function(xhr, status, error) {
+                $('#breakHourDetailsContent').html('<div class="error">오류 발생: ' + error + '</div>');
+            }
+        });
+    });
+
+    // Break Hour 정보 수정 요청
+    $('#updateBreakHourBtn').on('click', function() {
+        const breakHourId = $('#breakHourIdUpdate').val();
+        if (!breakHourId) {
+            alert('Break Hour ID를 입력해주세요.');
+            return;
+        }
+
+        const request = {
+            'breakStart': $('#breakStartUpdate').val(),
+            'breakEnd': $('#breakEndUpdate').val(),
+            'dayOfWeek': $('#dayOfWeekUpdate').val(),
+            'restaurant': {
+                'id': $('#restaurantIdUpdate').val()
+            }
+        };
+
+        $.ajax({
+            url: `/api/breakhour/${breakHourId}`,
+            method: 'PUT',
+            contentType: 'application/json',
+            data: JSON.stringify({ data: request }),
+            success: function(data) {
+                const resultHtml = `<div class="response"><p><strong>성공:</strong></p><pre>${JSON.stringify(data, null, 2)}</pre></div>`;
+                $('#updateBreakHourResult').html(resultHtml);
+            },
+            error: function(xhr, status, error) {
+                $('#updateBreakHourResult').html('<div class="error">오류 발생: ' + error + '</div>');
+            }
+        });
+    });
+
+    // Break Hour 정보 삭제 요청
+    $('#deleteBreakHourBtn').on('click', function() {
+        const breakHourId = $('#breakHourIdDelete').val();
+        if (!breakHourId) {
+            alert('Break Hour ID를 입력해주세요.');
+            return;
+        }
+
+        $.ajax({
+            url: `/api/breakhour/${breakHourId}`,
+            method: 'DELETE',
+            success: function(data) {
+                $('#deleteBreakHourResult').html('<div class="response"><strong>삭제 성공!</strong></div>');
+            },
+            error: function(xhr, status, error) {
+                $('#deleteBreakHourResult').html('<div class="error">오류 발생: ' + error + '</div>');
+            }
+        });
+    });
+</script>
+</main>

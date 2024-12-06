@@ -1,0 +1,155 @@
+<main layout:decorate="~{common/layouts/ownerLayout}"
+      layout:fragment="Content">
+<h1>Keyword API Test</h1>
+
+<!-- 키워드 추가 -->
+<div>
+    <h2>키워드 추가</h2>
+    <label for="keywordName">키워드 이름:</label>
+    <input type="text" id="keywordName" required><br><br>
+
+    <button id="createKeywordBtn">키워드 추가</button>
+
+    <div id="createKeywordResult"></div>
+</div>
+
+<!-- 키워드 조회 -->
+<div>
+    <h2>키워드 조회</h2>
+    <label for="keywordId">키워드 ID:</label>
+    <input type="text" id="keywordId" required><br><br>
+
+    <button id="fetchKeywordBtn">키워드 조회</button><br><br>
+
+    <div id="keywordDetails">
+        <p><strong>조회된 키워드 정보:</strong></p>
+        <div id="keywordDetailsContent"></div><br><br>
+    </div>
+</div>
+
+<!-- 키워드 수정 -->
+<div>
+    <h2>키워드 수정</h2>
+    <h3>수정할 항목</h3>
+
+    <label for="keywordIdUpdate">키워드 ID:</label>
+    <input type="text" id="keywordIdUpdate"><br><br>
+
+    <label for="keywordNameUpdate">키워드 이름:</label>
+    <input type="text" id="keywordNameUpdate"><br><br>
+
+    <button id="updateKeywordBtn">키워드 수정</button>
+
+    <div id="updateKeywordResult"></div>
+</div>
+
+<!-- 키워드 삭제 -->
+<div>
+    <h2>키워드 삭제</h2>
+    <label for="keywordIdDelete">삭제할 키워드 ID:</label>
+    <input type="text" id="keywordIdDelete" required><br><br>
+
+    <button id="deleteKeywordBtn">키워드 삭제</button>
+
+    <div id="deleteKeywordResult"></div>
+</div>
+
+<script>
+    // 키워드 추가 요청
+    $('#createKeywordBtn').on('click', function() {
+        const request = {
+            'name': $('#keywordName').val()
+        };
+
+        $.ajax({
+            url: '/api/keyword',
+            method: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify({ data: request }),
+            success: function(data) {
+                const resultHtml = `<div class="response"><p><strong>성공:</strong></p><pre>${JSON.stringify(data, null, 2)}</pre></div>`;
+                $('#createKeywordResult').html(resultHtml);
+            },
+            error: function(xhr, status, error) {
+                $('#createKeywordResult').html('<div class="error">오류 발생: ' + error + '</div>');
+            }
+        });
+    });
+
+    // 키워드 조회 요청
+    $('#fetchKeywordBtn').on('click', function() {
+        const keywordId = $('#keywordId').val();
+        if (!keywordId) {
+            alert('키워드 ID를 입력해주세요.');
+            return;
+        }
+
+        $.ajax({
+            url: `/api/keyword/${keywordId}`,
+            method: 'GET',
+            success: function(data) {
+                const keywordData = data.data;
+                const resultHtml = `
+                    <p><strong>키워드 이름:</strong> ${keywordData.name}</p>
+                `;
+                $('#keywordDetailsContent').html(resultHtml);
+
+                // 수정할 수 있도록 기본 값 설정
+                $('#keywordIdUpdate').val(keywordData.id);
+                $('#keywordNameUpdate').val(keywordData.name);
+            },
+            error: function(xhr, status, error) {
+                $('#keywordDetailsContent').html('<div class="error">오류 발생: ' + error + '</div>');
+            }
+        });
+    });
+
+    // 키워드 수정 요청
+    $('#updateKeywordBtn').on('click', function() {
+        const keywordId = $('#keywordIdUpdate').val();
+        const request = {
+            'name': $('#keywordNameUpdate').val()
+        };
+
+        if (!keywordId) {
+            alert('키워드 ID를 입력해주세요.');
+            return;
+        }
+
+        $.ajax({
+            url: `/api/keyword/${keywordId}`,
+            method: 'PUT',
+            contentType: 'application/json',
+            data: JSON.stringify({ data: request }),
+            success: function(data) {
+                const resultHtml = `<div class="response"><p><strong>성공:</strong></p><pre>${JSON.stringify(data, null, 2)}</pre></div>`;
+                $('#updateKeywordResult').html(resultHtml);
+            },
+            error: function(xhr, status, error) {
+                $('#updateKeywordResult').html('<div class="error">오류 발생: ' + error + '</div>');
+            }
+        });
+    });
+
+    // 키워드 삭제 요청
+    $('#deleteKeywordBtn').on('click', function() {
+        const keywordId = $('#keywordIdDelete').val();
+        if (!keywordId) {
+            alert('키워드 ID를 입력해주세요.');
+            return;
+        }
+
+        $.ajax({
+            url: `/api/keyword/${keywordId}`,
+            method: 'DELETE',
+            success: function(data) {
+                const resultHtml = `<div class="response"><p><strong>성공:</strong></p><pre>${JSON.stringify(data, null, 2)}</pre></div>`;
+                $('#deleteKeywordResult').html(resultHtml);
+            },
+            error: function(xhr, status, error) {
+                $('#deleteKeywordResult').html('<div class="error">오류 발생: ' + error + '</div>');
+            }
+        });
+    });
+</script>
+</main>

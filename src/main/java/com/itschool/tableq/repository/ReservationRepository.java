@@ -14,6 +14,8 @@ public interface ReservationRepository extends JpaRepository<Reservation, Long> 
     Optional<List<Reservation>> findByRestaurant(Restaurant restaurant);
     Optional<List<Reservation>> findByUser(User user);
 
+    Reservation findByIdAndIsEnteredAndCreatedAtBetween(Long reservationId, Boolean isEntered,
+                                                                  LocalDateTime startTime, LocalDateTime endTime);
     // userId, RestaurantId, LocalDateTime
     List<Reservation> findByUserAndRestaurantAndCreatedAtBetween(User user, Restaurant restaurant,
                                                                  LocalDateTime startOfDay, LocalDateTime endOfDay);

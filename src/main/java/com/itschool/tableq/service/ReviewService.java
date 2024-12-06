@@ -1,10 +1,7 @@
 package com.itschool.tableq.service;
 
 import com.itschool.tableq.domain.*;
-import com.itschool.tableq.ifs.annotation.AuthorCheck;
 import com.itschool.tableq.network.Header;
-import com.itschool.tableq.network.Pagination;
-import com.itschool.tableq.network.request.BusinessInformationRequest;
 import com.itschool.tableq.network.request.ReviewRequest;
 import com.itschool.tableq.network.response.ReviewResponse;
 import com.itschool.tableq.repository.ReservationRepository;
@@ -18,12 +15,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import org.webjars.NotFoundException;
 
-import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
+import java.util.Optional;
 
 @Service
 public class ReviewService extends BaseService<ReviewRequest, ReviewResponse, Review> {
@@ -69,13 +63,18 @@ public class ReviewService extends BaseService<ReviewRequest, ReviewResponse, Re
     }
 
     public Header<Boolean> isReviewable(Long reservationId){
+        Reservation reservation = reservationRepository.findByIdAndIsEnteredAndCreatedAtBetween(
+                reservationId, true, DateUtil.get3DaysAgo(), DateUtil.getEndOfDay()
+        );
 
-        Review review = getBaseRepository().findByReservation(reservationRepository.findById(reservationId)
-                .orElseThrow(()->new EntityNotFoundException("not found reservation"))
-        ).orElseGet(null);
+        if(reservation != null) {
+            Review review = getBaseRepository().findByReservation(reservation);
 
-        if(review == null) return Header.OK(true);
-        else return Header.OK(false);
+            if(review == null)
+                return Header.OK(true);
+        }
+
+        return Header.OK(false);
     }
 
     public Header<Long> countUserReviewsFor3Days(Long restaurantId, Long userId){
@@ -100,11 +99,10 @@ public class ReviewService extends BaseService<ReviewRequest, ReviewResponse, Re
         Page<Review> entities = getBaseRepository().findByRestaurantId(restaurantId, pageable);
 
         return convertPageToList(entities);
-
     }
 
     // ID에 해당하는 유저가 남긴 리뷰 조회
-    public Header<List<ReviewResponse>> readByUserId(Long userId, Pageable pageable) {
+    public Header<List<ReviewResponse>> readByUserId(Long userId, Pageable pageable){
         Page<Review> entities = getBaseRepository().findByUserId(userId, pageable);
 
         return convertPageToList(entities);

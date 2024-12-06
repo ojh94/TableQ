@@ -2,6 +2,7 @@ package com.itschool.tableq.controller.view;
 
 import com.itschool.tableq.domain.Reservation;
 import com.itschool.tableq.domain.User;
+import com.itschool.tableq.domain.enumclass.MemberRole;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -21,9 +22,17 @@ public class RestaurantController {
     }
 
     @GetMapping("/modify/{id}")
-    public String restaurantModify(@PathVariable Long id, Model model) {
-        model.addAttribute("id", id);
-        return "restaurant-modify";
+    public String restaurantModify(@PathVariable Long id, @AuthenticationPrincipal User user, Model model) {
+        if(user.getMemberRole() == MemberRole.OWNER) {
+            model.addAttribute("id", id);
+            model.addAttribute("user", user);
+
+            return "restaurant-modify";
+
+        } else {
+            // 점주 로그인이 아닐 때
+            return "ownerWelcome";
+        }
     }
 
     @GetMapping("/reservation/apply/{restaurantId}")

@@ -14,7 +14,8 @@ import lombok.experimental.SuperBuilder;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 @Entity
-@Table(name = "bookmarks")
+@Table(name = "bookmarks",
+        uniqueConstraints = @UniqueConstraint(columnNames = {"restaurant_id", "user_id"}))
 public class Bookmark extends AuditableEntity<BookmarkRequest> {
 
     @ManyToOne(fetch = FetchType.EAGER)

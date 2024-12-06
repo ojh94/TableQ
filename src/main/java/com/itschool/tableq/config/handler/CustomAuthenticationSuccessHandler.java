@@ -8,6 +8,8 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
+import org.springframework.security.web.savedrequest.RequestCache;
+import org.springframework.security.web.savedrequest.SavedRequest;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
@@ -18,6 +20,7 @@ import java.time.LocalDateTime;
 public class CustomAuthenticationSuccessHandler implements AuthenticationSuccessHandler {
 
     private final UserRepository userRepository;
+    private final RequestCache requestCache; // SavedRequest 사용
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
@@ -29,11 +32,15 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
         user.setLastLoginAt(LocalDateTime.now());
         userRepository.save(user); // 업데이트된 사용자 정보 저장
 
-        // 원래의 로직 (예: 로그인 후 리다이렉션)
-        try {
-            response.sendRedirect("/"); // 예시로 로그인 후 홈으로 리다이렉트
-        } catch (IOException e) {
-            e.printStackTrace();
+        // SavedRequest를 사용하여 사용자가 로그인 전에 접근하려던 URL을 가져옴
+        SavedRequest savedRequest = requestCache.getRequest(request, response);
+
+        if (savedRequest != null) {
+            // 로그인 전 URL이 있으면 그 URL로 리다이렉트
+            response.sendRedirect(savedRequest.getRedirectUrl());
+        } else {
+            // 로그인 후 기본적으로 홈으로 리다이렉트
+            response.sendRedirect("/"); // 원하는 리다이렉트 URL로 변경 가능
         }
     }
 }

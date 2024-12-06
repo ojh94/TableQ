@@ -30,7 +30,7 @@ public class Restaurant extends AuditableEntity<RestaurantRequest> {
     private String contactNumber;
 
     @Column(nullable = false)
-    private boolean isAvailable;
+    private Boolean isAvailable;
     
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "business_id", updatable = false)
@@ -40,6 +40,7 @@ public class Restaurant extends AuditableEntity<RestaurantRequest> {
         this.name = requestEntity.getName() == null ? this.name : requestEntity.getName();
         this.address = requestEntity.getAddress() == null ? this.address : requestEntity.getAddress();
         this.information = requestEntity.getInformation() == null ? this.information : requestEntity.getInformation();
-        this.contactNumber = requestEntity.getContact_number() == null ? this.contactNumber : requestEntity.getContact_number();
+        this.contactNumber = requestEntity.getContactNumber() == null ? this.contactNumber : requestEntity.getContactNumber();
+        this.isAvailable = requestEntity.getIsAvailable() == null ? this.isAvailable : requestEntity.getIsAvailable();
     }
 }

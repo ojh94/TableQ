@@ -1,0 +1,180 @@
+<main layout:decorate="~{common/layouts/ownerLayout}"
+      layout:fragment="Content">
+<h1>Business Information API Test</h1>
+
+<!-- 사업자 정보 추가 -->
+<div>
+    <h2>사업자 정보 추가</h2>
+    <label for="businessNumber">사업자 번호:</label>
+    <input type="text" id="businessNumber" required><br><br>
+
+    <label for="businessName">사업체 이름:</label>
+    <input type="text" id="businessName" required><br><br>
+
+    <label for="contactNumber">연락처:</label>
+    <input type="text" id="contactNumber" required><br><br>
+
+    <label for="userIdCreate">사용자 ID:</label>
+    <input type="text" id="userIdCreate" required><br><br>
+
+    <button id="createBusinessBtn">사업자 정보 추가</button>
+
+    <div id="createBusinessResult"></div>
+</div>
+
+<!-- 사업자 정보 조회 -->
+<div>
+    <h2>사업자 정보 조회</h2>
+    <label for="businessId">사업자 ID:</label>
+    <input type="text" id="businessId" required><br><br>
+
+    <button id="fetchBusinessBtn">사업자 정보 조회</button><br><br>
+
+    <div id="businessDetails">
+        <p><strong>조회된 사업자 정보:</strong></p>
+        <div id="businessDetailsContent"></div><br><br>
+    </div>
+</div>
+
+<!-- 사업자 정보 수정 -->
+<div>
+    <h2>사업자 정보 수정</h2>
+    <h3>수정할 항목</h3>
+
+    <label for="businessNumberUpdate">사업자 번호:</label>
+    <input type="text" id="businessNumberUpdate"><br><br>
+
+    <label for="businessNameUpdate">사업체 이름:</label>
+    <input type="text" id="businessNameUpdate"><br><br>
+
+    <label for="contactNumberUpdate">연락처:</label>
+    <input type="text" id="contactNumberUpdate"><br><br>
+
+    <button id="updateBusinessBtn">사업자 정보 수정</button>
+
+    <div id="updateBusinessResult"></div>
+</div>
+
+<!-- 사업자 정보 삭제 -->
+<div>
+    <h2>사업자 정보 삭제</h2>
+    <label for="businessIdDelete">삭제할 사업자 ID:</label>
+    <input type="text" id="businessIdDelete" required><br><br>
+
+    <button id="deleteBusinessBtn">사업자 정보 삭제</button>
+
+    <div id="deleteBusinessResult"></div>
+</div>
+
+<script>
+    // 사업자 정보 추가 요청
+    $('#createBusinessBtn').on('click', function() {
+        const request = {
+            'businessNumber': $('#businessNumber').val(),
+            'businessName': $('#businessName').val(),
+            'contactNumber': $('#contactNumber').val(),
+            'userRequest': {
+                'id': $('#userIdCreate').val()
+            }
+        };
+
+        $.ajax({
+            url: '/api/business-information',
+            method: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify({ data: request }),
+            success: function(data) {
+                const resultHtml = `<div class="response"><p><strong>성공:</strong></p><pre>${JSON.stringify(data, null, 2)}</pre></div>`;
+                $('#createBusinessResult').html(resultHtml);
+            },
+            error: function(xhr, status, error) {
+                $('#createBusinessResult').html('<div class="error">오류 발생: ' + error + '</div>');
+            }
+        });
+    });
+
+    // 사업자 정보 조회 요청
+    $('#fetchBusinessBtn').on('click', function() {
+        const businessId = $('#businessId').val();
+        if (!businessId) {
+            alert('사업자 ID를 입력해주세요.');
+            return;
+        }
+
+        $.ajax({
+            url: `/api/business-information/${businessId}`,
+            method: 'GET',
+            success: function(data) {
+                const businessData = data.data;
+                const resultHtml = `
+                    <p><strong>사업자 번호:</strong> ${businessData.businessNumber}</p>
+                    <p><strong>사업체 이름:</strong> ${businessData.businessName}</p>
+                    <p><strong>연락처:</strong> ${businessData.contactNumber}</p>
+                `;
+                $('#businessDetailsContent').html(resultHtml);
+
+                // 수정할 수 있도록 기본 값 설정
+                $('#businessNumberUpdate').val(businessData.businessNumber);
+                $('#businessNameUpdate').val(businessData.businessName);
+                $('#contactNumberUpdate').val(businessData.contactNumber);
+            },
+            error: function(xhr, status, error) {
+                $('#businessDetailsContent').html('<div class="error">오류 발생: ' + error + '</div>');
+            }
+        });
+    });
+
+    // 사업자 정보 수정 요청
+    $('#updateBusinessBtn').on('click', function() {
+        const businessId = $('#businessId').val();
+        if (!businessId) {
+            alert('사업자 ID를 입력해주세요.');
+            return;
+        }
+
+        const request = {
+            'businessNumber': $('#businessNumberUpdate').val(),
+            'businessName': $('#businessNameUpdate').val(),
+            'contactNumber': $('#contactNumberUpdate').val(),
+            'userRequest': {
+                'id': $('#userIdCreate').val()
+            }
+        };
+
+        $.ajax({
+            url: `/api/business-information/${businessId}`,
+            method: 'PUT',
+            contentType: 'application/json',
+            data: JSON.stringify({ data: request }),
+            success: function(data) {
+                const resultHtml = `<div class="response"><p><strong>성공:</strong></p><pre>${JSON.stringify(data, null, 2)}</pre></div>`;
+                $('#updateBusinessResult').html(resultHtml);
+            },
+            error: function(xhr, status, error) {
+                $('#updateBusinessResult').html('<div class="error">오류 발생: ' + error + '</div>');
+            }
+        });
+    });
+
+    // 사업자 정보 삭제 요청
+    $('#deleteBusinessBtn').on('click', function() {
+        const businessId = $('#businessIdDelete').val();
+        if (!businessId) {
+            alert('사업자 ID를 입력해주세요.');
+            return;
+        }
+
+        $.ajax({
+            url: `/api/business-information/${businessId}`,
+            method: 'DELETE',
+            success: function(data) {
+                const resultHtml = `<div class="response"><p><strong>성공:</strong></p><pre>${JSON.stringify(data, null, 2)}</pre></div>`;
+                $('#deleteBusinessResult').html(resultHtml);
+            },
+            error: function(xhr, status, error) {
+                $('#deleteBusinessResult').html('<div class="error">오류 발생: ' + error + '</div>');
+            }
+        });
+    });
+</script>
+</main>

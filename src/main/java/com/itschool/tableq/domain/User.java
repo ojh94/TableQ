@@ -23,6 +23,11 @@ public class User extends AuditableEntity<UserRequest> implements UserDetails {
 
     private static final long serialVersionUID = 1L; // 고정된 값으로 선언
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(updatable = false)
+    private Long id;
+
     @Column(nullable = false)
     private String password;
 

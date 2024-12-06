@@ -30,7 +30,7 @@ public class WebSecurityConfig {
     @Bean
     public WebSecurityCustomizer configure() {
         return (web -> web.ignoring()
-                .requestMatchers("/h2-console/**") // h2-console는 url은 막지마라
+                .requestMatchers("/h2-console/**") // h2-console은 url은 막지마라
                 .requestMatchers(new AntPathRequestMatcher("/js/**")) // 정적 파일 url은 막지마라
                 .requestMatchers(new AntPathRequestMatcher("/css/**")));
     }
@@ -55,25 +55,23 @@ public class WebSecurityConfig {
                                 new AntPathRequestMatcher("/api/user/check-email"), // 비회원도 회원 가입 시 필요
                                 new AntPathRequestMatcher("/api/user/check-phonenumber") // 비회원도 회원 가입 시 필요
                                 // 운영 배포 시 삭제 요망
-                                // new AntPathRequestMatcher("/api/**"),
-                                // new AntPathRequestMatcher("/api-docs"),
-                                // new AntPathRequestMatcher("/api-docs/**"),
-                                // new AntPathRequestMatcher("/v3/api-docs/**"),
-                                // new AntPathRequestMatcher("/swagger*/**"),
-                                // new AntPathRequestMatcher("/swagger-resources/**")
+                                //new AntPathRequestMatcher("/api/**"),
+                                //new AntPathRequestMatcher("/api-docs"),
+                                //new AntPathRequestMatcher("/api-docs/**"),
+                                //new AntPathRequestMatcher("/v3/api-docs/**"),
+                                //new AntPathRequestMatcher("/swagger*/**"),
+                                //new AntPathRequestMatcher("/swagger-resources/**")
                         ).permitAll()
                         .requestMatchers("/admin/**",
                                          "/api/user/owner-role")
                         .hasRole(MemberRole.ADMIN.name())
                         .requestMatchers("/owner/**",
+                                         "/api/**",
                                          "/restaurant/modify/**")
                         .hasRole(MemberRole.OWNER.name())
-                        .requestMatchers("/user/**")
+                        .requestMatchers("/user/**",
+                                         "/api/**")
                         .hasRole(MemberRole.USER.name())
-                        // 공통적으로 접근 가능한 API 경로
-                        .requestMatchers("/api/**")
-                        .hasAnyRole(MemberRole.ADMIN.name(), MemberRole.OWNER.name(), MemberRole.USER.name())
-
                         .anyRequest().authenticated()
                 )
                 .formLogin(formLogin -> formLogin // 폼 기반 로그인 설정

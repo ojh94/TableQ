@@ -18,9 +18,9 @@ public class RestaurantRequest extends SingleKeyRequest {
 
     private String information;
 
-    private String contact_number;
+    private String contactNumber;
 
-    private boolean isAvailable;
+    private Boolean isAvailable;
 
-    // private BusinessInformationRequest businessInformation;
+    private BusinessInformationRequest businessInformation;
 }

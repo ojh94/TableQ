@@ -90,7 +90,7 @@ function requestUserReviewApi() {
                 $('#my-review').prepend(reviewHtml);
             });
 
-            $(document).on('click', '.restaurant-link', function () {
+            $(document).on('click', '.restaurant-link', function() {
                 const restaurantId = $(this).data('restaurant-id');
                 if (restaurantId) {
                     location.href = '/restaurant/' + restaurantId;

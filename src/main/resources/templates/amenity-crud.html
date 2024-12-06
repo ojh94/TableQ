@@ -1,0 +1,157 @@
+<main layout:decorate="~{common/layouts/ownerLayout}"
+      layout:fragment="Content">
+<h1>Amenity API Test</h1>
+
+<!-- 편의시설 정보 추가 -->
+<div>
+    <h2>편의시설 정보 추가</h2>
+    <label for="amenityName">편의시설 이름:</label>
+    <input type="text" id="amenityName" required><br><br>
+
+    <button id="createAmenityBtn">편의시설 추가</button>
+
+    <div id="createAmenityResult"></div>
+</div>
+
+<!-- 편의시설 정보 조회 -->
+<div>
+    <h2>편의시설 정보 조회</h2>
+    <label for="amenityId">편의시설 ID:</label>
+    <input type="text" id="amenityId" required><br><br>
+
+    <button id="fetchAmenityBtn">편의시설 조회</button><br><br>
+
+    <div id="amenityDetails">
+        <p><strong>조회된 편의시설 정보:</strong></p>
+        <div id="amenityDetailsContent"></div><br><br>
+    </div>
+</div>
+
+<!-- 편의시설 정보 수정 -->
+<div>
+    <h2>편의시설 정보 수정</h2>
+    <label for="amenityIdUpdate">수정할 편의시설 ID:</label>
+    <input type="text" id="amenityIdUpdate" required><br><br>
+
+    <label for="amenityNameUpdate">편의시설 이름:</label>
+    <input type="text" id="amenityNameUpdate" required><br><br>
+
+    <button id="updateAmenityBtn">편의시설 수정</button>
+
+    <div id="updateAmenityResult"></div>
+</div>
+
+<!-- 편의시설 정보 삭제 -->
+<div>
+    <h2>편의시설 정보 삭제</h2>
+    <label for="amenityIdDelete">삭제할 편의시설 ID:</label>
+    <input type="text" id="amenityIdDelete" required><br><br>
+
+    <button id="deleteAmenityBtn">편의시설 삭제</button>
+
+    <div id="deleteAmenityResult"></div>
+</div>
+
+<script>
+    // 편의시설 추가 요청
+    $('#createAmenityBtn').on('click', function() {
+        const request = {
+            'id': 0,
+            'name': $('#amenityName').val()
+        };
+
+        $.ajax({
+            url: '/api/amenity',
+            method: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify({ data: request }),
+            success: function(data) {
+                const resultHtml = `<div class="response"><p><strong>성공:</strong></p><pre>${JSON.stringify(data, null, 2)}</pre></div>`;
+                $('#createAmenityResult').html(resultHtml);
+            },
+            error: function(xhr, status, error) {
+                $('#createAmenityResult').html('<div class="error">오류 발생: ' + error + '</div>');
+            }
+        });
+    });
+
+    // 편의시설 조회 요청
+    $('#fetchAmenityBtn').on('click', function() {
+        const amenityId = $('#amenityId').val();
+        if (!amenityId) {
+            alert('편의시설 ID를 입력해주세요.');
+            return;
+        }
+
+        $.ajax({
+            url: `/api/amenity/${amenityId}`,
+            method: 'GET',
+            success: function(data) {
+                const amenityData = data.data;
+                const resultHtml = `
+                    <p><strong>편의시설 ID:</strong> ${amenityData.id}</p>
+                    <p><strong>편의시설 이름:</strong> ${amenityData.name}</p>
+                `;
+                $('#amenityDetailsContent').html(resultHtml);
+
+                // 수정할 수 있도록 기본 값 설정
+                $('#amenityIdUpdate').val(amenityData.id);
+                $('#amenityNameUpdate').val(amenityData.name);
+            },
+            error: function(xhr, status, error) {
+                $('#amenityDetailsContent').html('<div class="error">오류 발생: ' + error + '</div>');
+            }
+        });
+    });
+
+    // 편의시설 수정 요청
+    $('#updateAmenityBtn').on('click', function() {
+        const amenityId = $('#amenityIdUpdate').val();
+        if (!amenityId) {
+            alert('편의시설 ID를 입력해주세요.');
+            return;
+        }
+
+        const request = {
+            'id': amenityId,
+            'name': $('#amenityNameUpdate').val()
+        };
+
+        $.ajax({
+            url: `/api/amenity/${amenityId}`,
+            method: 'PUT',
+            contentType: 'application/json',
+            data: JSON.stringify({ data: request }),
+            success: function(data) {
+                const resultHtml = `<div class="response"><p><strong>성공:</strong></p><pre>${JSON.stringify(data, null, 2)}</pre></div>`;
+                $('#updateAmenityResult').html(resultHtml);
+            },
+            error: function(xhr, status, error) {
+                $('#updateAmenityResult').html('<div class="error">오류 발생: ' + error + '</div>');
+            }
+        });
+    });
+
+    // 편의시설 삭제 요청
+    $('#deleteAmenityBtn').on('click', function() {
+        const amenityId = $('#amenityIdDelete').val();
+        if (!amenityId) {
+            alert('편의시설 ID를 입력해주세요.');
+            return;
+        }
+
+        $.ajax({
+            url: `/api/amenity/${amenityId}`,
+            method: 'DELETE',
+            success: function(data) {
+                const resultHtml = `<div class="response"><p><strong>성공:</strong></p><pre>${JSON.stringify(data, null, 2)}</pre></div>`;
+                $('#deleteAmenityResult').html(resultHtml);
+            },
+            error: function(xhr, status, error) {
+                $('#deleteAmenityResult').html('<div class="error">오류 발생: ' + error + '</div>');
+            }
+        });
+    });
+</script>
+
+</main>

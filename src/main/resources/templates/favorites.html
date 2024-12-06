@@ -1,4 +1,23 @@
 <main layout:decorate="~{common/layouts/mainLayout}"
       layout:fragment="Content">
-  <div></div>
+  <div class="section-list">
+    <div class="min-h-screen bg-orange-50">
+      <section class="restaurant-section">
+        <div class="section-header">
+          <h3>내 관심매장</h3>
+          <select id="sortId">
+            <option value="mostVisit">인기순</option>
+            <option value="recommendationScore">추천순</option>
+          </select>
+        </div>
+        <div class="restaurant-grid" id="restaurantGrid4"></div>
+        <div class="pagination" id="pagination">
+          <button id="prevPage" class="pagination-btn" disabled>이전</button>
+          <span id="currentPage" class="pagination-text">1 </span> 페이지 / <span id="totalPages">1</span> 페이지
+          <button id="nextPage" class="pagination-btn" disabled>다음</button>
+        </div>
+      </section>
+    </div>
+  </div>
+  <script defer src="/js/index.js"></script>
 </main>

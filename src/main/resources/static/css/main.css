@@ -88,10 +88,18 @@ header .container {
 }
 
 header .logo {
-  background: center / contain no-repeat url("/img/logo-reverse.png");
   margin: auto 10px;
   height: 30px;
   width: 131px;
+}
+
+header .logo a {
+  background: center / contain no-repeat url("/img/logo-reverse.png");
+  height: 30px;
+  display:flex;
+  align-items: center;
+  text-indent: -9999px;
+  text-decoration: none;
 }
 
 header .home {
@@ -386,21 +394,6 @@ header, .toolbar-top, .toolbar {
   background-color:  var(--color-orange-500);
 }
 
-@media (max-width: 768px) {
-  .container, .main-container, header, .toolbar-top, .toolbar {
-    max-width: 2000px;  /* 고정된 최대 너비 */
-    margin: 0 auto;     /* 가로 중앙 정렬 */
-    padding: 0 15px;    /* 좌우 패딩 */
-
-  }
-}
-
-@media (max-width: 768px) {
-  .restaurant-grid {
-      grid-template-columns: 1fr;
-  }
-}
-
 body {
   margin: 0;
   padding: 0;
@@ -616,18 +609,6 @@ header {
   font-weight: bold;
 }
 
-@media (max-width: 600px) {
-  .restaurant-item {
-    flex-direction: column;
-    align-items: flex-start;
-  }
-
-  .restaurant-info {
-    margin-left: 0;
-    margin-top: 10px;
-  }
-}
-
 .btn-reserve:focus {
   outline: 2px solid  var(--color-orange-600);
   outline-offset: 2px;
@@ -653,7 +634,7 @@ header {
   left: 0;
   left: 50%; /* 왼쪽에서부터 50% 위치 */
   transform: translateX(-50%); /* 수평 중앙 정렬 */
-
+  height: 50px;
   background-color: var(--color-orange-600);
   display: flex;
   justify-content: space-around;
@@ -673,7 +654,7 @@ header {
 }
 
 .toolbar-item i {
-  
+
   margin-bottom: 0.25rem;
   font-size: 1.5rem;
 }
@@ -723,17 +704,51 @@ button[type="submit"] {
 }
 
 @media (max-width: 768px) {
+  .container, .main-container, header, .toolbar-top, .toolbar {
+    max-width: 2000px;  /* 고정된 최대 너비 */
+    margin: 0 auto;     /* 가로 중앙 정렬 */
+    padding: 0 15px;    /* 좌우 패딩 */
+  }
+  .restaurant-grid {
+        grid-template-columns: 1fr;
+    }
   .pagination {
-    font-size: 1rem;
-    gap: 10px;
+      font-size: 1rem;
+      gap: 10px;
+    }
+
+    .pagination-btn {
+      padding: 10px 15px;
+      font-size: 1rem;
+    }
+
+    .pagination-text {
+      font-size: 1.2rem;
+    }
+}
+
+@media (max-width: 600px) {
+  header .home {
+    height: 0px;
+    width: 0px;
   }
 
-  .pagination-btn {
-    padding: 10px 15px;
-    font-size: 1rem;
+  header .home a {
+    background: center / contain no-repeat url("/img/favicon/favicon-io-reverse/android-chrome-512x512.png");
+    height: 100%;
+    width: 100%;
+    display: block;
+    text-indent: -9999px; /* 대체 텍스트 */
   }
 
-  .pagination-text {
-    font-size: 1.2rem;
+
+  .restaurant-item {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .restaurant-info {
+    margin-left: 0;
+    margin-top: 10px;
   }
 }

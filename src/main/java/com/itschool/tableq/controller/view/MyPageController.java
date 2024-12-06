@@ -23,8 +23,8 @@ public class MyPageController {
     public String myPage(@AuthenticationPrincipal User user, Model model) {
         UserResponse userResponse = userService.read(user.getId()).getData();
 
-        if(user != null)
-            model.addAttribute("user", userResponse);
+        model.addAttribute("user", userResponse);
+
         return "mypage";
     }
 
@@ -33,9 +33,9 @@ public class MyPageController {
     public String editPassword(@AuthenticationPrincipal User user, Model model) {
         UserResponse userResponse = userService.read(user.getId()).getData();
 
-        if(user != null)
-            model.addAttribute("user", userResponse);
-        return "edit";
+        model.addAttribute("user", userResponse);
+
+        return "mypage-edit";
     }
 
 

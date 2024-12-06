@@ -126,6 +126,16 @@
             method: 'GET',
             success: function(data) {
                 const ownerData = data.data;
+
+                // 조회된 데이터를 Update 입력 필드에 채우기
+                $('#ownerEmailUpdate').val(ownerData.email);
+                $('#ownerPasswordUpdate').val('');
+                $('#ownerNameUpdate').val(ownerData.name);
+                $('#ownerNicknameUpdate').val(ownerData.nickname);
+                $('#ownerPhoneNumberUpdate').val(ownerData.phoneNumber);
+                $('#ownerAddressUpdate').val(ownerData.address);
+
+                // 화면에 조회된 데이터 표시
                 const resultHtml = `
                     <p><strong>이메일:</strong> ${ownerData.email}</p>
                     <p><strong>닉네임:</strong> ${ownerData.nickname}</p>
@@ -133,12 +143,6 @@
                     <p><strong>주소:</strong> ${ownerData.address}</p>
                 `;
                 $('#ownerDetailsContent').html(resultHtml);
-
-                // 수정할 수 있도록 기본 값 설정
-                $('#ownerEmailUpdate').val(ownerData.email);
-                $('#ownerNicknameUpdate').val(ownerData.nickname);
-                $('#ownerPhoneNumberUpdate').val(ownerData.phoneNumber);
-                $('#ownerAddressUpdate').val(ownerData.address);
             },
             error: function(xhr, status, error) {
                 $('#ownerDetailsContent').html('<p>오류 발생: ' + error + '</p>');
@@ -155,13 +159,14 @@
         }
 
         const request = {
-            'id': 0,
+            'id': ownerId,
             'password': $('#ownerPasswordUpdate').val(),
             'email': $('#ownerEmailUpdate').val(),
             'name': $('#ownerNameUpdate').val(),
             'nickname': $('#ownerNicknameUpdate').val(),
             'phoneNumber': $('#ownerPhoneNumberUpdate').val(),
-            'address': $('#ownerAddressUpdate').val()
+            'address': $('#ownerAddressUpdate').val(),
+            'MemberRole': 'OWNER'
         };
 
         $.ajax({

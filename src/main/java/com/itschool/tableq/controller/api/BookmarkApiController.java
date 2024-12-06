@@ -51,4 +51,12 @@ public class BookmarkApiController extends CrudController<BookmarkRequest, Bookm
         log.info("{}","{}","{}","read: ",restaurantId);
         return ((BookmarkService)baseService).countBookmarks(restaurantId);
     }
+
+    @Operation(summary = "즐겨찾기 존재 여부 조회", description = "레스토랑id와 유저id로 즐겨찾기 존재 여부 조회")
+    @GetMapping("/is-exist/{userId}/{restaurantId}")
+    public Header<BookmarkResponse> isExist(@PathVariable(name = "userId")Long userId,
+                                   @PathVariable(name = "restaurantId")Long restaurantId){
+        log.info("{}","{}","read: ",userId);
+        return ((BookmarkService) baseService).isExist(userId, restaurantId);
+    }
 }

@@ -1,0 +1,178 @@
+<main layout:decorate="~{common/layouts/ownerLayout}"
+      layout:fragment="Content">
+<h1>Reservation API Test</h1>
+
+<!-- 예약 추가 (생성) -->
+<div>
+    <h2>예약 추가</h2>
+    <label for="people">인원 수:</label>
+    <input type="number" id="people" required><br><br>
+
+    <label for="restaurantIdCreate">레스토랑 ID:</label>
+    <input type="text" id="restaurantIdCreate" required><br><br>
+
+    <label for="userIdCreate">사용자 ID:</label>
+    <input type="text" id="userIdCreate" required><br><br>
+
+    <button id="createReservationBtn">예약 추가</button>
+
+    <div id="createReservationResult"></div>
+</div>
+
+<!-- 예약 조회 -->
+<div>
+    <h2>예약 조회</h2>
+    <label for="reservationId">예약 ID:</label>
+    <input type="text" id="reservationId" required><br><br>
+
+    <button id="fetchReservationBtn">예약 조회</button><br><br>
+
+    <div id="reservationDetails">
+        <p><strong>조회된 예약:</strong></p>
+        <div id="reservationDetailsContent"></div><br><br>
+    </div>
+</div>
+
+<!-- 예약 수정 -->
+<div>
+    <h2>예약 수정</h2>
+    <h3>수정할 항목</h3>
+
+    <label for="isEnteredUpdate">입장 여부:</label>
+    <input type="checkbox" id="isEnteredUpdate"><br><br>
+
+    <button id="updateReservationBtn">예약 수정</button>
+
+    <div id="updateReservationResult"></div>
+</div>
+
+<!-- 예약 삭제 -->
+<div>
+    <h2>예약 삭제</h2>
+    <label for="reservationIdDelete">삭제할 예약 ID:</label>
+    <input type="text" id="reservationIdDelete" required><br><br>
+
+    <button id="deleteReservationBtn">예약 삭제</button>
+
+    <div id="deleteReservationResult"></div>
+</div>
+
+<script>
+    // 예약 추가 요청
+    $('#createReservationBtn').on('click', function() {
+        const request = {
+            'people': $('#people').val(),
+            'restaurant': {
+                'id': $('#restaurantIdCreate').val()
+            },
+            'user': {
+                'id': $('#userIdCreate').val()
+            }
+        };
+
+        $.ajax({
+            url: '/api/reservation',
+            method: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify({ data: request }),
+            success: function(data) {
+                const resultHtml = `
+                    <div class="response">
+                        <p><strong>성공:</strong></p>
+                        <pre>${JSON.stringify(data, null, 2)}</pre>
+                    </div>
+                `;
+                $('#createReservationResult').html(resultHtml);
+            },
+            error: function(xhr, status, error) {
+                $('#createReservationResult').html('<div class="error">오류 발생: ' + error + '</div>');
+            }
+        });
+    });
+
+    // 예약 조회 요청
+    $('#fetchReservationBtn').on('click', function() {
+        const reservationId = $('#reservationId').val();
+        if (!reservationId) {
+            alert('예약 ID를 입력해주세요.');
+            return;
+        }
+
+        $.ajax({
+            url: `/api/reservation/${reservationId}`,
+            method: 'GET',
+            success: function(data) {
+                const reservationData = data.data;
+                const resultHtml = `
+                    <p><strong>예약 ID:</strong> ${reservationData.id}</p>
+                    <p><strong>인원 수:</strong> ${reservationData.people}</p>
+                    <p><strong>레스토랑 ID:</strong> ${reservationData.restaurant.id}</p>
+                    <p><strong>사용자 ID:</strong> ${reservationData.user.id}</p>
+                `;
+                $('#reservationDetailsContent').html(resultHtml);
+            },
+            error: function(xhr, status, error) {
+                $('#reservationDetailsContent').html('<div class="error">오류 발생: ' + error + '</div>');
+            }
+        });
+    });
+
+    // 예약 수정 요청
+    $('#updateReservationBtn').on('click', function() {
+        const reservationId = $('#reservationId').val();
+        if (!reservationId) {
+            alert('예약 ID를 입력해주세요.');
+            return;
+        }
+
+        const request = {
+            'isEntered': $('#isEnteredUpdate').is(':checked')
+        };
+
+        $.ajax({
+            url: `/api/reservation/${reservationId}`,
+            method: 'PUT',
+            contentType: 'application/json',
+            data: JSON.stringify({ data: request }),
+            success: function(data) {
+                const resultHtml = `
+                    <div class="response">
+                        <p><strong>성공:</strong></p>
+                        <pre>${JSON.stringify(data, null, 2)}</pre>
+                    </div>
+                `;
+                $('#updateReservationResult').html(resultHtml);
+            },
+            error: function(xhr, status, error) {
+                $('#updateReservationResult').html('<div class="error">오류 발생: ' + error + '</div>');
+            }
+        });
+    });
+
+    // 예약 삭제 요청
+    $('#deleteReservationBtn').on('click', function() {
+        const reservationId = $('#reservationIdDelete').val();
+        if (!reservationId) {
+            alert('예약 ID를 입력해주세요.');
+            return;
+        }
+
+        $.ajax({
+            url: `/api/reservation/${reservationId}`,
+            method: 'DELETE',
+            success: function(data) {
+                const resultHtml = `
+                    <div class="response">
+                        <p><strong>성공:</strong></p>
+                        <pre>${JSON.stringify(data, null, 2)}</pre>
+                    </div>
+                `;
+                $('#deleteReservationResult').html(resultHtml);
+            },
+            error: function(xhr, status, error) {
+                $('#deleteReservationResult').html('<div class="error">오류 발생: ' + error + '</div>');
+            }
+        });
+    });
+</script>
+</main>
