@@ -519,16 +519,22 @@ function renderRestaurantCards(restaurants) {
         $restaurantGrid.append($card);
         return { restaurant, $card }; // 카드와 데이터 함께 반환
     });
-    return renderedCards;
-}
 
-// 즐겨찾기된 카드만 필터링하여 grid4에 렌더링
-function renderFavoritesToGrid4(renderedCards) {
-    const $restaurantGrid4 = $('#restaurantGrid4');
-    $restaurantGrid4.empty(); // grid4 초기화
 
     // 즐겨찾기 필터링
     const favoriteCards = renderedCards.filter(item => item.restaurant.isFavorite);
+
+    // 즐겨찾기 그리드4에 렌더링
+    renderFavoritesToGrid4(favoriteCards);
+
+    return renderedCards;
+
+}
+
+// 즐겨찾기된 카드만 필터링하여 grid4에 렌더링
+function renderFavoritesToGrid4(favoriteCards) {
+    const $restaurantGrid4 = $('#restaurantGrid4');
+    $restaurantGrid4.empty(); // grid4 초기화
 
     // grid4에 즐겨찾기 카드 추가
     favoriteCards.forEach(item => {
