@@ -5,7 +5,7 @@ plugins {
 }
 
 group = 'com.itschool'
-version = '1.0.6-SNAPSHOT' // 수정 시 application-prod.yml의 버전도 같이 수정할 것
+version = '1.0.7-SNAPSHOT' // 수정 시 application-prod.yml의 버전도 같이 수정할 것
 
 jar {
     enabled = false

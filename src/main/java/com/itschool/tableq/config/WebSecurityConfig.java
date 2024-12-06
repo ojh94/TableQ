@@ -23,7 +23,6 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 public class WebSecurityConfig {
 
     private final UserDetailService userDetailService;
-
     private final CustomAuthenticationSuccessHandler customSuccessHandler;
 
     // 스프링 시큐리티 기능 비활성화 : 인증과 인가를 적용하지 않는 곳 명시
@@ -55,30 +54,32 @@ public class WebSecurityConfig {
                                 new AntPathRequestMatcher("/api/user/check-email"), // 비회원도 회원 가입 시 필요
                                 new AntPathRequestMatcher("/api/user/check-phonenumber") // 비회원도 회원 가입 시 필요
                                 // 운영 배포 시 삭제 요망
-                                //new AntPathRequestMatcher("/api/**"),
-                                //new AntPathRequestMatcher("/api-docs"),
-                                //new AntPathRequestMatcher("/api-docs/**"),
-                                //new AntPathRequestMatcher("/v3/api-docs/**"),
-                                //new AntPathRequestMatcher("/swagger*/**"),
-                                //new AntPathRequestMatcher("/swagger-resources/**")
+                                // new AntPathRequestMatcher("/api/**"),
+                                // new AntPathRequestMatcher("/api-docs"),
+                                // new AntPathRequestMatcher("/api-docs/**"),
+                                // new AntPathRequestMatcher("/v3/api-docs/**"),
+                                // new AntPathRequestMatcher("/swagger*/**"),
+                                // new AntPathRequestMatcher("/swagger-resources/**")
                         ).permitAll()
+
                         .requestMatchers("/admin/**",
-                                         "/api/user/owner-role")
+                                "/api/user/owner-role")
                         .hasRole(MemberRole.ADMIN.name())
                         .requestMatchers("/owner/**",
-                                         "/api/**",
-                                         "/restaurant/modify/**")
+                                "/restaurant/modify/**")
                         .hasRole(MemberRole.OWNER.name())
-                        .requestMatchers("/user/**",
-                                         "/api/**")
+                        .requestMatchers("/user/**")
                         .hasRole(MemberRole.USER.name())
+
+                        .requestMatchers("/api/**")
+                        .hasAnyRole(MemberRole.ADMIN.name(), MemberRole.OWNER.name(), MemberRole.USER.name())
                         .anyRequest().authenticated()
                 )
                 .formLogin(formLogin -> formLogin // 폼 기반 로그인 설정
                         .loginPage("/login")
                         .usernameParameter("email")
-                        .defaultSuccessUrl("/")
-                        .successHandler(customSuccessHandler)
+                        .defaultSuccessUrl("/") // 기본 로그인 성공 URL
+                        .successHandler(customSuccessHandler) // 로그인 성공 핸들러 설정
                 )
                 .logout(logout -> logout // 로그아웃 설정
                         .logoutUrl("/logout")
@@ -98,7 +99,7 @@ public class WebSecurityConfig {
                 .build();
     }
 
-    // 인증 관리자 관련 설정 : 사용자 정보를 가져올 서비스를 재정의하거나 인증방법 등을 설정
+    // 인증 관리자 관련 설정
     @Bean
     public AuthenticationManager authenticationManager(HttpSecurity http,
                                                        BCryptPasswordEncoder bCryptPasswordEncoder,
