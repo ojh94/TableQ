@@ -12,3 +12,7 @@ body {
 .restaurant-link {
     cursor: pointer;
 }
+
+.reservation-link {
+    cursor: pointer;
+}
