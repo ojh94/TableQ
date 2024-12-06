@@ -1,7 +1,6 @@
 package com.itschool.tableq.controller.view;
 
 import com.itschool.tableq.domain.User;
-import com.itschool.tableq.domain.enumclass.MemberRole;
 import com.itschool.tableq.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -28,19 +27,6 @@ public class OwnerController {
         return "ownerLogin";
     }
 
-    @GetMapping("/mypage")
-    public String getOwnerMypage(@AuthenticationPrincipal User user, Model model) {
-        if(user.getMemberRole() == MemberRole.OWNER) {
-            model.addAttribute("owner", user);
-
-            return "owner-mypage";
-
-        } else {
-            // 점주 로그인이 아닐 때
-            return "ownerWelcome";
-        }
-    }
-
     @GetMapping("/welcome")
     public String getOwnerWelcome() { return "ownerWelcome";  }
 
@@ -49,30 +35,28 @@ public class OwnerController {
         return "owner-auth";
     }
 
-    @GetMapping("/password")
-    public String getOwnerPassword(@AuthenticationPrincipal User user, Model model) {
-        if(user.getMemberRole() == MemberRole.OWNER) {
-            model.addAttribute("owner", user);
-
-            return "owner-password";
-
-        } else {
-            // 점주 로그인이 아닐 때
-            return "ownerWelcome";
-        }
-    }
-
     @GetMapping("/reservation/{restaurantId}")
     public String getOwnerReservation(@PathVariable Long restaurantId, @AuthenticationPrincipal User user, Model model) {
-        if(user.getMemberRole() == MemberRole.OWNER) {
-            model.addAttribute("restaurantId", restaurantId);
-            model.addAttribute("owner", user);
 
-            return "owner-reservation";
+        model.addAttribute("restaurantId", restaurantId);
+        model.addAttribute("user", user);
 
-        } else {
-            // 점주 로그인이 아닐 때
-            return "ownerWelcome";
-        }
+        return "owner-reservation";
     }
+
+    /*@GetMapping("/mypage")
+    public String getOwnerMypage(@AuthenticationPrincipal User user, Model model) {
+
+        model.addAttribute("user", user);
+
+        return "owner-mypage";
+    }*/
+
+    /*@GetMapping("/password")
+    public String getOwnerPassword(@AuthenticationPrincipal User user, Model model) {
+
+        model.addAttribute("user", user);
+
+        return "owner-password";
+    }*/
 }

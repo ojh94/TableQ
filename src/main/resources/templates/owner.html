@@ -1,0 +1,78 @@
+<main layout:decorate="~{common/layouts/ownerLayout}" layout:fragment="Content">
+
+    <div class="child">
+        <div class="row">
+            <div class="input-form col-md-12 mx-auto">
+                <h4 class="mb-4 text-orange text-center" style="font-weight:bold">회원정보 수정</h4>
+                <form class="validation-form" id="editForm" novalidate>
+                    <div id="userId" style="display: none;" th:text="${user.id}"></div>
+
+                    <div class="mb-2">
+                        <label for="name">이름</label>
+                        <input type="text" class="form-control" id="name" name="name"
+                               placeholder="이름을 입력해주세요." required th:value="${user.name}">
+                        <div class="invalid-feedback">
+                            이름을 입력해주세요.
+                        </div>
+                    </div>
+
+                    <div class="mb-2">
+                        <label for="address">주소</label>
+                        <input type="text" class="form-control" id="address" name="address"
+                               placeholder="주소를 입력해주세요." required th:value="${user.address}">
+                        <div class="invalid-feedback">
+                            주소를 입력해주세요.
+                        </div>
+                    </div>
+
+                    <div class="mb-2">
+                        <label for="email">이메일</label>
+                        <input type="email" class="form-control" id="email" name="email"
+                               placeholder="you@example.com" readonly required th:value="${user.email}">
+                        <div class="invalid-feedback">
+                            유효한 이메일을 입력해주세요.
+                        </div>
+                    </div>
+
+                    <div class="mb-2">
+                        <label for="phone">전화번호</label>
+                        <input type="text" class="form-control" id="phone" name="phoneNumber"
+                               placeholder="전화번호를 입력해주세요." readonly required th:value="${user.phoneNumber}">
+                        <div class="invalid-feedback">
+                            전화번호를 입력해주세요.
+                        </div>
+                    </div>
+
+                    <!-- 비밀번호 변경 섹션 -->
+                    <div class="mb-2">
+                        <label for="password">새 비밀번호</label>
+                        <input type="password" class="form-control" id="password" name="password"
+                               placeholder="새 비밀번호를 입력해주세요.">
+                        <div class="invalid-feedback">
+                            비밀번호를 입력해주세요.
+                        </div>
+                    </div>
+
+                    <div class="mb-2">
+                        <label for="confirm-password">비밀번호 확인</label>
+                        <input type="password" class="form-control" id="confirm-password" name="passwordConfirm"
+                               placeholder="새 비밀번호를 다시 입력해주세요.">
+                        <div class="invalid-feedback">
+                            비밀번호가 일치하지 않습니다.
+                        </div>
+                    </div>
+
+                    <div class="mb-4 row justify-content-center">
+                        <div class="col-auto">
+                            <button id="updateForm" class="btn btn-orange btn-lg text-light" type="submit" style="width: 200px;">수정</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</main>
+
+<script defer src="/js/mypage-edit.js"></script>
+<script defer src="/js/owner-mypage-edit.js"></script>
+<link rel="stylesheet" href="/css/mypage-edit.css">
