@@ -82,10 +82,10 @@ input:focus, textarea:focus, .btn-orange:focus {
 }
 
 footer {
-    position: fixed;
     align-items: center;
     bottom: 0;
     width: 100%;
+    height: 20px;
 }
 
 /* 모바일 화면에서 버튼과 입력 필드가 세로로 쌓이지 않도록 */
