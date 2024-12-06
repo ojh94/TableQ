@@ -506,16 +506,41 @@ async function fetchRestaurants(sortType, page = currentPage) {
     }
 }
 
-
+// 즐겨찾기 여부를 동기식으로 확인하는 함수
+function checkFavoriteStatus(userId, restaurantId) {
+    let isFavorite = false;
+    $.ajax({
+        url: `/api/bookmark/is-exist/${userId}/${restaurantId}`,
+        type: 'GET',
+        async: false, // 동기식 요청
+        success: function (response) {
+            if (response.resultCode !== 'ERROR') {
+                isFavorite = true;
+            }
+        },
+        error: function (xhr, status, error) {
+            console.error(`Failed to check favorite status for restaurant ID: ${restaurantId}`, error);
+        },
+    });
+    return isFavorite;
+}
 
 // 레스토랑 카드를 렌더링하는 함수
 function renderRestaurantCards(restaurants) {
     const $restaurantGrid = $('#restaurantGrid3');
     $restaurantGrid.empty(); // 기존 카드 초기화
 
+    const userId = document.getElementById("userId").value;
+
+    // 카드 렌더링 및 즐겨찾기 상태 확인
     const renderedCards = restaurants.map(restaurant => {
         console.log('Restaurant to be rendered:', restaurant);  // 데이터 확인
         const $card = createRestaurantCard(restaurant, restaurant.rating, restaurant.reviewsCount);
+
+        // 즐겨찾기 여부 확인
+        restaurant.isFavorite = checkFavoriteStatus(userId, restaurant.id);
+
+
         $restaurantGrid.append($card);
         return { restaurant, $card }; // 카드와 데이터 함께 반환
     });
@@ -540,8 +565,40 @@ function renderFavoritesToGrid4(favoriteCards) {
     favoriteCards.forEach(item => {
         $restaurantGrid4.append(item.$card);
     });
+
+    // grid4 전용 페이지네이션 업데이트
+    updateGrid4Pagination(favoriteCards.length);
 }
 
+// grid4의 페이지네이션 처리
+function updateGrid4Pagination(totalFavorites) {
+    const $pagination = $('#grid4-pagination');
+    $pagination.empty();
+
+    const totalPages = Math.ceil(totalFavorites / pageSize);
+    for (let i = 0; i < totalPages; i++) {
+        const $pageButton = $('<button>')
+            .text(i + 1)
+            .on('click', function () {
+                renderFavoritesToGrid4Page(i);
+            });
+        $pagination.append($pageButton);
+    }
+}
+
+// grid4 특정 페이지 렌더링
+function renderFavoritesToGrid4Page(page) {
+    const $restaurantGrid4 = $('#restaurantGrid4');
+    $restaurantGrid4.empty();
+
+    const start = page * pageSize;
+    const end = start + pageSize;
+
+    const favoriteCards = [...document.querySelectorAll('#restaurantGrid4 .restaurant-card')];
+    favoriteCards.slice(start, end).forEach(card => {
+        $restaurantGrid4.append(card);
+    });
+}
 
 // 페이지네이션 업데이트 함수
 function updatePagination(totalPages) {
