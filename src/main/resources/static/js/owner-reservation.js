@@ -79,13 +79,41 @@ function requestReservationRestaurantApi() {
 
             $('#reservation-page').show();
 
-            /*$(document).on('click', '.reservation-link', function() {
+            // 입장완료 버튼 클릭 시
+            $(document).on('click', '.reservation-link', function() {
                 const reservationId = $(this).data('reservation-id');
                 if (reservationId) {
 
-                }
-            });*/
+                    const userConfirmed = confirm("입장완료 처리를 하시겠습니까?");
 
+                    if(!userConfirmed) {
+                        return;
+                    }
+
+                    const formData = {
+                        "data": {
+                            "isEntered" : true
+                        }
+                    };
+
+                    $.ajax({
+                        url: `/api/reservation/${reservationId}`,
+                        type: 'PUT', // 필요한 HTTP 메서드로 변경 (PUT 또는 PATCH 등도 가능)
+                        contentType: 'application/json', // JSON 형식으로 데이터 전송
+                        data: JSON.stringify(formData), // 데이터를 JSON 문자열로 변환
+                        success: function(response) {
+                            // 요청 성공 시 동작
+                            alert('입장이 완료되었습니다.');
+                            location.reload();
+                        },
+                        error: function(xhr, status, error) {
+                            // 요청 실패 시 동작
+                            console.error('예약 상태 수정 실패:', error);
+                            alert('예약 상태 수정 중 오류가 발생했습니다.');
+                        }
+                    });
+                }
+            });
         },
         error: function(xhr, status, error) {
         // 요청 실패 시 동작

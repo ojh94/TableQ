@@ -12,6 +12,11 @@ $(document).ready(function() {
         requestAmenityApi();
         requestReviewPossibleApi();
 
+        // 원격줄서기 버튼 숨기기
+        if ($('#today-open-1 strong').text() === '영업 전') {
+            $('#apply').hide().prop('disabled', true);
+        }
+
         // 원격줄서기 버튼 클릭 시
         document.getElementById("apply").onclick = function() {
             const restaurantId = document.getElementById("restaurant-id").value;
