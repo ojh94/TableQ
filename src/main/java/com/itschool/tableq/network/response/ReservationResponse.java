@@ -52,7 +52,7 @@ public class ReservationResponse {
                         .address(restaurant.getAddress())
                         .information(restaurant.getInformation())
                         .contactNumber(restaurant.getContactNumber())
-                        .isAvailable(restaurant.isAvailable())
+                        .isAvailable(restaurant.getIsAvailable())
                         .build())
                 .build();
     }

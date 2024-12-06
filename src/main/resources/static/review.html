@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Review API Test</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+<h1>Review API Test</h1>
+
+<!-- 리뷰 추가 (생성) -->
+<div>
+    <h2>리뷰 추가</h2>
+    <label for="restaurantIdCreate">레스토랑 ID:</label>
+    <input type="text" id="restaurantIdCreate" required><br><br>
+
+    <label for="userIdCreate">사용자 ID:</label>
+    <input type="text" id="userIdCreate" required><br><br>
+
+    <label for="reservationIdCreate">예약 ID:</label>
+    <input type="text" id="reservationIdCreate" required><br><br>
+
+    <label for="contentCreate">리뷰 내용:</label>
+    <textarea id="contentCreate" required></textarea><br><br>
+
+    <label for="starRatingCreate">별점:</label>
+    <input type="number" id="starRatingCreate" min="1" max="5" required><br><br>
+
+    <button id="createReviewBtn">리뷰 추가</button>
+
+    <div id="createReviewResult"></div>
+</div>
+
+<!-- 리뷰 조회 -->
+<div>
+    <h2>리뷰 조회</h2>
+    <label for="reviewId">리뷰 ID:</label>
+    <input type="text" id="reviewId" required><br><br>
+
+    <button id="fetchReviewBtn">리뷰 조회</button><br><br>
+
+    <div id="reviewDetails">
+        <p><strong>조회된 리뷰:</strong></p>
+        <div id="reviewDetailsContent"></div><br><br>
+    </div>
+</div>
+
+<!-- 리뷰 수정 -->
+<div>
+    <h2>리뷰 수정</h2>
+    <h3>수정할 항목</h3>
+
+    <label for="contentUpdate">리뷰 내용:</label>
+    <textarea id="contentUpdate"></textarea><br><br>
+
+    <label for="starRatingUpdate">별점:</label>
+    <input type="number" id="starRatingUpdate" min="1" max="5"><br><br>
+
+    <button id="updateReviewBtn">리뷰 수정</button>
+
+    <div id="updateReviewResult"></div>
+</div>
+
+<!-- 리뷰 삭제 -->
+<div>
+    <h2>리뷰 삭제</h2>
+    <label for="reviewIdDelete">삭제할 리뷰 ID:</label>
+    <input type="text" id="reviewIdDelete" required><br><br>
+
+    <button id="deleteReviewBtn">리뷰 삭제</button>
+
+    <div id="deleteReviewResult"></div>
+</div>
+
+<script>
+    // 리뷰 추가 요청
+    $('#createReviewBtn').on('click', function() {
+        const request = {
+            'content': $('#contentCreate').val(),
+            'starRating': $('#starRatingCreate').val(),
+            'restaurant': {
+                'id': $('#restaurantIdCreate').val()
+            },
+            'user': {
+                'id': $('#userIdCreate').val()
+            },
+            'reservation': {
+                'id': $('#reservationIdCreate').val()
+            }
+        };
+
+        $.ajax({
+            url: '/api/review',
+            method: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify({ data: request }),
+            success: function(data) {
+                const resultHtml = `
+                    <div class="response">
+                        <p><strong>성공:</strong></p>
+                        <pre>${JSON.stringify(data, null, 2)}</pre>
+                    </div>
+                `;
+                $('#createReviewResult').html(resultHtml);
+            },
+            error: function(xhr, status, error) {
+                $('#createReviewResult').html('<div class="error">오류 발생: ' + error + '</div>');
+            }
+        });
+    });
+
+    // 리뷰 조회 요청
+    $('#fetchReviewBtn').on('click', function() {
+        const reviewId = $('#reviewId').val();
+        if (!reviewId) {
+            alert('리뷰 ID를 입력해주세요.');
+            return;
+        }
+
+        $.ajax({
+            url: `/api/review/${reviewId}`,
+            method: 'GET',
+            success: function(data) {
+                const reviewData = data.data;
+                const resultHtml = `
+                    <p><strong>리뷰 내용:</strong> ${reviewData.content}</p>
+                    <p><strong>별점:</strong> ${reviewData.starRating}</p>
+                    <p><strong>레스토랑 ID:</strong> ${reviewData.restaurant.id}</p>
+                    <p><strong>사용자 ID:</strong> ${reviewData.user.id}</p>
+                    <p><strong>예약 ID:</strong> ${reviewData.reservation.id}</p>
+                `;
+                $('#reviewDetailsContent').html(resultHtml);
+
+                // 수정할 수 있도록 기본 값 설정
+                $('#contentUpdate').val(reviewData.content);
+                $('#starRatingUpdate').val(reviewData.starRating);
+            },
+            error: function(xhr, status, error) {
+                $('#reviewDetailsContent').html('<div class="error">오류 발생: ' + error + '</div>');
+            }
+        });
+    });
+
+    // 리뷰 수정 요청
+    $('#updateReviewBtn').on('click', function() {
+        const reviewId = $('#reviewId').val();
+        if (!reviewId) {
+            alert('리뷰 ID를 입력해주세요.');
+            return;
+        }
+
+        const request = {
+            'content': $('#contentUpdate').val(),
+            'starRating': $('#starRatingUpdate').val(),
+        };
+
+        $.ajax({
+            url: `/api/review/${reviewId}`,
+            method: 'PUT',
+            contentType: 'application/json',
+            data: JSON.stringify({ data: request }),
+            success: function(data) {
+                const resultHtml = `
+                    <div class="response">
+                        <p><strong>성공:</strong></p>
+                        <pre>${JSON.stringify(data, null, 2)}</pre>
+                    </div>
+                `;
+                $('#updateReviewResult').html(resultHtml);
+            },
+            error: function(xhr, status, error) {
+                $('#updateReviewResult').html('<div class="error">오류 발생: ' + error + '</div>');
+            }
+        });
+    });
+
+    // 리뷰 삭제 요청
+    $('#deleteReviewBtn').on('click', function() {
+        const reviewId = $('#reviewIdDelete').val();
+        if (!reviewId) {
+            alert('리뷰 ID를 입력해주세요.');
+            return;
+        }
+
+        $.ajax({
+            url: `/api/review/${reviewId}`,
+            method: 'DELETE',
+            success: function(data) {
+                const resultHtml = `
+                    <div class="response">
+                        <p><strong>성공:</strong></p>
+                        <pre>${JSON.stringify(data, null, 2)}</pre>
+                    </div>
+                `;
+                $('#deleteReviewResult').html(resultHtml);
+            },
+            error: function(xhr, status, error) {
+                $('#deleteReviewResult').html('<div class="error">오류 발생: ' + error + '</div>');
+            }
+        });
+    });
+</script>
+
+</body>
+</html>

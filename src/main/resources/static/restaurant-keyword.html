@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title><!DOCTYPE html>
+      <html lang="ko">
+      <head>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <title>Restaurant Keyword API Test</title>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+<h1>Restaurant Keyword API Test</h1>
+
+<!-- 레스토랑 키워드 추가 (생성) -->
+<div>
+  <h2>레스토랑 키워드 추가</h2>
+  <label for="restaurantIdCreate">레스토랑 ID:</label>
+  <input type="text" id="restaurantIdCreate" required><br><br>
+
+  <label for="keywordIdCreate">키워드 ID:</label>
+  <input type="text" id="keywordIdCreate" required><br><br>
+
+  <button id="createRestaurantKeywordBtn">키워드 추가</button>
+
+  <div id="createRestaurantKeywordResult"></div>
+</div>
+
+<!-- 레스토랑 키워드 조회 -->
+<div>
+  <h2>레스토랑 키워드 조회</h2>
+  <label for="restaurantKeywordId">레스토랑 키워드 ID:</label>
+  <input type="text" id="restaurantKeywordId" required><br><br>
+
+  <button id="fetchRestaurantKeywordBtn">키워드 조회</button><br><br>
+
+  <div id="restaurantKeywordDetails">
+    <p><strong>조회된 레스토랑 키워드:</strong></p>
+    <div id="restaurantKeywordDetailsContent"></div><br><br>
+  </div>
+</div>
+
+<!-- 레스토랑 키워드 삭제 -->
+<div>
+  <h2>레스토랑 키워드 삭제</h2>
+  <label for="restaurantKeywordIdDelete">삭제할 레스토랑 키워드 ID:</label>
+  <input type="text" id="restaurantKeywordIdDelete" required><br><br>
+
+  <button id="deleteRestaurantKeywordBtn">키워드 삭제</button>
+
+  <div id="deleteRestaurantKeywordResult"></div>
+</div>
+
+<script>
+  // 레스토랑 키워드 추가 요청
+  $('#createRestaurantKeywordBtn').on('click', function() {
+      const request = {
+          'restaurant': {
+              'id': $('#restaurantIdCreate').val()
+          },
+          'keyword': {
+              'id': $('#keywordIdCreate').val()
+          }
+      };
+
+      $.ajax({
+          url: '/api/restaurant-keyword',
+          method: 'POST',
+          contentType: 'application/json',
+          data: JSON.stringify({ data: request }),
+          success: function(data) {
+              const resultHtml = `
+                  <div class="response">
+                      <p><strong>성공:</strong></p>
+                      <pre>${JSON.stringify(data, null, 2)}</pre>
+                  </div>
+              `;
+              $('#createRestaurantKeywordResult').html(resultHtml);
+          },
+          error: function(xhr, status, error) {
+              $('#createRestaurantKeywordResult').html('<div class="error">오류 발생: ' + error + '</div>');
+          }
+      });
+  });
+
+  // 레스토랑 키워드 조회 요청
+  $('#fetchRestaurantKeywordBtn').on('click', function() {
+      const restaurantKeywordId = $('#restaurantKeywordId').val();
+      if (!restaurantKeywordId) {
+          alert('레스토랑 키워드 ID를 입력해주세요.');
+          return;
+      }
+
+      $.ajax({
+          url: `/api/restaurant-keyword/${restaurantKeywordId}`,
+          method: 'GET',
+          success: function(data) {
+              const restaurantKeywordData = data.data;
+              const resultHtml = `
+                  <p><strong>레스토랑 ID:</strong> ${restaurantKeywordData.restaurant.id}</p>
+                  <p><strong>키워드 ID:</strong> ${restaurantKeywordData.keyword.id}</p>
+              `;
+              $('#restaurantKeywordDetailsContent').html(resultHtml);
+          },
+          error: function(xhr, status, error) {
+              $('#restaurantKeywordDetailsContent').html('<div class="error">오류 발생: ' + error + '</div>');
+          }
+      });
+  });
+
+  // 레스토랑 키워드 삭제 요청
+  $('#deleteRestaurantKeywordBtn').on('click', function() {
+      const restaurantKeywordId = $('#restaurantKeywordIdDelete').val();
+      if (!restaurantKeywordId) {
+          alert('레스토랑 키워드 ID를 입력해주세요.');
+          return;
+      }
+
+      $.ajax({
+          url: `/api/restaurant-keyword/${restaurantKeywordId}`,
+          method: 'DELETE',
+          success: function(data) {
+              const resultHtml = `
+                  <div class="response">
+                      <p><strong>성공:</strong></p>
+                      <pre>${JSON.stringify(data, null, 2)}</pre>
+                  </div>
+              `;
+              $('#deleteRestaurantKeywordResult').html(resultHtml);
+          },
+          error: function(xhr, status, error) {
+              $('#deleteRestaurantKeywordResult').html('<div class="error">오류 발생: ' + error + '</div>');
+          }
+      });
+  });
+</script>
+
+</body>
+</html>
+</title>
+</head>
+<body>
+
+</body>
+</html>
