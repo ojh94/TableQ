@@ -41,7 +41,7 @@
             <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
                 <li class="nav-item">
                     <!-- 로그인 한 경우 -->
-                    <a href="/owner/mypage" th:if="${owner != null}" th:text="${owner.nickname != null ? owner.nickname + '님' : owner.name + '님'}"></a>
+                    <a href="/" th:if="${owner != null}" th:text="${owner.nickname != null ? owner.nickname + '님' : owner.name + '님'}"></a>
                     <a th:if="${owner != null}" class="btn btn-light" href="/logout" aria-label="로그아웃">로그아웃</a>
                 </li>
 

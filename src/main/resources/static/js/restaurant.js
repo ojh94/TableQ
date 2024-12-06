@@ -419,6 +419,24 @@ function requestReviewPossibleApi() {
     let reviewCount;
 
     $.ajax({
+            url: `/api/reservation/${userId}/${restaurantId}`,
+            type: 'GET', // 필요한 HTTP 메서드로 변경
+            contentType: 'application/json', // JSON 형식으로 데이터 전송
+            async: false,
+            success: function(response) {
+                // 요청 성공 시 동작
+                if("OK" === response.resultCode) {
+                     document.getElementById('review-form').setAttribute('data-id', response.data[0].id); // 작성 가능한 예약 중 첫번째
+                }
+            },
+            error: function(xhr, status, error) {
+                // 요청 실패 시 동작
+                console.error('작성 가능한 예약 조회 오류:', error);
+                alert('작성 가능한 예약 조회 오류');
+            }
+    });
+
+    $.ajax({
         url: `/api/reservation/count/${userId}/${restaurantId}`,
         type: 'GET', // 필요한 HTTP 메서드로 변경
         contentType: 'application/json', // JSON 형식으로 데이터 전송
@@ -506,6 +524,9 @@ function requestReviewCreateAPI() {
                 },
                 "user" : {
                     "id" : userId
+                },
+                "reservation": {
+                    "id" : Number(document.getElementById('review-form').dataset.id)
                 }
             }
         };
@@ -518,8 +539,13 @@ function requestReviewCreateAPI() {
             data: JSON.stringify(formData), // 데이터를 JSON 문자열로 변환
             success: function(response) {
                 // 요청 성공 시 동작
-                alert('리뷰 등록이 완료되었습니다.');
-                location.reload();
+                debugger;
+                if("OK" === response.resultCode()) {
+                    alert('리뷰 등록이 완료되었습니다.');
+                    location.reload();
+                } else {
+                    alert('리뷰 등록에 실패했습니다.');
+                }
             },
             error: function(xhr, status, error) {
                 // 요청 실패 시 동작
