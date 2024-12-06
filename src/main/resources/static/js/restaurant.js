@@ -526,7 +526,7 @@ function requestReviewCreateAPI() {
                     "id" : userId
                 },
                 "reservation": {
-                    "id" : Number(document.getElementById('review-form').dataset.id);
+                    "id" : Number(document.getElementById('review-form').dataset.id)
                 }
             }
         };
