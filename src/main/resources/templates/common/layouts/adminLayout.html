@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head th:replace="~{common/fragments/admin/config :: ConfigFragment}"></head>
+<body>
+    <!-- 헤더 -->
+    <header th:replace="~{common/fragments/admin/nav :: NavFragment}"></header>
+
+    <!-- 메인 컨텐츠 및 사이드바 -->
+    <div class="main-container">
+        <!-- 사이드바 -->
+        <div th:replace="~{common/fragments/admin/sidebar :: SidebarFragment}" class="left-sidebar"></div>
+
+        <!-- 메인 콘텐츠 영역 -->
+        <div class="content-wrapper" layout:fragment="Content">
+            <!-- Content will be injected here from content.html -->
+        </div>
+    </div>
+
+    <!-- 푸터 -->
+    <footer th:replace="~{common/fragments/admin/footer :: FooterFragment}"></footer>
+</body>
+</html>

@@ -18,8 +18,27 @@ public class AdminController {
     private UserService userService;
 
     @GetMapping("/owner-signup")
-    public String auth() {
+    public String signupOwner(@AuthenticationPrincipal User user, Model model) {
+
+        model.addAttribute("user", user);
+
         return "owner-signup";
     }
 
+    // 편의시설 추가
+    @GetMapping("/amenity")
+    public String getAmenityPage(@AuthenticationPrincipal User user, Model model) {
+
+        model.addAttribute("user", user);
+
+        return "amenity-crud";
+    }
+
+    @GetMapping("/keyword")
+    public String getKeywordPage(@AuthenticationPrincipal User user, Model model) {
+
+        model.addAttribute("user", user);
+
+        return "keyword-crud";
+    }
 }
