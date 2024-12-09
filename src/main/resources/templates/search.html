@@ -7,6 +7,7 @@
                 <input
                         type="text"
                         id="searchInput"
+                        th:value="${searchKeyword}"
                         placeholder="레스토랑 또는 음식 검색"
                 />
                 <button id="searchBtn" class="btn btn-orange">
@@ -57,4 +58,9 @@
         </a>
     </nav>
     <script defer src="/js/search.js"></script>
+    <script th:inline="javascript">
+        // JSON 데이터를 JavaScript 변수로 변환
+        let restaurantList = /*[[${restaurantList}]]*/ [];
+        console.log(restaurantList); // JSON 객체로 출력
+    </script>
 </main>
