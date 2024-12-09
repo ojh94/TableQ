@@ -6,9 +6,9 @@ let filteredResults = []; // 정렬 후 필터링된 결과 저장
 
 
 // 레스토랑 검색 함수
-async function  fetchSearchResults(keyword) {
+async function fetchSearchResults(keyword, page = currentPage) {
     // 검색어를 URL에 올바르게 인코딩하여 전달
-    const apiUrl = `/api/restaurant/keyword/search?name=${encodeURIComponent(keyword)}`;
+    const apiUrl = `/api/restaurant/keyword/search?name=${encodeURIComponent(keyword)}&page=${page}&size=${pageSize}`;
     console.log("검색 API 호출 URL:", apiUrl);
 
     try {
@@ -20,14 +20,44 @@ async function  fetchSearchResults(keyword) {
         if (restaurantResponse && restaurantResponse.data) {
             isSearchMode = true; // 검색 모드 활성화
             searchResults = restaurantResponse.data; // 검색 결과 저장
-            currentPage = 0; // 페이지 초기화
-            totalPages = Math.ceil(searchResults.length / pageSize); // 검색 결과 기반 페이지 수 계산
+            currentPage = page; // 현재 페이지 설정 (일반적으로 1부터 시작)
+            totalPages = restaurantResponse.pagination.totalPages; // 서버에서 반환된 페이지 수 사용
             console.log('검색 결과:', searchResults);
 
-            // 검색 결과를 렌더링
-            renderRestaurantCards(searchResults.slice(0, pageSize));
-            updatePagination(totalPages); // 검색 결과에 맞는 페이지네이션 갱신
+            const reviewPromises = searchResults.map(async (restaurant) => {
+                try {
+                    // 각 레스토랑에 해당하는 리뷰를 가져오기
+                    const reviewResponse = await $.ajax({
+                        url: `/api/review/restaurant/${restaurant.id}`,
+                        method: 'GET',
+                    });
 
+                    const reviews = reviewResponse.data || [];
+                    const rating = reviews.length > 0
+                        ? reviews.reduce((sum, r) => sum + r.starRating, 0) / reviews.length
+                        : 0;
+
+                    return {
+                        ...restaurant,
+                        rating: Math.round(rating * 10) / 10, // 소수점 1자리 반올림
+                        reviewsCount: reviews.length,
+                    };
+                } catch (error) {
+                    console.error(`Failed to fetch reviews for restaurant ID: ${restaurant.id}`, error);
+                    return {
+                        ...restaurant,
+                        rating: 0, // 기본값 설정
+                        reviewsCount: 0,
+                    };
+                }
+            });
+
+            const mergedRestaurants = await Promise.all(reviewPromises);
+            console.log('결합된 레스토랑 데이터:', mergedRestaurants);
+
+            // 렌더링 및 페이지네이션 업데이트
+            renderRestaurantCards(mergedRestaurants);
+            updatePagination(totalPages); // 서버에서 반환된 totalPages 사용
         } else {
             console.error('Invalid search response:', restaurantResponse);
         }
@@ -35,6 +65,7 @@ async function  fetchSearchResults(keyword) {
         console.error('Error fetching search results:', error);
     }
 }
+
 
 function sortAndPaginateRestaurants(searchResults, sortType) {
     console.log('Sorting search results with sort:', sortType);
@@ -84,6 +115,15 @@ function handlePagination(event) {
         fetchRestaurants($('#sortId').val(), currentPage);
     }
     updatePagination(totalPages);
+}
+
+// 페이지 변경 시 호출되는 함수
+function updatePaginationForSearch(totalPages) {
+    $('#totalPages').text(totalPages);
+    // 현재 페이지와 다음/이전 버튼의 상태 업데이트
+    $('#currentPage').text(currentPage);
+    $('#prevPage').prop('disabled', currentPage === 1);
+    $('#nextPage').prop('disabled', currentPage === totalPages);
 }
 
 // DOM 이벤트 처리
@@ -138,7 +178,7 @@ $(document).ready(function () {
            currentPage--;
            console.log("이전 페이지, 커런트 페이지", currentPage); // currentPage 값 확인
            const sortType = $('#sortId').val(); // 현재 드롭다운 값 읽기
-           fetchRestaurants(sortType , currentPage);
+          fetchSearchResults(sortType , currentPage);
        }
    });
 
@@ -148,7 +188,7 @@ $(document).ready(function () {
            currentPage++;
            console.log("Next Page, currentPage:", currentPage); // currentPage 값 확인
            const sortType = $('#sortId').val(); // 현재 드롭다운 값 읽기
-           fetchRestaurants(sortType , currentPage);
+           fetchSearchResults(sortType , currentPage);
        }
    });
 
