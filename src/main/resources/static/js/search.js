@@ -1,20 +1,7 @@
 console.log("search.js 시작");
 
-// 정렬 함수
-function sortRestaurants(restaurants, sortType) {
-    switch (sortType) {
-        case 'rating':
-            return restaurants.sort((a, b) => b.rating - a.rating);  // 별점 높은순
-        case 'reviewsCount':
-            return restaurants.sort((a, b) => b.reviewsCount - a.reviewsCount);  // 리뷰 많은순
-        default:
-            return restaurants.sort((a, b) => a.id - b.id);  // 기본 id 오름차순
-    }
-}
-
 // 레스토랑 검색 함수
-async function searchRestaurants(keyword, page = currentPage) {
-    // 검색어를 URL에 올바르게 인코딩하여 전달
+async function fetchSearchResults(keyword, page = currentPage) {
     const apiUrl = `/api/restaurant/keyword/search?name=${encodeURIComponent(keyword)}&page=${page}&size=${pageSize}`;
     console.log("검색 API 호출 URL:", apiUrl);
 
@@ -24,12 +11,14 @@ async function searchRestaurants(keyword, page = currentPage) {
             type: 'GET',
         });
 
-        console.log("API 응답 데이터:", restaurantResponse);
-
         if (restaurantResponse && restaurantResponse.data) {
+            isSearchMode = true;
+            searchResults = restaurantResponse.data; // 검색 결과 저장
+            currentPage = page;
             totalPages = restaurantResponse.pagination.totalPages;
+            console.log('검색 결과:', searchResults);
 
-            const reviewPromises = restaurantResponse.data.map(async (restaurant) => {
+            const reviewPromises = searchResults.map(async (restaurant) => {
                 try {
                     const reviewResponse = await $.ajax({
                         url: `/api/review/restaurant/${restaurant.id}`,
@@ -50,45 +39,99 @@ async function searchRestaurants(keyword, page = currentPage) {
                     console.error(`Failed to fetch reviews for restaurant ID: ${restaurant.id}`, error);
                     return {
                         ...restaurant,
-                        rating: 0,
+                        rating: 0, // 기본값 설정
                         reviewsCount: 0,
                     };
                 }
             });
 
             const mergedRestaurants = await Promise.all(reviewPromises);
+            console.log('결합된 레스토랑 데이터:', mergedRestaurants);
 
-            // 정렬 적용
-            const sortedRestaurants = sortRestaurants(mergedRestaurants, sortType);
-            console.log('정렬된 레스토랑 데이터:', sortedRestaurants);
-
-            renderRestaurantCards(sortedRestaurants);
-            updatePagination(restaurantResponse.pagination.totalPages);
+            // 렌더링 및 페이지네이션 업데이트
+            const start = currentPage * pageSize;
+            const end = start + pageSize;
+            renderRestaurantCards(mergedRestaurants.slice(start, end)); // 페이지네이션 반영
+            updatePagination(totalPages); // 페이지 수 업데이트
         } else {
-            console.error('Invalid response format:', restaurantResponse);
+            console.error('Invalid search response:', restaurantResponse);
         }
     } catch (error) {
-        console.error("Error fetching search results:", error.responseJSON || error);
+        console.error('Error fetching search results:', error);
     }
 }
 
+// 페이지네이션 처리 함수
+function handlePagination(event) {
+    if (event.target.id === 'nextPage' && currentPage < totalPages - 1) {
+        currentPage++;
+    } else if (event.target.id === 'prevPage' && currentPage > 0) {
+        currentPage--;
+    }
 
+    // 검색 모드에서 페이지네이션 처리
+    if (isSearchMode) {
+        const start = currentPage * pageSize;
+        const end = start + pageSize;
+
+        // 페이지 번호에 해당하는 검색 결과 렌더링
+        renderRestaurantCards(searchResults.slice(start, end)); // 검색 결과에서 해당 페이지 범위만 렌더링
+        fetchSearchResults($('#searchInput').val().trim(), currentPage); // 검색어와 페이지를 넘겨서 검색
+    } else {
+        fetchRestaurants($('#sortId').val(), currentPage);
+    }
+    updatePagination(totalPages); // 페이지네이션 업데이트
+}
+
+// 페이지네이션 업데이트
+function updatePaginationForSearch(totalPages) {
+    $('#totalPages').text(totalPages);
+    $('#currentPage').text(currentPage + 1); // 페이지는 1부터 시작
+    $('#prevPage').prop('disabled', currentPage === 0);
+    $('#nextPage').prop('disabled', currentPage === totalPages - 1);
+}
 
 // DOM 이벤트 처리
 $(document).ready(function () {
-    console.log("DOM fully loaded.");
-
-    // 검색 버튼 클릭
-    $('#searchBtn').on('click', function () {
+    $('#searchBtn').on('click', function (event) {
+        event.preventDefault();
         const keyword = $('#searchInput').val().trim();
-        console.log("입력된 검색어:", keyword);
-
         if (keyword) {
-            searchRestaurants(keyword);
+            fetchSearchResults(keyword, 0); // 검색 시 첫 페이지로 초기화
         } else {
-            console.warn("검색어가 입력되지 않았습니다.");
+            alert("검색어를 입력하세요.");
         }
     });
+
+    // 현재 URL의 쿼리 파라미터를 가져옴
+    const urlParams = new URLSearchParams(window.location.search);
+
+    // 'searchKeyword'라는 key가 있는지 확인하고, 값 가져오기
+    const searchKeyword = urlParams.get('searchKeyword');
+
+    if(searchKeyword) {
+        console.log(`searchKeyword: ${searchKeyword}`);
+
+        // #searchBtn 요소를 강제로 클릭하도록 트리거
+        $('#searchBtn').click();
+    }else{
+        console.log("searchKeyword가 존재하지 않습니다.");
+    }
+
+
+    // 이전 페이지 버튼
+    $('#prevPage').on('click', handlePagination); // 이전 페이지
+
+    // 다음 페이지 버튼
+    $('#nextPage').on('click', handlePagination); // 다음 페이지
+
+    // 정렬 기준 변경
+    $('#sortId').on('change', function () {
+        const sortType = $(this).val();
+        handleSortAfterSearch(sortType); // 정렬 후 처리
+    });
 });
+
+
 
 console.log("search.js 끝");
