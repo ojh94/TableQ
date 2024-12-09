@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Opening Hour API Test</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+<h1>Opening Hour API Test</h1>
+
+<!-- 개장 시간 추가 -->
+<div>
+    <h2>개장 시간 추가</h2>
+    <label for="openHour">개장 시간 (시):</label>
+    <input type="number" id="openHour" min="0" max="23" required>
+    <label for="openMinute">분:</label>
+    <input type="number" id="openMinute" min="0" max="59" required><br><br>
+
+    <label for="closeHour">마감 시간 (시):</label>
+    <input type="number" id="closeHour" min="0" max="23" required>
+    <label for="closeMinute">분:</label>
+    <input type="number" id="closeMinute" min="0" max="59" required><br><br>
+
+    <label for="dayOfWeek">요일:</label>
+    <select id="dayOfWeek" required>
+        <option value="MONDAY">월요일</option>
+        <option value="TUESDAY">화요일</option>
+        <option value="WEDNESDAY">수요일</option>
+        <option value="THURSDAY">목요일</option>
+        <option value="FRIDAY">금요일</option>
+        <option value="SATURDAY">토요일</option>
+        <option value="SUNDAY">일요일</option>
+    </select><br><br>
+
+    <label for="restaurantId">식당 ID:</label>
+    <input type="number" id="restaurantId" required><br><br>
+
+    <button id="createOpeningHourBtn">개장 시간 추가</button>
+
+    <div id="createOpeningHourResult"></div>
+</div>
+
+<!-- 개장 시간 조회 -->
+<div>
+    <h2>개장 시간 조회</h2>
+    <label for="openingHourId">개장 시간 ID:</label>
+    <input type="number" id="openingHourId" required><br><br>
+
+    <button id="fetchOpeningHourBtn">개장 시간 조회</button><br><br>
+
+    <div id="openingHourDetails">
+        <p><strong>조회된 개장 시간:</strong></p>
+        <div id="openingHourDetailsContent"></div>
+    </div>
+</div>
+
+<!-- 개장 시간 수정 -->
+<div>
+    <h2>개장 시간 수정</h2>
+    <h3>수정할 항목</h3>
+    <label for="updateOpenHour">개장 시간 (시):</label>
+    <input type="number" id="updateOpenHour" min="0" max="23">
+    <label for="updateOpenMinute">분:</label>
+    <input type="number" id="updateOpenMinute" min="0" max="59"><br><br>
+
+    <label for="updateCloseHour">마감 시간 (시):</label>
+    <input type="number" id="updateCloseHour" min="0" max="23">
+    <label for="updateCloseMinute">분:</label>
+    <input type="number" id="updateCloseMinute" min="0" max="59"><br><br>
+
+    <label for="updateDayOfWeek">요일:</label>
+    <select id="updateDayOfWeek">
+        <option value="MONDAY">월요일</option>
+        <option value="TUESDAY">화요일</option>
+        <option value="WEDNESDAY">수요일</option>
+        <option value="THURSDAY">목요일</option>
+        <option value="FRIDAY">금요일</option>
+        <option value="SATURDAY">토요일</option>
+        <option value="SUNDAY">일요일</option>
+    </select><br><br>
+
+    <button id="updateOpeningHourBtn">개장 시간 수정</button>
+
+    <div id="updateOpeningHourResult"></div>
+</div>
+
+<!-- 개장 시간 삭제 -->
+<div>
+    <h2>개장 시간 삭제</h2>
+    <label for="deleteOpeningHourId">삭제할 개장 시간 ID:</label>
+    <input type="number" id="deleteOpeningHourId" required><br><br>
+
+    <button id="deleteOpeningHourBtn">개장 시간 삭제</button>
+
+    <div id="deleteOpeningHourResult"></div>
+</div>
+
+<script>
+    // 개장 시간 추가
+    $('#createOpeningHourBtn').on('click', function() {
+        const request = {
+            openAt: `${$('#openHour').val()}:${$('#openMinute').val()}:00`,
+            closeAt: `${$('#closeHour').val()}:${$('#closeMinute').val()}:00`,
+            dayOfWeek: $('#dayOfWeek').val(),
+            restaurant: {
+                id: $('#restaurantId').val()
+            }
+        };
+
+        $.ajax({
+            url: '/api/openinghour',
+            method: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify({ data: request }),
+            success: function(data) {
+                $('#createOpeningHourResult').html('<pre>' + JSON.stringify(data, null, 2) + '</pre>');
+            },
+            error: function(xhr, status, error) {
+                $('#createOpeningHourResult').html('<div>오류 발생: ' + error + '</div>');
+            }
+        });
+    });
+
+    // 개장 시간 조회
+    $('#fetchOpeningHourBtn').on('click', function() {
+        const id = $('#openingHourId').val();
+        if (!id) {
+            alert('개장 시간 ID를 입력해주세요.');
+            return;
+        }
+
+        $.ajax({
+            url: `/api/openinghour/${id}`,
+            method: 'GET',
+            success: function(data) {
+                const details = data.data;
+                const resultHtml = `
+                    <p><strong>개장 시간:</strong> ${details.openAt}</p>
+                    <p><strong>마감 시간:</strong> ${details.closeAt}</p>
+                    <p><strong>요일:</strong> ${details.dayOfWeek}</p>
+                `;
+                $('#openingHourDetailsContent').html(resultHtml);
+
+                // 수정할 수 있도록 기본 값 설정
+                const [openHour, openMinute] = details.openAt.split(':');
+                const [closeHour, closeMinute] = details.closeAt.split(':');
+
+                $('#updateOpenHour').val(openHour);
+                $('#updateOpenMinute').val(openMinute);
+                $('#updateCloseHour').val(closeHour);
+                $('#updateCloseMinute').val(closeMinute);
+                $('#updateDayOfWeek').val(details.dayOfWeek);
+            },
+            error: function(xhr, status, error) {
+                $('#openingHourDetailsContent').html('<div>오류 발생: ' + error + '</div>');
+            }
+        });
+    });
+
+    // 개장 시간 수정
+    $('#updateOpeningHourBtn').on('click', function() {
+        const id = $('#openingHourId').val();
+        if (!id) {
+            alert('개장 시간 ID를 입력해주세요.');
+            return;
+        }
+
+        const request = {
+            openAt: `${$('#updateOpenHour').val()}:${$('#updateOpenMinute').val()}:00`,
+            closeAt: `${$('#updateCloseHour').val()}:${$('#updateCloseMinute').val()}:00`,
+            dayOfWeek: $('#updateDayOfWeek').val()
+        };
+
+        $.ajax({
+            url: `/api/openinghour/${id}`,
+            method: 'PUT',
+            contentType: 'application/json',
+            data: JSON.stringify({ data: request }),
+            success: function(data) {
+                $('#updateOpeningHourResult').html('<pre>' + JSON.stringify(data, null, 2) + '</pre>');
+            },
+            error: function(xhr, status, error) {
+                $('#updateOpeningHourResult').html('<div>오류 발생: ' + error + '</div>');
+            }
+        });
+    });
+
+    // 개장 시간 삭제
+    $('#deleteOpeningHourBtn').on('click', function() {
+        const id = $('#deleteOpeningHourId').val();
+        if (!id) {
+            alert('개장 시간 ID를 입력해주세요.');
+            return;
+        }
+
+        $.ajax({
+            url: `/api/openinghour/${id}`,
+            method: 'DELETE',
+            success: function(data) {
+                $('#deleteOpeningHourResult').html('<pre>' + JSON.stringify(data, null, 2) + '</pre>');
+            },
+            error: function(xhr, status, error) {
+                $('#deleteOpeningHourResult').html('<div>오류 발생: ' + error + '</div>');
+            }
+        });
+    });
+</script>
+</body>
+</html>
