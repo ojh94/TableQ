@@ -4,19 +4,31 @@ $(document).ready(function () {
 
     console.log("DOM fully loaded.");
 
-    // 즐겨찾기 버튼 이벤트 처리
-    $("body").on("click", ".favorite-btn", function () {
-        const button = $(this);
-        const restaurantId = button.data("id");
-        const isFavorite = button.data("favorite");
+    const userIdInput = document.getElementById("userId");
+    const userId = userIdInput ? userIdInput.value : null;
 
-        if (isFavorite) {
-            removeFromFavorites(restaurantId, userId);
-        } else {
-            addToFavorites(restaurantId, userId);
+    // userId가 null이 아니면 즐겨찾기 데이터 불러오기
+    if (userId) {
+       loadUserBookmarks(userId);  // 유저의 즐겨찾기 데이터 불러오기
+    } else {
+       console.error("User ID is not available");
+       return;
+    }
+
+       const url = `/api/reservation/user/${userId}?page=0&size=10&sort=createdAt,desc`;
+
+    $("body").on("click", ".favorite-btn", function () {
+        const button = this;
+        console.log("restaurantId:", button.dataset.id);  // 로그로 restaurantId 값 확인
+        console.log("bookmarkId:", button.dataset.bookmarkId);  // 로그로 bookmarkId 값 확인
+        console.log("isFavorite:", button.dataset.favorite === 'true');  // isFavorite 값 확인
+
+        if (!button.dataset.id || !button.dataset.bookmarkId) {
+            console.error("Restaurant ID 또는 Bookmark ID가 정의되지 않았습니다.");
+            return;
         }
 
-        toggleFavoriteButton(button, isFavorite);
+        toggleFavoriteStatus(button);
     });
 
     console.log("request URL:", `http://localhost/api/reservation/user/${userId}?page=0&size=10&sort=string`);
