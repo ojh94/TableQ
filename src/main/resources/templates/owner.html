@@ -1,7 +1,7 @@
 <main layout:decorate="~{common/layouts/ownerLayout}" layout:fragment="Content">
 
     <div class="child">
-        <div class="row">
+        <div>
             <div class="input-form col-md-12 mx-auto">
                 <h4 class="mb-4 text-orange text-center" style="font-weight:bold">회원정보 수정</h4>
                 <form class="validation-form" id="editForm" novalidate>
@@ -9,7 +9,7 @@
 
                     <div class="mb-2">
                         <label for="name">이름</label>
-                        <input type="text" class="form-control" id="name" name="name"
+                        <input type="text" class="form-control" id="name" name="name" readonly
                                placeholder="이름을 입력해주세요." required th:value="${user.name}">
                         <div class="invalid-feedback">
                             이름을 입력해주세요.
@@ -74,5 +74,4 @@
 </main>
 
 <script defer src="/js/mypage-edit.js"></script>
-<script defer src="/js/owner-mypage-edit.js"></script>
 <link rel="stylesheet" href="/css/mypage-edit.css">
