@@ -14,7 +14,7 @@ function createRestaurantCard(restaurant, rating = 0, reviewsCount =0) {
 
     // rating 값이 유효한지 확인하고, 없으면 0으로 설정
     const validRating = (rating && !isNaN(rating)) ? rating : 0; // rating이 없거나 NaN이면 0으로 설정
-    console.log('Valid rating:', validRating);  // validRating 값 확인
+//    console.log('Valid rating:', validRating);  // validRating 값 확인
 
     $.ajax({
             url: `/api/restaurant-image/restaurant/${restaurantId}`,
@@ -160,7 +160,7 @@ function requestRestaurantById(restaurantId) {
         type: 'GET',
         async: false,  // 동기식 요청
         success: function(data) {
-            console.log(`Restaurant data requested for ID: ${restaurantId}`, data);
+//            console.log(`Restaurant data requested for ID: ${restaurantId}`, data);
             restaurantData = data.data;
         },
         error: function(xhr, status, error) {
@@ -178,7 +178,7 @@ function requestReviewData(restaurantId) {
         type: 'GET',
         async: false,  // 동기식 요청
         success: function (response) {
-            console.log(`responsed review data for restaurant ID: ${restaurantId}`, response);
+//            console.log(`responsed review data for restaurant ID: ${restaurantId}`, response);
             if (response && response.data && Array.isArray(response.data)) {
                 const reviews = response.data;
 
