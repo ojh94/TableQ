@@ -83,7 +83,7 @@ $(document).ready(function () {
             <p>예약 인원: ${reservation.people}명</p>
             <p>주소: ${reservation.restaurant.address}</p>
             <p>전화번호: ${reservation.restaurant.contactNumber}</p>
-            <button class="book-btn" onclick="window.location.href='/restaurant/reservation/detail/{reservation.id}'">
+            <button class="book-btn" onclick="window.location.href='/restaurant/reservation/detail/${reservation.id}'">
                 <i></i> 예약확인
             </button>
           </div>
