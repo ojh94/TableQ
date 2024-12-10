@@ -72,7 +72,6 @@ public class OpeningHourService extends BaseService<OpeningHourRequest, OpeningH
                 needUpsertEntity.get().update(requestedEntity);
                 upsertedEntityList.add(needUpsertEntity.get());
             } else {
-                requestedEntity.getRestaurant().setId(restaurant.getId());
                 OpeningHour createdEntity = baseRepository.save(convertBaseEntityFromRequest(requestedEntity));
                 upsertedEntityList.add(createdEntity);
             }
