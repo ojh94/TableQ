@@ -95,10 +95,13 @@ public class BreakHourService extends BaseService<BreakHourRequest, BreakHourRes
         return responseList(upsertedEntityList);
     }
 
+    @Transactional
     public void deleteAllByRestaurant(Restaurant restaurant) {
 
         List<BreakHour> breakHourList = getBaseRepository().findAllByRestaurant(restaurant);
 
         getBaseRepository().deleteAll(breakHourList);
+
+        getBaseRepository().flush();
     }
 }

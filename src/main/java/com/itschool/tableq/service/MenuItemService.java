@@ -13,6 +13,7 @@ import com.itschool.tableq.service.base.S3Service;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -64,8 +65,8 @@ public class MenuItemService extends BaseServiceWithS3<MenuItemRequestWithFile, 
     public void deleteAllByRestaurant(Restaurant restaurant) {
         List<MenuItem> menuItemList = getBaseRepository().findByRestaurant(restaurant);
 
-        for (MenuItem menuItem : menuItemList) {
-            delete(menuItem.getId());
-        }
+        getBaseRepository().deleteAll(menuItemList);
+
+        getBaseRepository().flush();
     }
 }

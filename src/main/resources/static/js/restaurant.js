@@ -1,5 +1,7 @@
 $(document).ready(function() {
 
+    requestOwnerNavApi();
+
     if (window.location.pathname
     === '/restaurant/' + document.getElementById("restaurant-id").value) {
         requestRestaurantApi(false);
@@ -35,7 +37,6 @@ $(document).ready(function() {
         requestBreakHourModifyApi();
         requestKeywordModifyApi();
         requestAmenityModifyApi();
-        requestOwnerNavApi();
 
         // 새로운 메뉴 추가
         document.getElementById('addMenuButton').addEventListener('click', function() {
@@ -405,7 +406,7 @@ function requestReviewApi() {
 }
 
 // 상세 페이지 속 '작성 가능 리뷰' 화면 출력
-function requestReviewPossibleApi() {
+/*function requestReviewPossibleApi() {
     const restaurantId = document.getElementById("restaurant-id").value;
     const userId = document.getElementById("userId").value;
 
@@ -494,10 +495,10 @@ function requestReviewPossibleApi() {
 
         requestReviewCreateAPI();
     }
-}
+}*/
 
 // 리뷰 작성완료 버튼 클릭 시 create
-function requestReviewCreateAPI() {
+/*function requestReviewCreateAPI() {
     document.getElementById('review-summit').addEventListener('click', function(event) {
 
         const starCount = document.querySelectorAll('.star_rating .star.on').length;
@@ -548,7 +549,7 @@ function requestReviewCreateAPI() {
             }
         });
     });
-}
+}*/
 
 // 점주 상세 페이지 menu API
 function requestMenuApi() {
