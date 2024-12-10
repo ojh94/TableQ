@@ -60,12 +60,11 @@ public class RestaurantImageService extends BaseServiceWithS3<RestaurantImageReq
         return Header.OK(responseList(imageList));
     }
 
-    @Transactional
     public void deleteAllByRestaurant(Restaurant restaurant) {
         List<RestaurantImage> restaurantImages = getBaseRepository().findByRestaurant(restaurant);
 
-        for (RestaurantImage restaurantImage : restaurantImages) {
-            delete(restaurantImage.getId());
-        }
+        getBaseRepository().deleteAll(restaurantImages);
+
+        getBaseRepository().flush();
     }
 }

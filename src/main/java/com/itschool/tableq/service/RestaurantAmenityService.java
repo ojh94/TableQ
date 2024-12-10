@@ -90,10 +90,13 @@ public class RestaurantAmenityService extends BaseService<RestaurantAmenityReque
         return responseList(upsertedEntityList);
     }*/
 
+
     public void deleteAllByRestaurant(Restaurant restaurant) {
 
         List<RestaurantAmenity> restaurantAmenities = getBaseRepository().findByRestaurant(restaurant);
 
         getBaseRepository().deleteAll(restaurantAmenities);
+
+        getBaseRepository().flush();
     }
 }

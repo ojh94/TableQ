@@ -10976,7 +10976,7 @@ th, td {
     font-size: 25px; /* 폰트 크기 */
     font-weight: bold; /* 텍스트 두께 */
     transition: box-shadow 0.1s ease; /* box-shadow 변화에 부드러운 전환 효과 */
-    width: 78%; /* 상위 요소 기준 폭 */
+    width: 100%; /* 상위 요소 기준 폭 */
     padding: 15px;
     margin-top: 20px;
     float: right;
