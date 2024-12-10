@@ -10,5 +10,5 @@ import lombok.experimental.SuperBuilder;
 @AllArgsConstructor
 @Getter
 public class SingleKeyRequest {
-    private Long id;
+    protected Long id;
 }

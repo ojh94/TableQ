@@ -65,10 +65,14 @@ public class RestaurantLogicService extends RestaurantService {
 
 
         // 운영시간 업데이트 (read 성공 : update, read 실패 : insert)
+        for(OpeningHourRequest openingHourRequest : request.getOpeningHourList())
+            openingHourRequest.setRestaurant(RestaurantRequest.builder().id(restaurant.getId()).build());
         openingHourService.upsertListByDayOfWeek(restaurant, request.getOpeningHourList());
 
 
         // 브레이크 타임 업데이트 (read 성공 : update, read 실패 : insert)
+        for(BreakHourRequest breakHourRequest : request.getBreakHourList())
+            breakHourRequest.setRestaurant(RestaurantRequest.builder().id(restaurant.getId()).build());
         breakHourService.upsertListByDayOfWeek(restaurant, request.getBreakHourList());
 
 
