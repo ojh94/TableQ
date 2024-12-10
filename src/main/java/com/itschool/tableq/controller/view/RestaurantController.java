@@ -23,16 +23,10 @@ public class RestaurantController {
 
     @GetMapping("/modify/{id}")
     public String restaurantModify(@PathVariable Long id, @AuthenticationPrincipal User user, Model model) {
-        if(user.getMemberRole() == MemberRole.OWNER) {
-            model.addAttribute("id", id);
-            model.addAttribute("user", user);
+        model.addAttribute("id", id);
+        model.addAttribute("user", user);
 
-            return "restaurant-modify";
-
-        } else {
-            // 점주 로그인이 아닐 때
-            return "ownerWelcome";
-        }
+        return "restaurant-modify";
     }
 
     @GetMapping("/reservation/apply/{restaurantId}")
