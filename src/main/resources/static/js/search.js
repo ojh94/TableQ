@@ -1,5 +1,8 @@
 console.log("search.js 시작");
 
+    const start = currentPage * pageSize;
+    const end = start + pageSize;
+
 // 레스토랑 검색 함수
 async function fetchSearchResults(keyword, page = currentPage) {
     const apiUrl = `/api/restaurant/keyword/search?name=${encodeURIComponent(keyword)}&page=${page}&size=${pageSize}`;
@@ -49,8 +52,7 @@ async function fetchSearchResults(keyword, page = currentPage) {
             console.log('결합된 레스토랑 데이터:', mergedRestaurants);
 
             // 렌더링 및 페이지네이션 업데이트
-            const start = currentPage * pageSize;
-            const end = start + pageSize;
+
             renderRestaurantCards(mergedRestaurants.slice(start, end)); // 페이지네이션 반영
             updatePagination(totalPages); // 페이지 수 업데이트
         } else {
@@ -69,19 +71,20 @@ function handlePagination(event) {
         currentPage--;
     }
 
-    // 검색 모드에서 페이지네이션 처리
     if (isSearchMode) {
-        const start = currentPage * pageSize;
-        const end = start + pageSize;
+        // 현재 검색어 가져오기
+        const keyword = $('#searchInput').val().trim();
 
-        // 페이지 번호에 해당하는 검색 결과 렌더링
-        renderRestaurantCards(searchResults.slice(start, end)); // 검색 결과에서 해당 페이지 범위만 렌더링
-        fetchSearchResults($('#searchInput').val().trim(), currentPage); // 검색어와 페이지를 넘겨서 검색
+        // 현재 페이지에 대한 검색 결과를 새로 요청
+        fetchSearchResults(keyword, currentPage);
     } else {
+        // 일반 모드에서는 기존 방식 사용
         fetchRestaurants($('#sortId').val(), currentPage);
     }
+
     updatePagination(totalPages); // 페이지네이션 업데이트
 }
+
 
 // 페이지네이션 업데이트
 function updatePaginationForSearch(totalPages) {
