@@ -13,6 +13,7 @@ import groovy.lang.DeprecationException;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -92,10 +93,13 @@ public class RestaurantKeywordService extends BaseService<RestaurantKeywordReque
 
         return responseList(upsertedEntityList);
     }*/
+
     public void deleteAllByRestaurant(Restaurant restaurant) {
 
         List<RestaurantKeyword> restaurantKeywords = getBaseRepository().findByRestaurant(restaurant);
 
         getBaseRepository().deleteAll(restaurantKeywords);
+
+        getBaseRepository().flush();
     }
 }

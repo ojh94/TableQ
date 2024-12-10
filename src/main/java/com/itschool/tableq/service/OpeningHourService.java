@@ -80,10 +80,13 @@ public class OpeningHourService extends BaseService<OpeningHourRequest, OpeningH
         return responseList(upsertedEntityList);
     }
 
-    /*public void deleteAllByRestaurant(Restaurant restaurant) {
+    @Transactional
+    public void deleteAllByRestaurant(Restaurant restaurant) {
 
         List<OpeningHour> openingHourList = getBaseRepository().findAllByRestaurant(restaurant);
 
         getBaseRepository().deleteAll(openingHourList);
-    }*/
+
+        getBaseRepository().flush();
+    }
 }
