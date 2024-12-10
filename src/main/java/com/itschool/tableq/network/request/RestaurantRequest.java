@@ -23,4 +23,8 @@ public class RestaurantRequest extends SingleKeyRequest {
     private Boolean isAvailable;
 
     private BusinessInformationRequest businessInformation;
+
+    public void setId(Long id) {
+        this.id = id;
+    }
 }

@@ -31,8 +31,6 @@ $(document).ready(function () {
         toggleFavoriteStatus(button);
     });
 
-    console.log("request URL:", `http://localhost/api/reservation/user/${userId}?page=0&size=10&sort=string`);
-
      // 초기 레스토랑 데이터 불러오기 (ID 순)
         const initialSortType = $('#sortId').val();
         fetchRestaurants(initialSortType, 0);

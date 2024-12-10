@@ -1805,7 +1805,6 @@ function getCheckedAmenities() {
 
 function getCheckedKeywords() {
 
-
     let $keyword = document.getElementById('keyword');
     // 'form-check-input' 클래스를 가진 모든 자식 요소를 가져옴
     let inputs = $keyword.getElementsByClassName('form-check-input');
@@ -1831,7 +1830,6 @@ function getCheckedKeywords() {
 // 점주 별 레스토랑 정보 조회
 function requestOwnerNavApi() {
     const userId = $('#userId').val();
-    /*const userId = 3;*/
 
     $.ajax({
         url: `/api/restaurant/owner/my-restaurants/${userId}`,
@@ -1839,15 +1837,17 @@ function requestOwnerNavApi() {
         contentType: 'application/json', // JSON 형식으로 데이터 전송
         success: function(response) {
             // 요청 성공 시 동작
-            response.data.forEach((restaurant) => {
-                let restaurantHtml =
-                    `
-                    <li><a class="dropdown-item" href="/restaurant/modify/${restaurant.id}">${restaurant.name}</a></li>
-                    `;
+            if(response.data) {
+                response.data.forEach((restaurant) => {
+                    let restaurantHtml =
+                        `
+                        <li><a class="dropdown-item" href="/restaurant/modify/${restaurant.id}">${restaurant.name}</a></li>
+                        `;
 
-                // information 요소(내부) 끝에 추가
-                $('.dropdown-menu').prepend(restaurantHtml);
-            });
+                    // information 요소(내부) 끝에 추가
+                    $('.dropdown-menu').prepend(restaurantHtml);
+                });
+            }
         },
         error: function(xhr, status, error) {
         // 요청 실패 시 동작
