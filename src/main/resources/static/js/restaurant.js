@@ -1012,6 +1012,7 @@ function requestBreakHourApi() {
                             if (currentTime >= formattedStartTime && currentTime < formattedEndTime) {
                                 $('#today-open-1').html('<i class="fas fa-clock"></i> <strong>브레이크 타임</strong> : ' +  formattedStartTime + ' ~ ' + formattedEndTime);
                                 $('#today-open-2').html('<i class="fas fa-clock"></i> 원격줄서기 시간 :&nbsp;&nbsp;<strong>브레이크 타임</strong> ' + formattedStartTime + ' ~ ' + formattedEndTime);
+                                $('#apply').hide().prop('disabled', true);
                             }
                             $('#today-break-1')[0].textContent = '오늘 ' + formattedStartTime + ' ~ ' + formattedEndTime;
                             $('#today-break-2')[0].textContent = formattedStartTime + ' ~ ' + formattedEndTime;
@@ -1027,6 +1028,7 @@ function requestBreakHourApi() {
                             if (currentTime >= formattedStartTime && currentTime < formattedEndTime) {
                                 $('#today-open-1').html('<i class="fas fa-clock"></i> <strong>브레이크 타임</strong> : ' +  formattedStartTime + ' ~ ' + formattedEndTime);
                                 $('#today-open-2').html('<i class="fas fa-clock"></i> 원격줄서기 시간 :&nbsp;&nbsp;<strong>브레이크 타임</strong> ' + formattedStartTime + ' ~ ' + formattedEndTime);
+                                $('#apply').hide().prop('disabled', true);
                             }
                             $('#today-break-1')[0].textContent = '오늘 ' + formattedStartTime + ' ~ ' + formattedEndTime;
                             $('#today-break-2')[0].textContent = formattedStartTime + ' ~ ' + formattedEndTime;
@@ -1042,6 +1044,7 @@ function requestBreakHourApi() {
                             if (currentTime >= formattedStartTime && currentTime < formattedEndTime) {
                                 $('#today-open-1').html('<i class="fas fa-clock"></i> <strong>브레이크 타임</strong> : ' +  formattedStartTime + ' ~ ' + formattedEndTime);
                                 $('#today-open-2').html('<i class="fas fa-clock"></i> 원격줄서기 시간 :&nbsp;&nbsp;<strong>브레이크 타임</strong> ' + formattedStartTime + ' ~ ' + formattedEndTime);
+                                $('#apply').hide().prop('disabled', true);
                             }
                             $('#today-break-1')[0].textContent = '오늘 ' + formattedStartTime + ' ~ ' + formattedEndTime;
                             $('#today-break-2')[0].textContent = formattedStartTime + ' ~ ' + formattedEndTime;
@@ -1057,6 +1060,7 @@ function requestBreakHourApi() {
                             if (currentTime >= formattedStartTime && currentTime < formattedEndTime) {
                                 $('#today-open-1').html('<i class="fas fa-clock"></i> <strong>브레이크 타임</strong> : ' +  formattedStartTime + ' ~ ' + formattedEndTime);
                                 $('#today-open-2').html('<i class="fas fa-clock"></i> 원격줄서기 시간 :&nbsp;&nbsp;<strong>브레이크 타임</strong> ' + formattedStartTime + ' ~ ' + formattedEndTime);
+                                $('#apply').hide().prop('disabled', true);
                             }
                             $('#today-break-1')[0].textContent = '오늘 ' + formattedStartTime + ' ~ ' + formattedEndTime;
                             $('#today-break-2')[0].textContent = formattedStartTime + ' ~ ' + formattedEndTime;
@@ -1072,6 +1076,7 @@ function requestBreakHourApi() {
                             if (currentTime >= formattedStartTime && currentTime < formattedEndTime) {
                                 $('#today-open-1').html('<i class="fas fa-clock"></i> <strong>브레이크 타임</strong> : ' +  formattedStartTime + ' ~ ' + formattedEndTime);
                                 $('#today-open-2').html('<i class="fas fa-clock"></i> 원격줄서기 시간 :&nbsp;&nbsp;<strong>브레이크 타임</strong> ' + formattedStartTime + ' ~ ' + formattedEndTime);
+                                $('#apply').hide().prop('disabled', true);
                             }
                             $('#today-break-1')[0].textContent = '오늘 ' + formattedStartTime + ' ~ ' + formattedEndTime;
                             $('#today-break-2')[0].textContent = formattedStartTime + ' ~ ' + formattedEndTime;
@@ -1087,6 +1092,7 @@ function requestBreakHourApi() {
                             if (currentTime >= formattedStartTime && currentTime < formattedEndTime) {
                                 $('#today-open-1').html('<i class="fas fa-clock"></i> <strong>브레이크 타임</strong> : ' +  formattedStartTime + ' ~ ' + formattedEndTime);
                                 $('#today-open-2').html('<i class="fas fa-clock"></i> 원격줄서기 시간 :&nbsp;&nbsp;<strong>브레이크 타임</strong> ' + formattedStartTime + ' ~ ' + formattedEndTime);
+                                $('#apply').hide().prop('disabled', true);
                             }
                             $('#today-break-1')[0].textContent = '오늘 ' + formattedStartTime + ' ~ ' + formattedEndTime;
                             $('#today-break-2')[0].textContent = formattedStartTime + ' ~ ' + formattedEndTime;
@@ -1102,6 +1108,7 @@ function requestBreakHourApi() {
                             if (currentTime >= formattedStartTime && currentTime < formattedEndTime) {
                                 $('#today-open-1').html('<i class="fas fa-clock"></i> <strong>브레이크 타임</strong> : ' +  formattedStartTime + ' ~ ' + formattedEndTime);
                                 $('#today-open-2').html('<i class="fas fa-clock"></i> 원격줄서기 시간 :&nbsp;&nbsp;<strong>브레이크 타임</strong> ' + formattedStartTime + ' ~ ' + formattedEndTime);
+                                $('#apply').hide().prop('disabled', true);
                             }
                             $('#today-break-1')[0].textContent = '오늘 ' + formattedStartTime + ' ~ ' + formattedEndTime;
                             $('#today-break-2')[0].textContent = formattedStartTime + ' ~ ' + formattedEndTime;
