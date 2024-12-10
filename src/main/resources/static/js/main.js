@@ -21,7 +21,9 @@ function createRestaurantCard(restaurant, rating = 0, reviewsCount =0) {
             type: 'GET',
             async: false,
             success: function (response) {
-                if("ERROR" !== response.resultCode) {
+                if("ERROR" !== response.resultCode && response.data
+                && Array.isArray(response.data) && response.data.length > 0
+                && response.data[0].fileUrl) {
                     imageUrl = response.data[0].fileUrl;
                 } else {
                     // 에러 발생 시
