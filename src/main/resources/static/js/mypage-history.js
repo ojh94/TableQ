@@ -63,10 +63,11 @@ function requestUserHistoryApi() {
 
                 const complete = response.data.filter(item => item.isEntered === true);
                 complete.forEach((plans) => {
+
                     let reservationHtml =
                         `
                         <div class="card mb-2">
-                            <div class="card-body">
+                            <div id="review-availability" class="card-body">
                                 <div class="flex-container">
                                     <p>${formatDate(plans.createdAt)}</p>
                                     <p class="reservation-link" data-reservation-id="${plans.id}">상세보기 <i class="bi bi-chevron-right"></i></p>
@@ -83,10 +84,31 @@ function requestUserHistoryApi() {
 
                     // complete 요소(내부) 시작 부분에 추가
                     $('#complete').prepend(reservationHtml);
+
+                    // 리뷰 작성 가능여부 조회
+                    $.ajax({
+                        url: `/api/review/reviewable/${plans.id}`,
+                        type: 'GET', // 필요한 HTTP 메서드로 변경
+                        contentType: 'application/json', // JSON 형식으로 데이터 전송
+                        success: function(response) {
+                            if (response.data) {
+                                let reviewBtnHtml =
+                                    `
+                                    <button>리뷰 작성하기</button>
+                                    `;
+
+                                $('#review-availability').append(reviewBtnHtml);
+                            }
+                        },
+                        error: function(xhr, status, error) {
+                        // 요청 실패 시 동작
+                        console.error('리뷰 작성 버튼 set 실패:', error);
+                        alert('리뷰 작성 버튼 set 중 오류가 발생했습니다.');
+                        }
+                    });
                 });
 
                 $('#complete-page').show();
-
             }
 
             if (response.data.filter(item => item.isEntered === false).length > 0) {
