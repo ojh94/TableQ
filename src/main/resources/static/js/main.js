@@ -242,7 +242,6 @@ function displayReservedRestaurants() {
         if (restaurant) {
             const reviewData = requestReviewData(restaurant.id);
             console.log("Review data:", reviewData);
-            // Render restaurant data on page (for example, append to a grid)
         }
     });
 }
@@ -318,8 +317,6 @@ function renderFavoriteButton(button) {
         button.classList.remove('favorited');
         button.querySelector('i').classList.remove('fa-solid', 'fa-heart');
         button.querySelector('i').classList.add('fa-regular', 'fa-heart');
-        /*button.querySelector('i').classList.toggle("fa-solid");
-        button.querySelector('i').classList.toggle("fa-regular");*/
     }
 }
 
@@ -339,8 +336,6 @@ function requestToCreateBookmark(button) {
 
     const userId = document.getElementById("userId").value;
     const isFavorite = button.getAttribute('data-favorite')
-
-    // button.setAttribute('data-favorite', true);;
 
     if (!button || !userId) {
         console.error("Restaurant ID 또는 User ID가 정의되지 않았습니다.");
@@ -381,7 +376,6 @@ function requestToCreateBookmark(button) {
         },
         error: function (xhr, status, error) {
             console.error("Error adding to favorites:", error);
-            // 실패 시, 아무 것도 안함 (에러 발생 시)
         }
     });
 }
@@ -423,8 +417,6 @@ function requestToDeleteBookmark(button) {
         },
         error: function (xhr, status, error) {
             console.error("Error removing from favorites:", error);
-
-            // 실패 시, 아무것도 안함 (에러 발생 시)
         }
     });
 }
