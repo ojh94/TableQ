@@ -80,7 +80,7 @@ $(document).ready(function () {
 
              if (userId) {
                  const requestURL = `/api/reservation/user/${userId}?page=0&size=10&sort=createdAt,desc`;
-                 console.log("Request URL:", requestURL); // 요청 URL 확인
+//                 console.log("Request URL:", requestURL); // 요청 URL 확인
 
                  fetch(requestURL)
                      .then((response) => {
