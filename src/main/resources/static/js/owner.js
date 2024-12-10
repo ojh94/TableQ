@@ -4,8 +4,8 @@ $(document).ready(function() {
 
 // 점주 별 레스토랑 정보 조회
 function requestOwnerNavApi() {
-    /*const userId = $('#userId').val();*/
-    const userId = 3;
+    const userId = $('#userId').val();
+    // const userId = 3;
 
     $.ajax({
         url: `/api/restaurant/owner/my-restaurants/${userId}`,
