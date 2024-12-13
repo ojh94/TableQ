@@ -84,6 +84,13 @@ public class ReservationService extends BaseService<ReservationRequest, Reservat
         return false;
     }
 
+    public Boolean isExistByRestaurantId(User user, Long restaurantId){
+        Restaurant restaurant = restaurantRepository.findById(restaurantId)
+                .orElseThrow(() -> new EntityNotFoundException());
+
+        return isExist(user, restaurant);
+    }
+
     public Header<List<ReservationResponse>> readVisitedRestaurantsFor3Day(Long userId){
         User user = userRepository.findById(userId)
                 .orElseThrow(()->new EntityNotFoundException("유저가 존재하지 않습니다."));
