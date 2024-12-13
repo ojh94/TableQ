@@ -14,6 +14,21 @@ $(document).ready(function() {
         requestAmenityApi();
         /*requestReviewPossibleApi();*/
 
+        // is-exist가 true일 시 원격줄서기 버튼 숨기기
+        if ($('#is-exist').val() === 'true') {
+
+            $('#apply').hide().prop('disabled', true);
+
+            let applyBtnHtml =
+                `
+                <button class="btn-is-exist mt-5 px-5" type="button">원격줄서기 중입니다</button>
+                `;
+
+            $('#apply').after(applyBtnHtml);
+
+            // 추후에 회색 버튼 클릭시 /restaurant/reservation/detail/... 로 이동하도록 만들기
+        }
+
         // 원격줄서기 버튼 클릭 시
         document.getElementById('apply').onclick = function() {
             const restaurantId = document.getElementById('restaurant-id').value;
