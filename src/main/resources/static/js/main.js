@@ -44,18 +44,18 @@ function createRestaurantCard(restaurant, rating = 0, reviewsCount =0) {
         <div class="card-content">
             <img src="${imageUrl}" alt="${restaurant.name}" class="card-image">
             <div class="rating">
-                <i data-lucide="star" class="rating-star"></i>
+                <i class="fas fa-star" style="color: var(--color-yellow-400);"></i>
                 <span class="rating-value">${validRating.toFixed(1)}</span>
                 <span class="rating-count">(${reviewsCount} 리뷰)</span>
             </div>
             <div class="location">
-                <i data-lucide="map-pin" class="location-icon"></i>
+                <i  class="fas fa-map-marker-alt"  style="color: var(--color-orange-600);" class="location-icon"></i>
                 <span>${restaurant.address}</span>
             </div>
         </div>
         <div class="card-footer">
             <button class="book-btn" onclick="window.location.href='/restaurant/${restaurant.id}'">
-                <i data-lucide="calendar"></i> 예약하기
+                <i class="fa-regular fa-calendar"></i> 예약하기
             </button>
         </div>
     `;
