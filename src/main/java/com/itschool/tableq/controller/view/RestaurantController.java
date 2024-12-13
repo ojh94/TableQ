@@ -20,6 +20,11 @@ public class RestaurantController {
 
     @GetMapping("/{id}")
     public String restaurant(@PathVariable Long id, @AuthenticationPrincipal User user, Model model) {
+        if (reservationService.isExistByRestaurantId(user, id)) { // 해당 레스토랑에 기존 예약이 있을때
+            model.addAttribute("isExist", true);
+        } else {
+            model.addAttribute("isExist", false);
+        }
         model.addAttribute("id", id);
         model.addAttribute("user", user);
         return "restaurant";
