@@ -16,14 +16,17 @@ function requestUserHistoryApi() {
         type: 'GET', // 필요한 HTTP 메서드로 변경
         contentType: 'application/json', // JSON 형식으로 데이터 전송
         data: {
-               "page" : 0,
-               "size" : 3
+                "page": 0,
+                "size": 100,
+                "sort": "createdAt,asc" // , 'id,desc'
               },
         success: function(response) {
             // 요청 성공 시 동작
             if (response.data.length === 0) {
                 return;
             }
+
+            console.log(response.data);
 
             if (response.data.filter(item => item.isEntered == null).length > 0) {
 
@@ -67,7 +70,7 @@ function requestUserHistoryApi() {
                     let reservationHtml =
                         `
                         <div class="card mb-2">
-                            <div id="review-availability" class="card-body">
+                            <div id="review-availability-${plans.id}" class="card-body">
                                 <div class="flex-container">
                                     <p>${formatDate(plans.createdAt)}</p>
                                     <p class="reservation-link" data-reservation-id="${plans.id}">상세보기 <i class="bi bi-chevron-right"></i></p>
@@ -94,10 +97,12 @@ function requestUserHistoryApi() {
                             if (response.data) {
                                 let reviewBtnHtml =
                                     `
-                                    <button>리뷰 작성하기</button>
+                                    <a href="/restaurant/${plans.restaurant.id}?reservationId=${plans.id}">리뷰 작성하기</a>
                                     `;
 
-                                $('#review-availability').append(reviewBtnHtml);
+                                const possibleReview = '#review-availability-' + plans.id.toString();
+
+                                $(possibleReview).append(reviewBtnHtml);
                             }
                         },
                         error: function(xhr, status, error) {

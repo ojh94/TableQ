@@ -14,6 +14,7 @@ import com.itschool.tableq.service.base.BaseService;
 import com.itschool.tableq.util.DateUtil;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -187,9 +188,8 @@ public class ReservationService extends BaseService<ReservationRequest, Reservat
         // 유저가 예약했던 정보 조회
         // --> 유저가 예약했던 식당을 조회하는 방식으로 변경 건의
         User user = userRepository.findById(userId).get();
-        List<Reservation> reservationList = getBaseRepository().findByUser(user)
-                .orElseThrow(()-> new EntityNotFoundException());
+        Page<Reservation> reservationList = getBaseRepository().findByUser(user, pageable);
 
-        return Header.OK(responseList(reservationList));
+        return convertPageToList(reservationList);
     }
 }

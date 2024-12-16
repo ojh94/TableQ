@@ -3,9 +3,9 @@ package com.itschool.tableq.repository;
 import com.itschool.tableq.domain.Reservation;
 import com.itschool.tableq.domain.Restaurant;
 import com.itschool.tableq.domain.User;
-import com.itschool.tableq.util.DateUtil;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -13,7 +13,8 @@ import java.util.Optional;
 
 public interface ReservationRepository extends JpaRepository<Reservation, Long> {
     Optional<List<Reservation>> findByRestaurant(Restaurant restaurant);
-    Optional<List<Reservation>> findByUser(User user);
+
+    Page<Reservation> findByUser(User user, Pageable pageable);
 
     Reservation findByIdAndIsEnteredAndCreatedAtBetween(Long reservationId, Boolean isEntered,
                                                                   LocalDateTime startTime, LocalDateTime endTime);
