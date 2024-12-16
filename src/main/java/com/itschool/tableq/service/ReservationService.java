@@ -120,8 +120,10 @@ public class ReservationService extends BaseService<ReservationRequest, Reservat
 
     public Long getWaitingNubmer(Restaurant restaurant) {
         // 대기번호를 계산하는 메소드
-        Long number = 1L;
-
+        Long number = getBaseRepository().countByRestaurantAndCreatedAtBetween(
+                restaurant, DateUtil.getStartOfDay(), DateUtil.getEndOfDay()
+        );
+        /*
         LocalDate today = LocalDate.now();
 
         List<Reservation> reservationList = getBaseRepository().findByRestaurant(restaurant)
@@ -134,7 +136,8 @@ public class ReservationService extends BaseService<ReservationRequest, Reservat
                 number += 1;
             } else continue;
         }
-        return number;
+        */
+        return number + 1;
     }
 
     public Header<Integer> getQueue(Long restaurantId){

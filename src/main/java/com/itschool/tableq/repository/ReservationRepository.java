@@ -3,6 +3,7 @@ package com.itschool.tableq.repository;
 import com.itschool.tableq.domain.Reservation;
 import com.itschool.tableq.domain.Restaurant;
 import com.itschool.tableq.domain.User;
+import com.itschool.tableq.util.DateUtil;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
@@ -36,6 +37,10 @@ public interface ReservationRepository extends JpaRepository<Reservation, Long> 
     // 예약 전 대기열 조회를 위한 countBy
     Integer countByRestaurantIdAndIsEnteredAndCreatedAtBetween(
             Long restaurantId, Boolean isEntered, LocalDateTime startOfDay, LocalDateTime endOfDay
+    );
+
+    Long countByRestaurantAndCreatedAtBetween(
+            Restaurant restaurant, LocalDateTime startOfDay, LocalDateTime endOfDay
     );
 
     Optional<Reservation> getFirstByOrderByIdDesc();
