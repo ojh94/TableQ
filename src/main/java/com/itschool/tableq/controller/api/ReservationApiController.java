@@ -55,7 +55,7 @@ public class ReservationApiController extends CrudController<ReservationRequest,
     public Header<List<ReservationResponse>> readByUserId(@PathVariable(name="userId") Long userId,
                                                                 @PageableDefault(sort = "id", direction = Sort.Direction.DESC)Pageable pageable){
         log.info("{}","{}","{}","read: ",userId, pageable);
-        return ((ReservationService)baseService).readByUserId(userId,pageable);
+        return ((ReservationService)baseService).readByUserId(userId, pageable);
     }
 
     @Operation(summary = "예약의 현재 순번 조회", description = "Restaurant ID 와 Reservation ID로 현재 순번 조회")

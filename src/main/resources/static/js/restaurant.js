@@ -12,7 +12,16 @@ $(document).ready(function() {
         requestBreakHourApi();
         requestKeywordApi();
         requestAmenityApi();
-        /*requestReviewPossibleApi();*/
+
+        // 현재 URL의 쿼리 파라미터를 가져오는 코드
+        const urlParams = new URLSearchParams(window.location.search);
+
+        // reservationId 파라미터가 있는지 확인
+        const reservationId = urlParams.get('reservationId');
+
+        if(reservationId) {
+            requestReviewPossibleApi();
+        }
 
         // is-exist가 true일 시 원격줄서기 버튼 숨기기
         if ($('#is-exist').val() === 'true') {
@@ -21,7 +30,7 @@ $(document).ready(function() {
 
             let applyBtnHtml =
                 `
-                <button class="btn-is-exist mt-5 px-5" type="button">원격줄서기 중입니다</button>
+                <button id="apply" class="btn-is-exist mt-5 px-5" type="button">원격줄서기 중입니다</button>
                 `;
 
             $('#apply').after(applyBtnHtml);
@@ -417,6 +426,112 @@ function requestReviewApi() {
         console.error('리뷰 set 실패:', error);
         alert('리뷰 set 중 오류가 발생했습니다.');
         }
+    });
+}
+
+// 이용내역 속 '리뷰 작성' 버튼 클릭 시
+function requestReviewPossibleApi() {
+
+    let reviewPossibleStarHtml =
+        `
+        <hr/>
+        <div class="star_rating ms-1 mb-2">
+            <span class="star on" value="1"> </span>
+            <span class="star" value="2"> </span>
+            <span class="star" value="3"> </span>
+            <span class="star" value="4"> </span>
+            <span class="star" value="5"> </span>
+        </div>
+        `;
+
+    let reviewPossibleTextareaHtml =
+        `
+        <textarea id="review-textarea" class="form-control" rows="4" placeholder="솔직한 평가를 남겨주세요!"></textarea>
+        `;
+
+    let reviewPossibleButtonHtml =
+        `
+        <div class="d-flex justify-content-center">
+            <button id="review-summit" type="button" class="btn btn-secondary mt-3">작성완료</button>
+        </div>
+        `;
+
+    // reviews-number 요소(외부) 끝에 추가
+    $('#reviews-number').after(reviewPossibleStarHtml);
+    $('#review-form').append(reviewPossibleTextareaHtml);
+    $('#review-textarea').after(reviewPossibleButtonHtml);
+
+    requestReviewCreateAPI();
+}
+
+// 리뷰 작성완료 버튼 클릭 시 create
+function requestReviewCreateAPI() {
+    document.getElementById('review-summit').addEventListener('click', function(event) {
+
+        const starCount = document.querySelectorAll('.star_rating .star.on').length;
+        const restaurantId = document.getElementById("restaurant-id").value;
+        const userId = document.getElementById("userId").value;
+
+        // URL에서 파라미터 추출
+        const urlParams = new URLSearchParams(window.location.search);
+        const reservationId = urlParams.get('reservationId');
+
+        if($('#review-textarea').val() === "") {
+            alert('내용을 입력해주세요.');
+            return;
+        }
+
+        const formData = {
+            "data": {
+                "content" : $('#review-textarea').val(),
+                "starRating" : starCount,
+                "restaurant" : {
+                    "id" : restaurantId
+                },
+                "user" : {
+                    "id" : userId
+                },
+                "reservation": {
+                    "id" : reservationId
+                }
+            }
+        };
+
+        // AJAX 요청 보내기
+        $.ajax({
+            url: `/api/review`,
+            type: 'POST', // 필요한 HTTP 메서드로 변경 (PUT 또는 PATCH 등도 가능)
+            contentType: 'application/json', // JSON 형식으로 데이터 전송
+            data: JSON.stringify(formData), // 데이터를 JSON 문자열로 변환
+            success: function(response) {
+                // 요청 성공 시 동작
+                if("OK" === response.resultCode) {
+                    alert('리뷰 등록이 완료되었습니다.');
+
+                    // 현재 URL에서 쿼리 문자열 제거
+                    const cleanUrl = window.location.origin + window.location.pathname;
+
+                    // URL을 변경하고 페이지를 새로고침
+                    window.history.replaceState(null, '', cleanUrl);
+                    window.location.reload();
+
+                } else {
+                    alert('리뷰 등록에 실패했습니다.');
+
+                    // 현재 URL에서 쿼리 문자열 제거
+                    const cleanUrl = window.location.origin + window.location.pathname;
+
+                    // URL을 변경하고 페이지를 새로고침
+                    window.history.replaceState(null, '', cleanUrl);
+                    window.location.reload();
+                }
+            },
+            error: function(xhr, status, error) {
+                // 요청 실패 시 동작
+                console.error('생성 실패:', error);
+                alert('생성 중 오류가 발생했습니다.');
+            }
+        });
     });
 }
 
