@@ -40,5 +40,9 @@ public interface ReservationRepository extends JpaRepository<Reservation, Long> 
             Long restaurantId, Boolean isEntered, LocalDateTime startOfDay, LocalDateTime endOfDay
     );
 
+    Long countByRestaurantAndCreatedAtBetween(
+            Restaurant restaurant, LocalDateTime startOfDay, LocalDateTime endOfDay
+    );
+
     Optional<Reservation> getFirstByOrderByIdDesc();
 }
