@@ -135,7 +135,7 @@ function requestRecommendedRestaurants(page = 0, size = 6) {
 // 예약 정보 가져오기 (동기식 요청)
 function requestReservationData(userId) {
     let reservationData = null; // 데이터를 담을 변수
-    const url = `/api/reservation/user/${encodeURIComponent(userId)}?page=0&size=10&sort=string`;
+    const url = `/api/reservation/user/${encodeURIComponent(userId)}?page=0&size=10&sort=createdAt,desc`;
     $.ajax({
         url: url,
         type: 'GET',
