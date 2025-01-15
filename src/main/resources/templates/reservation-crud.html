@@ -36,7 +36,8 @@
     <div>
         <h2>예약 수정</h2>
         <h3>수정할 항목</h3>
-
+        <label for="reservationIdUpdate"></label>
+        <input type="text" id="reservationIdUpdate"></input>
         <label for="isEnteredUpdate">입장 여부:</label>
         <input type="checkbox" id="isEnteredUpdate"><br><br>
 
@@ -139,7 +140,7 @@
 
         // 예약 수정 요청
         $('#updateReservationBtn').on('click', function() {
-            const reservationId = $('#reservationId').val();
+            const reservationId = $('#reservationIdUpdate').val();
             if (!reservationId) {
                 alert('예약 ID를 입력해주세요.');
                 return;
